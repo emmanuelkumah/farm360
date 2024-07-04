@@ -24,7 +24,9 @@ const NavButton = ({ customFunc, icon, color, dotColor }) => (
 );
 
 const Navbar = () => {
-  const { activeMenu, setActiveMenu } = useStateContext();
+  const { activeMenu, setActiveMenu, isClicked, setIsClicked, handleClick } =
+    useStateContext();
+
   return (
     <div className="flex justify-between p-2 md:mx-6 relative">
       <NavButton
@@ -41,7 +43,7 @@ const Navbar = () => {
         />
         <div
           className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-          onClick={() => handleClick("user profile")}
+          onClick={() => handleClick("userProfile")}
         >
           <img
             src={avatar}
@@ -56,6 +58,8 @@ const Navbar = () => {
           </p>
           <MdKeyboardArrowDown className="text-gray-400 text-14" />
         </div>
+        {isClicked.userProfile && <UserProfile />}
+        {isClicked.notification && <Notification />}
       </div>
     </div>
   );
