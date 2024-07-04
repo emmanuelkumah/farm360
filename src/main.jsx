@@ -6,6 +6,8 @@ import ErrorPage from "./error-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import { Dashboard, Farmers, User } from "./pages";
+import { ContextProvider } from "./context/ContextProvider";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -45,6 +47,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ContextProvider>
+      <RouterProvider router={router} />
+    </ContextProvider>
   </React.StrictMode>
 );

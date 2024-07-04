@@ -1,9 +1,10 @@
 import "./App.css";
 import React from "react";
 import { Navbar, Footer, Header, Sidebar } from "./components";
+import { useStateContext } from "./context/ContextProvider";
 
 const App = () => {
-  const activeMenu = true;
+  const { activeMenu } = useStateContext();
 
   return (
     <>
