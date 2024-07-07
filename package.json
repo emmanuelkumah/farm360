@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nivo/core": "^0.87.0",
+    "@nivo/line": "^0.87.0",
     "@syncfusion/ej2-react-charts": "^26.1.40",
     "@syncfusion/ej2-react-dropdowns": "^26.1.40",
     "@syncfusion/ej2-react-grids": "^26.1.40",

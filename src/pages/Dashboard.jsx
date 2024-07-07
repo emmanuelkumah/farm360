@@ -4,7 +4,7 @@ import { FaUserGroup } from "react-icons/fa6";
 import { PiPlant } from "react-icons/pi";
 import { LuTrees } from "react-icons/lu";
 import { IoQrCodeOutline } from "react-icons/io5";
-
+import { LineCharts } from "../components";
 const Dashboard = () => {
   return (
     <>
@@ -27,9 +27,10 @@ const Dashboard = () => {
             icon={<IoQrCodeOutline />}
           />
         </div>
+        {/* Line Chart */}
         <div>
-          {/* Line Chart */}
-          <h3>Line Chart here</h3>
+          {/* Activities */}
+          <LineCharts />
         </div>
         <div>
           {/* Activities */}
