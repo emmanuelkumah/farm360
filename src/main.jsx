@@ -5,43 +5,41 @@ import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import { Dashboard, Farmers, User } from "./pages";
+import { Dashboard, Farmers, User, Farms, Reports } from "./pages";
 import { ContextProvider } from "./context/ContextProvider";
+import { LoadingIndicator } from "@syncfusion/ej2-react-grids";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <div>
-        <h1>Home page</h1>
-      </div>
-    ),
+    element: <Root />,
     errorElement: <ErrorPage />,
   },
   {
     path: "/app",
     element: <App />,
+    children: [
+      {
+        path: "/app/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/app/farmers",
+        element: <Farmers />,
+      },
+      {
+        path: "/app/farms",
+        element: <Farms />,
+      },
+      {
+        path: "/app/reports",
+        element: <Reports />,
+      },
+    ],
   },
   {
     path: "/login",
-    element: (
-      <div>
-        <h1 className="text-4xl">Login page</h1>
-      </div>
-    ),
-  },
-  {
-    path: "/users",
-    element: <User />,
-  },
-
-  {
-    path: "/farmers",
-    element: <Farmers />,
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
+    element: <Login />,
   },
 ]);
 

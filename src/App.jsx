@@ -2,6 +2,7 @@ import "./App.css";
 import React from "react";
 import { Navbar, Footer, Header, Sidebar } from "./components";
 import { useStateContext } from "./context/ContextProvider";
+import { Outlet } from "react-router-dom";
 
 const App = () => {
   const { activeMenu } = useStateContext();
@@ -26,6 +27,7 @@ const App = () => {
           <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full">
             <Navbar />
           </div>
+          <Outlet />
         </div>
       </div>
     </>
