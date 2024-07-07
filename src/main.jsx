@@ -5,9 +5,8 @@ import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import { Dashboard, Farmers, User, Farms, Reports } from "./pages";
+import { Dashboard, Farmers, Users, Login, Farms, Reports } from "./pages";
 import { ContextProvider } from "./context/ContextProvider";
-import { LoadingIndicator } from "@syncfusion/ej2-react-grids";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/app/reports",
         element: <Reports />,
+      },
+      {
+        path: "/app/users",
+        element: <Users />,
       },
     ],
   },

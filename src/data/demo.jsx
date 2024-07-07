@@ -19,11 +19,11 @@ export const links = [
     icon: <FaUsersLine />,
   },
   {
-    name: "Farm",
+    name: "Farms",
     icon: <PiPottedPlantDuotone />,
   },
   {
-    name: "Report",
+    name: "Reports",
     icon: <TbDeviceDesktopAnalytics />,
   },
 ];

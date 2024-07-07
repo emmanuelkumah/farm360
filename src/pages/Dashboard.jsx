@@ -1,7 +1,13 @@
 import React from "react";
+import { Button } from "flowbite-react";
 
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  return (
+    <div>
+      {" "}
+      <Button>Dashboard</Button>
+    </div>
+  );
 };
 
 export default Dashboard;
