@@ -7,3 +7,4 @@ export { default as Notification } from "./Notification";
 export { default as UserProfile } from "./UserProfile";
 export { default as DashboardCard } from "./DashboardCard";
 export { default as LineCharts } from "./LineCharts";
+export { default as RecentActs } from "./RecentActs";

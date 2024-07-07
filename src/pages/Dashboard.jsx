@@ -1,5 +1,5 @@
 import React from "react";
-import { DashboardCard } from "../components";
+import { DashboardCard, RecentActs } from "../components";
 import { FaUserGroup } from "react-icons/fa6";
 import { PiPlant } from "react-icons/pi";
 import { LuTrees } from "react-icons/lu";
@@ -35,6 +35,7 @@ const Dashboard = () => {
         <div>
           {/* Activities */}
           <h3>Activities here</h3>
+          <RecentActs />
         </div>
       </div>
     </>
