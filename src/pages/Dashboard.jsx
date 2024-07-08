@@ -30,11 +30,12 @@ const Dashboard = () => {
         {/* Line Chart */}
         <div>
           {/* Activities */}
+          <h3 className="text-xl mt-5">Activity Periods</h3>
           <LineCharts />
         </div>
         <div>
           {/* Activities */}
-          <h3>Activities here</h3>
+          <h3 className="text-xl mt-5">Recent Actors </h3>
           <RecentActs />
         </div>
       </div>

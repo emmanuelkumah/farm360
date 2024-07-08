@@ -1,0 +1,42 @@
+export const recentActors = [
+  {
+    id: 1,
+    name: "Robert Kamina",
+    activity: "Weeding",
+    farm: "Kwame Nsiah 1",
+    farmOwner: "Kwame Nsiah",
+    date: "19 May, 2024 : 10:10 AM",
+  },
+  {
+    id: 2,
+    name: "Yaw Takyi",
+    activity: "Harrowing",
+    farm: "Daniel 1",
+    farmOwner: "Daniel Ababio",
+    date: "11 June, 2024 : 10:10 AM",
+  },
+  {
+    id: 3,
+    name: "Arthur Atti",
+    activity: "Fertilizing",
+    farm: "Kwame Nsiah 1",
+    farmOwner: "Kwame Nsiah",
+    date: "19 Feb, 2024 : 10:10 AM",
+  },
+  {
+    id: 4,
+    name: "Cynthia Arthur",
+    activity: "Weeding",
+    farm: "Kwaku Tawiah 1",
+    farmOwner: "Kwaku Tawiah",
+    date: "19 June, 2024 : 10:10 AM",
+  },
+  {
+    id: 5,
+    name: "John Kumah",
+    activity: "Ploughing",
+    farm: "Adwoa Mensah 4",
+    farmOwner: "Adwoa Mensah",
+    date: "1 April, 2024 : 10:10 AM",
+  },
+];

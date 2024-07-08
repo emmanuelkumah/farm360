@@ -5,7 +5,7 @@ import { lineChartData } from "../data/linechart";
 const LineCharts = () => {
   return (
     <>
-      <div style={{ height: 400 }}>
+      <div style={{ height: 500, width: "100vw" }}>
         <ResponsiveLine
           data={lineChartData}
           margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
