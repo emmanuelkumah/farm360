@@ -5,6 +5,7 @@ import { PiPlant } from "react-icons/pi";
 import { LuTrees } from "react-icons/lu";
 import { IoQrCodeOutline } from "react-icons/io5";
 import { LineCharts } from "../components";
+
 const Dashboard = () => {
   return (
     <>
