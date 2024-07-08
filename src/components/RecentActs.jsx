@@ -4,7 +4,7 @@ import { recentActors } from "../data/recentActors";
 
 const RecentActs = () => {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto my-10">
       <Table>
         <Table.Head>
           <Table.HeadCell>Name</Table.HeadCell>
