@@ -1,9 +1,63 @@
-import React from "react";
-
+import { Button } from "flowbite-react";
+import { Table } from "flowbite-react";
+import { usersData } from "../data/demo";
+import { FaDeleteLeft } from "react-icons/fa6";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { GrView } from "react-icons/gr";
 const Users = () => {
   return (
     <>
-      <div>Searcjh</div>
+      <div className="m-10">
+        <input
+          className="w-1/2 rounded-lg"
+          type="text"
+          name="search"
+          id=""
+          placeholder="Search"
+        />
+        <div className="mt-10">
+          <Button>Add new user</Button>
+        </div>
+        <div className="overflow-x-auto">
+          <Table hoverable>
+            <Table.Head>
+              <Table.HeadCell>Picture</Table.HeadCell>
+              <Table.HeadCell>First Name</Table.HeadCell>
+              <Table.HeadCell>Last Name</Table.HeadCell>
+              <Table.HeadCell>Email</Table.HeadCell>
+              <Table.HeadCell>Role</Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {usersData.map((user) => (
+                <Table.Row
+                  key={user.id}
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    <img
+                      src={user.image}
+                      alt="image"
+                      className="rounded-full w-10 h-10"
+                    />
+                  </Table.Cell>
+                  <Table.Cell>{user.firstName}</Table.Cell>
+                  <Table.Cell>{user.lastName}</Table.Cell>
+                  <Table.Cell>{user.email}</Table.Cell>
+                  <Table.Cell>{user.role}</Table.Cell>
+                  <Table.Cell>
+                    <div className="flex gap-5">
+                      <GrView />
+                      <MdEdit />
+
+                      <MdDelete />
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </div>
+      </div>
     </>
   );
 };
