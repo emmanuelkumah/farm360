@@ -32,7 +32,7 @@ export const links = [
   },
 ];
 
-export const usersData = [
+export const usersRegistration = [
   {
     id: 1,
     image: avatar,
@@ -45,7 +45,7 @@ export const usersData = [
   {
     id: 2,
     image: avatar2,
-    firstName: "George",
+    firstName: "Adelaine",
     lastName: "Addo",
     email: "george@gmail.com",
     password: "******",

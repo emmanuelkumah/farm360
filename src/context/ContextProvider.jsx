@@ -1,6 +1,9 @@
 import { useContext, useState, createContext } from "react";
+import { usersRegistration } from "../data/demo";
 
 const StateContext = createContext();
+
+const UserRegistrationContext = createContext();
 
 const initialState = {
   notification: false,
@@ -10,15 +13,15 @@ export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
   const [screenSize, setScreenSize] = useState(undefined);
-  const [addUserClick, setAddUserClick] = useState(false);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [userData, setUserData] = useState(usersRegistration);
 
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
   };
-  const handleAddUser = () => {
-    setAddUserClick((prevState) => !prevState);
-  };
+  const handleFormChange = () => {};
+  const handleFormSubmission = () => {};
+
   return (
     <StateContext.Provider
       value={{
@@ -29,16 +32,21 @@ export const ContextProvider = ({ children }) => {
         handleClick,
         screenSize,
         setScreenSize,
-        addUserClick,
-        setAddUserClick,
-        handleAddUser,
         openModal,
         setOpenModal,
       }}
     >
-      {children}
+      <UserRegistrationContext.Provider
+        value={{
+          userData,
+        }}
+      >
+        {children}
+      </UserRegistrationContext.Provider>
     </StateContext.Provider>
   );
 };
 
 export const useStateContext = () => useContext(StateContext);
+
+export const useUser = () => useContext(UserRegistrationContext);

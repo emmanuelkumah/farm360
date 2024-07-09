@@ -1,13 +1,15 @@
 import { Button } from "flowbite-react";
 import { Table } from "flowbite-react";
-import { usersData } from "../data/demo";
+// import { usersData } from "../data/demo";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { GrView } from "react-icons/gr";
 import { useStateContext } from "../context/ContextProvider";
+import { useUser } from "../context/ContextProvider";
 import AddUserModal from "../components/AddUserModal";
 
 const Users = () => {
   const { setOpenModal } = useStateContext();
+  const { userData } = useUser();
   return (
     <>
       <div className="m-10">
@@ -32,7 +34,7 @@ const Users = () => {
               <Table.HeadCell>Role</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              {usersData.map((user) => (
+              {userData.map((user) => (
                 <Table.Row
                   key={user.id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
