@@ -1,9 +1,9 @@
 import { useContext, useState, createContext } from "react";
-import { usersRegistration } from "../data/demo";
+import { dummyUsers } from "../data/demo";
 
 const StateContext = createContext();
 
-const UserRegistrationContext = createContext();
+const UserContext = createContext();
 
 const initialState = {
   notification: false,
@@ -14,13 +14,35 @@ export const ContextProvider = ({ children }) => {
   const [isClicked, setIsClicked] = useState(initialState);
   const [screenSize, setScreenSize] = useState(undefined);
   const [openModal, setOpenModal] = useState(false);
-  const [userData, setUserData] = useState(usersRegistration);
+  const [userData, setUserData] = useState({
+    // Dummy users data
+    users: [
+      {
+        id: 1,
+        firstName: "Emily",
+        lastName: "Johnson",
+        email: "emily.johnson@x.dummyjson.com",
+        role: "administrator",
+        // Add more dummy user data as needed
+      },
+      // Add more dummy users as needed
+    ],
+  });
 
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
   };
-  const handleFormChange = () => {};
-  const handleFormSubmission = () => {};
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const handleFormSubmission = (e) => {
+    e.preventDefault();
+    //add form submission logic
+  };
 
   return (
     <StateContext.Provider
@@ -36,17 +58,18 @@ export const ContextProvider = ({ children }) => {
         setOpenModal,
       }}
     >
-      <UserRegistrationContext.Provider
+      <UserContext.Provider
         value={{
           userData,
+          handleFormChange,
         }}
       >
         {children}
-      </UserRegistrationContext.Provider>
+      </UserContext.Provider>
     </StateContext.Provider>
   );
 };
 
 export const useStateContext = () => useContext(StateContext);
 
-export const useUser = () => useContext(UserRegistrationContext);
+export const useUserContext = () => useContext(UserContext);

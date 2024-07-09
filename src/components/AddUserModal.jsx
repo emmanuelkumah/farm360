@@ -11,10 +11,11 @@ import { HiMail } from "react-icons/hi";
 import { FaRegUserCircle } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
 
-import { useStateContext } from "../context/ContextProvider";
+import { useStateContext, useUserContext } from "../context/ContextProvider";
 
 const AddUserModal = () => {
   const { openModal, setOpenModal } = useStateContext();
+  const { handleFormChange, userData } = useUserContext();
   return (
     <>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
@@ -29,7 +30,10 @@ const AddUserModal = () => {
                 <TextInput
                   id="firstName"
                   type="text"
+                  name="firstName"
                   placeholder="Enter first name"
+                  value={userData.users.firstName}
+                  onChange={(e) => handleFormChange(e)}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -43,6 +47,9 @@ const AddUserModal = () => {
                   id="lastName"
                   type="text"
                   placeholder="Enter last name"
+                  name="lastName"
+                  value={userData.users.lastName}
+                  onChange={(e) => handleFormChange(e)}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -56,6 +63,9 @@ const AddUserModal = () => {
                   id="email2"
                   type="email"
                   placeholder="name@farm360.com"
+                  name="email"
+                  value={userData.users.email}
+                  onChange={(e) => handleFormChange(e)}
                   icon={HiMail}
                   required
                   shadow

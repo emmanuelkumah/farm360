@@ -32,7 +32,7 @@ export const links = [
   },
 ];
 
-export const usersRegistration = [
+export const dummyUsers = [
   {
     id: 1,
     image: avatar,
