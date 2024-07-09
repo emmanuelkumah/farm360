@@ -1,5 +1,7 @@
 import { useContext, useState, createContext } from "react";
 import { dummyUsers } from "../data/demo";
+import avatar from "../data/avatar.jpg";
+import { closeFilterDialog } from "@syncfusion/ej2-react-grids";
 
 const StateContext = createContext();
 
@@ -23,6 +25,9 @@ export const ContextProvider = ({ children }) => {
         lastName: "Johnson",
         email: "emily.johnson@x.dummyjson.com",
         role: "administrator",
+        picture: avatar,
+        password: "1234",
+        confirmPassword: "1234",
         // Add more dummy user data as needed
       },
       // Add more dummy users as needed
@@ -41,7 +46,8 @@ export const ContextProvider = ({ children }) => {
   };
   const handleFormSubmission = (e) => {
     e.preventDefault();
-    //add form submission logic
+    console.log("form submitted", userData);
+    //clear inputs
   };
 
   return (
@@ -62,6 +68,7 @@ export const ContextProvider = ({ children }) => {
         value={{
           userData,
           handleFormChange,
+          handleFormSubmission,
         }}
       >
         {children}

@@ -15,14 +15,17 @@ import { useStateContext, useUserContext } from "../context/ContextProvider";
 
 const AddUserModal = () => {
   const { openModal, setOpenModal } = useStateContext();
-  const { handleFormChange, userData } = useUserContext();
+  const { handleFormChange, handleFormSubmission, userData } = useUserContext();
   return (
     <>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>Add new user</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
-            <form className="flex max-w-md flex-col gap-4">
+            <form
+              className="flex max-w-md flex-col gap-4"
+              onSubmit={handleFormSubmission}
+            >
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="firstName" value="First name" />
@@ -79,6 +82,8 @@ const AddUserModal = () => {
                   id="password2"
                   type="password"
                   icon={RiLockPasswordLine}
+                  value={userData.users.password}
+                  onChange={(e) => handleFormChange(e)}
                   required
                   shadow
                 />
@@ -91,6 +96,8 @@ const AddUserModal = () => {
                   id="repeat-password"
                   type="password"
                   icon={RiLockPasswordLine}
+                  value={userData.users.confirmPassword}
+                  onChange={(e) => handleFormChange(e)}
                   required
                   shadow
                 />
@@ -99,12 +106,18 @@ const AddUserModal = () => {
                 <div className="mb-2 block">
                   <Label htmlFor="role" value="Select role" />
                 </div>
-                <Select id="role" required>
-                  <option>Administrator</option>
-                  <option>Agent</option>
+                <Select
+                  id="role"
+                  name="role"
+                  value={userData.users.role}
+                  onChange={(e) => handleFormChange(e)}
+                  required
+                >
+                  <option value="administrator">Administrator</option>
+                  <option value="agent">Agent</option>
                 </Select>
               </div>
-              <div id="fileUpload">
+              {/* <div id="fileUpload">
                 <div className="mb-2 block">
                   <Label htmlFor="file" value="Upload file" />
                 </div>
@@ -112,7 +125,7 @@ const AddUserModal = () => {
                   id="file"
                   helperText="A profile picture is useful to confirm your are logged into your account"
                 />
-              </div>
+              </div> */}
               <Button type="submit">Register new account</Button>
             </form>
           </div>
