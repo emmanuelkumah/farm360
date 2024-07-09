@@ -1,10 +1,13 @@
 import { Button } from "flowbite-react";
 import { Table } from "flowbite-react";
 import { usersData } from "../data/demo";
-import { FaDeleteLeft } from "react-icons/fa6";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { GrView } from "react-icons/gr";
+import { useStateContext } from "../context/ContextProvider";
+import AddUserModal from "../components/AddUserModal";
+
 const Users = () => {
+  const { setOpenModal } = useStateContext();
   return (
     <>
       <div className="m-10">
@@ -16,8 +19,9 @@ const Users = () => {
           placeholder="Search"
         />
         <div className="mt-10">
-          <Button>Add new user</Button>
+          <Button onClick={() => setOpenModal(true)}>Add new user</Button>
         </div>
+        <AddUserModal />
         <div className="overflow-x-auto">
           <Table hoverable>
             <Table.Head>
