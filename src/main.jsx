@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         element: <Farmers />,
       },
       {
-        path: "/app/farms",
+        path: "/app/farm-management",
         element: <Farms />,
       },
       {

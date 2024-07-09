@@ -53,6 +53,14 @@ const Farmers = () => {
                   <Table.Cell>{farmer.primaryFarm}</Table.Cell>
                   <Table.Cell>{farmer.crop}</Table.Cell>
                   <Table.Cell>{farmer.farmSize}</Table.Cell>
+                  <Table.Cell>
+                    <div className="flex gap-5">
+                      <GrView />
+                      <MdEdit />
+
+                      <MdDelete />
+                    </div>
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>

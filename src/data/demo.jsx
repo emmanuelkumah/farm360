@@ -23,7 +23,7 @@ export const links = [
     icon: <FaUsersLine />,
   },
   {
-    name: "Farms",
+    name: "Farm Management",
     icon: <PiPottedPlantDuotone />,
   },
   {
@@ -73,7 +73,8 @@ export const farmersData = [
     phone: "0244222333",
     crop: "soya bean",
     farmSize: "4",
-    primaryFarm: "Farm 1",
+    primaryFarm: "CindyFarm 1",
+    otherFarm: "CindyFarm 2",
   },
   {
     id: 2,
@@ -85,7 +86,8 @@ export const farmersData = [
     phone: "0244222333",
     crop: "soya bean",
     farmSize: "4",
-    primaryFarm: "Farm 3",
+    primaryFarm: "JanetFarm 1",
+    otherFarm: "JanetFarm 2",
   },
   {
     id: 3,
@@ -97,7 +99,8 @@ export const farmersData = [
     phone: "0244222333",
     crop: "soya bean",
     farmSize: "4",
-    primaryFarm: "Farm 1",
+    primaryFarm: "YawFarm 1",
+    otherFarm: "YawFarm 2",
   },
   {
     id: 4,
@@ -109,6 +112,7 @@ export const farmersData = [
     phone: "0244222333",
     crop: "Cowpea",
     farmSize: "4",
-    primaryFarm: "Farm 1",
+    primaryFarm: "DanielFarm 1",
+    other: "DanielFarm 2",
   },
 ];
