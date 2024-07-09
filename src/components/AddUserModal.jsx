@@ -15,8 +15,12 @@ import { useStateContext, useUserContext } from "../context/ContextProvider";
 
 const AddUserModal = () => {
   const { openModal, setOpenModal } = useStateContext();
-  const { handleUserInputChange, handleUserFormSubmit, userForm } =
-    useUserContext();
+  const {
+    handleUserInputChange,
+    handleUserFormSubmit,
+    handleImageChange,
+    userForm,
+  } = useUserContext();
   return (
     <>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
@@ -110,6 +114,7 @@ const AddUserModal = () => {
                   <Label htmlFor="role" value="Select role" />
                 </div>
                 <Select
+                  defaultValue="administrator"
                   id="role"
                   name="role"
                   value={userForm.role}
@@ -120,15 +125,17 @@ const AddUserModal = () => {
                   <option value="agent">Agent</option>
                 </Select>
               </div>
-              {/* <div id="fileUpload">
+              <div id="fileUpload">
                 <div className="mb-2 block">
                   <Label htmlFor="file" value="Upload file" />
                 </div>
                 <FileInput
                   id="file"
-                  helperText="A profile picture is useful to confirm your are logged into your account"
+                  name="picture"
+                  onChange={(e) => handleImageChange(e)}
+                  accept="image/*"
                 />
-              </div> */}
+              </div>
               <Button type="submit">Register new account</Button>
             </form>
           </div>

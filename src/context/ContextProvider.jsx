@@ -24,9 +24,9 @@ export const ContextProvider = ({ children }) => {
     role: "",
     password: "",
     confirmPassword: "",
+    picture: null,
   });
 
-  console.log(users);
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
   };
@@ -37,7 +37,12 @@ export const ContextProvider = ({ children }) => {
       [name]: value,
     }));
   };
-  const handleImageChange = () => {};
+  const handleImageChange = (e) => {
+    setUserForm((prevData) => ({
+      ...prevData,
+      picture: e.target.files[0],
+    }));
+  };
 
   const handleUserFormSubmit = (e) => {
     e.preventDefault();
@@ -48,6 +53,7 @@ export const ContextProvider = ({ children }) => {
       role: userForm.role,
       password: userForm.password,
       confirmPassword: userForm.confirmPassword,
+      picture: userForm.picture,
     };
     setUsers((prevUser) => [...prevUser, newUser]);
     setUserForm({
@@ -57,6 +63,7 @@ export const ContextProvider = ({ children }) => {
       role: "",
       password: "",
       confirmPassword: "",
+      picture: null,
     });
   };
 
@@ -80,6 +87,7 @@ export const ContextProvider = ({ children }) => {
           userForm,
           handleUserInputChange,
           handleUserFormSubmit,
+          handleImageChange,
         }}
       >
         {children}

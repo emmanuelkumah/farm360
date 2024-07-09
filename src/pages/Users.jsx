@@ -41,7 +41,7 @@ const Users = () => {
                   >
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       <img
-                        src={user.picture}
+                        src={URL.createObjectURL(user.picture)}
                         alt="image"
                         className="rounded-full w-10 h-10"
                       />
