@@ -15,7 +15,8 @@ import { useStateContext, useUserContext } from "../context/ContextProvider";
 
 const AddUserModal = () => {
   const { openModal, setOpenModal } = useStateContext();
-  const { handleFormChange, handleFormSubmission, userData } = useUserContext();
+  const { handleUserInputChange, handleUserFormSubmit, userForm } =
+    useUserContext();
   return (
     <>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
@@ -24,7 +25,7 @@ const AddUserModal = () => {
           <div className="space-y-6">
             <form
               className="flex max-w-md flex-col gap-4"
-              onSubmit={handleFormSubmission}
+              onSubmit={handleUserFormSubmit}
             >
               <div>
                 <div className="mb-2 block">
@@ -35,8 +36,8 @@ const AddUserModal = () => {
                   type="text"
                   name="firstName"
                   placeholder="Enter first name"
-                  value={userData.users.firstName}
-                  onChange={(e) => handleFormChange(e)}
+                  value={userForm.firstName}
+                  onChange={(e) => handleUserInputChange(e)}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -51,8 +52,8 @@ const AddUserModal = () => {
                   type="text"
                   placeholder="Enter last name"
                   name="lastName"
-                  value={userData.users.lastName}
-                  onChange={(e) => handleFormChange(e)}
+                  value={userForm.lastName}
+                  onChange={(e) => handleUserInputChange(e)}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -67,8 +68,8 @@ const AddUserModal = () => {
                   type="email"
                   placeholder="name@farm360.com"
                   name="email"
-                  value={userData.users.email}
-                  onChange={(e) => handleFormChange(e)}
+                  value={userForm.email}
+                  onChange={(e) => handleUserInputChange(e)}
                   icon={HiMail}
                   required
                   shadow
@@ -82,8 +83,9 @@ const AddUserModal = () => {
                   id="password2"
                   type="password"
                   icon={RiLockPasswordLine}
-                  value={userData.users.password}
-                  onChange={(e) => handleFormChange(e)}
+                  name="password"
+                  value={userForm.password}
+                  onChange={(e) => handleUserInputChange(e)}
                   required
                   shadow
                 />
@@ -96,8 +98,9 @@ const AddUserModal = () => {
                   id="repeat-password"
                   type="password"
                   icon={RiLockPasswordLine}
-                  value={userData.users.confirmPassword}
-                  onChange={(e) => handleFormChange(e)}
+                  name="confirmPassword"
+                  value={userForm.confirmPassword}
+                  onChange={(e) => handleUserInputChange(e)}
                   required
                   shadow
                 />
@@ -109,8 +112,8 @@ const AddUserModal = () => {
                 <Select
                   id="role"
                   name="role"
-                  value={userData.users.role}
-                  onChange={(e) => handleFormChange(e)}
+                  value={userForm.role}
+                  onChange={(e) => handleUserInputChange(e)}
                   required
                 >
                   <option value="administrator">Administrator</option>

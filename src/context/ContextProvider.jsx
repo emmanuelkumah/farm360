@@ -16,38 +16,48 @@ export const ContextProvider = ({ children }) => {
   const [isClicked, setIsClicked] = useState(initialState);
   const [screenSize, setScreenSize] = useState(undefined);
   const [openModal, setOpenModal] = useState(false);
-  const [userData, setUserData] = useState({
-    // Dummy users data
-    users: [
-      {
-        id: 1,
-        firstName: "Emily",
-        lastName: "Johnson",
-        email: "emily.johnson@x.dummyjson.com",
-        role: "administrator",
-        picture: avatar,
-        password: "1234",
-        confirmPassword: "1234",
-        // Add more dummy user data as needed
-      },
-      // Add more dummy users as needed
-    ],
+  const [users, setUsers] = useState([]);
+  const [userForm, setUserForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "",
+    password: "",
+    confirmPassword: "",
   });
 
+  console.log(users);
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
   };
-  const handleFormChange = (e) => {
+  const handleUserInputChange = (e) => {
     const { name, value } = e.target;
-    setUserData((prevData) => ({
+    setUserForm((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
-  const handleFormSubmission = (e) => {
+  const handleImageChange = () => {};
+
+  const handleUserFormSubmit = (e) => {
     e.preventDefault();
-    console.log("form submitted", userData);
-    //clear inputs
+    const newUser = {
+      firstName: userForm.firstName,
+      lastName: userForm.lastName,
+      email: userForm.email,
+      role: userForm.role,
+      password: userForm.password,
+      confirmPassword: userForm.confirmPassword,
+    };
+    setUsers((prevUser) => [...prevUser, newUser]);
+    setUserForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: "",
+      password: "",
+      confirmPassword: "",
+    });
   };
 
   return (
@@ -66,9 +76,10 @@ export const ContextProvider = ({ children }) => {
     >
       <UserContext.Provider
         value={{
-          userData,
-          handleFormChange,
-          handleFormSubmission,
+          users,
+          userForm,
+          handleUserInputChange,
+          handleUserFormSubmit,
         }}
       >
         {children}
