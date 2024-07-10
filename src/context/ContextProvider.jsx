@@ -1,8 +1,8 @@
 import { useContext, useState, createContext } from "react";
 import { dummyUsers } from "../data/demo";
 import avatar from "../data/avatar.jpg";
-import { closeFilterDialog } from "@syncfusion/ej2-react-grids";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const StateContext = createContext();
 
 const UserContext = createContext();
@@ -87,6 +87,17 @@ export const ContextProvider = ({ children }) => {
     });
     //close modal
     setOpenModal(false);
+    //show notification
+
+    toast.success("User added successful!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (

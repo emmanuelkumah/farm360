@@ -3,7 +3,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { GrView } from "react-icons/gr";
 import { useStateContext, useUserContext } from "../context/ContextProvider";
 import AddUserModal from "../components/AddUserModal";
-import { ToastNotification } from "../components";
+import { ToastContainer } from "react-toastify";
 
 const Users = () => {
   const { setOpenModal } = useStateContext();
@@ -23,11 +23,12 @@ const Users = () => {
           <Button onClick={() => setOpenModal(true)}>Add new user</Button>
         </div>
         <AddUserModal />
+
         {users.length >= 1 ? (
           <div className="overflow-x-auto">
-            <div className="my-7">
-              <ToastNotification message="User added successfully" />
-            </div>
+            <ToastContainer />
+
+            <div className="my-7"></div>
             <Table hoverable>
               <Table.Head>
                 <Table.HeadCell>Picture</Table.HeadCell>
