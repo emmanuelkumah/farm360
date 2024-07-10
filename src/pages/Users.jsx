@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 
 const Users = () => {
   const { setOpenModal } = useStateContext();
-  const { users } = useUserContext();
+  const { users, handleDeleteUser } = useUserContext();
 
   return (
     <>
@@ -38,9 +38,9 @@ const Users = () => {
                 <Table.HeadCell>Role</Table.HeadCell>
               </Table.Head>
               <Table.Body className="divide-y">
-                {users.map((user, index) => (
+                {users.map((user) => (
                   <Table.Row
-                    key={index}
+                    key={user.id}
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
                   >
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
@@ -56,9 +56,11 @@ const Users = () => {
                     <Table.Cell>{user.role}</Table.Cell>
                     <Table.Cell>
                       <div className="flex gap-5">
-                        <GrView />
-                        <MdEdit />
-                        <MdDelete />
+                        <MdEdit className="text-xl cursor-pointer hover:text-teal-600 " />
+                        <MdDelete
+                          className="text-xl cursor-pointer hover:text-red-600"
+                          onClick={() => handleDeleteUser(user.id)}
+                        />
                       </div>
                     </Table.Cell>
                   </Table.Row>

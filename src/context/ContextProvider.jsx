@@ -21,12 +21,14 @@ export const ContextProvider = ({ children }) => {
     firstName: "",
     lastName: "",
     email: "",
-    role: "",
+    role: "administrator",
     password: "",
     confirmPassword: "",
     picture: null,
   });
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  console.log(users);
 
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
@@ -67,6 +69,7 @@ export const ContextProvider = ({ children }) => {
     setPasswordsMatch(true);
 
     const newUser = {
+      id: users.length + 1,
       firstName: userForm.firstName,
       lastName: userForm.lastName,
       email: userForm.email,
@@ -100,6 +103,10 @@ export const ContextProvider = ({ children }) => {
     });
   };
 
+  const handleDeleteUser = (id) => {
+    console.log(id);
+    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+  };
   return (
     <StateContext.Provider
       value={{
@@ -118,10 +125,11 @@ export const ContextProvider = ({ children }) => {
         value={{
           users,
           userForm,
+          passwordsMatch,
           handleUserInputChange,
           handleUserFormSubmit,
           handleImageChange,
-          passwordsMatch,
+          handleDeleteUser,
         }}
       >
         {children}
