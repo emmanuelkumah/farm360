@@ -20,6 +20,7 @@ const AddUserModal = () => {
     handleUserFormSubmit,
     handleImageChange,
     userForm,
+    passwordsMatch,
   } = useUserContext();
   return (
     <>
@@ -108,6 +109,9 @@ const AddUserModal = () => {
                   required
                   shadow
                 />
+                {!passwordsMatch && (
+                  <p style={{ color: "red" }}>Passwords do not match</p>
+                )}
               </div>
               <div>
                 <div className="mb-2 block">
@@ -127,7 +131,7 @@ const AddUserModal = () => {
               </div>
               <div id="fileUpload">
                 <div className="mb-2 block">
-                  <Label htmlFor="file" value="Upload file" />
+                  <Label htmlFor="file" value="Upload Picture" />
                 </div>
                 <FileInput
                   id="file"
@@ -136,16 +140,10 @@ const AddUserModal = () => {
                   accept="image/*"
                 />
               </div>
-              <Button type="submit">Register new account</Button>
+              <Button type="submit">Register new user</Button>
             </form>
           </div>
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => setOpenModal(false)}>Add User</Button>
-          <Button color="gray" onClick={() => setOpenModal(false)}>
-            Cancel
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );

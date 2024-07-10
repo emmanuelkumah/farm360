@@ -26,6 +26,7 @@ export const ContextProvider = ({ children }) => {
     confirmPassword: "",
     picture: null,
   });
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
@@ -36,6 +37,17 @@ export const ContextProvider = ({ children }) => {
       ...prevData,
       [name]: value,
     }));
+
+    // Check if passwords match on each character change
+    if (name === "password" || name === "confirmPassword") {
+      if (name === "password" && userForm.confirmPassword !== value) {
+        setPasswordsMatch(false);
+      } else if (name === "confirmPassword" && userForm.password !== value) {
+        setPasswordsMatch(false);
+      } else {
+        setPasswordsMatch(true);
+      }
+    }
   };
   const handleImageChange = (e) => {
     setUserForm((prevData) => ({
@@ -46,6 +58,14 @@ export const ContextProvider = ({ children }) => {
 
   const handleUserFormSubmit = (e) => {
     e.preventDefault();
+    //check password match
+    if (userForm.password !== userForm.confirmPassword) {
+      setPasswordsMatch(false);
+      return;
+    }
+    // Reset password match state
+    setPasswordsMatch(true);
+
     const newUser = {
       firstName: userForm.firstName,
       lastName: userForm.lastName,
@@ -88,6 +108,7 @@ export const ContextProvider = ({ children }) => {
           handleUserInputChange,
           handleUserFormSubmit,
           handleImageChange,
+          passwordsMatch,
         }}
       >
         {children}
