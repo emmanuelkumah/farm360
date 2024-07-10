@@ -118,9 +118,9 @@ const AddUserModal = () => {
                   <Label htmlFor="role" value="Select role" />
                 </div>
                 <Select
-                  defaultValue="administrator"
                   id="role"
                   name="role"
+                  defaultValue={"administrator"}
                   value={userForm.role}
                   onChange={(e) => handleUserInputChange(e)}
                   required

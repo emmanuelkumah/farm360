@@ -85,6 +85,8 @@ export const ContextProvider = ({ children }) => {
       confirmPassword: "",
       picture: null,
     });
+    //close modal
+    setOpenModal(false);
   };
 
   return (

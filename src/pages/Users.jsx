@@ -1,9 +1,9 @@
-import { Button } from "flowbite-react";
-import { Table } from "flowbite-react";
+import { Table, Button, Toast } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { GrView } from "react-icons/gr";
 import { useStateContext, useUserContext } from "../context/ContextProvider";
 import AddUserModal from "../components/AddUserModal";
+import { ToastNotification } from "../components";
 
 const Users = () => {
   const { setOpenModal } = useStateContext();
@@ -25,6 +25,9 @@ const Users = () => {
         <AddUserModal />
         {users.length >= 1 ? (
           <div className="overflow-x-auto">
+            <div className="my-7">
+              <ToastNotification message="User added successfully" />
+            </div>
             <Table hoverable>
               <Table.Head>
                 <Table.HeadCell>Picture</Table.HeadCell>
