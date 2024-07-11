@@ -29,6 +29,7 @@ export const ContextProvider = ({ children }) => {
   });
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [editing, setEditing] = useState(false);
+  const [editUser, setEditUser] = useState({});
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
   };
@@ -113,7 +114,8 @@ export const ContextProvider = ({ children }) => {
       progress: undefined,
     });
   };
-  const handleEditing = () => {
+  const onEditClick = (user) => {
+    setEditUser({ ...user });
     setEditing(true);
   };
   return (
@@ -137,11 +139,12 @@ export const ContextProvider = ({ children }) => {
           passwordsMatch,
           editing,
           setEditing,
+          editUser,
           handleUserInputChange,
           handleUserFormSubmit,
           handleImageChange,
           handleUserDelete,
-          handleEditing,
+          onEditClick,
         }}
       >
         {children}

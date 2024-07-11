@@ -7,7 +7,7 @@ import { EditUserModal } from "../components";
 
 const Users = () => {
   const { setOpenModal } = useStateContext();
-  const { users, handleUserDelete, handleEditing, editing } = useUserContext();
+  const { users, handleUserDelete, onEditClick, editing } = useUserContext();
 
   return (
     <>
@@ -58,7 +58,7 @@ const Users = () => {
                       <div className="flex gap-5">
                         <MdEdit
                           className="text-xl hover:text-teal-500 cursor-pointer"
-                          onClick={() => handleEditing(user.id)}
+                          onClick={() => onEditClick(user)}
                         />
                         <MdDelete
                           className="text-xl hover:text-red-700 cursor-pointer"

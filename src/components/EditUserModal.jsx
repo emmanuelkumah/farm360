@@ -13,11 +13,13 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { useUserContext } from "../context/ContextProvider";
 
 const EditUserModal = () => {
-  const { editing, setEditing } = useUserContext();
+  const { editing, setEditing, editUser } = useUserContext();
+  console.log(editUser);
+
   return (
     <div>
       <Modal show={editing} onClose={() => setEditing(false)}>
-        <Modal.Header>Edit user</Modal.Header>
+        <Modal.Header>Add new user</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
             <form className="flex max-w-md flex-col gap-4">
@@ -30,6 +32,7 @@ const EditUserModal = () => {
                   type="text"
                   name="firstName"
                   placeholder="Enter first name"
+                  value={editUser.firstName}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -44,6 +47,7 @@ const EditUserModal = () => {
                   type="text"
                   placeholder="Enter last name"
                   name="lastName"
+                  value={editUser.lastName}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -58,6 +62,7 @@ const EditUserModal = () => {
                   type="email"
                   placeholder="name@farm360.com"
                   name="email"
+                  value={editUser.email}
                   icon={HiMail}
                   required
                   shadow
@@ -72,6 +77,7 @@ const EditUserModal = () => {
                   type="password"
                   icon={RiLockPasswordLine}
                   name="password"
+                  value={editUser.password}
                   required
                   shadow
                 />
@@ -85,18 +91,21 @@ const EditUserModal = () => {
                   type="password"
                   icon={RiLockPasswordLine}
                   name="confirmPassword"
+                  value={editUser.confirmPassword}
                   required
                   shadow
                 />
-                {/* {!passwordsMatch && (
-                  <p style={{ color: "red" }}>Passwords do not match</p>
-                )} */}
               </div>
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="role" value="Select role" />
                 </div>
-                <Select id="role" name="role" required>
+                <Select
+                  id="role"
+                  name="role"
+                  defaultValue={editUser.role}
+                  required
+                >
                   <option value="administrator">Administrator</option>
                   <option value="agent">Agent</option>
                 </Select>
@@ -107,7 +116,7 @@ const EditUserModal = () => {
                 </div>
                 <FileInput id="file" name="picture" accept="image/*" required />
               </div>
-              <Button type="submit">Edit user</Button>
+              <Button type="submit">Add new user</Button>
             </form>
           </div>
         </Modal.Body>
