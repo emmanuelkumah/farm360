@@ -375,7 +375,8 @@ const AddUserModal = () => {
                 <Select
                   id="role"
                   name="role"
-                  defaultValue={userForm.role}
+                  defaultValue={"administrator"}
+                  value={userForm.role}
                   onChange={(e) => handleUserInputChange(e)}
                   required
                 >
@@ -392,7 +393,6 @@ const AddUserModal = () => {
                   name="picture"
                   onChange={(e) => handleImageChange(e)}
                   accept="image/*"
-                  required
                 />
               </div>
               <Button type="submit">Register new user</Button>

@@ -21,13 +21,17 @@ export const ContextProvider = ({ children }) => {
     firstName: "",
     lastName: "",
     email: "",
-    role: "administrator",
+    role: "",
     password: "",
     confirmPassword: "",
     picture: null,
   });
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+<<<<<<< HEAD
   const [editUser, setEditUser] = useState(false);
+=======
+
+>>>>>>> parent of 86630f5 (Feat: delete registered user)
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
   };
@@ -67,7 +71,6 @@ export const ContextProvider = ({ children }) => {
     setPasswordsMatch(true);
 
     const newUser = {
-      id: users.length + 1,
       firstName: userForm.firstName,
       lastName: userForm.lastName,
       email: userForm.email,
@@ -101,23 +104,6 @@ export const ContextProvider = ({ children }) => {
     });
   };
 
-  const handleDeleteUser = (id) => {
-    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-  };
-
-  const handleEditUser = (id) => {
-    const user = users.find((user) => user.id === id);
-    setUserForm(user);
-  };
-  const handleEditFormSubmit = ()=>{
-
-  }
-   const handleUserEditInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserForm((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
   return (
     <StateContext.Provider
       value={{
@@ -136,16 +122,10 @@ export const ContextProvider = ({ children }) => {
         value={{
           users,
           userForm,
-          passwordsMatch,
-          editUser,
-          openModal,
-          setOpenModal,
           handleUserInputChange,
           handleUserFormSubmit,
           handleImageChange,
-          handleDeleteUser,
-          handleEditUser,
-          handleUserEditInputChange
+          passwordsMatch,
         }}
       >
         {children}

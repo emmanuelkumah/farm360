@@ -6,9 +6,14 @@ import AddUserModal from "../components/AddUserModal";
 import { ToastContainer } from "react-toastify";
 
 const Users = () => {
+<<<<<<< HEAD
   // const { setOpenModal } = useStateContext();
   const { users, handleDeleteUser, handleEditUser, setOpenModal } =
     useUserContext();
+=======
+  const { setOpenModal } = useStateContext();
+  const { users } = useUserContext();
+>>>>>>> parent of 86630f5 (Feat: delete registered user)
 
   return (
     <>
@@ -39,9 +44,9 @@ const Users = () => {
                 <Table.HeadCell>Role</Table.HeadCell>
               </Table.Head>
               <Table.Body className="divide-y">
-                {users.map((user) => (
+                {users.map((user, index) => (
                   <Table.Row
-                    key={user.id}
+                    key={index}
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
                   >
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
@@ -57,6 +62,7 @@ const Users = () => {
                     <Table.Cell>{user.role}</Table.Cell>
                     <Table.Cell>
                       <div className="flex gap-5">
+<<<<<<< HEAD
                         <MdEdit
                           className="text-xl cursor-pointer hover:text-teal-600 "
                           onClick={() => handleEditUser(user.id)}
@@ -65,6 +71,11 @@ const Users = () => {
                           className="text-xl cursor-pointer hover:text-red-600"
                           onClick={() => handleDeleteUser(user.id)}
                         />
+=======
+                        <GrView />
+                        <MdEdit />
+                        <MdDelete />
+>>>>>>> parent of 86630f5 (Feat: delete registered user)
                       </div>
                     </Table.Cell>
                   </Table.Row>
