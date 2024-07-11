@@ -1,17 +1,29 @@
 import { createContext, useContext, useReducer } from "react";
-import { farmersData } from "../data/demo";
 
 const FarmersContext = createContext();
 
+//define the initialState
+const initialState = {
+  farmers: [],
+};
+
+//farmers reducer containing logic
+const farmersReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_FARMER":
+      return {
+        farmers: [...state.farmers, { id: Date.now(), farmer: action.payload }],
+      };
+    default:
+      return state;
+  }
+};
 const FarmersProvider = ({ children }) => {
-  // const farmers = {
-  //   firstName: "emmanuel",
-  //   lastName: "kumah",
-  //   farm: "farm2",
-  // };
+  const [state, dispatch] = useReducer(farmersReducer, initialState);
+
   return (
     <>
-      <FarmersContext.Provider value={farmersData}>
+      <FarmersContext.Provider value={{ state, dispatch }}>
         {children}
       </FarmersContext.Provider>
     </>
