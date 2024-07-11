@@ -6,8 +6,9 @@ import AddUserModal from "../components/AddUserModal";
 import { ToastContainer } from "react-toastify";
 
 const Users = () => {
-  const { setOpenModal } = useStateContext();
-  const { users, handleDeleteUser } = useUserContext();
+  // const { setOpenModal } = useStateContext();
+  const { users, handleDeleteUser, handleEditUser, setOpenModal } =
+    useUserContext();
 
   return (
     <>
@@ -56,7 +57,10 @@ const Users = () => {
                     <Table.Cell>{user.role}</Table.Cell>
                     <Table.Cell>
                       <div className="flex gap-5">
-                        <MdEdit className="text-xl cursor-pointer hover:text-teal-600 " />
+                        <MdEdit
+                          className="text-xl cursor-pointer hover:text-teal-600 "
+                          onClick={() => handleEditUser(user.id)}
+                        />
                         <MdDelete
                           className="text-xl cursor-pointer hover:text-red-600"
                           onClick={() => handleDeleteUser(user.id)}

@@ -27,9 +27,7 @@ export const ContextProvider = ({ children }) => {
     picture: null,
   });
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-
-  console.log(users);
-
+  const [editUser, setEditUser] = useState(false);
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
   };
@@ -104,9 +102,22 @@ export const ContextProvider = ({ children }) => {
   };
 
   const handleDeleteUser = (id) => {
-    console.log(id);
     setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
   };
+
+  const handleEditUser = (id) => {
+    const user = users.find((user) => user.id === id);
+    setUserForm(user);
+  };
+  const handleEditFormSubmit = ()=>{
+
+  }
+   const handleUserEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserForm((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   return (
     <StateContext.Provider
       value={{
@@ -126,10 +137,15 @@ export const ContextProvider = ({ children }) => {
           users,
           userForm,
           passwordsMatch,
+          editUser,
+          openModal,
+          setOpenModal,
           handleUserInputChange,
           handleUserFormSubmit,
           handleImageChange,
           handleDeleteUser,
+          handleEditUser,
+          handleUserEditInputChange
         }}
       >
         {children}
