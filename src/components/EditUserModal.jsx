@@ -13,16 +13,26 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { useUserContext } from "../context/ContextProvider";
 
 const EditUserModal = () => {
-  const { editing, setEditing, editUser } = useUserContext();
-  console.log(editUser);
+  const {
+    editing,
+    setEditing,
+    editUser,
+    handleEditUserInputChange,
+    handleEditImageChange,
+    passwordsMatch,
+    updateUser,
+  } = useUserContext();
 
   return (
     <div>
       <Modal show={editing} onClose={() => setEditing(false)}>
-        <Modal.Header>Add new user</Modal.Header>
+        <Modal.Header>Edit user</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
-            <form className="flex max-w-md flex-col gap-4">
+            <form
+              className="flex max-w-md flex-col gap-4"
+              onSubmit={updateUser}
+            >
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="firstName" value="First name" />
@@ -33,6 +43,7 @@ const EditUserModal = () => {
                   name="firstName"
                   placeholder="Enter first name"
                   value={editUser.firstName}
+                  onChange={handleEditUserInputChange}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -48,6 +59,7 @@ const EditUserModal = () => {
                   placeholder="Enter last name"
                   name="lastName"
                   value={editUser.lastName}
+                  onChange={handleEditUserInputChange}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -63,6 +75,7 @@ const EditUserModal = () => {
                   placeholder="name@farm360.com"
                   name="email"
                   value={editUser.email}
+                  onChange={handleEditUserInputChange}
                   icon={HiMail}
                   required
                   shadow
@@ -78,6 +91,7 @@ const EditUserModal = () => {
                   icon={RiLockPasswordLine}
                   name="password"
                   value={editUser.password}
+                  onChange={handleEditUserInputChange}
                   required
                   shadow
                 />
@@ -92,9 +106,13 @@ const EditUserModal = () => {
                   icon={RiLockPasswordLine}
                   name="confirmPassword"
                   value={editUser.confirmPassword}
+                  onChange={handleEditUserInputChange}
                   required
                   shadow
                 />
+                {!passwordsMatch && (
+                  <p style={{ color: "red" }}>Passwords do not match</p>
+                )}
               </div>
               <div>
                 <div className="mb-2 block">
@@ -104,6 +122,7 @@ const EditUserModal = () => {
                   id="role"
                   name="role"
                   defaultValue={editUser.role}
+                  onChange={handleEditUserInputChange}
                   required
                 >
                   <option value="administrator">Administrator</option>
@@ -114,9 +133,15 @@ const EditUserModal = () => {
                 <div className="mb-2 block">
                   <Label htmlFor="file" value="Upload Picture" />
                 </div>
-                <FileInput id="file" name="picture" accept="image/*" required />
+                <FileInput
+                  id="file"
+                  name="picture"
+                  accept="image/*"
+                  required
+                  onClick={(e) => handleEditImageChange(e)}
+                />
               </div>
-              <Button type="submit">Add new user</Button>
+              <Button type="submit">Update</Button>
             </form>
           </div>
         </Modal.Body>

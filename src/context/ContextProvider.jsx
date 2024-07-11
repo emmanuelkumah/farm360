@@ -118,6 +118,30 @@ export const ContextProvider = ({ children }) => {
     setEditUser({ ...user });
     setEditing(true);
   };
+  const handleEditUserInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditUser({ ...editUser, [name]: value });
+    // Check if passwords match on each character change
+    if (name === "password" || name === "confirmPassword") {
+      if (name === "password" && editUser.confirmPassword !== value) {
+        setPasswordsMatch(false);
+      } else if (name === "confirmPassword" && editUser.password !== value) {
+        setPasswordsMatch(false);
+      } else {
+        setPasswordsMatch(true);
+      }
+    }
+  };
+  const handleEditImageChange = (e) => {
+    setEditUser((prevData) => ({
+      ...prevData,
+      picture: e.target.files[0],
+    }));
+  };
+  const updateUser = (e) => {
+    e.preventDefault();
+    console.log("edited form", editUser);
+  };
   return (
     <StateContext.Provider
       value={{
@@ -144,7 +168,10 @@ export const ContextProvider = ({ children }) => {
           handleUserFormSubmit,
           handleImageChange,
           handleUserDelete,
+          handleEditUserInputChange,
+          handleEditImageChange,
           onEditClick,
+          updateUser,
         }}
       >
         {children}
