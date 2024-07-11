@@ -138,9 +138,16 @@ export const ContextProvider = ({ children }) => {
       picture: e.target.files[0],
     }));
   };
-  const updateUser = (e) => {
+  const handleEditFormSubmit = (e) => {
     e.preventDefault();
-    console.log("edited form", editUser);
+    updateUser(editUser.id, editUser);
+  };
+  const updateUser = (id, editedUser) => {
+    const updatedUserDetails = users.map((user) => {
+      return user.id === id ? editedUser : user;
+    });
+    setEditing(false);
+    setUsers(updatedUserDetails);
   };
   return (
     <StateContext.Provider
@@ -171,7 +178,7 @@ export const ContextProvider = ({ children }) => {
           handleEditUserInputChange,
           handleEditImageChange,
           onEditClick,
-          updateUser,
+          handleEditFormSubmit,
         }}
       >
         {children}

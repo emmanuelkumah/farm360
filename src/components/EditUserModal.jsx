@@ -20,7 +20,7 @@ const EditUserModal = () => {
     handleEditUserInputChange,
     handleEditImageChange,
     passwordsMatch,
-    updateUser,
+    handleEditFormSubmit,
   } = useUserContext();
 
   return (
@@ -31,7 +31,7 @@ const EditUserModal = () => {
           <div className="space-y-6">
             <form
               className="flex max-w-md flex-col gap-4"
-              onSubmit={updateUser}
+              onSubmit={handleEditFormSubmit}
             >
               <div>
                 <div className="mb-2 block">
@@ -129,7 +129,7 @@ const EditUserModal = () => {
                   <option value="agent">Agent</option>
                 </Select>
               </div>
-              <div id="fileUpload">
+              {/* <div id="fileUpload">
                 <div className="mb-2 block">
                   <Label htmlFor="file" value="Upload Picture" />
                 </div>
@@ -140,7 +140,7 @@ const EditUserModal = () => {
                   required
                   onClick={(e) => handleEditImageChange(e)}
                 />
-              </div>
+              </div> */}
               <Button type="submit">Update</Button>
             </form>
           </div>
