@@ -14,7 +14,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { useStateContext, useUserContext } from "../context/ContextProvider";
 
 const AddUserModal = () => {
-  // const { openModal, setOpenModal } = useStateContext();
+  const { openModal, setOpenModal } = useStateContext();
   const {
     handleUserInputChange,
     handleUserFormSubmit,
@@ -23,8 +23,6 @@ const AddUserModal = () => {
     userForm,
     passwordsMatch,
     editUser,
-    openModal,
-    setOpenModal,
   } = useUserContext();
 
   const editingTemplate = (
