@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import { Dashboard, Farmers, Users, Login, Farms, Reports } from "./pages";
 import { ContextProvider } from "./context/ContextProvider";
+import FarmersProvider from "./context/FarmersProvider";
 
 const router = createBrowserRouter([
   {
@@ -49,7 +50,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ContextProvider>
-      <RouterProvider router={router} />
+      <FarmersProvider>
+        <RouterProvider router={router} />
+      </FarmersProvider>
     </ContextProvider>
   </React.StrictMode>
 );

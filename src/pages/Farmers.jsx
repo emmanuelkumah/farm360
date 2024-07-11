@@ -1,11 +1,11 @@
-import React from "react";
 import { Button } from "flowbite-react";
 import { Table } from "flowbite-react";
-import { farmersData } from "../data/demo";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { GrView } from "react-icons/gr";
+import { useFarmersContext } from "../context/FarmersProvider";
 
 const Farmers = () => {
+  const data = useFarmersContext();
   return (
     <div>
       <div className="m-10">
@@ -33,7 +33,7 @@ const Farmers = () => {
               <Table.HeadCell>Farm size(acres)</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              {farmersData.map((farmer) => (
+              {data.map((farmer) => (
                 <Table.Row
                   key={farmer.id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
