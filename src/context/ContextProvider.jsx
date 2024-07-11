@@ -27,11 +27,6 @@ export const ContextProvider = ({ children }) => {
     picture: null,
   });
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-<<<<<<< HEAD
-  const [editUser, setEditUser] = useState(false);
-=======
-
->>>>>>> parent of 86630f5 (Feat: delete registered user)
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
   };
