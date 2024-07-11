@@ -121,7 +121,7 @@ const EditUserModal = () => {
                 <Select
                   id="role"
                   name="role"
-                  defaultValue={editUser.role}
+                  defaultValue="administrator"
                   onChange={handleEditUserInputChange}
                   required
                 >
@@ -129,18 +129,7 @@ const EditUserModal = () => {
                   <option value="agent">Agent</option>
                 </Select>
               </div>
-              {/* <div id="fileUpload">
-                <div className="mb-2 block">
-                  <Label htmlFor="file" value="Upload Picture" />
-                </div>
-                <FileInput
-                  id="file"
-                  name="picture"
-                  accept="image/*"
-                  required
-                  onClick={(e) => handleEditImageChange(e)}
-                />
-              </div> */}
+
               <Button type="submit">Update</Button>
             </form>
           </div>

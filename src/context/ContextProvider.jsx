@@ -141,6 +141,15 @@ export const ContextProvider = ({ children }) => {
   const handleEditFormSubmit = (e) => {
     e.preventDefault();
     updateUser(editUser.id, editUser);
+    toast.success("User edited successful!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
   const updateUser = (id, editedUser) => {
     const updatedUserDetails = users.map((user) => {
