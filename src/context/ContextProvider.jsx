@@ -1,8 +1,9 @@
-import { useContext, useState, createContext, useReducer } from "react";
+import { useContext, useState, createContext } from "react";
 import { dummyUsers } from "../data/demo";
 import avatar from "../data/avatar.jpg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const StateContext = createContext();
 
 const UserContext = createContext();
@@ -26,8 +27,8 @@ export const ContextProvider = ({ children }) => {
     confirmPassword: "",
     picture: null,
   });
-  console.log(users);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [editing, setEditing] = useState(false);
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
   };
@@ -102,6 +103,18 @@ export const ContextProvider = ({ children }) => {
   };
   const handleUserDelete = (id) => {
     setUsers((users) => users.filter((user) => user.id !== id));
+    toast.success("User deleted successful!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+  const handleEditing = () => {
+    setEditing(true);
   };
   return (
     <StateContext.Provider
@@ -122,11 +135,13 @@ export const ContextProvider = ({ children }) => {
           users,
           userForm,
           passwordsMatch,
-
+          editing,
+          setEditing,
           handleUserInputChange,
           handleUserFormSubmit,
           handleImageChange,
           handleUserDelete,
+          handleEditing,
         }}
       >
         {children}

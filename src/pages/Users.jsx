@@ -3,10 +3,11 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { useStateContext, useUserContext } from "../context/ContextProvider";
 import AddUserModal from "../components/AddUserModal";
 import { ToastContainer } from "react-toastify";
+import { EditUserModal } from "../components";
 
 const Users = () => {
   const { setOpenModal } = useStateContext();
-  const { users, handleUserDelete } = useUserContext();
+  const { users, handleUserDelete, handleEditing, editing } = useUserContext();
 
   return (
     <>
@@ -22,7 +23,7 @@ const Users = () => {
           <Button onClick={() => setOpenModal(true)}>Add new user</Button>
         </div>
         <AddUserModal />
-
+        {editing && <EditUserModal />}
         {users.length >= 1 ? (
           <div className="overflow-x-auto">
             <ToastContainer />
@@ -55,7 +56,10 @@ const Users = () => {
                     <Table.Cell>{user.role}</Table.Cell>
                     <Table.Cell>
                       <div className="flex gap-5">
-                        <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                        <MdEdit
+                          className="text-xl hover:text-teal-500 cursor-pointer"
+                          onClick={() => handleEditing(user.id)}
+                        />
                         <MdDelete
                           className="text-xl hover:text-red-700 cursor-pointer"
                           onClick={() => handleUserDelete(user.id)}

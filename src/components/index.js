@@ -9,3 +9,4 @@ export { default as DashboardCard } from "./DashboardCard";
 export { default as LineCharts } from "./LineCharts";
 export { default as RecentActs } from "./RecentActs";
 export { default as CustomToast } from "./CustomToast";
+export { default as EditUserModal } from "./EditUserModal";

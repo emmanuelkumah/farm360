@@ -10,29 +10,17 @@ import {
 import { HiMail } from "react-icons/hi";
 import { FaRegUserCircle } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { useUserContext } from "../context/ContextProvider";
 
-import { useStateContext, useUserContext } from "../context/ContextProvider";
-
-const AddUserModal = () => {
-  const { openModal, setOpenModal } = useStateContext();
-  const {
-    handleUserInputChange,
-    handleUserFormSubmit,
-    handleImageChange,
-    userForm,
-    passwordsMatch,
-  } = useUserContext();
-
+const EditUserModal = () => {
+  const { editing, setEditing } = useUserContext();
   return (
-    <>
-      <Modal show={openModal} onClose={() => setOpenModal(false)}>
-        <Modal.Header>Add new user</Modal.Header>
+    <div>
+      <Modal show={editing} onClose={() => setEditing(false)}>
+        <Modal.Header>Edit user</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
-            <form
-              className="flex max-w-md flex-col gap-4"
-              onSubmit={handleUserFormSubmit}
-            >
+            <form className="flex max-w-md flex-col gap-4">
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="firstName" value="First name" />
@@ -42,8 +30,6 @@ const AddUserModal = () => {
                   type="text"
                   name="firstName"
                   placeholder="Enter first name"
-                  value={userForm.firstName}
-                  onChange={(e) => handleUserInputChange(e)}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -58,8 +44,6 @@ const AddUserModal = () => {
                   type="text"
                   placeholder="Enter last name"
                   name="lastName"
-                  value={userForm.lastName}
-                  onChange={(e) => handleUserInputChange(e)}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -74,8 +58,6 @@ const AddUserModal = () => {
                   type="email"
                   placeholder="name@farm360.com"
                   name="email"
-                  value={userForm.email}
-                  onChange={(e) => handleUserInputChange(e)}
                   icon={HiMail}
                   required
                   shadow
@@ -90,8 +72,6 @@ const AddUserModal = () => {
                   type="password"
                   icon={RiLockPasswordLine}
                   name="password"
-                  value={userForm.password}
-                  onChange={(e) => handleUserInputChange(e)}
                   required
                   shadow
                 />
@@ -105,26 +85,18 @@ const AddUserModal = () => {
                   type="password"
                   icon={RiLockPasswordLine}
                   name="confirmPassword"
-                  value={userForm.confirmPassword}
-                  onChange={(e) => handleUserInputChange(e)}
                   required
                   shadow
                 />
-                {!passwordsMatch && (
+                {/* {!passwordsMatch && (
                   <p style={{ color: "red" }}>Passwords do not match</p>
-                )}
+                )} */}
               </div>
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="role" value="Select role" />
                 </div>
-                <Select
-                  id="role"
-                  name="role"
-                  defaultValue={userForm.role}
-                  onChange={(e) => handleUserInputChange(e)}
-                  required
-                >
+                <Select id="role" name="role" required>
                   <option value="administrator">Administrator</option>
                   <option value="agent">Agent</option>
                 </Select>
@@ -133,21 +105,15 @@ const AddUserModal = () => {
                 <div className="mb-2 block">
                   <Label htmlFor="file" value="Upload Picture" />
                 </div>
-                <FileInput
-                  id="file"
-                  name="picture"
-                  onChange={(e) => handleImageChange(e)}
-                  accept="image/*"
-                  required
-                />
+                <FileInput id="file" name="picture" accept="image/*" required />
               </div>
-              <Button type="submit">Add new user</Button>
+              <Button type="submit">Edit user</Button>
             </form>
           </div>
         </Modal.Body>
       </Modal>
-    </>
+    </div>
   );
 };
 
-export default AddUserModal;
+export default EditUserModal;
