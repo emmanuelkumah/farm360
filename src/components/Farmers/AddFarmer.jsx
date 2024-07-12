@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { useFarmersContext } from "../../context/FarmersProvider";
 import { useStateContext } from "../../context/ContextProvider";
-import {
-  Button,
-  Modal,
-  Label,
-  TextInput,
-  Select,
-  Checkbox,
-} from "flowbite-react";
+import { Button, Modal, Label, TextInput, Checkbox } from "flowbite-react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import { GiPlantWatering } from "react-icons/gi";
+import DatePicker from "react-datepicker";
+import Select from "react-select";
+import "react-datepicker/dist/react-datepicker.css";
+
+const regions = [
+  { value: "Upper East", label: "Upper East" },
+  { value: "Northern", label: "Northern" },
+  { value: "Savannah", label: "Savannah" },
+];
 
 const AddFarmer = () => {
   const { dispatch } = useFarmersContext();
@@ -22,13 +24,28 @@ const AddFarmer = () => {
     contact: "",
     homeAddress: "",
     GPS: "",
+    dateOfBirth: new Date(),
+    community: "",
+    primaryFarm: "",
+    otherFarm: "",
+    farmsize: "",
+    region: "",
   });
+  // const [selectedRegion, setSelectedRegion] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFarmer({ ...farmer, [name]: value });
   };
-
+  // const handleDateChange = (date) => {
+  //   setFarmer({ ...farmer, dateOfBirth: date });
+  // };
+  // console.log(selectedRegion.value);
+  const handleSelectedRegion = (select) => {
+    console.log(select);
+    // setSelectedRegion()
+    setFarmer({ ...farmer, region: select.value });
+  };
   const handleAddFarmer = () => {
     dispatch({
       type: "ADD_FARMER",
@@ -42,15 +59,6 @@ const AddFarmer = () => {
   };
   return (
     <div>
-      {/* <input
-        type="text"
-        name="farmer"
-        id=""
-        value={farmer}
-        placeholder="Add farmer"
-        onChange={(e) => setFarmer(e.target.value)}
-      />
-      <button onClick={handleAddFarmer}>Add farmer</button> */}
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>Add Farmer</Modal.Header>
         <Modal.Body>
@@ -138,28 +146,31 @@ const AddFarmer = () => {
                   required
                 />
               </div>
-              {/* <div>
+              <div>
                 <div className="mb-2 block">
                   <Label htmlFor="dob" value="Date of birth" />
                 </div>
-                <TextInput
-                  id="dob"
-                  type="date"
-                  icon={FaRegUserCircle}
-                  required
+                <DatePicker
+                  selected={farmer.dateOfBirth}
+                  onChange={(date) =>
+                    setFarmer({ ...farmer, dateOfBirth: date })
+                  }
                 />
-              </div> */}
+              </div>
             </section>
-            {/* <section className="flex flex-col md:flex-row md:gap-5">
+            <section className="flex flex-col md:flex-row md:gap-5">
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="primaryFarm" value="Primary Farm" />
                 </div>
                 <TextInput
                   id="primaryFarm"
+                  name="primaryFarm"
                   type="text"
                   icon={GiPlantWatering}
+                  value={farmer.primaryFarm}
                   placeholder="Enter primary farm"
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -170,8 +181,10 @@ const AddFarmer = () => {
                 <TextInput
                   id="otherFarm"
                   type="text"
-                  icon={FaRegUserCircle}
-                  required
+                  icon={GiPlantWatering}
+                  name="otherFarm"
+                  value={farmer.otherFarm}
+                  onChange={handleChange}
                   placeholder="Enter other farm"
                 />
               </div>
@@ -184,7 +197,10 @@ const AddFarmer = () => {
                 <TextInput
                   id="community"
                   type="text"
-                  icon={FaRegUserCircle}
+                  icon={GiPlantWatering}
+                  name="community"
+                  value={farmer.community}
+                  onChange={handleChange}
                   placeholder="Enter community"
                   required
                 />
@@ -196,23 +212,24 @@ const AddFarmer = () => {
                 <TextInput
                   id="land"
                   type="text"
-                  icon={FaRegUserCircle}
+                  icon={GiPlantWatering}
+                  name="farmsize"
+                  value={farmer.farmsize}
+                  onChange={handleChange}
                   required
                   placeholder="Enter Land size in acres"
                 />
               </div>
             </section>
             <section className="flex flex-col md:flex-row md:justify-between">
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="community" value="Region" />
-                </div>
-                <Select id="role" name="role" required>
-                  <option value="administrator">Administrator</option>
-                  <option value="agent">Agent</option>
-                </Select>
+              <div className="mb-2 block">
+                <Select
+                  defaultValue={farmer.region}
+                  onChange={handleSelectedRegion}
+                  options={regions}
+                />
               </div>
-              <div>
+              {/* <div>
                 <div className="mb-2 block">
                   <Label htmlFor="district" value="District" />
                 </div>
@@ -229,9 +246,9 @@ const AddFarmer = () => {
                   <option value="administrator">Administrator</option>
                   <option value="agent">Agent</option>
                 </Select>
-              </div>
+              </div> */}
             </section>
-            <section className="flex flex-col md:flex-row md:justify-between">
+            {/* <section className="flex flex-col md:flex-row md:justify-between">
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="group" value="Group" />

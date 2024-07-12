@@ -4,6 +4,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 
 const FarmersList = ({ state }) => {
   const { farmers } = state;
+  console.log(farmers);
   return (
     <div>
       <Table hoverable>
@@ -11,9 +12,15 @@ const FarmersList = ({ state }) => {
           <Table.HeadCell>Picture</Table.HeadCell>
           <Table.HeadCell>First Name</Table.HeadCell>
           <Table.HeadCell>Last Name</Table.HeadCell>
+          <Table.HeadCell>Date of Birth</Table.HeadCell>
           <Table.HeadCell>Contact</Table.HeadCell>
           <Table.HeadCell>Home address</Table.HeadCell>
           <Table.HeadCell>GPS</Table.HeadCell>
+          <Table.HeadCell>Community</Table.HeadCell>
+          <Table.HeadCell>Region</Table.HeadCell>
+
+          <Table.HeadCell>Primary farm</Table.HeadCell>
+          <Table.HeadCell>farm size(acres)</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {farmers.map((farmer) => (
@@ -26,9 +33,16 @@ const FarmersList = ({ state }) => {
               </Table.Cell>
               <Table.Cell>{farmer.firstName}</Table.Cell>
               <Table.Cell>{farmer.lastName}</Table.Cell>
+              <Table.Cell>{farmer.dateOfBirth.toDateString()}</Table.Cell>
+
               <Table.Cell>{farmer.contact}</Table.Cell>
               <Table.Cell>{farmer.homeAddress}</Table.Cell>
               <Table.Cell>{farmer.GPS}</Table.Cell>
+              <Table.Cell>{farmer.community}</Table.Cell>
+              <Table.Cell>{farmer.region}</Table.Cell>
+
+              <Table.Cell>{farmer.primaryFarm}</Table.Cell>
+              <Table.Cell>{farmer.farmsize}</Table.Cell>
 
               <Table.Cell>
                 <div className="flex gap-5">
