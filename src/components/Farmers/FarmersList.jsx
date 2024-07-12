@@ -29,7 +29,11 @@ const FarmersList = ({ state }) => {
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
             >
               <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                <img src="" alt="image" className="rounded-full w-10 h-10" />
+                <img
+                  src={URL.createObjectURL(farmer.picture)}
+                  alt="image"
+                  className="rounded-full w-10 h-10"
+                />
               </Table.Cell>
               <Table.Cell>{farmer.firstName}</Table.Cell>
               <Table.Cell>{farmer.lastName}</Table.Cell>

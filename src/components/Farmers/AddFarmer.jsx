@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { useFarmersContext } from "../../context/FarmersProvider";
 import { useStateContext } from "../../context/ContextProvider";
-import { Button, Modal, Label, TextInput, Checkbox } from "flowbite-react";
+import {
+  Button,
+  Modal,
+  Label,
+  TextInput,
+  Radio,
+  FileInput,
+} from "flowbite-react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import { GiPlantWatering } from "react-icons/gi";
@@ -13,6 +20,12 @@ const regions = [
   { value: "Upper East", label: "Upper East" },
   { value: "Northern", label: "Northern" },
   { value: "Savannah", label: "Savannah" },
+];
+const crops = [
+  { value: "soya", label: "soya" },
+  { value: "cowpea", label: "soya" },
+  { value: "shea nut", label: "shea nut" },
+  { value: "ground nut", label: "ground nut" },
 ];
 
 const AddFarmer = () => {
@@ -30,6 +43,9 @@ const AddFarmer = () => {
     otherFarm: "",
     farmsize: "",
     region: "",
+    crop: "",
+    farmerType: "",
+    picture: null,
   });
   // const [selectedRegion, setSelectedRegion] = useState(null);
 
@@ -37,14 +53,21 @@ const AddFarmer = () => {
     const { name, value } = e.target;
     setFarmer({ ...farmer, [name]: value });
   };
-  // const handleDateChange = (date) => {
-  //   setFarmer({ ...farmer, dateOfBirth: date });
-  // };
-  // console.log(selectedRegion.value);
-  const handleSelectedRegion = (select) => {
-    console.log(select);
-    // setSelectedRegion()
+
+  const onRegionSelect = (select) => {
     setFarmer({ ...farmer, region: select.value });
+  };
+  const onCropSelect = (select) => {
+    setFarmer({ ...farmer, crop: select.value });
+  };
+  const onFarmerTypeCheck = (checked) => {
+    console.log(checked);
+  };
+  const handleImageChange = (e) => {
+    setFarmer({
+      ...farmer,
+      picture: e.target.files[0],
+    });
   };
   const handleAddFarmer = () => {
     dispatch({
@@ -66,6 +89,12 @@ const AddFarmer = () => {
             className="flex max-w-md flex-col gap-4"
             onSubmit={handleAddFarmer}
           >
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="file-upload" value="Select picture" />
+              </div>
+              <FileInput id="file-upload" onChange={handleImageChange} />
+            </div>
             <section className="flex flex-col md:flex-row md:gap-5">
               <div>
                 <div className="mb-2 block">
@@ -223,59 +252,68 @@ const AddFarmer = () => {
             </section>
             <section className="flex flex-col md:flex-row md:justify-between">
               <div className="mb-2 block">
+                <Label htmlFor="region" value="Region" />
+
+                <Select
+                  defaultValue={farmer.region}
+                  onChange={onRegionSelect}
+                  options={regions}
+                  name="region"
+                />
+              </div>
+              {/* <div className="mb-2 block">
+                <Label htmlFor="district" value="District" />
+
                 <Select
                   defaultValue={farmer.region}
                   onChange={handleSelectedRegion}
                   options={regions}
                 />
-              </div>
-              {/* <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="district" value="District" />
-                </div>
-                <Select id="district" name="role" required>
-                  <option value="administrator">Administrator</option>
-                  <option value="agent">Agent</option>
-                </Select>
-              </div>
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="crop" value="Crop type" />
-                </div>
-                <Select id="crop" name="role" required>
-                  <option value="administrator">Administrator</option>
-                  <option value="agent">Agent</option>
-                </Select>
               </div> */}
-            </section>
-            {/* <section className="flex flex-col md:flex-row md:justify-between">
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="group" value="Group" />
-                </div>
-                <Select id="group" name="role" required>
-                  <option value="administrator">Administrator</option>
-                  <option value="agent">Agent</option>
-                </Select>
+              <div className="mb-2 block">
+                <Label htmlFor="crop" value="Crop type" />
+
+                <Select
+                  defaultValue={farmer.crop}
+                  name="crop"
+                  onChange={onCropSelect}
+                  options={crops}
+                />
               </div>
-              <div>
-                <h3 className="text-md my-2">Farmer Type</h3>
+              <fieldset className="flex max-w-md flex-col gap-4">
+                <legend className="mb-4">Choose farmer type</legend>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="accept" defaultChecked />
-                  <Label htmlFor="farmer" className="flex">
-                    Farmer
-                  </Label>
+                  <Radio
+                    id="farmer"
+                    name="farmerType"
+                    value={farmer.farmerType}
+                    defaultChecked
+                    onChange={onFarmerTypeCheck}
+                  />
+                  <Label htmlFor="farmer">farmer</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="process" />
+                  <Radio
+                    id="processor"
+                    name="farmerType"
+                    value={farmer.farmerType}
+                    onChange={onFarmerTypeCheck}
+                  />
                   <Label htmlFor="processor">Processor</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="processor" />
-                  <Label htmlFor="processor">Both Farmer and Processor</Label>
+                  <Radio
+                    id="farmerProcessor"
+                    name="farmerType"
+                    value={farmer.farmerType}
+                    onChange={onFarmerTypeCheck}
+                  />
+                  <Label htmlFor="farmerProcessor">
+                    Both(farmer & Processor)
+                  </Label>
                 </div>
-              </div>
-            </section> */}
+              </fieldset>
+            </section>
 
             <Button type="submit">Submit</Button>
           </form>
