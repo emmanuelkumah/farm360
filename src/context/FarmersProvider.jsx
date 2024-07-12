@@ -12,7 +12,7 @@ const farmersReducer = (state, action) => {
   switch (action.type) {
     case "ADD_FARMER":
       return {
-        farmers: [...state.farmers, { id: Date.now(), farmer: action.payload }],
+        farmers: [...state.farmers, { farmer: action.payload }],
       };
     default:
       return state;

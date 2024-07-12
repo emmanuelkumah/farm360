@@ -10,22 +10,31 @@ import {
   Checkbox,
 } from "flowbite-react";
 import { FaRegUserCircle } from "react-icons/fa";
+import { BiHome, BiMap, BiPhone } from "react-icons/bi";
+import { GiPlantWatering } from "react-icons/gi";
 
 const AddFarmer = () => {
-  const [farmer, setFarmer] = useState("");
+  const [farmer, setFarmer] = useState({
+    firstName: "",
+    lastName: "",
+  });
   const { dispatch } = useFarmersContext();
   const { openModal, setOpenModal } = useStateContext();
 
   const handleAddFarmer = () => {
     dispatch({
       type: "ADD_FARMER",
-      payload: farmer,
+      payload: { id: Math.floor(Math.random() * 1000000), ...farmer },
     });
-    setFarmer("");
+    setOpenModal(false);
+    setFarmer({
+      firstName: "",
+      lastName: "",
+    });
   };
   return (
     <div>
-      <input
+      {/* <input
         type="text"
         name="farmer"
         id=""
@@ -33,11 +42,14 @@ const AddFarmer = () => {
         placeholder="Add farmer"
         onChange={(e) => setFarmer(e.target.value)}
       />
-      <button onClick={handleAddFarmer}>Add farmer</button>
+      <button onClick={handleAddFarmer}>Add farmer</button> */}
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>Add Farmer</Modal.Header>
         <Modal.Body>
-          <form className="flex max-w-md flex-col gap-4">
+          <form
+            className="flex max-w-md flex-col gap-4"
+            onSubmit={handleAddFarmer}
+          >
             <section className="flex flex-col md:flex-row md:gap-5">
               <div>
                 <div className="mb-2 block">
@@ -47,7 +59,11 @@ const AddFarmer = () => {
                   id="firstName"
                   type="text"
                   icon={FaRegUserCircle}
+                  value={farmer.firstName}
                   placeholder="Enter firstname"
+                  onChange={(e) =>
+                    setFarmer({ ...farmer, firstName: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -60,11 +76,15 @@ const AddFarmer = () => {
                   type="text"
                   icon={FaRegUserCircle}
                   placeholder="Enter last name"
+                  value={farmer.lastName}
+                  onChange={(e) =>
+                    setFarmer({ ...farmer, lastName: e.target.value })
+                  }
                   required
                 />
               </div>
             </section>
-            <section className="flex flex-col md:flex-row md:gap-5">
+            {/* <section className="flex flex-col md:flex-row md:gap-5">
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="homeAddress" value="Home address" />
@@ -72,7 +92,7 @@ const AddFarmer = () => {
                 <TextInput
                   id="homeAddress"
                   type="text"
-                  icon={FaRegUserCircle}
+                  icon={BiHome}
                   placeholder="Enter home address"
                   required
                 />
@@ -84,7 +104,7 @@ const AddFarmer = () => {
                 <TextInput
                   id="GPS"
                   type="text"
-                  icon={FaRegUserCircle}
+                  icon={BiMap}
                   placeholder="Enter GPS"
                   required
                 />
@@ -97,8 +117,8 @@ const AddFarmer = () => {
                 </div>
                 <TextInput
                   id="contact"
-                  type="text"
-                  icon={FaRegUserCircle}
+                  type="number"
+                  icon={BiPhone}
                   placeholder="Enter contact"
                   required
                 />
@@ -123,7 +143,7 @@ const AddFarmer = () => {
                 <TextInput
                   id="primaryFarm"
                   type="text"
-                  icon={FaRegUserCircle}
+                  icon={GiPlantWatering}
                   placeholder="Enter primary farm"
                   required
                 />
@@ -223,17 +243,11 @@ const AddFarmer = () => {
                   <Label htmlFor="processor">Both Farmer and Processor</Label>
                 </div>
               </div>
-            </section>
+            </section> */}
 
             <Button type="submit">Submit</Button>
           </form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => setOpenModal(false)}>I accept</Button>
-          <Button color="gray" onClick={() => setOpenModal(false)}>
-            Decline
-          </Button>
-        </Modal.Footer>
       </Modal>
     </div>
   );
