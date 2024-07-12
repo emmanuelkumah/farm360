@@ -20,7 +20,14 @@ const Farmers = () => {
           <Button onClick={() => setOpenModal(true)}>Add new farmer</Button>
         </div>
         <AddFarmer />
-        <FarmersList state={state} />
+        {state.farmers.length >= 1 ? (
+          <FarmersList state={state} />
+        ) : (
+          <h3 className="text-xl my-6">
+            No farmer added. Click on the "Add new farmer" to start adding
+            farmer
+          </h3>
+        )}
       </div>
     </>
   );
