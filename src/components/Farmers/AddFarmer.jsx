@@ -14,12 +14,20 @@ import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import { GiPlantWatering } from "react-icons/gi";
 
 const AddFarmer = () => {
+  const { dispatch } = useFarmersContext();
+  const { openModal, setOpenModal } = useStateContext();
   const [farmer, setFarmer] = useState({
     firstName: "",
     lastName: "",
+    contact: "",
+    homeAddress: "",
+    GPS: "",
   });
-  const { dispatch } = useFarmersContext();
-  const { openModal, setOpenModal } = useStateContext();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFarmer({ ...farmer, [name]: value });
+  };
 
   const handleAddFarmer = () => {
     dispatch({
@@ -61,9 +69,8 @@ const AddFarmer = () => {
                   icon={FaRegUserCircle}
                   value={farmer.firstName}
                   placeholder="Enter firstname"
-                  onChange={(e) =>
-                    setFarmer({ ...farmer, firstName: e.target.value })
-                  }
+                  name="firstName"
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -77,14 +84,13 @@ const AddFarmer = () => {
                   icon={FaRegUserCircle}
                   placeholder="Enter last name"
                   value={farmer.lastName}
-                  onChange={(e) =>
-                    setFarmer({ ...farmer, lastName: e.target.value })
-                  }
+                  name="lastName"
+                  onChange={handleChange}
                   required
                 />
               </div>
             </section>
-            {/* <section className="flex flex-col md:flex-row md:gap-5">
+            <section className="flex flex-col md:flex-row md:gap-5">
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="homeAddress" value="Home address" />
@@ -93,6 +99,9 @@ const AddFarmer = () => {
                   id="homeAddress"
                   type="text"
                   icon={BiHome}
+                  name="homeAddress"
+                  value={farmer.homeAddress}
+                  onChange={handleChange}
                   placeholder="Enter home address"
                   required
                 />
@@ -106,6 +115,9 @@ const AddFarmer = () => {
                   type="text"
                   icon={BiMap}
                   placeholder="Enter GPS"
+                  name="GPS"
+                  onChange={handleChange}
+                  value={farmer.GPS}
                   required
                 />
               </div>
@@ -119,11 +131,14 @@ const AddFarmer = () => {
                   id="contact"
                   type="number"
                   icon={BiPhone}
+                  name="contact"
+                  value={farmer.contact}
+                  onChange={handleChange}
                   placeholder="Enter contact"
                   required
                 />
               </div>
-              <div>
+              {/* <div>
                 <div className="mb-2 block">
                   <Label htmlFor="dob" value="Date of birth" />
                 </div>
@@ -133,9 +148,9 @@ const AddFarmer = () => {
                   icon={FaRegUserCircle}
                   required
                 />
-              </div>
+              </div> */}
             </section>
-            <section className="flex flex-col md:flex-row md:gap-5">
+            {/* <section className="flex flex-col md:flex-row md:gap-5">
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="primaryFarm" value="Primary Farm" />

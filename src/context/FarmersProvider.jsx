@@ -12,7 +12,8 @@ const farmersReducer = (state, action) => {
   switch (action.type) {
     case "ADD_FARMER":
       return {
-        farmers: [...state.farmers, { farmer: action.payload }],
+        ...state,
+        farmers: [...state.farmers, action.payload],
       };
     default:
       return state;
