@@ -22,16 +22,13 @@ const Dashboard = () => {
             icon={<LuTrees />}
           />
           <DashboardCard
-            title="Total Produce"
+            title="Total Produce Tracked"
             data="16"
             icon={<IoQrCodeOutline />}
           />
         </div>
-        {/* Line Chart */}
         <div>
-          {/* Activities */}
-          <h3 className="text-xl mt-5">Activity Periods</h3>
-          {/* <LineCharts /> */}
+          <h3 className="text-xl my-5">Recent Activities</h3>
           <DashboardBarChart />
         </div>
         <section>

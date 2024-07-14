@@ -16,7 +16,7 @@ const Farmers = () => {
           id=""
           placeholder="Search"
         />
-        <div className="mt-10">
+        <div className="my-10">
           <Button onClick={() => setOpenModal(true)}>Add new farmer</Button>
         </div>
         <AddFarmer />
