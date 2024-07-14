@@ -4,7 +4,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 
 const FarmersList = ({ state }) => {
   const { farmers } = state;
-
+  console.log(farmers);
   return (
     <div>
       <Table hoverable>
@@ -38,7 +38,7 @@ const FarmersList = ({ state }) => {
               <Table.Cell>{farmer.contact}</Table.Cell>
               <Table.Cell>{farmer.homeAddress}</Table.Cell>
               <Table.Cell>{farmer.GPS}</Table.Cell>
-              <Table.Cell>{farmer.GPS}</Table.Cell>
+              <Table.Cell>{farmer.farmerType}</Table.Cell>
 
               <Table.Cell>
                 <div className="flex gap-5">

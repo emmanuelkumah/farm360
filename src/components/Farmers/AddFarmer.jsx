@@ -38,35 +38,30 @@ const AddFarmer = () => {
     homeAddress: "",
     GPS: "",
     dateOfBirth: new Date(),
-    community: "",
-    primaryFarm: "",
-    otherFarm: "",
-    farmsize: "",
-    region: "",
-    crop: "",
-    farmerType: "",
+
+    farmerType: null,
     picture: null,
   });
-  // const [selectedRegion, setSelectedRegion] = useState(null);
 
+  console.log(farmer.farmerType);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFarmer({ ...farmer, [name]: value });
   };
 
-  const onRegionSelect = (select) => {
-    setFarmer({ ...farmer, region: select.value });
-  };
-  const onCropSelect = (select) => {
-    setFarmer({ ...farmer, crop: select.value });
-  };
-  const onFarmerTypeCheck = (checked) => {
-    console.log(checked);
-  };
-  const handleImageChange = (e) => {
+  const handleFarmerTypeChange = (e) => {
+    console.log(e.target.value);
+    const { name, value } = e.target;
     setFarmer({
       ...farmer,
-      picture: e.target.files[0],
+      [name]: value,
+    });
+  };
+  const handleImageChange = (e) => {
+    const { name } = e.target;
+    setFarmer({
+      ...farmer,
+      [name]: e.target.files[0],
     });
   };
   const handleAddFarmer = () => {
@@ -93,7 +88,11 @@ const AddFarmer = () => {
               <div className="mb-2 block">
                 <Label htmlFor="file-upload" value="Select picture" />
               </div>
-              <FileInput id="file-upload" onChange={handleImageChange} />
+              <FileInput
+                id="file-upload"
+                onChange={handleImageChange}
+                name="picture"
+              />
             </div>
             <section className="flex flex-col md:flex-row md:gap-5">
               <div>
@@ -196,9 +195,9 @@ const AddFarmer = () => {
                   <Radio
                     id="farmer"
                     name="farmerType"
-                    value={farmer.farmerType}
+                    value="farmer"
                     defaultChecked
-                    onChange={onFarmerTypeCheck}
+                    onChange={handleFarmerTypeChange}
                   />
                   <Label htmlFor="farmer">farmer</Label>
                 </div>
@@ -206,8 +205,8 @@ const AddFarmer = () => {
                   <Radio
                     id="processor"
                     name="farmerType"
-                    value={farmer.farmerType}
-                    onChange={onFarmerTypeCheck}
+                    value="Processor"
+                    onChange={handleFarmerTypeChange}
                   />
                   <Label htmlFor="processor">Processor</Label>
                 </div>
@@ -215,8 +214,8 @@ const AddFarmer = () => {
                   <Radio
                     id="farmerProcessor"
                     name="farmerType"
-                    value={farmer.farmerType}
-                    onChange={onFarmerTypeCheck}
+                    value="Farmer and Processor"
+                    onChange={handleFarmerTypeChange}
                   />
                   <Label htmlFor="farmerProcessor">
                     Both(farmer & Processor)
