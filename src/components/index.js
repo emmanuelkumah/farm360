@@ -11,5 +11,7 @@ export { default as RecentActs } from "./RecentActs";
 export { default as CustomToast } from "./CustomToast";
 export { default as EditUserModal } from "./EditUserModal";
 export { default as AddFarmer } from "./Farmers/AddFarmer";
+export { default as AddFarmer2 } from "./Farmers/AddFarmer2";
+
 export { default as FarmersList } from "./Farmers/FarmersList";
 export { default as DashboardBarChart } from "./DashboardBarChart";

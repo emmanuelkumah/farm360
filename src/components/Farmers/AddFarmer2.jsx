@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFarmersContext } from "../../context/FarmersProvider";
 import { useStateContext } from "../../context/ContextProvider";
 import {
@@ -13,8 +13,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-const AddFarmer = () => {
+const AddFarmer2 = () => {
   const { dispatch } = useFarmersContext();
   const { openModal, setOpenModal } = useStateContext();
   const [farmer, setFarmer] = useState({
@@ -28,12 +27,10 @@ const AddFarmer = () => {
     farmerType: null,
     picture: null,
   });
-
-  const handleChange = (e) => {
+  const handleChange = () => {
     const { name, value } = e.target;
     setFarmer({ ...farmer, [name]: value });
   };
-
   const handleFarmerTypeChange = (e) => {
     const { name, value } = e.target;
     setFarmer({
@@ -220,4 +217,4 @@ const AddFarmer = () => {
   );
 };
 
-export default AddFarmer;
+export default AddFarmer2;

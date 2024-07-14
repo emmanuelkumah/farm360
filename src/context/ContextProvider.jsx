@@ -1,6 +1,4 @@
 import { useContext, useState, createContext } from "react";
-import { dummyUsers } from "../data/demo";
-import avatar from "../data/avatar.jpg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -90,7 +88,6 @@ export const ContextProvider = ({ children }) => {
     });
     //close modal
     setOpenModal(false);
-    //show notification
 
     toast.success("User added successful!", {
       position: "top-right",
