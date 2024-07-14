@@ -10,7 +10,6 @@ const RecentActs = () => {
           <Table.HeadCell>Name</Table.HeadCell>
           <Table.HeadCell>Date</Table.HeadCell>
           <Table.HeadCell>Activity</Table.HeadCell>
-          <Table.HeadCell>Farm</Table.HeadCell>
           <Table.HeadCell>Farm Owner</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
@@ -24,7 +23,6 @@ const RecentActs = () => {
               </Table.Cell>
               <Table.Cell>{actor.date}</Table.Cell>
               <Table.Cell>{actor.activity}</Table.Cell>
-              <Table.Cell>{actor.farm}</Table.Cell>
               <Table.Cell>{actor.farmOwner}</Table.Cell>
             </Table.Row>
           ))}
