@@ -1,10 +1,9 @@
 import React from "react";
-import { DashboardCard, RecentActs } from "../components";
+import { DashboardBarChart, DashboardCard, RecentActs } from "../components";
 import { FaUserGroup } from "react-icons/fa6";
 import { PiPlant } from "react-icons/pi";
 import { LuTrees } from "react-icons/lu";
 import { IoQrCodeOutline } from "react-icons/io5";
-import { LineCharts } from "../components";
 
 const Dashboard = () => {
   return (
@@ -32,7 +31,8 @@ const Dashboard = () => {
         <div>
           {/* Activities */}
           <h3 className="text-xl mt-5">Activity Periods</h3>
-          <LineCharts />
+          {/* <LineCharts /> */}
+          <DashboardBarChart />
         </div>
         <section>
           {/* Activities */}

@@ -12,3 +12,4 @@ export { default as CustomToast } from "./CustomToast";
 export { default as EditUserModal } from "./EditUserModal";
 export { default as AddFarmer } from "./Farmers/AddFarmer";
 export { default as FarmersList } from "./Farmers/FarmersList";
+export { default as DashboardBarChart } from "./DashboardBarChart";
