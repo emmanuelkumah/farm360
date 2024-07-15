@@ -20,6 +20,7 @@ const Farmers = () => {
           <Button onClick={() => setOpenModal(true)}>Add new farmer</Button>
         </div>
         <AddFarmer />
+
         {state.farmers.length >= 1 ? (
           <FarmersList state={state} />
         ) : (

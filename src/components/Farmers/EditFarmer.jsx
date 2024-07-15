@@ -1,5 +1,4 @@
 import React from "react";
-import { useFarmersContext } from "../../context/FarmersProvider";
 import { useStateContext } from "../../context/ContextProvider";
 import {
   Button,
@@ -13,61 +12,39 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-const AddFarmer2 = () => {
-  const { dispatch } = useFarmersContext();
-  const { openModal, setOpenModal } = useStateContext();
-  const [farmer, setFarmer] = useState({
-    firstName: "",
-    lastName: "",
-    contact: "",
-    homeAddress: "",
-    GPS: "",
-    dateOfBirth: new Date(),
 
-    farmerType: null,
-    picture: null,
-  });
-  const handleChange = () => {
+const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
+  console.log(editFarmer);
+
+  //   const handlePictureChange = (e) => {
+  //     const { name, value } = e.target;
+  //     setEditFarmer({
+  //       ...farmer,
+  //       [name]: value,
+  //     });
+  //   };
+  const handleEditFarmerChange = (e) => {
     const { name, value } = e.target;
-    setFarmer({ ...farmer, [name]: value });
-  };
-  const handleFarmerTypeChange = (e) => {
-    const { name, value } = e.target;
-    setFarmer({
-      ...farmer,
+
+    setEditFarmer({
+      ...editFarmer,
       [name]: value,
     });
   };
 
-  const handleImageChange = (e) => {
-    const { name } = e.target;
-    setFarmer({
-      ...farmer,
-      [name]: e.target.files[0],
-    });
+  const onEditSubmit = (e) => {
+    e.preventDefault();
+    console.log(editFarmer);
   };
-  const handleAddFarmer = () => {
-    dispatch({
-      type: "ADD_FARMER",
-      payload: { id: Math.floor(Math.random() * 1000000), ...farmer },
-    });
-    setOpenModal(false);
-    setFarmer({
-      firstName: "",
-      lastName: "",
-      contact: "",
-      homeAddress: "",
-      GPS: "",
-    });
-  };
+
   return (
     <div>
-      <Modal show={openModal} onClose={() => setOpenModal(false)}>
-        <Modal.Header>Add Farmer</Modal.Header>
-        <Modal.Body>
+      <Modal show={isEditing} onClose={() => setIsEditing(false)}>
+        <Modal.Header>Edit Farmer Details</Modal.Header>
+        <Modal.Body className="flex justify-center">
           <form
             className="flex max-w-md flex-col gap-4"
-            onSubmit={handleAddFarmer}
+            onSubmit={onEditSubmit}
           >
             <div>
               <div className="mb-2 block">
@@ -75,7 +52,7 @@ const AddFarmer2 = () => {
               </div>
               <FileInput
                 id="file-upload"
-                onChange={handleImageChange}
+                // onChange={(e) => handleEditFarmerChange(e)}
                 name="picture"
               />
             </div>
@@ -88,10 +65,10 @@ const AddFarmer2 = () => {
                   id="firstName"
                   type="text"
                   icon={FaRegUserCircle}
-                  value={farmer.firstName}
+                  value={editFarmer.firstName}
                   placeholder="Enter firstname"
                   name="firstName"
-                  onChange={handleChange}
+                  onChange={(e) => handleEditFarmerChange(e)}
                   required
                 />
               </div>
@@ -104,9 +81,9 @@ const AddFarmer2 = () => {
                   type="text"
                   icon={FaRegUserCircle}
                   placeholder="Enter last name"
-                  value={farmer.lastName}
+                  value={editFarmer.lastName}
                   name="lastName"
-                  onChange={handleChange}
+                  onChange={(e) => handleEditFarmerChange(e)}
                   required
                 />
               </div>
@@ -121,8 +98,8 @@ const AddFarmer2 = () => {
                   type="text"
                   icon={BiHome}
                   name="homeAddress"
-                  value={farmer.homeAddress}
-                  onChange={handleChange}
+                  value={editFarmer.homeAddress}
+                  onChange={(e) => handleEditFarmerChange(e)}
                   placeholder="Enter home address"
                   required
                 />
@@ -137,8 +114,8 @@ const AddFarmer2 = () => {
                   icon={BiMap}
                   placeholder="Enter GPS"
                   name="GPS"
-                  onChange={handleChange}
-                  value={farmer.GPS}
+                  onChange={(e) => handleEditFarmerChange(e)}
+                  value={editFarmer.GPS}
                   required
                 />
               </div>
@@ -153,8 +130,8 @@ const AddFarmer2 = () => {
                   type="number"
                   icon={BiPhone}
                   name="contact"
-                  value={farmer.contact}
-                  onChange={handleChange}
+                  value={editFarmer.contact}
+                  onChange={(e) => handleEditFarmerChange(e)}
                   placeholder="Enter contact"
                   required
                 />
@@ -164,9 +141,10 @@ const AddFarmer2 = () => {
                   <Label htmlFor="dob" value="Date of birth" />
                 </div>
                 <DatePicker
-                  selected={farmer.dateOfBirth}
+                  selected={editFarmer.dateOfBirth}
+                  name="dateOfBirth"
                   onChange={(date) =>
-                    setFarmer({ ...farmer, dateOfBirth: date })
+                    setEditFarmer({ ...editFarmer, dateOfBirth: date })
                   }
                 />
               </div>
@@ -174,15 +152,16 @@ const AddFarmer2 = () => {
 
             <section className="flex flex-col md:flex-row md:gap-5"></section>
             <section className="flex flex-col ">
-              <fieldset className="flex max-w-md flex-col gap-4">
+              {/* <fieldset className="flex max-w-md flex-col gap-4">
                 <legend className="mb-4">Choose farmer type</legend>
                 <div className="flex items-center gap-2">
                   <Radio
                     id="farmer"
                     name="farmerType"
-                    value="farmer"
-                    defaultChecked
-                    onChange={handleFarmerTypeChange}
+                    selected={editFarmer.farmerType}
+                    value={editFarmer.farmerType}
+                    onChange={(e) => handleEditFarmerChange(e)}
+                    required
                   />
                   <Label htmlFor="farmer">farmer</Label>
                 </div>
@@ -190,8 +169,9 @@ const AddFarmer2 = () => {
                   <Radio
                     id="processor"
                     name="farmerType"
-                    value="Processor"
-                    onChange={handleFarmerTypeChange}
+                    value={editFarmer.farmerType}
+                    onChange={(e) => handleEditFarmerChange(e)}
+                    required
                   />
                   <Label htmlFor="processor">Processor</Label>
                 </div>
@@ -199,14 +179,15 @@ const AddFarmer2 = () => {
                   <Radio
                     id="farmerProcessor"
                     name="farmerType"
-                    value="Farmer and Processor"
-                    onChange={handleFarmerTypeChange}
+                    value={editFarmer.farmerType}
+                    onChange={(e) => handleEditFarmerChange(e)}
+                    required
                   />
                   <Label htmlFor="farmerProcessor">
                     Both(farmer & Processor)
                   </Label>
                 </div>
-              </fieldset>
+              </fieldset> */}
             </section>
 
             <Button type="submit">Submit</Button>
@@ -217,4 +198,4 @@ const AddFarmer2 = () => {
   );
 };
 
-export default AddFarmer2;
+export default EditFarmer;

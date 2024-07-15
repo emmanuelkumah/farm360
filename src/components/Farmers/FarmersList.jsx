@@ -1,22 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useFarmersContext } from "../../context/FarmersProvider";
+import EditFarmer from "./EditFarmer";
 
 const FarmersList = ({ state }) => {
   const { dispatch } = useFarmersContext();
   const { farmers } = state;
-  console.log(farmers);
+
+  const [editFarmer, setEditFarmer] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleDeleteFarmer = (id) => {
-    console.log(id);
     dispatch({
       type: "DELETE_FARMER",
       id: id,
     });
   };
+  const handleEditFarmer = (farmer) => {
+    setEditFarmer(farmer);
+    setIsEditing(true);
+  };
+
   return (
     <div>
+      {isEditing && (
+        <EditFarmer
+          editFarmer={editFarmer}
+          setEditFarmer={setEditFarmer}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+        />
+      )}
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>Picture</Table.HeadCell>
@@ -52,7 +67,10 @@ const FarmersList = ({ state }) => {
 
               <Table.Cell>
                 <div className="flex gap-5">
-                  <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                  <MdEdit
+                    className="text-xl hover:text-teal-500 cursor-pointer"
+                    onClick={() => handleEditFarmer(farmer)}
+                  />
                   <MdDelete
                     className="text-xl hover:text-red-700 cursor-pointer"
                     onClick={() => handleDeleteFarmer(farmer.id)}
