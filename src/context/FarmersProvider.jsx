@@ -20,6 +20,16 @@ const farmersReducer = (state, action) => {
         ...state,
         farmers: state.farmers.filter((farmer) => farmer.id !== action.id),
       };
+    case "UPDATE_FARMER":
+      return {
+        ...state,
+        farmers: state.farmers.map((farmer) => {
+          return farmer.id === action.payload.id
+            ? action.payload.update
+            : farmer;
+        }),
+      };
+
     default:
       return state;
   }

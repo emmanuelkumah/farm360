@@ -12,17 +12,11 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useFarmersContext } from "../../context/FarmersProvider";
 
 const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
-  console.log(editFarmer);
+  const { dispatch } = useFarmersContext();
 
-  //   const handlePictureChange = (e) => {
-  //     const { name, value } = e.target;
-  //     setEditFarmer({
-  //       ...farmer,
-  //       [name]: value,
-  //     });
-  //   };
   const handleEditFarmerChange = (e) => {
     const { name, value } = e.target;
 
@@ -34,7 +28,11 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
 
   const onEditSubmit = (e) => {
     e.preventDefault();
-    console.log(editFarmer);
+    dispatch({
+      type: "UPDATE_FARMER",
+      payload: { id: editFarmer.id, update: editFarmer },
+    });
+    setIsEditing(false);
   };
 
   return (
@@ -52,7 +50,9 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
               </div>
               <FileInput
                 id="file-upload"
-                // onChange={(e) => handleEditFarmerChange(e)}
+                onChange={(e) =>
+                  setEditFarmer({ ...editFarmer, picture: e.target.files[0] })
+                }
                 name="picture"
               />
             </div>
@@ -152,14 +152,15 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
 
             <section className="flex flex-col md:flex-row md:gap-5"></section>
             <section className="flex flex-col ">
-              {/* <fieldset className="flex max-w-md flex-col gap-4">
+              <fieldset className="flex max-w-md flex-col gap-4">
                 <legend className="mb-4">Choose farmer type</legend>
                 <div className="flex items-center gap-2">
                   <Radio
                     id="farmer"
                     name="farmerType"
                     selected={editFarmer.farmerType}
-                    value={editFarmer.farmerType}
+                    value="farmer"
+                    checked={editFarmer.farmerType === "farmer"}
                     onChange={(e) => handleEditFarmerChange(e)}
                     required
                   />
@@ -169,7 +170,8 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
                   <Radio
                     id="processor"
                     name="farmerType"
-                    value={editFarmer.farmerType}
+                    value="Processor"
+                    checked={editFarmer.farmerType === "Processor"}
                     onChange={(e) => handleEditFarmerChange(e)}
                     required
                   />
@@ -179,7 +181,8 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
                   <Radio
                     id="farmerProcessor"
                     name="farmerType"
-                    value={editFarmer.farmerType}
+                    value="Both farmer and Processor"
+                    checked={editFarmer.farmerType === "Farmer and Processor"}
                     onChange={(e) => handleEditFarmerChange(e)}
                     required
                   />
@@ -187,10 +190,10 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
                     Both(farmer & Processor)
                   </Label>
                 </div>
-              </fieldset> */}
+              </fieldset>
             </section>
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Save Changes</Button>
           </form>
         </Modal.Body>
       </Modal>
