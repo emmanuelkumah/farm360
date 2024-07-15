@@ -23,6 +23,10 @@ export const links = [
     icon: <FaUsersLine />,
   },
   {
+    name: "Farms",
+    icon: <PiPottedPlantDuotone />,
+  },
+  {
     name: "management",
     icon: <PiPottedPlantDuotone />,
   },

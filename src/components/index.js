@@ -1,4 +1,4 @@
-export { default as Button } from "./Button";
+export { default as Button } from "./AddButton";
 export { default as Footer } from "./Footer";
 export { default as Header } from "./Header";
 export { default as Navbar } from "./Navbar";
@@ -14,3 +14,6 @@ export { default as AddFarmer } from "./Farmers/AddFarmer";
 export { default as DashboardBarChart } from "./DashboardBarChart";
 export { default as EditFarmer } from "./Farmers/EditFarmer";
 export { default as FarmersList } from "./Farmers/FarmersList";
+export { default as Search } from "./Search";
+export { default as AddButton } from "./AddButton";
+export { default as AddFarm } from "./Farmers/AddFarm";

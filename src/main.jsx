@@ -5,7 +5,15 @@ import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import { Dashboard, Farmers, Users, Login, Farms, Reports } from "./pages";
+import {
+  Dashboard,
+  Farmers,
+  Users,
+  Login,
+  Farms,
+  Reports,
+  FarmManagement,
+} from "./pages";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 
@@ -28,8 +36,12 @@ const router = createBrowserRouter([
         element: <Farmers />,
       },
       {
-        path: "/app/management",
+        path: "/app/farms",
         element: <Farms />,
+      },
+      {
+        path: "/app/management",
+        element: <FarmManagement />,
       },
       {
         path: "/app/reports",
