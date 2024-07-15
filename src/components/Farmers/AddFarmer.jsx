@@ -17,6 +17,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const AddFarmer = () => {
   const { dispatch } = useFarmersContext();
   const { openModal, setOpenModal } = useStateContext();
+
   const [farmer, setFarmer] = useState({
     firstName: "",
     lastName: "",
@@ -24,8 +25,8 @@ const AddFarmer = () => {
     homeAddress: "",
     GPS: "",
     dateOfBirth: new Date(),
-
     farmerType: null,
+    gender: "",
     picture: null,
   });
 
@@ -176,7 +177,7 @@ const AddFarmer = () => {
             </section>
 
             <section className="flex flex-col md:flex-row md:gap-5"></section>
-            <section className="flex flex-col ">
+            <section className="flex flex-col md:flex-row md:gap-5 ">
               <fieldset className="flex max-w-md flex-col gap-4">
                 <legend className="mb-4">Choose farmer type</legend>
                 <div className="flex items-center gap-2">
@@ -212,6 +213,31 @@ const AddFarmer = () => {
                   </Label>
                 </div>
               </fieldset>
+              <div>
+                <fieldset className="flex max-w-md flex-col gap-4">
+                  <legend className="mb-4">Choose Gender</legend>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="male"
+                      name="gender"
+                      value="Male"
+                      onChange={handleFarmerTypeChange}
+                      required
+                    />
+                    <Label htmlFor="male">Male</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="female"
+                      name="gender"
+                      value="Female"
+                      onChange={handleFarmerTypeChange}
+                      required
+                    />
+                    <Label htmlFor="female">Female</Label>
+                  </div>
+                </fieldset>
+              </div>
             </section>
 
             <Button type="submit">Submit</Button>

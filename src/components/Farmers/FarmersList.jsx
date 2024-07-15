@@ -37,6 +37,8 @@ const FarmersList = ({ state }) => {
           <Table.HeadCell>Picture</Table.HeadCell>
           <Table.HeadCell>First Name</Table.HeadCell>
           <Table.HeadCell>Last Name</Table.HeadCell>
+          <Table.HeadCell>Gender</Table.HeadCell>
+
           <Table.HeadCell>Date of Birth</Table.HeadCell>
           <Table.HeadCell>Contact</Table.HeadCell>
           <Table.HeadCell>Home address</Table.HeadCell>
@@ -58,6 +60,8 @@ const FarmersList = ({ state }) => {
               </Table.Cell>
               <Table.Cell>{farmer.firstName}</Table.Cell>
               <Table.Cell>{farmer.lastName}</Table.Cell>
+              <Table.Cell>{farmer.gender}</Table.Cell>
+
               <Table.Cell>{farmer.dateOfBirth.toDateString()}</Table.Cell>
 
               <Table.Cell>{farmer.contact}</Table.Cell>

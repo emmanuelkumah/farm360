@@ -151,46 +151,75 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
             </section>
 
             <section className="flex flex-col md:flex-row md:gap-5"></section>
-            <section className="flex flex-col ">
-              <fieldset className="flex max-w-md flex-col gap-4">
-                <legend className="mb-4">Choose farmer type</legend>
-                <div className="flex items-center gap-2">
-                  <Radio
-                    id="farmer"
-                    name="farmerType"
-                    selected={editFarmer.farmerType}
-                    value="farmer"
-                    checked={editFarmer.farmerType === "farmer"}
-                    onChange={(e) => handleEditFarmerChange(e)}
-                    required
-                  />
-                  <Label htmlFor="farmer">farmer</Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Radio
-                    id="processor"
-                    name="farmerType"
-                    value="Processor"
-                    checked={editFarmer.farmerType === "Processor"}
-                    onChange={(e) => handleEditFarmerChange(e)}
-                    required
-                  />
-                  <Label htmlFor="processor">Processor</Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Radio
-                    id="farmerProcessor"
-                    name="farmerType"
-                    value="Both farmer and Processor"
-                    checked={editFarmer.farmerType === "Farmer and Processor"}
-                    onChange={(e) => handleEditFarmerChange(e)}
-                    required
-                  />
-                  <Label htmlFor="farmerProcessor">
-                    Both(farmer & Processor)
-                  </Label>
-                </div>
-              </fieldset>
+            <section className="flex flex-col md:flex-row md:justify-between ">
+              <div>
+                <fieldset className="flex max-w-md flex-col gap-4">
+                  <legend className="mb-4">Choose Gender</legend>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="male"
+                      name="gender"
+                      value="Male"
+                      checked={editFarmer.gender === "Male"}
+                      onChange={(e) => handleEditFarmerChange(e)}
+                      required
+                    />
+                    <Label htmlFor="male">Male</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="female"
+                      name="gender"
+                      value="Female"
+                      checked={editFarmer.gender === "Female"}
+                      onChange={(e) => handleEditFarmerChange(e)}
+                      required
+                    />
+                    <Label htmlFor="female">Female</Label>
+                  </div>
+                </fieldset>
+              </div>
+              <div>
+                <fieldset className="flex max-w-md flex-col gap-4">
+                  <legend className="mb-4">Choose farmer type</legend>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="farmer"
+                      name="farmerType"
+                      selected={editFarmer.farmerType}
+                      value="farmer"
+                      checked={editFarmer.farmerType === "farmer"}
+                      onChange={(e) => handleEditFarmerChange(e)}
+                      required
+                    />
+                    <Label htmlFor="farmer">farmer</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="processor"
+                      name="farmerType"
+                      value="Processor"
+                      checked={editFarmer.farmerType === "Processor"}
+                      onChange={(e) => handleEditFarmerChange(e)}
+                      required
+                    />
+                    <Label htmlFor="processor">Processor</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="farmerProcessor"
+                      name="farmerType"
+                      value="Both farmer and Processor"
+                      checked={editFarmer.farmerType === "Farmer and Processor"}
+                      onChange={(e) => handleEditFarmerChange(e)}
+                      required
+                    />
+                    <Label htmlFor="farmerProcessor">
+                      Both(farmer & Processor)
+                    </Label>
+                  </div>
+                </fieldset>
+              </div>
             </section>
 
             <Button type="submit">Save Changes</Button>
