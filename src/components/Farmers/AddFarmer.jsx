@@ -67,7 +67,7 @@ const AddFarmer = () => {
     <div>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>Add Farmer</Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="flex justify-center">
           <form
             className="flex max-w-md flex-col gap-4"
             onSubmit={handleAddFarmer}
@@ -184,8 +184,8 @@ const AddFarmer = () => {
                     id="farmer"
                     name="farmerType"
                     value="farmer"
-                    defaultChecked
                     onChange={handleFarmerTypeChange}
+                    required
                   />
                   <Label htmlFor="farmer">farmer</Label>
                 </div>
@@ -195,6 +195,7 @@ const AddFarmer = () => {
                     name="farmerType"
                     value="Processor"
                     onChange={handleFarmerTypeChange}
+                    required
                   />
                   <Label htmlFor="processor">Processor</Label>
                 </div>
@@ -204,6 +205,7 @@ const AddFarmer = () => {
                     name="farmerType"
                     value="Farmer and Processor"
                     onChange={handleFarmerTypeChange}
+                    required
                   />
                   <Label htmlFor="farmerProcessor">
                     Both(farmer & Processor)

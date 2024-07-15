@@ -15,6 +15,11 @@ const farmersReducer = (state, action) => {
         ...state,
         farmers: [...state.farmers, action.payload],
       };
+    case "DELETE_FARMER":
+      return {
+        ...state,
+        farmers: state.farmers.filter((farmer) => farmer.id !== action.id),
+      };
     default:
       return state;
   }

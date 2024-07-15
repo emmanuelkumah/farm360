@@ -1,10 +1,20 @@
 import React from "react";
 import { Table } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
+import { useFarmersContext } from "../../context/FarmersProvider";
 
 const FarmersList = ({ state }) => {
+  const { dispatch } = useFarmersContext();
   const { farmers } = state;
   console.log(farmers);
+
+  const handleDeleteFarmer = (id) => {
+    console.log(id);
+    dispatch({
+      type: "DELETE_FARMER",
+      id: id,
+    });
+  };
   return (
     <div>
       <Table hoverable>
@@ -42,13 +52,10 @@ const FarmersList = ({ state }) => {
 
               <Table.Cell>
                 <div className="flex gap-5">
-                  <MdEdit
-                    className="text-xl hover:text-teal-500 cursor-pointer"
-                    // onClick={() => onEditClick(user)}
-                  />
+                  <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
                   <MdDelete
                     className="text-xl hover:text-red-700 cursor-pointer"
-                    // onClick={() => handleUserDelete(user.id)}
+                    onClick={() => handleDeleteFarmer(farmer.id)}
                   />
                 </div>
               </Table.Cell>
