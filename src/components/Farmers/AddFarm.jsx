@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import { Button, Modal, Label, TextInput, Radio } from "flowbite-react";
-import {
-  CountryDropdown,
-  RegionDropdown,
-  CountryRegionData,
-} from "react-country-region-selector";
+import { Button, Modal, Label, TextInput, Select } from "flowbite-react";
+
+import { districts, regions } from "../../data/demo";
 
 const AddFarm = ({ openFarmForm, setOpenFarmForm }) => {
   const [farm, setFarm] = useState({
@@ -15,10 +12,15 @@ const AddFarm = ({ openFarmForm, setOpenFarmForm }) => {
     district: "",
     community: "",
   });
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState([]);
 
-  console.log(selectedRegion);
+  const showDistricts = (id) => {
+    setSelectedRegion(id);
+    // const district = districts.map((district) => district.regionId === id);
+    // console.log(district);
+  };
+
   const handleAddFarmChange = (e) => {
     const { name, value } = e.target;
 
@@ -27,11 +29,17 @@ const AddFarm = ({ openFarmForm, setOpenFarmForm }) => {
       [name]: value,
     });
   };
-  const handleRegionChange = (val) => {
-    setSelectedRegion(val);
+  const handleRegionChange = (e) => {
+    showDistricts(e.target.value);
   };
-  const handleDistrictChange = (val) => {
-    setSelectedDistrict(val);
+  const handleDistrictSelect = (e) => {
+    setFarm({
+      ...farm,
+      district: e.target.value,
+    });
+  };
+  const handleAddFarmSubmit = (e) => {
+    e.preventDefault(console.log(farm));
   };
   return (
     <div>
@@ -40,7 +48,7 @@ const AddFarm = ({ openFarmForm, setOpenFarmForm }) => {
         <Modal.Body className="flex justify-center">
           <form
             className="flex max-w-md flex-col gap-4"
-            // onSubmit={onEditSubmit}
+            onSubmit={handleAddFarmSubmit}
           >
             <section className="flex flex-col md:flex-row md:gap-5">
               <div>
@@ -105,30 +113,34 @@ const AddFarm = ({ openFarmForm, setOpenFarmForm }) => {
             </section>
             <section>
               <div className="mb-2 block">
-                <Label htmlFor="region" value="Community" />
-              </div>{" "}
-              <div>
-                <RegionDropdown
-                  country="Ghana"
-                  name="region"
-                  value={selectedRegion}
-                  onChange={(val) => handleRegionChange(val)}
-                />
-              </div>
-              {selectedRegion && (
+                <Label htmlFor="region" value="Region" />
                 <div>
-                  <label>Select District:</label>
-                  {/* Replace the options with the actual districts for the selected region */}
-                  <select
-                    value={selectedDistrict}
-                    onChange={(e) => handleDistrictChange(e.target.value)}
-                  >
-                    <option value="">Select District</option>
-                    {/* Replace the options with the actual districts for the selected region */}
-                    <option value="district1">District 1</option>
-                    <option value="district2">District 2</option>
-                    <option value="district3">District 3</option>
-                  </select>
+                  <Select onChange={handleRegionChange}>
+                    <option>Select Region</option>
+                    {regions.map((region) => (
+                      <option key={region.regionId} value={region.regionId}>
+                        {" "}
+                        {region.name}
+                      </option>
+                    ))}
+                  </Select>
+                  {}
+                </div>
+              </div>
+            </section>
+            <section>
+              {selectedRegion && (
+                <div className="mb-2 block">
+                  <Label htmlFor="district" value="District" />
+                  <div>
+                    <Select onChange={handleDistrictSelect}>
+                      <option>Select District</option>
+                      <option value="District 1">District 1</option>
+                      <option value="District 2">District 2</option>
+                      <option value="District 3">District 3</option>
+                      <option value="District 4">District 4</option>
+                    </Select>
+                  </div>
                 </div>
               )}
             </section>
