@@ -49,28 +49,32 @@ const data = [
 
 const DashboardBarChart = () => {
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <BarChart
-        width={150}
-        height={40}
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Bar
-          dataKey="counts"
-          fill="#419D78"
-          activeBar={<Rectangle fill="green" />}
-        />
-      </BarChart>
-    </ResponsiveContainer>
+    <>
+      <div>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            width={150}
+            height={40}
+            data={data}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar
+              dataKey="counts"
+              fill="#419D78"
+              activeBar={<Rectangle fill="green" />}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </>
   );
 };
 

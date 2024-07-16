@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Button, Modal, Label, TextInput, Select } from "flowbite-react";
 
 import { districts, regions } from "../../data/demo";
+import { useFarmersContext } from "../../context/FarmersProvider";
 
 const AddFarm = ({ openFarmForm, setOpenFarmForm }) => {
+  const { farmDispatch } = useFarmersContext();
   const [farm, setFarm] = useState({
     farmName: "",
     size: "",
@@ -40,6 +42,19 @@ const AddFarm = ({ openFarmForm, setOpenFarmForm }) => {
   };
   const handleAddFarmSubmit = (e) => {
     e.preventDefault(console.log(farm));
+    farmDispatch({
+      type: "ADD_FARM",
+      payload: { id: Math.floor(Math.random() * 1000000), ...farm },
+    });
+    setOpenFarmForm(false);
+    setFarm({
+      farmName: "",
+      size: "",
+      address: "",
+      region: "",
+      district: "",
+      community: "",
+    });
   };
   return (
     <div>

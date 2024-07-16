@@ -5,9 +5,9 @@ const FarmersContext = createContext();
 //define the initialState
 const initialState = {
   farmers: [],
+  farms: [],
 };
 
-//farmers reducer containing logic
 const farmersReducer = (state, action) => {
   switch (action.type) {
     case "ADD_FARMER":
@@ -34,12 +34,30 @@ const farmersReducer = (state, action) => {
       return state;
   }
 };
+
+const farmReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_FARM":
+      return {
+        ...state,
+        farms: [...state.farms, action.payload],
+      };
+
+      break;
+
+    default:
+      break;
+  }
+};
 const FarmersProvider = ({ children }) => {
   const [state, dispatch] = useReducer(farmersReducer, initialState);
+  const [farmState, farmDispatch] = useReducer(farmReducer, initialState);
 
   return (
     <>
-      <FarmersContext.Provider value={{ state, dispatch }}>
+      <FarmersContext.Provider
+        value={{ state, dispatch, farmState, farmDispatch }}
+      >
         {children}
       </FarmersContext.Provider>
     </>

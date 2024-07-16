@@ -17,3 +17,4 @@ export { default as FarmersList } from "./Farmers/FarmersList";
 export { default as Search } from "./Search";
 export { default as AddButton } from "./AddButton";
 export { default as AddFarm } from "./Farmers/AddFarm";
+export { default as FarmsList } from "./Farmers/FarmsList";
