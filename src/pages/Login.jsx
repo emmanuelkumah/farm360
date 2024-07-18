@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 
 import { useAuthContext } from "../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [loginDetails, setLoginDetails] = useState({
     username: "",
     password: "",
   });
+  const navigate = useNavigate();
   const { auth } = useAuthContext();
 
-  console.log(loginDetails);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setLoginDetails({
@@ -20,6 +21,21 @@ const Login = () => {
   };
   const handleLoginSubmit = (e) => {
     e.preventDefault();
+    fetch("http://localhost:5000/user", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(loginDetails),
+    })
+      .then((res) => {
+        console.log(res);
+        navigate("/app/dashboard");
+      })
+      .catch((err) => console.log(err));
+    //clear fields
+    setLoginDetails({
+      username: "",
+      password: "",
+    });
   };
   return (
     <>
