@@ -18,6 +18,9 @@ const Login = () => {
       [name]: value,
     });
   };
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
     <>
       <section className="h-screen flex flex-col md:flex-row justify-center   items-center ">
@@ -29,7 +32,10 @@ const Login = () => {
         </div>
         <div className="md:w-1/3 max-w-sm">
           <h3 className="text-2xl my-5">Login to the app </h3>
-          <form className="flex max-w-2xl flex-col gap-4">
+          <form
+            className="flex max-w-2xl flex-col gap-4"
+            onSubmit={handleLoginSubmit}
+          >
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="username" value="Your username" />
@@ -42,6 +48,7 @@ const Login = () => {
                 value={loginDetails.username}
                 onChange={(e) => handleInputChange(e)}
                 required
+                autoFocus
               />
             </div>
             <div>
