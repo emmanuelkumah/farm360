@@ -17,6 +17,8 @@ import {
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 
+import AuthProvider from "./context/AuthProvider";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -63,7 +65,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ContextProvider>
       <FarmersProvider>
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </FarmersProvider>
     </ContextProvider>
   </React.StrictMode>
