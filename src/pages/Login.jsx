@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
-
+import axios from "../api/axios";
 import { useAuthContext } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
+const LOGIN_URL = "/user";
 const Login = () => {
   const [loginDetails, setLoginDetails] = useState({
     username: "",
     password: "",
   });
   const navigate = useNavigate();
-  const { auth } = useAuthContext();
+  const { setAuth } = useAuthContext();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -19,23 +20,36 @@ const Login = () => {
       [name]: value,
     });
   };
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    fetch("http://localhost:5000/user", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(loginDetails),
-    })
-      .then((res) => {
-        console.log(res);
-        navigate("/app/dashboard");
-      })
-      .catch((err) => console.log(err));
+    try {
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify(loginDetails),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      setAuth({ username, password });
+      setLoginDetails({
+        username: "",
+        password: "",
+      });
+      navigate("/app/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
+    // fetch("http://localhost:5000/user", {
+    //   method: "POST",
+    //   headers: { "content-type": "application/json" },
+    //   body: JSON.stringify(loginDetails),
+    // })
+    //   .then((res) => {
+    //     console.log(res);
+    //     navigate("/app/dashboard");
+    //   })
+    //   .catch((err) => console.log(err));
     //clear fields
-    setLoginDetails({
-      username: "",
-      password: "",
-    });
   };
   return (
     <>
