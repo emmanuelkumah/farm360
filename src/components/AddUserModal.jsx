@@ -13,8 +13,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 
 import { useStateContext, useUserContext } from "../context/ContextProvider";
 
-const AddUserModal = () => {
-  const { openModal, setOpenModal } = useStateContext();
+const AddUserModal = ({ openModal, setOpenModal }) => {
   const {
     handleUserInputChange,
     handleUserFormSubmit,
@@ -31,7 +30,7 @@ const AddUserModal = () => {
           <div className="space-y-6">
             <form
               className="flex max-w-md flex-col gap-4"
-              onSubmit={handleUserFormSubmit}
+              // onSubmit={handleUserFormSubmit}
             >
               <div>
                 <div className="mb-2 block">
@@ -42,8 +41,8 @@ const AddUserModal = () => {
                   type="text"
                   name="firstName"
                   placeholder="Enter first name"
-                  value={userForm.firstName}
-                  onChange={(e) => handleUserInputChange(e)}
+                  // value={userForm.firstName}
+                  // onChange={(e) => handleUserInputChange(e)}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -58,8 +57,8 @@ const AddUserModal = () => {
                   type="text"
                   placeholder="Enter last name"
                   name="lastName"
-                  value={userForm.lastName}
-                  onChange={(e) => handleUserInputChange(e)}
+                  // value={userForm.lastName}
+                  // onChange={(e) => handleUserInputChange(e)}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -74,8 +73,8 @@ const AddUserModal = () => {
                   type="email"
                   placeholder="name@farm360.com"
                   name="email"
-                  value={userForm.email}
-                  onChange={(e) => handleUserInputChange(e)}
+                  // value={userForm.email}
+                  // onChange={(e) => handleUserInputChange(e)}
                   icon={HiMail}
                   required
                   shadow
@@ -90,8 +89,8 @@ const AddUserModal = () => {
                   type="password"
                   icon={RiLockPasswordLine}
                   name="password"
-                  value={userForm.password}
-                  onChange={(e) => handleUserInputChange(e)}
+                  // value={userForm.password}
+                  // onChange={(e) => handleUserInputChange(e)}
                   required
                   shadow
                 />
@@ -105,8 +104,8 @@ const AddUserModal = () => {
                   type="password"
                   icon={RiLockPasswordLine}
                   name="confirmPassword"
-                  value={userForm.confirmPassword}
-                  onChange={(e) => handleUserInputChange(e)}
+                  // value={userForm.confirmPassword}
+                  // onChange={(e) => handleUserInputChange(e)}
                   required
                   shadow
                 />
@@ -121,8 +120,8 @@ const AddUserModal = () => {
                 <Select
                   id="role"
                   name="role"
-                  defaultValue={userForm.role}
-                  onChange={(e) => handleUserInputChange(e)}
+                  // defaultValue={userForm.role}
+                  // onChange={(e) => handleUserInputChange(e)}
                   required
                 >
                   <option value="administrator">Administrator</option>
@@ -136,7 +135,7 @@ const AddUserModal = () => {
                 <FileInput
                   id="file"
                   name="picture"
-                  onChange={(e) => handleImageChange(e)}
+                  // onChange={(e) => handleImageChange(e)}
                   accept="image/*"
                   required
                 />

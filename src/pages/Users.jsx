@@ -6,26 +6,20 @@ import { ToastContainer } from "react-toastify";
 import { EditUserModal } from "../components";
 import { UseUserContext } from "../context/UserProvider";
 import { PiUserCircleBold } from "react-icons/pi";
+import { useState } from "react";
 
 const Users = () => {
+  const [openModal, setOpenModal] = useState(false);
   // const { setOpenModal } = useStateContext();
   const { users } = UseUserContext();
   // const { users, handleUserDelete, onEditClick, editing } = useUserContext();
-  console.log(users);
   return (
     <>
       <div className="m-10">
-        <input
-          className="w-1/2 rounded-lg"
-          type="text"
-          name="search"
-          id=""
-          placeholder="Search"
-        />
         <div className="mt-10">
           <Button onClick={() => setOpenModal(true)}>Add new user</Button>
         </div>
-        <AddUserModal />
+        <AddUserModal openModal={openModal} setOpenModal={setOpenModal} />
         {/* {editing && <EditUserModal />} */}
         {users.length >= 1 ? (
           <div className="overflow-x-auto">
