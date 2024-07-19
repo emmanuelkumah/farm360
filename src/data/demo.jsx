@@ -11,28 +11,40 @@ import avatar4 from "./avatar4.jpg";
 
 export const links = [
   {
-    name: "dashboard",
+    name: "Dashboard",
     icon: <PiPottedPlantBold />,
+    url: "",
   },
   {
     name: "Users",
     icon: <FaUsers />,
+    url: "users",
   },
   {
     name: "Farmers",
     icon: <FaUsersLine />,
+    url: "farmers",
   },
+
   {
     name: "Farms",
     icon: <PiPottedPlantDuotone />,
+    url: "farms",
   },
   {
     name: "management",
     icon: <PiPottedPlantDuotone />,
+    url: "management",
+  },
+  {
+    name: "Collectors",
+    icon: <FaUsersLine />,
+    url: "collectors",
   },
   {
     name: "Reports",
     icon: <TbDeviceDesktopAnalytics />,
+    url: "reports",
   },
 ];
 

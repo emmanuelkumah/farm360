@@ -13,6 +13,7 @@ import {
   Farms,
   Reports,
   FarmManagement,
+  Collectors,
 } from "./pages";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/app/dashboard",
+        path: "/app",
         element: <Dashboard />,
       },
       {
@@ -44,6 +45,14 @@ const router = createBrowserRouter([
       {
         path: "/app/management",
         element: <FarmManagement />,
+      },
+      {
+        path: "/app/management/:farmID",
+        element: "Farm activities",
+      },
+      {
+        path: "/app/collectors",
+        element: <Collectors />,
       },
       {
         path: "/app/reports",

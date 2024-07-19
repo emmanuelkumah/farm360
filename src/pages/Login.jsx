@@ -10,6 +10,10 @@ const Login = () => {
     username: "",
     password: "",
   });
+  const [message, setMessage] = useState({
+    success: "",
+    error: "",
+  });
   const navigate = useNavigate();
   const { setAuth } = useAuthContext();
 
@@ -35,21 +39,19 @@ const Login = () => {
         username: "",
         password: "",
       });
+      setMessage({ ...message, success: "Login successful" });
       navigate("/app/dashboard");
     } catch (error) {
-      console.log(error);
+      if (!error.response) {
+        setMessage({ ...message, error: "No server response" });
+      } else if (error.response?.status === 400) {
+        setMessage({ ...message, error: "Missing username or password" });
+      } else if (error.response?.status === 401) {
+        setMessage({ ...message, error: "Unauthorized" });
+      } else {
+        setMessage({ ...message, error: "Login failed" });
+      }
     }
-    // fetch("http://localhost:5000/user", {
-    //   method: "POST",
-    //   headers: { "content-type": "application/json" },
-    //   body: JSON.stringify(loginDetails),
-    // })
-    //   .then((res) => {
-    //     console.log(res);
-    //     navigate("/app/dashboard");
-    //   })
-    //   .catch((err) => console.log(err));
-    //clear fields
   };
   return (
     <>
@@ -100,6 +102,7 @@ const Login = () => {
             </div>
             <Button type="submit">Submit</Button>
           </form>
+          {message.error}
         </div>
       </section>
     </>

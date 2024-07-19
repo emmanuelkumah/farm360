@@ -50,10 +50,10 @@ const data = [
 const DashboardBarChart = () => {
   return (
     <>
-      <div>
+      <div className="h-screen bg-white p-4 rounded-xl border border-gray-200 flex flex-col flex-1">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            width={150}
+            width={20}
             height={40}
             data={data}
             margin={{

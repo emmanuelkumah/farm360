@@ -6,7 +6,6 @@ import { Notification, UserProfile } from ".";
 import { useStateContext } from "../context/ContextProvider";
 import { AiOutlineMenu } from "react-icons/ai";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
-
 const NavButton = ({ customFunc, icon, color, dotColor }) => (
   <button
     type="button"
@@ -32,7 +31,6 @@ const Navbar = () => {
     setScreenSize,
     handleClick,
   } = useStateContext();
-
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
 
@@ -77,7 +75,7 @@ const Navbar = () => {
           <p>
             <span className="text-gray-400 text-14">Hi, </span>
             <span className="text-gray-400 font-bold ml-1 text-14">
-              Emmanuel
+              "Emmanuel"
             </span>
           </p>
           <MdKeyboardArrowDown className="text-gray-400 text-14" />
