@@ -18,3 +18,5 @@ export { default as Search } from "./Search";
 export { default as AddButton } from "./AddButton";
 export { default as AddFarm } from "./Farmers/AddFarm";
 export { default as FarmsList } from "./Farmers/FarmsList";
+export { default as AddUserModal } from "./AddUserModal";
+export { default as Traceability } from "./Traceability";

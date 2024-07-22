@@ -1,9 +1,7 @@
 import React, { createContext, useContext, useReducer } from "react";
-const UserContext = createContext(null);
+import { dummyData } from "../data/dummyData";
 
-const initialState = {
-  users: [],
-};
+const UserContext = createContext(null);
 
 const usersReducer = (state, action) => {
   switch (action.type) {
@@ -33,7 +31,7 @@ const usersReducer = (state, action) => {
 };
 
 const UserProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(usersReducer, initialState);
+  const [state, dispatch] = useReducer(usersReducer, dummyData);
   return (
     <>
       <UserContext.Provider value={{ state, dispatch }}>

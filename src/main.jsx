@@ -14,10 +14,11 @@ import {
   Reports,
   FarmManagement,
   Collectors,
+  TraceabilityFlow,
 } from "./pages";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
-
+import TraaceabilityProvider from "./context/TraaceabilityProvider";
 import AuthProvider from "./context/AuthProvider";
 import UserProvider from "./context/UserProvider";
 
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
         path: "/app/users",
         element: <Users />,
       },
+      {
+        path: "/app/traceability",
+        element: <TraceabilityFlow />,
+      },
     ],
   },
   {
@@ -76,7 +81,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ContextProvider>
       <FarmersProvider>
         <UserProvider>
-          <RouterProvider router={router} />
+          <TraaceabilityProvider>
+            <RouterProvider router={router} />
+          </TraaceabilityProvider>
         </UserProvider>
       </FarmersProvider>
     </ContextProvider>

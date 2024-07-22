@@ -1,11 +1,11 @@
-import { Table, Button, Toast } from "flowbite-react";
+import { Table, Button } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
-import AddUserModal from "../components/AddUserModal";
 import { ToastContainer } from "react-toastify";
 import { EditUserModal } from "../components";
 import { UseUserContext } from "../context/UserProvider";
 import { PiUserCircleBold } from "react-icons/pi";
 import { useState } from "react";
+import { AddUserModal } from "../components";
 
 const Users = () => {
   const [openModal, setOpenModal] = useState(false);

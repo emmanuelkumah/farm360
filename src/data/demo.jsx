@@ -21,6 +21,11 @@ export const links = [
     url: "users",
   },
   {
+    name: "Traceability",
+    icon: <FaUsersLine />,
+    url: "traceability",
+  },
+  {
     name: "Farmers",
     icon: <FaUsersLine />,
     url: "farmers",
