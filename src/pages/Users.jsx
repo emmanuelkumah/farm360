@@ -13,7 +13,6 @@ const Users = () => {
   const { users } = state;
 
   const handleUserDelete = (id) => {
-    console.log(id);
     dispatch({
       type: "Delete_User",
       payload: id,
