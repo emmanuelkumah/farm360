@@ -1,6 +1,5 @@
 import { Table, Button, Toast } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
-//import { useStateContext, useUserContext } from "../context/ContextProvider";
 import AddUserModal from "../components/AddUserModal";
 import { ToastContainer } from "react-toastify";
 import { EditUserModal } from "../components";
@@ -10,9 +9,22 @@ import { useState } from "react";
 
 const Users = () => {
   const [openModal, setOpenModal] = useState(false);
-  // const { setOpenModal } = useStateContext();
-  const { users } = UseUserContext();
-  // const { users, handleUserDelete, onEditClick, editing } = useUserContext();
+  const { state, dispatch } = UseUserContext();
+  const { users } = state;
+
+  const handleUserDelete = (id) => {
+    console.log(id);
+    dispatch({
+      type: "Delete_User",
+      payload: id,
+    });
+  };
+  const handleUserEdit = (id) => {
+    dispatch({
+      type: "Delete_User",
+      payload: id,
+    });
+  };
   return (
     <>
       <div className="m-10">
@@ -41,26 +53,29 @@ const Users = () => {
                   >
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       <div className="text-2xl">
-                        <PiUserCircleBold />
+                        {user.picture ? (
+                          <img
+                            src={URL.createObjectURL(user.picture)}
+                            alt="image"
+                            className="rounded-full w-10 h-10"
+                          />
+                        ) : (
+                          <PiUserCircleBold />
+                        )}
                       </div>
-                      {/* <img
-                        src={URL.createObjectURL(user.picture)}
-                        alt="image"
-                        className="rounded-full w-10 h-10"
-                      /> */}
                     </Table.Cell>
                     <Table.Cell>{user.username}</Table.Cell>
-                    <Table.Cell>{`${user.firstName}  ${user.lastName}`}</Table.Cell>
+                    <Table.Cell>{`${user.firstName} ${user.lastName}`}</Table.Cell>
                     <Table.Cell>{user.role}</Table.Cell>
                     <Table.Cell>
                       <div className="flex gap-5">
                         <MdEdit
                           className="text-xl hover:text-teal-500 cursor-pointer"
-                          // onClick={() => onEditClick(user)}
+                          onClick={() => handleUserEdit(user)}
                         />
                         <MdDelete
                           className="text-xl hover:text-red-700 cursor-pointer"
-                          // onClick={() => handleUserDelete(user.id)}
+                          onClick={() => handleUserDelete(user.id)}
                         />
                       </div>
                     </Table.Cell>

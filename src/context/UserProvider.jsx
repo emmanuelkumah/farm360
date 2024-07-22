@@ -1,32 +1,30 @@
 import React, { createContext, useContext, useReducer } from "react";
 const UserContext = createContext(null);
 
-const initialUsers = [
-  {
-    id: "1",
-    username: "efkumah",
-    firstName: "Emmanuel",
-    lastName: "Kumah",
-    role: "administrator",
-    password: "1234",
-    picture: null,
-  },
-];
+const initialState = {
+  users: [],
+};
 
-const usersReducer = (users, action) => {
+// const initialUsers = [
+//   user
+//   {
+//     id: "1",
+//     username: "efkumah",
+//     firstName: "Emmanuel",
+//     lastName: "Kumah",
+//     role: "administrator",
+//     password: "1234",
+//     picture: "",
+//   },
+// ];
+
+const usersReducer = (state, action) => {
   switch (action.type) {
     case "Add_User":
-      return [
-        ...users,
-        {
-          id: Math.floor(Math.random() * 1000),
-          username: action.username,
-          firstName: action.firstName,
-          lastName: action.lastName,
-          role: action.role,
-          password: action.password,
-        },
-      ];
+      return {
+        ...state,
+        users: [...state.users, action.payload],
+      };
 
       break;
 
@@ -62,10 +60,10 @@ const usersReducer = (users, action) => {
 //    }
 // };
 const UserProvider = ({ children }) => {
-  const [users, dispatch] = useReducer(usersReducer, initialUsers);
+  const [state, dispatch] = useReducer(usersReducer, initialState);
   return (
     <>
-      <UserContext.Provider value={{ users, dispatch }}>
+      <UserContext.Provider value={{ state, dispatch }}>
         {children}
       </UserContext.Provider>
     </>
