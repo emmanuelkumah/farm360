@@ -9,8 +9,12 @@ import { useState } from "react";
 
 const Users = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [updateUser, setUpdateUser] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
   const { state, dispatch } = UseUserContext();
   const { users } = state;
+
+  // let editUser = {};
 
   const handleUserDelete = (id) => {
     dispatch({
@@ -18,11 +22,10 @@ const Users = () => {
       payload: id,
     });
   };
-  const handleUserEdit = (id) => {
-    dispatch({
-      type: "Delete_User",
-      payload: id,
-    });
+
+  const handleUpdateUser = (user) => {
+    setIsEditing(true);
+    setUpdateUser(user);
   };
   return (
     <>
@@ -31,7 +34,13 @@ const Users = () => {
           <Button onClick={() => setOpenModal(true)}>Add new user</Button>
         </div>
         <AddUserModal openModal={openModal} setOpenModal={setOpenModal} />
-        {/* {editing && <EditUserModal />} */}
+        {isEditing && (
+          <EditUserModal
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            updateUser={updateUser}
+          />
+        )}
         {users.length >= 1 ? (
           <div className="overflow-x-auto">
             <ToastContainer />
@@ -70,7 +79,7 @@ const Users = () => {
                       <div className="flex gap-5">
                         <MdEdit
                           className="text-xl hover:text-teal-500 cursor-pointer"
-                          onClick={() => handleUserEdit(user)}
+                          onClick={() => handleUpdateUser(user)}
                         />
                         <MdDelete
                           className="text-xl hover:text-red-700 cursor-pointer"

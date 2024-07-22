@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Modal,
@@ -10,29 +10,65 @@ import {
 import { HiMail } from "react-icons/hi";
 import { FaRegUserCircle } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { useUserContext } from "../context/ContextProvider";
+import { UseUserContext } from "../context/UserProvider";
 
-const EditUserModal = () => {
-  const {
-    editing,
-    setEditing,
-    editUser,
-    handleEditUserInputChange,
-    handleEditImageChange,
-    passwordsMatch,
-    handleEditFormSubmit,
-  } = useUserContext();
+const EditUserModal = ({ isEditing, setIsEditing, updateUser }) => {
+  const [editUser, setEditUser] = useState(updateUser);
+  const [passwordMatch, setPasswordMatch] = useState(true);
+  const { dispatch } = UseUserContext();
 
+  const handleUserChange = (e) => {
+    const { name, value } = e.target;
+    setEditUser({
+      ...editUser,
+      [name]: value,
+    });
+    // Check if passwords match on each character change
+    if (name === "password" || name === "confirmPassword") {
+      if (name === "password" && editUser.confirmPassword !== value) {
+        setPasswordMatch(false);
+      } else if (name === "confirmPassword" && editUser.password !== value) {
+        setPasswordMatch(false);
+      } else {
+        setPasswordMatch(true);
+      }
+    }
+  };
+
+  const onUserUpdate = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: "Edit_User",
+      payload: editUser,
+    });
+    setIsEditing(false);
+  };
   return (
     <div>
-      <Modal show={editing} onClose={() => setEditing(false)}>
+      <Modal show={true} onClose={() => setIsEditing(false)}>
         <Modal.Header>Edit user</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
             <form
               className="flex max-w-md flex-col gap-4"
-              onSubmit={handleEditFormSubmit}
+              onSubmit={onUserUpdate}
             >
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="userName" value="username" />
+                </div>
+                <TextInput
+                  id="userName"
+                  type="text"
+                  name="username"
+                  placeholder="Enter username"
+                  value={editUser.username}
+                  onChange={handleUserChange}
+                  icon={FaRegUserCircle}
+                  required
+                  shadow
+                />
+              </div>
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="firstName" value="First name" />
@@ -43,7 +79,7 @@ const EditUserModal = () => {
                   name="firstName"
                   placeholder="Enter first name"
                   value={editUser.firstName}
-                  onChange={handleEditUserInputChange}
+                  onChange={handleUserChange}
                   icon={FaRegUserCircle}
                   required
                   shadow
@@ -59,28 +95,13 @@ const EditUserModal = () => {
                   placeholder="Enter last name"
                   name="lastName"
                   value={editUser.lastName}
-                  onChange={handleEditUserInputChange}
+                  onChange={handleUserChange}
                   icon={FaRegUserCircle}
                   required
                   shadow
                 />
               </div>
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="email2" value="Your email" />
-                </div>
-                <TextInput
-                  id="email2"
-                  type="email"
-                  placeholder="name@farm360.com"
-                  name="email"
-                  value={editUser.email}
-                  onChange={handleEditUserInputChange}
-                  icon={HiMail}
-                  required
-                  shadow
-                />
-              </div>
+
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="password2" value="Your password" />
@@ -91,7 +112,7 @@ const EditUserModal = () => {
                   icon={RiLockPasswordLine}
                   name="password"
                   value={editUser.password}
-                  onChange={handleEditUserInputChange}
+                  onChange={handleUserChange}
                   required
                   shadow
                 />
@@ -106,11 +127,11 @@ const EditUserModal = () => {
                   icon={RiLockPasswordLine}
                   name="confirmPassword"
                   value={editUser.confirmPassword}
-                  onChange={handleEditUserInputChange}
+                  onChange={handleUserChange}
                   required
                   shadow
                 />
-                {!passwordsMatch && (
+                {!passwordMatch && (
                   <p style={{ color: "red" }}>Passwords do not match</p>
                 )}
               </div>
@@ -121,12 +142,12 @@ const EditUserModal = () => {
                 <Select
                   id="role"
                   name="role"
-                  defaultValue="administrator"
-                  onChange={handleEditUserInputChange}
+                  onChange={handleUserChange}
                   required
                 >
-                  <option value="administrator">Administrator</option>
-                  <option value="agent">Agent</option>
+                  <option>Select Role</option>
+                  <option value="Administrator">Administrator</option>
+                  <option value="Agent">Agent</option>
                 </Select>
               </div>
 

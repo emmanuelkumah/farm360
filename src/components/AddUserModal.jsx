@@ -170,8 +170,8 @@ const AddUserModal = ({ openModal, setOpenModal }) => {
                   required
                 >
                   <option>Select role</option>
-                  <option value="administrator">Administrator</option>
-                  <option value="agent">Agent</option>
+                  <option value="Administrator">Administrator</option>
+                  <option value="Agent">Agent</option>
                 </Select>
               </div>
               <div id="fileUpload">
