@@ -1,18 +1,11 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Modal,
-  Label,
-  TextInput,
-  Select,
-  FileInput,
-} from "flowbite-react";
-import { HiMail } from "react-icons/hi";
+import { Button, Modal, Label, TextInput, Select } from "flowbite-react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { UseUserContext } from "../context/UserProvider";
+import { toast } from "react-toastify";
 
-const EditUserModal = ({ isEditing, setIsEditing, updateUser }) => {
+const EditUserModal = ({ setIsEditing, updateUser }) => {
   const [editUser, setEditUser] = useState(updateUser);
   const [passwordMatch, setPasswordMatch] = useState(true);
   const { dispatch } = UseUserContext();
@@ -42,6 +35,16 @@ const EditUserModal = ({ isEditing, setIsEditing, updateUser }) => {
       payload: editUser,
     });
     setIsEditing(false);
+
+    toast.success("User edited successful!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
   return (
     <div>

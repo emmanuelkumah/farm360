@@ -10,6 +10,7 @@ import {
 import { FaRegUserCircle } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { UseUserContext } from "../context/UserProvider";
+import { toast } from "react-toastify";
 
 const AddUserModal = ({ openModal, setOpenModal }) => {
   const [user, setUser] = useState({
@@ -65,6 +66,15 @@ const AddUserModal = ({ openModal, setOpenModal }) => {
       picture: null,
     });
     setOpenModal(false);
+    toast.success("User added successfully!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
   return (
     <>

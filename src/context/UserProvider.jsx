@@ -25,10 +25,10 @@ const usersReducer = (state, action) => {
           user.id === action.payload.id ? { ...user, ...action.payload } : user
         ),
       };
-      break;
 
-    default:
-      break;
+    default: {
+      throw Error("Unknown action: " + action.type);
+    }
   }
 };
 
