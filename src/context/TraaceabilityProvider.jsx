@@ -5,23 +5,26 @@ const TraceabilityContext = createContext(null);
 
 const { traceability } = dummyData;
 
-const flowReducer = (traceability, action) => {
-  switch (
-    action.type
-    // case "Add_flow":
-    //   return {
-    //     ...dummyData,
-    //     traceability: [...dummyData.traceability, action.payload],
-    //   };
-    //   break;
+// const initialData = {
+//   traceability: [],
+// };
 
-    // default:
-    //   break;
-  ) {
+const flowReducer = (data, action) => {
+  switch (action.type) {
+    case "Add_traceability":
+      return {
+        ...data,
+        traceability: [...traceability, action.payload],
+      };
+
+      break;
+
+    default:
+      break;
   }
 };
 const TraaceabilityProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(flowReducer, traceability);
+  const [state, dispatch] = useReducer(flowReducer, dummyData);
   return (
     <>
       <TraceabilityContext.Provider value={{ state, dispatch }}>

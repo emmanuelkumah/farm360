@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Button, Modal, TextInput } from "flowbite-react";
 import { Checkbox, Label } from "flowbite-react";
+import { useTraceabilityContext } from "../context/TraaceabilityProvider";
 
 const AddTraceabilityFlow = ({ openModal, setOpenModal }) => {
-  const { dispatch } = useTraceabilityContext();
+  const { dispatch, state } = useTraceabilityContext();
 
+  console.log(state);
   const dummyActivities = [
     {
       id: 1,
@@ -14,7 +16,7 @@ const AddTraceabilityFlow = ({ openModal, setOpenModal }) => {
     {
       id: 2,
       name: "Planting",
-      checked: true,
+      checked: false,
     },
     {
       id: 3,
@@ -53,21 +55,21 @@ const AddTraceabilityFlow = ({ openModal, setOpenModal }) => {
       )
     );
   };
-  // const handleAddFlow = (event) => {
-  //   setFlowName(event.target.value);
-  // };
 
   const handleTraceabilitySubmit = (e) => {
     e.preventDefault();
     dispatch({
-      type: "Add_flow",
+      type: "Add_traceability",
       payload: {
         id: Math.floor(Math.random() * 1000),
         name: name,
-        ...activities,
+        selectedActivities: [...activities],
       },
     });
-    setFlowName("");
+    setName("");
+    setActivities(
+      activities.map((activity) => ({ ...activity, checked: false }))
+    );
     setOpenModal(false);
   };
   return (
