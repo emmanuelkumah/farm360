@@ -3,7 +3,7 @@ import { dummyData } from "../data/dummyData";
 
 const TraceabilityContext = createContext(null);
 
-const { traceability } = dummyData;
+// const { traceability } = dummyData;
 
 // const initialData = {
 //   traceability: [],
@@ -14,7 +14,7 @@ const flowReducer = (data, action) => {
     case "Add_traceability":
       return {
         ...data,
-        traceability: [...traceability, action.payload],
+        traceability: [...data.traceability, action.payload],
       };
 
       break;
