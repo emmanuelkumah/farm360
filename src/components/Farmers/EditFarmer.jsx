@@ -7,6 +7,7 @@ import {
   TextInput,
   Radio,
   FileInput,
+  Select,
 } from "flowbite-react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
@@ -106,23 +107,6 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
               </div>
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="GPS" value="GPS Address" />
-                </div>
-                <TextInput
-                  id="GPS"
-                  type="text"
-                  icon={BiMap}
-                  placeholder="Enter GPS"
-                  name="GPS"
-                  onChange={(e) => handleEditFarmerChange(e)}
-                  value={editFarmer.GPS}
-                  required
-                />
-              </div>
-            </section>
-            <section className="flex flex-col md:flex-row md:gap-5">
-              <div>
-                <div className="mb-2 block">
                   <Label htmlFor="contact" value="Contact" />
                 </div>
                 <TextInput
@@ -136,6 +120,8 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
                   required
                 />
               </div>
+            </section>
+            <section className="flex flex-col md:flex-row md:gap-5">
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="dob" value="Date of birth" />
@@ -148,12 +134,8 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
                   }
                 />
               </div>
-            </section>
-
-            <section className="flex flex-col md:flex-row md:gap-5"></section>
-            <section className="flex flex-col md:flex-row md:justify-between ">
               <div>
-                <fieldset className="flex max-w-md flex-col gap-4">
+                <fieldset className="flex max-w-md flex-col gap-4 md:flex-row">
                   <legend className="mb-4">Choose Gender</legend>
                   <div className="flex items-center gap-2">
                     <Radio
@@ -179,7 +161,11 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
                   </div>
                 </fieldset>
               </div>
-              <div>
+            </section>
+
+            <section className="flex flex-col md:flex-row md:gap-5"></section>
+            <section className="flex flex-col md:flex-row md:justify-between ">
+              <div className="flex flex-col md:flex-row md:gap-5">
                 <fieldset className="flex max-w-md flex-col gap-4">
                   <legend className="mb-4">Choose farmer type</legend>
                   <div className="flex items-center gap-2">
@@ -219,6 +205,32 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
                     </Label>
                   </div>
                 </fieldset>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="crop" value="Crop grown" />
+                  </div>
+                  <Select
+                    id="crop"
+                    required
+                    onClick={(e) =>
+                      setEditFarmer({ ...editFarmer, cropType: e.target.value })
+                    }
+                  >
+                    <option>Select crop</option>
+                    <option value="Soya" name="cropType">
+                      Soya{" "}
+                    </option>
+                    <option value="Shea Butter" name="cropType">
+                      Shea butter
+                    </option>
+                    <option value="Cowpea" name="cropType">
+                      Cowpea
+                    </option>
+                    <option value="Groundnut" name="cropType">
+                      Groundnut
+                    </option>
+                  </Select>
+                </div>
               </div>
             </section>
 

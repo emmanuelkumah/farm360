@@ -1,29 +1,29 @@
 import { createContext, useContext, useReducer } from "react";
-
+import { dummyData } from "../data/dummyData";
 const FarmersContext = createContext();
 
 //define the initialState
-const initialState = {
-  farmers: [],
-  farms: [],
-};
+// const initialState = {
+//   farmers: [],
+//   farms: [],
+// };
 
-const farmersReducer = (state, action) => {
+const farmersReducer = (data, action) => {
   switch (action.type) {
     case "ADD_FARMER":
       return {
-        ...state,
-        farmers: [...state.farmers, action.payload],
+        ...data,
+        farmers: [...data.farmers, action.payload],
       };
     case "DELETE_FARMER":
       return {
-        ...state,
-        farmers: state.farmers.filter((farmer) => farmer.id !== action.id),
+        ...data,
+        farmers: data.farmers.filter((farmer) => farmer.id !== action.id),
       };
     case "UPDATE_FARMER":
       return {
-        ...state,
-        farmers: state.farmers.map((farmer) => {
+        ...data,
+        farmers: data.farmers.map((farmer) => {
           return farmer.id === action.payload.id
             ? action.payload.update
             : farmer;
@@ -31,7 +31,7 @@ const farmersReducer = (state, action) => {
       };
 
     default:
-      return state;
+      return data;
   }
 };
 
@@ -50,14 +50,12 @@ const farmReducer = (state, action) => {
   }
 };
 const FarmersProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(farmersReducer, initialState);
-  const [farmState, farmDispatch] = useReducer(farmReducer, initialState);
+  const [state, dispatch] = useReducer(farmersReducer, dummyData);
+  // const [farmState, farmDispatch] = useReducer(farmReducer, initialState);
 
   return (
     <>
-      <FarmersContext.Provider
-        value={{ state, dispatch, farmState, farmDispatch }}
-      >
+      <FarmersContext.Provider value={{ state, dispatch }}>
         {children}
       </FarmersContext.Provider>
     </>

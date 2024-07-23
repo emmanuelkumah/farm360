@@ -4,9 +4,10 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { useFarmersContext } from "../../context/FarmersProvider";
 import EditFarmer from "./EditFarmer";
 
-const FarmersList = ({ state }) => {
-  const { dispatch } = useFarmersContext();
-  const { farmers } = state;
+const FarmersList = () => {
+  const { dispatch, state } = useFarmersContext();
+  console.log(state);
+  // const { farmers } = state;
 
   const [editFarmer, setEditFarmer] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -42,11 +43,11 @@ const FarmersList = ({ state }) => {
           <Table.HeadCell>Date of Birth</Table.HeadCell>
           <Table.HeadCell>Contact</Table.HeadCell>
           <Table.HeadCell>Home address</Table.HeadCell>
-          <Table.HeadCell>GPS</Table.HeadCell>
+          <Table.HeadCell>Crop Grown</Table.HeadCell>
           <Table.HeadCell>Farmer Type</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {farmers.map((farmer) => (
+          {state.farmers.map((farmer) => (
             <Table.Row
               key={farmer.id}
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -66,7 +67,7 @@ const FarmersList = ({ state }) => {
 
               <Table.Cell>{farmer.contact}</Table.Cell>
               <Table.Cell>{farmer.homeAddress}</Table.Cell>
-              <Table.Cell>{farmer.GPS}</Table.Cell>
+              <Table.Cell>{farmer.cropType}</Table.Cell>
               <Table.Cell>{farmer.farmerType}</Table.Cell>
 
               <Table.Cell>
