@@ -14,7 +14,7 @@ import {
   Reports,
   FarmManagement,
   Collectors,
-  TraceabilityFlow,
+  Traceability,
 } from "./pages";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/app/traceability",
-        element: <TraceabilityFlow />,
+        element: <Traceability />,
       },
     ],
   },

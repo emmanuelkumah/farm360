@@ -6,4 +6,4 @@ export { default as Reports } from "./Reports";
 export { default as Login } from "./Login";
 export { default as FarmManagement } from "./FarmManagement";
 export { default as Collectors } from "./Collectors";
-export { default as TraceabilityFlow } from "./TraceabilityFlow";
+export { default as Traceability } from "./Traceability";

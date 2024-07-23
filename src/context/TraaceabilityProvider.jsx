@@ -3,21 +3,25 @@ import { dummyData } from "../data/dummyData";
 
 const TraceabilityContext = createContext(null);
 
-const flowReducer = (dummyData, action) => {
-  switch (action.type) {
-    case "Add_flow":
-      return {
-        ...dummyData,
-        traceability: [...dummyData.traceability, action.payload],
-      };
-      break;
+const { traceability } = dummyData;
 
-    default:
-      break;
+const flowReducer = (traceability, action) => {
+  switch (
+    action.type
+    // case "Add_flow":
+    //   return {
+    //     ...dummyData,
+    //     traceability: [...dummyData.traceability, action.payload],
+    //   };
+    //   break;
+
+    // default:
+    //   break;
+  ) {
   }
 };
 const TraaceabilityProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(flowReducer, dummyData);
+  const [state, dispatch] = useReducer(flowReducer, traceability);
   return (
     <>
       <TraceabilityContext.Provider value={{ state, dispatch }}>

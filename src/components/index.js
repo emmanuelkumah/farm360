@@ -19,4 +19,6 @@ export { default as AddButton } from "./AddButton";
 export { default as AddFarm } from "./Farmers/AddFarm";
 export { default as FarmsList } from "./Farmers/FarmsList";
 export { default as AddUserModal } from "./AddUserModal";
-export { default as Traceability } from "./Traceability";
+export { default as AddTraceabilityFlow } from "./AddTraceabilityFlow";
+export { default as TraceabilityFlowTable } from "./TraceabilityFlowTable";
+export { default as TraceabilityActivities } from "./TraceabilityActivities";
