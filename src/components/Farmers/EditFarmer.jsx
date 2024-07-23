@@ -231,10 +231,41 @@ const EditFarmer = ({ editFarmer, setEditFarmer, isEditing, setIsEditing }) => {
                     </option>
                   </Select>
                 </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="group" value="Group" />
+                  </div>
+                  <Select
+                    id="group"
+                    required
+                    onClick={(e) =>
+                      setEditFarmer({
+                        ...editFarmer,
+                        farmerGroup: e.target.value,
+                      })
+                    }
+                  >
+                    <option>Select group</option>
+                    <option value="Group1" name="group">
+                      Group 1
+                    </option>
+                    <option value="Group 2" name="group">
+                      Group 2
+                    </option>
+                    <option value="Group 3" name="group">
+                      Group 3
+                    </option>
+                    <option value="Group 4" name="group">
+                      Group 4
+                    </option>
+                  </Select>
+                </div>
               </div>
             </section>
 
-            <Button type="submit">Save Changes</Button>
+            <Button type="submit" className="my-5">
+              Update
+            </Button>
           </form>
         </Modal.Body>
       </Modal>

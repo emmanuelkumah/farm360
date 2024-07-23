@@ -39,12 +39,12 @@ const FarmersList = () => {
           <Table.HeadCell>First Name</Table.HeadCell>
           <Table.HeadCell>Last Name</Table.HeadCell>
           <Table.HeadCell>Gender</Table.HeadCell>
-
           <Table.HeadCell>Date of Birth</Table.HeadCell>
           <Table.HeadCell>Contact</Table.HeadCell>
           <Table.HeadCell>Home address</Table.HeadCell>
           <Table.HeadCell>Crop Grown</Table.HeadCell>
-          <Table.HeadCell>Farmer Type</Table.HeadCell>
+          <Table.HeadCell>Farmer Type</Table.HeadCell>{" "}
+          <Table.HeadCell>Group</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {state.farmers.map((farmer) => (
@@ -69,6 +69,7 @@ const FarmersList = () => {
               <Table.Cell>{farmer.homeAddress}</Table.Cell>
               <Table.Cell>{farmer.cropType}</Table.Cell>
               <Table.Cell>{farmer.farmerType}</Table.Cell>
+              <Table.Cell>{farmer.farmerGroup}</Table.Cell>
 
               <Table.Cell>
                 <div className="flex gap-5">

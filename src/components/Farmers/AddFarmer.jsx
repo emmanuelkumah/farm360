@@ -53,6 +53,13 @@ const AddFarmer = () => {
       cropType: value,
     });
   };
+  const handleSelectGroup = (event) => {
+    const { value } = event.target;
+    setFarmer({
+      ...farmer,
+      farmerGroup: value,
+    });
+  };
 
   const handleImageChange = (e) => {
     const { name } = e.target;
@@ -213,7 +220,7 @@ const AddFarmer = () => {
               </div>
             </section>
 
-            <section className="flex flex-col md:flex-row md:gap-5 ">
+            <section className="flex flex-col md:flex-row md:gap-2 ">
               <fieldset className="flex max-w-md flex-col gap-4">
                 <legend className="mb-4">Choose farmer type</legend>
                 <div className="flex items-center gap-2">
@@ -251,9 +258,9 @@ const AddFarmer = () => {
               </fieldset>
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="countries" value="Crop grown" />
+                  <Label htmlFor="crop" value="Crop grown" />
                 </div>
-                <Select id="countries" required onClick={handleCropType}>
+                <Select id="crop" required onClick={handleCropType}>
                   <option>Select crop</option>
                   <option value="Soya" name="cropType">
                     Soya{" "}
@@ -266,6 +273,26 @@ const AddFarmer = () => {
                   </option>
                   <option value="Groundnut" name="cropType">
                     Groundnut
+                  </option>
+                </Select>
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="crop" value="Group" />
+                </div>
+                <Select id="crop" required onClick={handleSelectGroup}>
+                  <option>Select group</option>
+                  <option value="Group 1" name="group">
+                    Group 1
+                  </option>
+                  <option value="Group 2" name="group">
+                    Group 2
+                  </option>
+                  <option value="Group 3" name="group">
+                    Group 3
+                  </option>
+                  <option value="Group 4" name="group">
+                    Group 4
                   </option>
                 </Select>
               </div>
