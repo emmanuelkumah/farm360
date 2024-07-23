@@ -14,7 +14,7 @@ const TraceabilityFlowTable = () => {
             <Table.HeadCell>Tracked Events</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {/* {state.traceability.map((flow) => (
+            {state.traceability.map((flow) => (
               <Table.Row
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
                 key={flow.id}
@@ -22,7 +22,7 @@ const TraceabilityFlowTable = () => {
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {flow.name}
                 </Table.Cell>
-                <Table.Cell>7</Table.Cell>
+                <Table.Cell>{flow.selectedActivities.length}</Table.Cell>
                 <Table.Cell>
                   <a
                     href="#"
@@ -32,7 +32,7 @@ const TraceabilityFlowTable = () => {
                   </a>
                 </Table.Cell>
               </Table.Row>
-            ))} */}
+            ))}
           </Table.Body>
         </Table>
       </div>

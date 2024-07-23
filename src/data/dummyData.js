@@ -1,5 +1,6 @@
 export const dummyData = {
   users: [],
   traceability: [],
-  products: [],
+  farmers: [],
+  farms: [],
 };

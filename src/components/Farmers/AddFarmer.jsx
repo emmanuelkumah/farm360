@@ -8,6 +8,7 @@ import {
   TextInput,
   Radio,
   FileInput,
+  Select,
 } from "flowbite-react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
@@ -26,6 +27,8 @@ const AddFarmer = () => {
     GPS: "",
     dateOfBirth: new Date(),
     farmerType: null,
+    cropType: null,
+    farmerGroup: null,
     gender: "",
     picture: null,
   });
@@ -40,6 +43,14 @@ const AddFarmer = () => {
     setFarmer({
       ...farmer,
       [name]: value,
+    });
+  };
+
+  const handleCropType = (event) => {
+    const { value } = event.target;
+    setFarmer({
+      ...farmer,
+      cropType: value,
     });
   };
 
@@ -73,16 +84,42 @@ const AddFarmer = () => {
             className="flex max-w-md flex-col gap-4"
             onSubmit={handleAddFarmer}
           >
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="file-upload" value="Select picture" />
+            <section className="flex flex-col md:flex-row md:gap-5">
+              <div>
+                <div className="mb-2">
+                  <Label htmlFor="file-upload" value="Select picture" />
+                </div>
+                <FileInput
+                  id="file-upload"
+                  onChange={handleImageChange}
+                  name="picture"
+                />
               </div>
-              <FileInput
-                id="file-upload"
-                onChange={handleImageChange}
-                name="picture"
-              />
-            </div>
+              <fieldset className="flex max-w-md flex-col md:flex-row  gap-4">
+                <legend className="mb-4"> Gender</legend>
+                <div className="flex items-center gap-2">
+                  <Radio
+                    id="male"
+                    name="gender"
+                    value="Male"
+                    onChange={handleFarmerTypeChange}
+                    required
+                  />
+                  <Label htmlFor="male">Male</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Radio
+                    id="female"
+                    name="gender"
+                    value="Female"
+                    onChange={handleFarmerTypeChange}
+                    required
+                  />
+                  <Label htmlFor="female">Female</Label>
+                </div>
+              </fieldset>
+            </section>
+
             <section className="flex flex-col md:flex-row md:gap-5">
               <div>
                 <div className="mb-2 block">
@@ -176,7 +213,6 @@ const AddFarmer = () => {
               </div>
             </section>
 
-            <section className="flex flex-col md:flex-row md:gap-5"></section>
             <section className="flex flex-col md:flex-row md:gap-5 ">
               <fieldset className="flex max-w-md flex-col gap-4">
                 <legend className="mb-4">Choose farmer type</legend>
@@ -214,33 +250,30 @@ const AddFarmer = () => {
                 </div>
               </fieldset>
               <div>
-                <fieldset className="flex max-w-md flex-col gap-4">
-                  <legend className="mb-4">Choose Gender</legend>
-                  <div className="flex items-center gap-2">
-                    <Radio
-                      id="male"
-                      name="gender"
-                      value="Male"
-                      onChange={handleFarmerTypeChange}
-                      required
-                    />
-                    <Label htmlFor="male">Male</Label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Radio
-                      id="female"
-                      name="gender"
-                      value="Female"
-                      onChange={handleFarmerTypeChange}
-                      required
-                    />
-                    <Label htmlFor="female">Female</Label>
-                  </div>
-                </fieldset>
+                <div className="mb-2 block">
+                  <Label htmlFor="countries" value="Crop grown" />
+                </div>
+                <Select id="countries" required onClick={handleCropType}>
+                  <option>Select crop</option>
+                  <option value="Soya" name="cropType">
+                    Soya{" "}
+                  </option>
+                  <option value="Shea Butter" name="cropType">
+                    Shea butter
+                  </option>
+                  <option value="Cowpea" name="cropType">
+                    Cowpea
+                  </option>
+                  <option value="Groundnut" name="cropType">
+                    Groundnut
+                  </option>
+                </Select>
               </div>
             </section>
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit" className="my-10">
+              Submit
+            </Button>
           </form>
         </Modal.Body>
       </Modal>
