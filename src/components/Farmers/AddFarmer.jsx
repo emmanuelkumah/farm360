@@ -18,7 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const AddFarmer = () => {
   const { dispatch } = useFarmersContext();
   const { openModal, setOpenModal } = useStateContext();
-
+  const [addFarms, setAddFarms] = useState(false);
   const [farmer, setFarmer] = useState({
     firstName: "",
     lastName: "",
@@ -31,6 +31,9 @@ const AddFarmer = () => {
     farmerGroup: null,
     gender: "",
     picture: null,
+    primaryFarm: "",
+    secondFarm: "",
+    thirdFarm: "",
   });
 
   const handleChange = (e) => {
@@ -80,8 +83,12 @@ const AddFarmer = () => {
       contact: "",
       homeAddress: "",
       GPS: "",
+      primaryFarm: "",
+      secondFarm: "",
+      thirdFarm: "",
     });
   };
+  // const handleAddFarm = () => {};
   return (
     <div>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
@@ -220,7 +227,7 @@ const AddFarmer = () => {
               </div>
             </section>
 
-            <section className="flex flex-col md:flex-row md:gap-2 ">
+            <section className="flex flex-col md:flex-row md:gap-2">
               <fieldset className="flex max-w-md flex-col gap-4">
                 <legend className="mb-4">Choose farmer type</legend>
                 <div className="flex items-center gap-2">
@@ -296,6 +303,59 @@ const AddFarmer = () => {
                   </option>
                 </Select>
               </div>
+            </section>
+            <section className="flex flex-col md:flex-row md:items-center md:gap-2">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="farmName" value="farm name" />
+                </div>
+                <TextInput
+                  id="farmName"
+                  type="text"
+                  value={farmer.primaryFarm}
+                  placeholder="Enter farm name"
+                  name="primaryFarm"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <Button onClick={() => setAddFarms(!addFarms)}>
+                {`${!addFarms ? "Add farms" : "Hide farms"}`}{" "}
+              </Button>
+            </section>
+            <section>
+              {addFarms && (
+                <div className="flex flex-col mt-5 md:flex-row gap-5">
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="secondFarm" value="Second name" />
+                    </div>
+                    <TextInput
+                      id="secondFarm"
+                      type="text"
+                      value={farmer.secondFarm}
+                      placeholder="Enter farm name"
+                      name="secondFarm"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="thirdFarm" value="Third Farm" />
+                    </div>
+                    <TextInput
+                      id="thirdFarm"
+                      type="text"
+                      value={farmer.thirdFarm}
+                      placeholder="Enter farm name"
+                      name="thirdFarm"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+              )}
             </section>
 
             <Button type="submit" className="my-10">

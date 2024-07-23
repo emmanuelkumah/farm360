@@ -1,12 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
 import { dummyData } from "../data/dummyData";
-const FarmersContext = createContext();
 
-//define the initialState
-// const initialState = {
-//   farmers: [],
-//   farms: [],
-// };
+const FarmersContext = createContext();
 
 const farmersReducer = (data, action) => {
   switch (action.type) {
@@ -35,12 +30,12 @@ const farmersReducer = (data, action) => {
   }
 };
 
-const farmReducer = (state, action) => {
+const farmReducer = (data, action) => {
   switch (action.type) {
     case "ADD_FARM":
       return {
-        ...state,
-        farms: [...state.farms, action.payload],
+        ...data,
+        farms: [...data.farms, action.payload],
       };
 
       break;
@@ -51,7 +46,6 @@ const farmReducer = (state, action) => {
 };
 const FarmersProvider = ({ children }) => {
   const [state, dispatch] = useReducer(farmersReducer, dummyData);
-  // const [farmState, farmDispatch] = useReducer(farmReducer, initialState);
 
   return (
     <>
