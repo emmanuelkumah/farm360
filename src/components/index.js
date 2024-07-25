@@ -25,3 +25,5 @@ export { default as TraceabilityActivities } from "./TraceabilityActivities";
 export { default as Activities } from "./Activity/Activities";
 export { default as PrePlanting } from "./Activity/PrePlanting";
 export { default as LandPreparation } from "./Activity/LandPreparation";
+export { default as Planting } from "./Activity/Planting";
+export { default as WeedControl } from "./Activity/WeedControl";

@@ -3,6 +3,8 @@ import { Tabs } from "flowbite-react";
 import { HiAdjustments, HiClipboardList, HiUserCircle } from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";
 import PrePlanting from "./PrePlanting";
+import Planting from "./Planting";
+import WeedControl from "./WeedControl";
 
 const Activities = () => {
   return (
@@ -13,22 +15,10 @@ const Activities = () => {
         </Tabs.Item>
 
         <Tabs.Item title="Planting" icon={MdDashboard}>
-          This is{" "}
-          <span className="font-medium text-gray-800 dark:text-white">
-            Dashboard tab's associated content
-          </span>
-          . Clicking another tab will toggle the visibility of this one for the
-          next. The tab JavaScript swaps classes to control the content
-          visibility and styling.
+          <Planting />
         </Tabs.Item>
         <Tabs.Item title="Weed Control" icon={HiAdjustments}>
-          This is{" "}
-          <span className="font-medium text-gray-800 dark:text-white">
-            Settings tab's associated content
-          </span>
-          . Clicking another tab will toggle the visibility of this one for the
-          next. The tab JavaScript swaps classes to control the content
-          visibility and styling.
+          <WeedControl />
         </Tabs.Item>
         <Tabs.Item title="Fertilizer Application" icon={HiClipboardList}>
           This is{" "}
