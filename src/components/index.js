@@ -22,3 +22,6 @@ export { default as AddUserModal } from "./AddUserModal";
 export { default as AddTraceabilityFlow } from "./AddTraceabilityFlow";
 export { default as TraceabilityFlowTable } from "./TraceabilityFlowTable";
 export { default as TraceabilityActivities } from "./TraceabilityActivities";
+export { default as Activities } from "./Activity/Activities";
+export { default as PrePlanting } from "./Activity/PrePlanting";
+export { default as LandPreparation } from "./Activity/LandPreparation";

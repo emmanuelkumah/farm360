@@ -1,9 +1,11 @@
 import React from "react";
 import { Button, Table } from "flowbite-react";
-import { MdDelete, MdEdit } from "react-icons/md";
-import { useFarmersContext } from "../../context/FarmersProvider";
+import { MdDelete, MdEdit, MdViewAgenda } from "react-icons/md";
+import { useFarmContext } from "../../context/FarmersProvider";
+import { FaEye } from "react-icons/fa";
 const FarmsList = () => {
-  const { farmState } = useFarmersContext();
+  const { farmState } = useFarmContext();
+  console.log(farmState);
   return (
     <>
       <Table hoverable>
@@ -16,25 +18,26 @@ const FarmsList = () => {
           <Table.HeadCell>Digital Address</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {farmState.farms.map((farm) => (
+          {farmState.map((farm) => (
             <Table.Row
               key={farm.id}
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
             >
               <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                {farm.farmName}
+                {farm.name}
               </Table.Cell>
               <Table.Cell>{farm.size}</Table.Cell>
-              <Table.Cell>Upper East</Table.Cell>
+              <Table.Cell>{farm.region}</Table.Cell>
               <Table.Cell>{farm.district}</Table.Cell>
               <Table.Cell>{farm.community}</Table.Cell>
               <Table.Cell>{farm.address}</Table.Cell>
 
               <Table.Cell>
                 <div className="flex gap-5">
-                  <Button>View Activities</Button>
+                  <Button>Start Activity</Button>
                   <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
                   <MdDelete className="text-xl hover:text-red-700 cursor-pointer" />
+                  <FaEye />
                 </div>
               </Table.Cell>
             </Table.Row>
