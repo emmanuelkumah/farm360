@@ -27,3 +27,4 @@ export { default as PrePlanting } from "./Activity/PrePlanting";
 export { default as LandPreparation } from "./Activity/LandPreparation";
 export { default as Planting } from "./Activity/Planting";
 export { default as WeedControl } from "./Activity/WeedControl";
+export { default as FertilizerApplication } from "./Activity/FertilizerApplication";

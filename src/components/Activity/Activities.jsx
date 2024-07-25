@@ -5,6 +5,7 @@ import { MdDashboard } from "react-icons/md";
 import PrePlanting from "./PrePlanting";
 import Planting from "./Planting";
 import WeedControl from "./WeedControl";
+import FertilizerApplication from "./FertilizerApplication";
 
 const Activities = () => {
   return (
@@ -21,13 +22,7 @@ const Activities = () => {
           <WeedControl />
         </Tabs.Item>
         <Tabs.Item title="Fertilizer Application" icon={HiClipboardList}>
-          This is{" "}
-          <span className="font-medium text-gray-800 dark:text-white">
-            Contacts tab's associated content
-          </span>
-          . Clicking another tab will toggle the visibility of this one for the
-          next. The tab JavaScript swaps classes to control the content
-          visibility and styling.
+          <FertilizerApplication />
         </Tabs.Item>
         <Tabs.Item title="Harvesting" icon={HiClipboardList}>
           This is{" "}
