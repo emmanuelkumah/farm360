@@ -9,19 +9,21 @@ import FertilizerApplication from "./FertilizerApplication";
 import Harvesting from "./Harvesting";
 import Storage from "./Storage";
 import Sales from "./Sales";
+import Shippment from "./Shipment";
+import PestControl from "./PestControl";
 
 const Activities = () => {
   return (
     <div className="mx-10 my-[20%] md:my-0">
       <Tabs aria-label="Tabs with underline" variant="underline">
-        <Tabs.Item active title="Pre-Planing" icon={HiUserCircle}>
+        <Tabs.Item active title="Pre-Planting" icon={HiClipboardList}>
           <PrePlanting />
         </Tabs.Item>
 
-        <Tabs.Item title="Planting" icon={MdDashboard}>
+        <Tabs.Item title="Planting" icon={HiClipboardList}>
           <Planting />
         </Tabs.Item>
-        <Tabs.Item title="Weed Control" icon={HiAdjustments}>
+        <Tabs.Item title="Weed Control" icon={HiClipboardList}>
           <WeedControl />
         </Tabs.Item>
         <Tabs.Item title="Fertilizer Application" icon={HiClipboardList}>
@@ -37,13 +39,10 @@ const Activities = () => {
           <Sales />
         </Tabs.Item>
         <Tabs.Item title="Shipment " icon={HiClipboardList}>
-          This is{" "}
-          <span className="font-medium text-gray-800 dark:text-white">
-            Contacts tab's associated content
-          </span>
-          . Clicking another tab will toggle the visibility of this one for the
-          next. The tab JavaScript swaps classes to control the content
-          visibility and styling.
+          <Shippment />
+        </Tabs.Item>
+        <Tabs.Item title="Pest Control " icon={HiClipboardList}>
+          <PestControl />
         </Tabs.Item>
       </Tabs>
     </div>

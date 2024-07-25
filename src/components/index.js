@@ -31,3 +31,5 @@ export { default as FertilizerApplication } from "./Activity/FertilizerApplicati
 export { default as Harvesting } from "./Activity/Harvesting";
 export { default as Storage } from "./Activity/Storage";
 export { default as Sales } from "./Activity/Sales";
+export { default as Shipment } from "./Activity/Shipment";
+export { default as PestControl } from "./Activity/PestControl";
