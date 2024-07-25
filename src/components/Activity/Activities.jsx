@@ -7,6 +7,7 @@ import Planting from "./Planting";
 import WeedControl from "./WeedControl";
 import FertilizerApplication from "./FertilizerApplication";
 import Harvesting from "./Harvesting";
+import Storage from "./Storage";
 
 const Activities = () => {
   return (
@@ -29,13 +30,7 @@ const Activities = () => {
           <Harvesting />
         </Tabs.Item>
         <Tabs.Item title="Storage" icon={HiClipboardList}>
-          This is{" "}
-          <span className="font-medium text-gray-800 dark:text-white">
-            Contacts tab's associated content
-          </span>
-          . Clicking another tab will toggle the visibility of this one for the
-          next. The tab JavaScript swaps classes to control the content
-          visibility and styling.
+          <Storage />
         </Tabs.Item>
         <Tabs.Item title="Shipment" icon={HiClipboardList}>
           This is{" "}
