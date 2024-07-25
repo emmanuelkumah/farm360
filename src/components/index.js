@@ -30,3 +30,4 @@ export { default as WeedControl } from "./Activity/WeedControl";
 export { default as FertilizerApplication } from "./Activity/FertilizerApplication";
 export { default as Harvesting } from "./Activity/Harvesting";
 export { default as Storage } from "./Activity/Storage";
+export { default as Sales } from "./Activity/Sales";
