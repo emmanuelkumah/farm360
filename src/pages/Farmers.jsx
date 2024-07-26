@@ -22,7 +22,7 @@ const Farmers = () => {
         <AddFarmer />
 
         {state.farmers.length >= 1 ? (
-          <FarmersList state={state} />
+          <FarmersList />
         ) : (
           <h3 className="text-xl my-6">
             No farmer added. Click on the "Add new farmer" to start adding

@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { dummyData, dummyFarms } from "../data/dummyData";
+import { dummyData, dummyFarms, farmersData } from "../data/dummyData";
 
 const FarmersContext = createContext();
 
@@ -52,12 +52,12 @@ const farmReducer = (dummyFarms, action) => {
   }
 };
 const FarmersProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(farmersReducer, dummyData);
-  const [farmState, farmDispatch] = useReducer(farmReducer, dummyFarms);
+  const [state, dispatch] = useReducer(farmersReducer, farmersData);
+  //const [farmState, farmDispatch] = useReducer(farmReducer, dummyFarms);
 
   return (
     <>
-      <FarmersContext.Provider value={{ state, dispatch, farmState }}>
+      <FarmersContext.Provider value={{ state, dispatch }}>
         {children}
       </FarmersContext.Provider>
     </>

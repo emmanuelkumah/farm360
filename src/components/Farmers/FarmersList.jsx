@@ -3,6 +3,7 @@ import { Table } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useFarmersContext } from "../../context/FarmersProvider";
 import EditFarmer from "./EditFarmer";
+import { FaUser } from "react-icons/fa6";
 
 const FarmersList = () => {
   const { dispatch, state } = useFarmersContext();
@@ -39,11 +40,11 @@ const FarmersList = () => {
           <Table.HeadCell>First Name</Table.HeadCell>
           <Table.HeadCell>Last Name</Table.HeadCell>
           <Table.HeadCell>Gender</Table.HeadCell>
-          <Table.HeadCell>Date of Birth</Table.HeadCell>
           <Table.HeadCell>Contact</Table.HeadCell>
-          <Table.HeadCell>Home address</Table.HeadCell>
+          <Table.HeadCell>District</Table.HeadCell>
+          <Table.HeadCell>Community</Table.HeadCell>
           <Table.HeadCell>Crop Grown</Table.HeadCell>
-          <Table.HeadCell>Farmer Type</Table.HeadCell>{" "}
+          <Table.HeadCell>Number of farms</Table.HeadCell>
           <Table.HeadCell>Group</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
@@ -53,23 +54,25 @@ const FarmersList = () => {
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
             >
               <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                <img
-                  src={URL.createObjectURL(farmer.picture)}
-                  alt="image"
-                  className="rounded-full w-10 h-10"
-                />
+                {farmer.picture !== null ? (
+                  <FaUser />
+                ) : (
+                  <img
+                    src={URL.createObjectURL(farmer.picture)}
+                    alt="image"
+                    className="rounded-full w-10 h-10"
+                  />
+                )}
               </Table.Cell>
               <Table.Cell>{farmer.firstName}</Table.Cell>
               <Table.Cell>{farmer.lastName}</Table.Cell>
               <Table.Cell>{farmer.gender}</Table.Cell>
-
-              <Table.Cell>{farmer.dateOfBirth.toDateString()}</Table.Cell>
-
               <Table.Cell>{farmer.contact}</Table.Cell>
-              <Table.Cell>{farmer.homeAddress}</Table.Cell>
-              <Table.Cell>{farmer.cropType}</Table.Cell>
-              <Table.Cell>{farmer.farmerType}</Table.Cell>
-              <Table.Cell>{farmer.farmerGroup}</Table.Cell>
+              <Table.Cell>{farmer.district}</Table.Cell>
+              <Table.Cell>{farmer.community}</Table.Cell>
+              <Table.Cell>{farmer.cropGrown}</Table.Cell>
+              <Table.Cell>{farmer.farms.length}</Table.Cell>
+              <Table.Cell>{farmer.group}</Table.Cell>
 
               <Table.Cell>
                 <div className="flex gap-5">
