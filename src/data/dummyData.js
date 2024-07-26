@@ -37,7 +37,7 @@ export const farmersData = {
           farmName: "Doe's Groundnut",
           crop: "Groundnut",
           area: 50,
-          community: "Damba",
+          community: "Kasand",
           // livestock: [],
         },
       ],
@@ -64,7 +64,7 @@ export const farmersData = {
           farmName: "Emma's Soya ",
           crop: "Soya",
           area: 100,
-          community: "Danso",
+          community: "Asoni",
           //livestock: ["Cattle", "Sheep"],
         },
         {

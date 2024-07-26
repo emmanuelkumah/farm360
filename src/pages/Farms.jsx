@@ -7,10 +7,6 @@ const Farms = () => {
 
   return (
     <div className="m-10">
-      <h2>Farms</h2>
-      <section>
-        <Button>Add new farm</Button>
-      </section>
       <section>
         <FarmsList />
       </section>
