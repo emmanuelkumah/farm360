@@ -11,6 +11,14 @@ const farmersReducer = (data, action) => {
       return {
         ...data,
         farmers: [...data.farmers, action.payload],
+        farms: [
+          ...data.farms,
+          {
+            farm1: action.payload.primaryFarm,
+            farm2: action.payload.secondFarm,
+            farm3: action.payload.thirdFarm,
+          },
+        ],
       };
     case "DELETE_FARMER":
       return {

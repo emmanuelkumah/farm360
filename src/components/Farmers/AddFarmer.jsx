@@ -34,8 +34,13 @@ const AddFarmer = () => {
     primaryFarm: "",
     secondFarm: "",
     thirdFarm: "",
+    //farmNames: ["Test"],
   });
 
+  // const handleAddFarms = (e) => {
+  //   const { value } = e.target;
+
+  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFarmer({ ...farmer, [name]: value });
@@ -88,7 +93,6 @@ const AddFarmer = () => {
       thirdFarm: "",
     });
   };
-  // const handleAddFarm = () => {};
   return (
     <div>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
@@ -304,31 +308,33 @@ const AddFarmer = () => {
                 </Select>
               </div>
             </section>
-            <section className="flex flex-col md:flex-row md:items-center md:gap-2">
+            <section className="flex flex-col md:flex-row md:items-center md:gap-4">
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="farmName" value="farm name" />
+                  <Label htmlFor="farmName" value="Farm name" />
                 </div>
                 <TextInput
                   id="farmName"
                   type="text"
                   value={farmer.primaryFarm}
-                  placeholder="Enter farm name"
+                  placeholder="Enter primary farm name"
                   name="primaryFarm"
                   onChange={handleChange}
                   required
                 />
               </div>
-              <Button onClick={() => setAddFarms(!addFarms)}>
-                {`${!addFarms ? "Add farms" : "Hide farms"}`}{" "}
-              </Button>
+              <div className="md:mt-8">
+                <Button onClick={() => setAddFarms(!addFarms)}>
+                  {`${!addFarms ? "Add more farms" : "Hide farms"}`}{" "}
+                </Button>
+              </div>
             </section>
             <section>
               {addFarms && (
                 <div className="flex flex-col mt-5 md:flex-row gap-5">
                   <div>
                     <div className="mb-2 block">
-                      <Label htmlFor="secondFarm" value="Second name" />
+                      <Label htmlFor="secondFarm" value="Second farm name" />
                     </div>
                     <TextInput
                       id="secondFarm"
@@ -337,12 +343,11 @@ const AddFarmer = () => {
                       placeholder="Enter farm name"
                       name="secondFarm"
                       onChange={handleChange}
-                      required
                     />
                   </div>
                   <div>
                     <div className="mb-2 block">
-                      <Label htmlFor="thirdFarm" value="Third Farm" />
+                      <Label htmlFor="thirdFarm" value="Third farm name" />
                     </div>
                     <TextInput
                       id="thirdFarm"
@@ -351,14 +356,13 @@ const AddFarmer = () => {
                       placeholder="Enter farm name"
                       name="thirdFarm"
                       onChange={handleChange}
-                      required
                     />
                   </div>
                 </div>
               )}
             </section>
 
-            <Button type="submit" className="my-10">
+            <Button type="submit" className="my-4">
               Submit
             </Button>
           </form>
