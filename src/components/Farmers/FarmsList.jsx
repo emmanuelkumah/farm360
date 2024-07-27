@@ -16,6 +16,7 @@ const FarmsList = () => {
           <Table.HeadCell>Farm name</Table.HeadCell>
           <Table.HeadCell>Farm size(acres)</Table.HeadCell>
           <Table.HeadCell>Community</Table.HeadCell>
+          <Table.HeadCell>Crop</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {state.farmers.map((farmer) =>
@@ -29,13 +30,16 @@ const FarmsList = () => {
                 </Table.Cell>
                 <Table.Cell>{farm.area}</Table.Cell>
                 <Table.Cell>{farm.community}</Table.Cell>
+                <Table.Cell>{farm.crop}</Table.Cell>
 
                 <Table.Cell>
-                  <div className="flex items-center gap-5">
+                  <div className="flex md:items-center md:justify-evenly">
                     <Button>Start Activity</Button>
-                    <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
-                    <MdDelete className="text-xl hover:text-red-700 cursor-pointer" />
-                    <FaEye />
+                    <div className="md:flex md:gap-10">
+                      <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                      <MdDelete className="text-xl hover:text-red-700 cursor-pointer" />
+                      <FaEye />
+                    </div>
                   </div>
                 </Table.Cell>
               </Table.Row>

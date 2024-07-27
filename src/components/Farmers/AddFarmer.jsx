@@ -14,6 +14,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { regions } from "../../data/dummyData";
 
 const AddFarmer = () => {
   const { dispatch } = useFarmersContext();
@@ -34,7 +35,6 @@ const AddFarmer = () => {
     primaryFarm: "",
     secondFarm: "",
     thirdFarm: "",
-    //farmNames: ["Test"],
   });
 
   // const handleAddFarms = (e) => {
@@ -230,6 +230,44 @@ const AddFarmer = () => {
                 />
               </div>
             </section>
+            <section className="flex flex-col">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="region" value="Region" />
+                </div>
+                <Select
+                  id="crop"
+                  required
+                  onClick={handleCropType}
+                  className="w-full"
+                >
+                  <option value="">Select region</option>
+                  {regions.map((region) => (
+                    <option value={region.name} key={region.id}>
+                      {region.name}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className="mt-5">
+                <div className="mb-2 block">
+                  <Label htmlFor="district" value="District" />
+                </div>
+                <Select
+                  id="district"
+                  required
+                  onClick={handleCropType}
+                  className="w-full"
+                >
+                  <option value="">Select District</option>
+                  {regions.map((region) => (
+                    <option value={region.name} key={region.id}>
+                      {region.name}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            </section>
 
             <section className="flex flex-col md:flex-row md:gap-2">
               <fieldset className="flex max-w-md flex-col gap-4">
@@ -267,32 +305,18 @@ const AddFarmer = () => {
                   </Label>
                 </div>
               </fieldset>
+
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="crop" value="Crop grown" />
+                  <Label htmlFor="crop" value="Select Group" />
                 </div>
-                <Select id="crop" required onClick={handleCropType}>
-                  <option>Select crop</option>
-                  <option value="Soya" name="cropType">
-                    Soya{" "}
-                  </option>
-                  <option value="Shea Butter" name="cropType">
-                    Shea butter
-                  </option>
-                  <option value="Cowpea" name="cropType">
-                    Cowpea
-                  </option>
-                  <option value="Groundnut" name="cropType">
-                    Groundnut
-                  </option>
-                </Select>
-              </div>
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="crop" value="Group" />
-                </div>
-                <Select id="crop" required onClick={handleSelectGroup}>
-                  <option>Select group</option>
+                <Select
+                  id="crop"
+                  required
+                  onClick={handleSelectGroup}
+                  className="w-full"
+                >
+                  <option>group</option>
                   <option value="Group 1" name="group">
                     Group 1
                   </option>
@@ -306,6 +330,20 @@ const AddFarmer = () => {
                     Group 4
                   </option>
                 </Select>
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="community" value="Community" />
+                </div>
+                <TextInput
+                  id="community"
+                  type="text"
+                  value={farmer.primaryFarm}
+                  placeholder="Enter Community"
+                  name="community"
+                  onChange={handleChange}
+                  required
+                />
               </div>
             </section>
             <section className="flex flex-col md:flex-row md:items-center md:gap-4">
@@ -323,13 +361,41 @@ const AddFarmer = () => {
                   required
                 />
               </div>
-              <div className="md:mt-8">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="crop" value="Crop grown" />
+                </div>
+                <TextInput
+                  id="crop"
+                  type="text"
+                  value={farmer.primaryFarm}
+                  placeholder="Enter crop grown"
+                  name="crop"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="size" value="Farm size(acres)" />
+                </div>
+                <TextInput
+                  id="sie"
+                  type="number"
+                  value={farmer.primaryFarm}
+                  placeholder="Enter sze"
+                  name="size"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </section>
+            <section>
+              <div className="md:mt-3">
                 <Button onClick={() => setAddFarms(!addFarms)}>
                   {`${!addFarms ? "Add more farms" : "Hide farms"}`}{" "}
                 </Button>
               </div>
-            </section>
-            <section>
               {addFarms && (
                 <div className="flex flex-col mt-5 md:flex-row gap-5">
                   <div>
@@ -347,23 +413,35 @@ const AddFarmer = () => {
                   </div>
                   <div>
                     <div className="mb-2 block">
-                      <Label htmlFor="thirdFarm" value="Third farm name" />
+                      <Label htmlFor="thirdFarm" value="Crop grown" />
                     </div>
                     <TextInput
-                      id="thirdFarm"
+                      id="secondFarm"
                       type="text"
                       value={farmer.thirdFarm}
-                      placeholder="Enter farm name"
-                      name="thirdFarm"
+                      placeholder="Enter crop grown"
+                      name="secondFarm"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="size" value="Farm size(acres)" />
+                    </div>
+                    <TextInput
+                      id="sie"
+                      type="number"
+                      value={farmer.primaryFarm}
+                      placeholder="Enter sze"
+                      name="size"
                       onChange={handleChange}
                     />
                   </div>
                 </div>
               )}
             </section>
-
             <Button type="submit" className="my-4">
-              Submit
+              Save
             </Button>
           </form>
         </Modal.Body>

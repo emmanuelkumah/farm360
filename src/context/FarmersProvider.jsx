@@ -1,9 +1,9 @@
 import { createContext, useContext, useReducer } from "react";
-import { dummyData, dummyFarms, farmersData } from "../data/dummyData";
+import { dummyData, farmersData } from "../data/dummyData";
 
 const FarmersContext = createContext();
 
-const farmContext = createContext(null);
+// const farmContext = createContext(null);
 
 const farmersReducer = (data, action) => {
   switch (action.type) {
@@ -40,20 +40,8 @@ const farmersReducer = (data, action) => {
   }
 };
 
-const farmReducer = (dummyFarms, action) => {
-  switch (action.type) {
-    case "ADD_FARM":
-      return [...dummyFarms, action.payload];
-
-      break;
-
-    default:
-      break;
-  }
-};
 const FarmersProvider = ({ children }) => {
   const [state, dispatch] = useReducer(farmersReducer, farmersData);
-  //const [farmState, farmDispatch] = useReducer(farmReducer, dummyFarms);
 
   return (
     <>
@@ -67,4 +55,3 @@ const FarmersProvider = ({ children }) => {
 export default FarmersProvider;
 
 export const useFarmersContext = () => useContext(FarmersContext);
-export const useFarmContext = () => useContext(FarmersContext);
