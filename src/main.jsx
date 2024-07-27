@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import "./index.css";
-import Root from "./routes/root";
+// import Root from "./routes/HomeLayout";
 import ErrorPage from "./error-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
@@ -16,18 +16,30 @@ import {
   Collectors,
   Traceability,
   FarmActivity,
+  Landing,
 } from "./pages";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 import TraaceabilityProvider from "./context/TraaceabilityProvider";
-import AuthProvider from "./context/AuthProvider";
+// import AuthProvider from "./context/AuthProvider";
 import UserProvider from "./context/UserProvider";
+import HomeLayout from "./routes/HomeLayout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <HomeLayout />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Landing />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ],
   },
   {
     path: "/app",
@@ -74,10 +86,6 @@ const router = createBrowserRouter([
         element: <Traceability />,
       },
     ],
-  },
-  {
-    path: "/login",
-    element: <Login />,
   },
 ]);
 

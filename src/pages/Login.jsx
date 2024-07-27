@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import axios from "../api/axios";
-import { useAuthContext } from "../context/AuthProvider";
+// import { useAuthContext } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const LOGIN_URL = "/user";
@@ -14,8 +14,8 @@ const Login = () => {
     success: "",
     error: "",
   });
-  const navigate = useNavigate();
-  const { setAuth } = useAuthContext();
+  // const navigate = useNavigate();
+  // const { setAuth } = useAuthContext();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -8,3 +8,4 @@ export { default as FarmManagement } from "./FarmManagement";
 export { default as Collectors } from "./Collectors";
 export { default as Traceability } from "./Traceability";
 export { default as FarmActivity } from "./FarmActivity";
+export { default as Landing } from "./Landing";
