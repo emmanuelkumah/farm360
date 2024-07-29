@@ -1,10 +1,9 @@
 import { Button } from "flowbite-react";
-import { AddFarmer, FarmersList } from "../components";
+import { FarmersList } from "../components";
 import { useFarmersContext } from "../context/FarmersProvider";
-import { useStateContext } from "../context/ContextProvider";
+import { Link } from "react-router-dom";
 
 const Farmers = () => {
-  const { setOpenModal } = useStateContext();
   const { state } = useFarmersContext();
   return (
     <>
@@ -17,9 +16,10 @@ const Farmers = () => {
           placeholder="Search"
         />
         <div className="my-10">
-          <Button onClick={() => setOpenModal(true)}>Add new farmer</Button>
+          <Link to="/app/add">
+            <Button>Add new farmer</Button>
+          </Link>
         </div>
-        <AddFarmer />
 
         {state.farmers.length >= 1 ? (
           <FarmersList />

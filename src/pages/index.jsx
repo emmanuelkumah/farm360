@@ -9,3 +9,4 @@ export { default as Collectors } from "./Collectors";
 export { default as Traceability } from "./Traceability";
 export { default as FarmActivity } from "./FarmActivity";
 export { default as Landing } from "./Landing";
+export { default as AddFarmer } from "./AddFarmer";

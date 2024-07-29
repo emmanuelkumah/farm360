@@ -17,6 +17,7 @@ import {
   Traceability,
   FarmActivity,
   Landing,
+  AddFarmer,
 } from "./pages";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
@@ -50,39 +51,39 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "/app/farmers",
+        path: "farmers",
         element: <Farmers />,
       },
       {
-        path: "/app/farms/",
+        path: "farms",
         element: <Farms />,
       },
       {
-        path: "/app/farms/:farmId",
+        path: "farms/:farmId",
         element: <FarmActivity />,
       },
       {
-        path: "/app/management",
+        path: "management",
         element: <FarmManagement />,
       },
       {
-        path: "/app/management/:farmID",
+        path: "management/:farmID",
         element: "Farm activities",
       },
       {
-        path: "/app/collectors",
-        element: <Collectors />,
+        path: "add",
+        element: <AddFarmer />,
       },
       {
-        path: "/app/reports",
+        path: "reports",
         element: <Reports />,
       },
       {
-        path: "/app/users",
+        path: "users",
         element: <Users />,
       },
       {
-        path: "/app/traceability",
+        path: "traceability",
         element: <Traceability />,
       },
     ],

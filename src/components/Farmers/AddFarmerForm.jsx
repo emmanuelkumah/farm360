@@ -1,0 +1,858 @@
+import React, { useState } from "react";
+import { useFarmersContext } from "../../context/FarmersProvider";
+import { useStateContext } from "../../context/ContextProvider";
+import {
+  Button,
+  Modal,
+  Label,
+  TextInput,
+  Radio,
+  FileInput,
+  Select,
+  Datepicker,
+} from "flowbite-react";
+import { FaRegUserCircle } from "react-icons/fa";
+import { BiHome, BiMap, BiPhone } from "react-icons/bi";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { regions } from "../../data/dummyData";
+
+const AddFarmerForm = () => {
+  const { dispatch } = useFarmersContext();
+  const { openModal, setOpenModal } = useStateContext();
+  const [addFarms, setAddFarms] = useState(false);
+  const [farmer, setFarmer] = useState({
+    firstName: "",
+    lastName: "",
+    contact: "",
+    homeAddress: "",
+    GPS: "",
+    dateOfBirth: new Date(),
+    farmerType: null,
+    cropType: null,
+    farmerGroup: null,
+    gender: "",
+    picture: null,
+    primaryFarm: "",
+    secondFarm: "",
+    thirdFarm: "",
+  });
+
+  // const handleAddFarms = (e) => {
+  //   const { value } = e.target;
+
+  // };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFarmer({ ...farmer, [name]: value });
+  };
+
+  const handleFarmerTypeChange = (e) => {
+    const { name, value } = e.target;
+    setFarmer({
+      ...farmer,
+      [name]: value,
+    });
+  };
+
+  const handleCropType = (event) => {
+    const { value } = event.target;
+    setFarmer({
+      ...farmer,
+      cropType: value,
+    });
+  };
+  const handleSelectGroup = (event) => {
+    const { value } = event.target;
+    setFarmer({
+      ...farmer,
+      farmerGroup: value,
+    });
+  };
+
+  const handleImageChange = (e) => {
+    const { name } = e.target;
+    setFarmer({
+      ...farmer,
+      [name]: e.target.files[0],
+    });
+  };
+  const handleAddFarmer = () => {
+    dispatch({
+      type: "ADD_FARMER",
+      payload: { id: Math.floor(Math.random() * 1000000), ...farmer },
+    });
+    setOpenModal(false);
+    setFarmer({
+      firstName: "",
+      lastName: "",
+      contact: "",
+      homeAddress: "",
+      GPS: "",
+      primaryFarm: "",
+      secondFarm: "",
+      thirdFarm: "",
+    });
+  };
+  {
+    /* <div className="flex justify-center">
+        <form
+          className="flex max-w-md md:max-lg flex-col gap-4"
+          onSubmit={handleAddFarmer}
+        >
+          <section className="flex flex-col md:flex-row md:gap-5">
+            <div>
+              <div className="mb-2">
+                <Label htmlFor="file-upload" value="Select picture" />
+              </div>
+              <FileInput
+                id="file-upload"
+                onChange={handleImageChange}
+                name="picture"
+              />
+            </div>
+            <fieldset className="flex max-w-md flex-col md:flex-row  gap-4">
+              <legend className="mb-4"> Gender</legend>
+              <div className="flex items-center gap-2">
+                <Radio
+                  id="male"
+                  name="gender"
+                  value="Male"
+                  onChange={handleFarmerTypeChange}
+                  required
+                />
+                <Label htmlFor="male">Male</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Radio
+                  id="female"
+                  name="gender"
+                  value="Female"
+                  onChange={handleFarmerTypeChange}
+                  required
+                />
+                <Label htmlFor="female">Female</Label>
+              </div>
+            </fieldset>
+          </section>
+
+          <section className="flex flex-col md:flex-row md:gap-5">
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="firstName" value="First name" />
+              </div>
+              <TextInput
+                id="firstName"
+                type="text"
+                icon={FaRegUserCircle}
+                value={farmer.firstName}
+                placeholder="Enter firstname"
+                name="firstName"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="lastName" value="Last name" />
+              </div>
+              <TextInput
+                id="lastName"
+                type="text"
+                icon={FaRegUserCircle}
+                placeholder="Enter last name"
+                value={farmer.lastName}
+                name="lastName"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </section>
+          <section className="flex flex-col md:flex-row md:gap-5">
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="homeAddress" value="Home address" />
+              </div>
+              <TextInput
+                id="homeAddress"
+                type="text"
+                icon={BiHome}
+                name="homeAddress"
+                value={farmer.homeAddress}
+                onChange={handleChange}
+                placeholder="Enter home address"
+                required
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="GPS" value="GPS Address" />
+              </div>
+              <TextInput
+                id="GPS"
+                type="text"
+                icon={BiMap}
+                placeholder="Enter GPS"
+                name="GPS"
+                onChange={handleChange}
+                value={farmer.GPS}
+                required
+              />
+            </div>
+          </section>
+          <section className="flex flex-col md:flex-row md:gap-5">
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="contact" value="Contact" />
+              </div>
+              <TextInput
+                id="contact"
+                type="number"
+                icon={BiPhone}
+                name="contact"
+                value={farmer.contact}
+                onChange={handleChange}
+                placeholder="Enter contact"
+                required
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="dob" value="Date of birth" />
+              </div>
+              <DatePicker
+                selected={farmer.dateOfBirth}
+                onChange={(date) => setFarmer({ ...farmer, dateOfBirth: date })}
+              />
+            </div>
+          </section>
+          <section className="flex flex-col">
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="region" value="Region" />
+              </div>
+              <Select
+                id="crop"
+                required
+                onClick={handleCropType}
+                className="w-full"
+              >
+                <option value="">Select region</option>
+                {regions.map((region) => (
+                  <option value={region.name} key={region.id}>
+                    {region.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <div className="mt-5">
+              <div className="mb-2 block">
+                <Label htmlFor="district" value="District" />
+              </div>
+              <Select
+                id="district"
+                required
+                onClick={handleCropType}
+                className="w-full"
+              >
+                <option value="">Select District</option>
+                {regions.map((region) => (
+                  <option value={region.name} key={region.id}>
+                    {region.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          </section>
+
+          <section className="flex flex-col md:flex-row md:gap-2">
+            <fieldset className="flex max-w-md flex-col gap-4">
+              <legend className="mb-4">Choose farmer type</legend>
+              <div className="flex items-center gap-2">
+                <Radio
+                  id="farmer"
+                  name="farmerType"
+                  value="farmer"
+                  onChange={handleFarmerTypeChange}
+                  required
+                />
+                <Label htmlFor="farmer">farmer</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Radio
+                  id="processor"
+                  name="farmerType"
+                  value="Processor"
+                  onChange={handleFarmerTypeChange}
+                  required
+                />
+                <Label htmlFor="processor">Processor</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Radio
+                  id="farmerProcessor"
+                  name="farmerType"
+                  value="Farmer and Processor"
+                  onChange={handleFarmerTypeChange}
+                  required
+                />
+                <Label htmlFor="farmerProcessor">
+                  Both(farmer & Processor)
+                </Label>
+              </div>
+            </fieldset>
+
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="crop" value="Select Group" />
+              </div>
+              <Select
+                id="crop"
+                required
+                onClick={handleSelectGroup}
+                className="w-full"
+              >
+                <option>group</option>
+                <option value="Group 1" name="group">
+                  Group 1
+                </option>
+                <option value="Group 2" name="group">
+                  Group 2
+                </option>
+                <option value="Group 3" name="group">
+                  Group 3
+                </option>
+                <option value="Group 4" name="group">
+                  Group 4
+                </option>
+              </Select>
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="community" value="Community" />
+              </div>
+              <TextInput
+                id="community"
+                type="text"
+                value={farmer.primaryFarm}
+                placeholder="Enter Community"
+                name="community"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </section>
+          <section className="flex flex-col md:flex-row md:items-center md:gap-4">
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="farmName" value="Farm name" />
+              </div>
+              <TextInput
+                id="farmName"
+                type="text"
+                value={farmer.primaryFarm}
+                placeholder="Enter primary farm name"
+                name="primaryFarm"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="crop" value="Crop grown" />
+              </div>
+              <TextInput
+                id="crop"
+                type="text"
+                value={farmer.primaryFarm}
+                placeholder="Enter crop grown"
+                name="crop"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="size" value="Farm size(acres)" />
+              </div>
+              <TextInput
+                id="sie"
+                type="number"
+                value={farmer.primaryFarm}
+                placeholder="Enter sze"
+                name="size"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </section>
+          <section>
+            <div className="md:mt-3">
+              <Button onClick={() => setAddFarms(!addFarms)}>
+                {`${!addFarms ? "Add more farms" : "Hide farms"}`}{" "}
+              </Button>
+            </div>
+            {addFarms && (
+              <div className="flex flex-col mt-5 md:flex-row gap-5">
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="secondFarm" value="Second farm name" />
+                  </div>
+                  <TextInput
+                    id="secondFarm"
+                    type="text"
+                    value={farmer.secondFarm}
+                    placeholder="Enter farm name"
+                    name="secondFarm"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="thirdFarm" value="Crop grown" />
+                  </div>
+                  <TextInput
+                    id="secondFarm"
+                    type="text"
+                    value={farmer.thirdFarm}
+                    placeholder="Enter crop grown"
+                    name="secondFarm"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="size" value="Farm size(acres)" />
+                  </div>
+                  <TextInput
+                    id="sie"
+                    type="number"
+                    value={farmer.primaryFarm}
+                    placeholder="Enter sze"
+                    name="size"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            )}
+          </section>
+          <Button type="submit" className="my-4">
+            Save
+          </Button>
+        </form>
+      </div> */
+  }
+  return (
+    <>
+      <div className="bg-white h-full rounded-lg shadow-md">
+        <section className="flex flex-col justify-center items-center mt-10">
+          <form className="w-[80vw] md:w-[60vw] mt-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
+              <section>
+                <div className="flex flex-col md:flex-row md:justify-evenly">
+                  <div>
+                    <div className="mb-2">
+                      <Label htmlFor="file-upload" value="Select picture" />
+                    </div>
+                    <FileInput
+                      id="file-upload"
+                      onChange={handleImageChange}
+                      name="picture"
+                    />
+                  </div>
+                  <fieldset className="flex flex-col md:flex-row gap-4">
+                    <legend className="mb-4"> Gender</legend>
+                    <div className="flex items-center gap-2">
+                      <Radio
+                        id="male"
+                        name="gender"
+                        value="Male"
+                        onChange={handleFarmerTypeChange}
+                        required
+                      />
+                      <Label htmlFor="male">Male</Label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Radio
+                        id="female"
+                        name="gender"
+                        value="Female"
+                        onChange={handleFarmerTypeChange}
+                        required
+                      />
+                      <Label htmlFor="female">Female</Label>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <div className="flex flex-col">
+                  <div>
+                    <div className="my-2 block">
+                      <Label
+                        htmlFor="firstName"
+                        value="First name"
+                        className="font-semibold"
+                      />
+                    </div>
+                    <TextInput
+                      id="firstName"
+                      type="text"
+                      icon={FaRegUserCircle}
+                      value={farmer.firstName}
+                      placeholder="Enter firstname"
+                      name="firstName"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <div className="my-2 block">
+                      <Label
+                        htmlFor="lastName"
+                        value="Last name"
+                        className="font-semibold"
+                      />
+                    </div>
+                    <TextInput
+                      id="lastName"
+                      type="text"
+                      icon={FaRegUserCircle}
+                      placeholder="Enter last name"
+                      value={farmer.lastName}
+                      name="lastName"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <div className="my-2 block">
+                      <Label
+                        htmlFor="homeAddress"
+                        value="Home address"
+                        className="font-semibold"
+                      />
+                    </div>
+                    <TextInput
+                      id="homeAddress"
+                      type="text"
+                      icon={BiHome}
+                      name="homeAddress"
+                      value={farmer.homeAddress}
+                      onChange={handleChange}
+                      placeholder="Enter home address"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <div className="my-2 block">
+                      <Label
+                        htmlFor="GPS"
+                        value="GPS Address"
+                        className="font-semibold"
+                      />
+                    </div>
+                    <TextInput
+                      id="GPS"
+                      type="text"
+                      icon={BiMap}
+                      placeholder="Enter GPS"
+                      name="GPS"
+                      onChange={handleChange}
+                      value={farmer.GPS}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <div className="my-2 block">
+                      <Label
+                        htmlFor="contact"
+                        value="Contact"
+                        className="font-semibold"
+                      />
+                    </div>
+                    <TextInput
+                      id="contact"
+                      type="number"
+                      icon={BiPhone}
+                      name="contact"
+                      value={farmer.contact}
+                      onChange={handleChange}
+                      placeholder="Enter contact"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <div className="my-2 block">
+                      <Label
+                        htmlFor="dob"
+                        value="Date of birth"
+                        className="font-semibold"
+                      />
+                    </div>
+                    <Datepicker
+                      minDate={new Date(2020, 0, 1)}
+                      selected={farmer.dateOfBirth}
+                      onChange={(date) =>
+                        setFarmer({ ...farmer, dateOfBirth: date })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <div className="my-2 block">
+                      <Label
+                        htmlFor="region"
+                        value="Region"
+                        className="font-semibold"
+                      />
+                    </div>
+                    <Select
+                      id="crop"
+                      required
+                      onClick={handleCropType}
+                      className="w-full"
+                    >
+                      <option value="">Select region</option>
+                      {regions.map((region) => (
+                        <option value={region.name} key={region.id}>
+                          {region.name}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      htmlFor="district"
+                      value="District"
+                      className="font-semibold"
+                    />
+                  </div>
+                  <Select
+                    id="district"
+                    required
+                    onClick={handleCropType}
+                    className="w-full"
+                  >
+                    <option value="">Select District</option>
+                    {regions.map((region) => (
+                      <option value={region.name} key={region.id}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      htmlFor="community"
+                      value="Community"
+                      className="font-semibold"
+                    />
+
+                    <TextInput
+                      id="community"
+                      type="text"
+                      icon={FaRegUserCircle}
+                      value={farmer.community}
+                      placeholder="Enter community"
+                      name="community"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+                <fieldset className="flex max-w-md flex-col gap-4">
+                  <legend className="mb-4 font-semibold">
+                    Choose farmer type
+                  </legend>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="farmer"
+                      name="farmerType"
+                      value="farmer"
+                      onChange={handleFarmerTypeChange}
+                      required
+                    />
+                    <Label htmlFor="farmer">farmer</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="processor"
+                      name="farmerType"
+                      value="Processor"
+                      onChange={handleFarmerTypeChange}
+                      required
+                    />
+                    <Label htmlFor="processor">Processor</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="farmerProcessor"
+                      name="farmerType"
+                      value="Farmer and Processor"
+                      onChange={handleFarmerTypeChange}
+                      required
+                    />
+                    <Label htmlFor="farmerProcessor">
+                      Both(farmer & Processor)
+                    </Label>
+                  </div>
+                </fieldset>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      className="font-semibold"
+                      htmlFor="crop"
+                      value="Select farmer group"
+                    />
+                  </div>
+                  <Select
+                    id="crop"
+                    required
+                    onClick={handleSelectGroup}
+                    className="w-full"
+                  >
+                    <option>group</option>
+                    <option value="Group 1" name="group">
+                      Group 1
+                    </option>
+                    <option value="Group 2" name="group">
+                      Group 2
+                    </option>
+                    <option value="Group 3" name="group">
+                      Group 3
+                    </option>
+                    <option value="Group 4" name="group">
+                      Group 4
+                    </option>
+                  </Select>
+                </div>
+              </section>
+              <section>
+                <h2>Farm Details</h2>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      className="font-semibold"
+                      htmlFor="farmName"
+                      value="Farm name"
+                    />
+                  </div>
+                  <TextInput
+                    id="farmName"
+                    type="text"
+                    value={farmer.primaryFarm}
+                    placeholder="Enter primary farm name"
+                    name="primaryFarm"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      className="font-semibold"
+                      htmlFor="crop"
+                      value="Crop grown"
+                    />
+                  </div>
+                  <TextInput
+                    id="crop"
+                    type="text"
+                    value={farmer.primaryFarm}
+                    placeholder="Enter crop grown"
+                    name="crop"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      className="font-semibold"
+                      htmlFor="size"
+                      value="Farm size(acres)"
+                    />
+                  </div>
+                  <TextInput
+                    id="sie"
+                    type="number"
+                    value={farmer.primaryFarm}
+                    placeholder="Enter sze"
+                    name="size"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      className="font-semibold"
+                      htmlFor="region"
+                      value="Region"
+                    />
+                  </div>
+                  <Select
+                    id="crop"
+                    required
+                    onClick={handleCropType}
+                    className="w-full"
+                  >
+                    <option value="">Select region</option>
+                    {regions.map((region) => (
+                      <option value={region.name} key={region.id}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      htmlFor="district"
+                      value="District"
+                      className="font-semibold"
+                    />
+                  </div>
+                  <Select
+                    id="district"
+                    required
+                    onClick={handleCropType}
+                    className="w-full"
+                  >
+                    <option value="">Select District</option>
+                    {regions.map((region) => (
+                      <option value={region.name} key={region.id}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                <div className="my-2 block">
+                  <Label
+                    htmlFor="community"
+                    value="Community"
+                    className="font-semibold"
+                  />
+
+                  <TextInput
+                    id="community"
+                    type="text"
+                    icon={FaRegUserCircle}
+                    value={farmer.community}
+                    placeholder="Enter community"
+                    name="community"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </section>
+            </div>
+          </form>
+        </section>
+      </div>
+    </>
+  );
+};
+
+export default AddFarmerForm;
