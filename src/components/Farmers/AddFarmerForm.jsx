@@ -15,44 +15,48 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { regions } from "../../data/dummyData";
+import { regions, districts } from "../../data/dummyData";
 
 const AddFarmerForm = () => {
   const { dispatch } = useFarmersContext();
-  const { openModal, setOpenModal } = useStateContext();
   const [addFarms, setAddFarms] = useState(false);
   const [farmer, setFarmer] = useState({
+    gender: "",
+    picture: null,
     firstName: "",
     lastName: "",
     contact: "",
     homeAddress: "",
-    GPS: "",
-    dateOfBirth: new Date(),
+    gps: "",
+    dateOfBirth: null,
+    region: "",
+    district: "",
+    community: "",
     farmerType: null,
     cropType: null,
     farmerGroup: null,
-    gender: "",
-    picture: null,
-    primaryFarm: "",
-    secondFarm: "",
-    thirdFarm: "",
+    farmName: "",
+    farmSize: "",
+    farmRegion: "",
+    farmDistrict: "",
+    farmCommunity: "",
   });
+  const [showDistricts, setShowDistricts] = useState([]);
 
-  // const handleAddFarms = (e) => {
-  //   const { value } = e.target;
-
-  // };
-  const handleChange = (e) => {
+  const getDistricts = (id) => {
+    const result = districts.find((district) => district.regionId === id);
+    setShowDistricts(result.listDistrict);
+  };
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFarmer({ ...farmer, [name]: value });
   };
-
-  const handleFarmerTypeChange = (e) => {
-    const { name, value } = e.target;
-    setFarmer({
-      ...farmer,
-      [name]: value,
-    });
+  const handleDateChange = (date) => {
+    setFarmer({ ...farmer, dateOfBirth: date.toLocaleDateString() });
+  };
+  const handleRegionSelect = (e) => {
+    setFarmer({ ...farmer, region: e.target.value });
+    getDistricts(e.target.selectedIndex);
   };
 
   const handleCropType = (event) => {
@@ -94,380 +98,29 @@ const AddFarmerForm = () => {
       thirdFarm: "",
     });
   };
-  {
-    /* <div className="flex justify-center">
-        <form
-          className="flex max-w-md md:max-lg flex-col gap-4"
-          onSubmit={handleAddFarmer}
-        >
-          <section className="flex flex-col md:flex-row md:gap-5">
-            <div>
-              <div className="mb-2">
-                <Label htmlFor="file-upload" value="Select picture" />
-              </div>
-              <FileInput
-                id="file-upload"
-                onChange={handleImageChange}
-                name="picture"
-              />
-            </div>
-            <fieldset className="flex max-w-md flex-col md:flex-row  gap-4">
-              <legend className="mb-4"> Gender</legend>
-              <div className="flex items-center gap-2">
-                <Radio
-                  id="male"
-                  name="gender"
-                  value="Male"
-                  onChange={handleFarmerTypeChange}
-                  required
-                />
-                <Label htmlFor="male">Male</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Radio
-                  id="female"
-                  name="gender"
-                  value="Female"
-                  onChange={handleFarmerTypeChange}
-                  required
-                />
-                <Label htmlFor="female">Female</Label>
-              </div>
-            </fieldset>
-          </section>
 
-          <section className="flex flex-col md:flex-row md:gap-5">
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="firstName" value="First name" />
-              </div>
-              <TextInput
-                id="firstName"
-                type="text"
-                icon={FaRegUserCircle}
-                value={farmer.firstName}
-                placeholder="Enter firstname"
-                name="firstName"
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="lastName" value="Last name" />
-              </div>
-              <TextInput
-                id="lastName"
-                type="text"
-                icon={FaRegUserCircle}
-                placeholder="Enter last name"
-                value={farmer.lastName}
-                name="lastName"
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </section>
-          <section className="flex flex-col md:flex-row md:gap-5">
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="homeAddress" value="Home address" />
-              </div>
-              <TextInput
-                id="homeAddress"
-                type="text"
-                icon={BiHome}
-                name="homeAddress"
-                value={farmer.homeAddress}
-                onChange={handleChange}
-                placeholder="Enter home address"
-                required
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="GPS" value="GPS Address" />
-              </div>
-              <TextInput
-                id="GPS"
-                type="text"
-                icon={BiMap}
-                placeholder="Enter GPS"
-                name="GPS"
-                onChange={handleChange}
-                value={farmer.GPS}
-                required
-              />
-            </div>
-          </section>
-          <section className="flex flex-col md:flex-row md:gap-5">
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="contact" value="Contact" />
-              </div>
-              <TextInput
-                id="contact"
-                type="number"
-                icon={BiPhone}
-                name="contact"
-                value={farmer.contact}
-                onChange={handleChange}
-                placeholder="Enter contact"
-                required
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="dob" value="Date of birth" />
-              </div>
-              <DatePicker
-                selected={farmer.dateOfBirth}
-                onChange={(date) => setFarmer({ ...farmer, dateOfBirth: date })}
-              />
-            </div>
-          </section>
-          <section className="flex flex-col">
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="region" value="Region" />
-              </div>
-              <Select
-                id="crop"
-                required
-                onClick={handleCropType}
-                className="w-full"
-              >
-                <option value="">Select region</option>
-                {regions.map((region) => (
-                  <option value={region.name} key={region.id}>
-                    {region.name}
-                  </option>
-                ))}
-              </Select>
-            </div>
-            <div className="mt-5">
-              <div className="mb-2 block">
-                <Label htmlFor="district" value="District" />
-              </div>
-              <Select
-                id="district"
-                required
-                onClick={handleCropType}
-                className="w-full"
-              >
-                <option value="">Select District</option>
-                {regions.map((region) => (
-                  <option value={region.name} key={region.id}>
-                    {region.name}
-                  </option>
-                ))}
-              </Select>
-            </div>
-          </section>
-
-          <section className="flex flex-col md:flex-row md:gap-2">
-            <fieldset className="flex max-w-md flex-col gap-4">
-              <legend className="mb-4">Choose farmer type</legend>
-              <div className="flex items-center gap-2">
-                <Radio
-                  id="farmer"
-                  name="farmerType"
-                  value="farmer"
-                  onChange={handleFarmerTypeChange}
-                  required
-                />
-                <Label htmlFor="farmer">farmer</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Radio
-                  id="processor"
-                  name="farmerType"
-                  value="Processor"
-                  onChange={handleFarmerTypeChange}
-                  required
-                />
-                <Label htmlFor="processor">Processor</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Radio
-                  id="farmerProcessor"
-                  name="farmerType"
-                  value="Farmer and Processor"
-                  onChange={handleFarmerTypeChange}
-                  required
-                />
-                <Label htmlFor="farmerProcessor">
-                  Both(farmer & Processor)
-                </Label>
-              </div>
-            </fieldset>
-
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="crop" value="Select Group" />
-              </div>
-              <Select
-                id="crop"
-                required
-                onClick={handleSelectGroup}
-                className="w-full"
-              >
-                <option>group</option>
-                <option value="Group 1" name="group">
-                  Group 1
-                </option>
-                <option value="Group 2" name="group">
-                  Group 2
-                </option>
-                <option value="Group 3" name="group">
-                  Group 3
-                </option>
-                <option value="Group 4" name="group">
-                  Group 4
-                </option>
-              </Select>
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="community" value="Community" />
-              </div>
-              <TextInput
-                id="community"
-                type="text"
-                value={farmer.primaryFarm}
-                placeholder="Enter Community"
-                name="community"
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </section>
-          <section className="flex flex-col md:flex-row md:items-center md:gap-4">
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="farmName" value="Farm name" />
-              </div>
-              <TextInput
-                id="farmName"
-                type="text"
-                value={farmer.primaryFarm}
-                placeholder="Enter primary farm name"
-                name="primaryFarm"
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="crop" value="Crop grown" />
-              </div>
-              <TextInput
-                id="crop"
-                type="text"
-                value={farmer.primaryFarm}
-                placeholder="Enter crop grown"
-                name="crop"
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="size" value="Farm size(acres)" />
-              </div>
-              <TextInput
-                id="sie"
-                type="number"
-                value={farmer.primaryFarm}
-                placeholder="Enter sze"
-                name="size"
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </section>
-          <section>
-            <div className="md:mt-3">
-              <Button onClick={() => setAddFarms(!addFarms)}>
-                {`${!addFarms ? "Add more farms" : "Hide farms"}`}{" "}
-              </Button>
-            </div>
-            {addFarms && (
-              <div className="flex flex-col mt-5 md:flex-row gap-5">
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="secondFarm" value="Second farm name" />
-                  </div>
-                  <TextInput
-                    id="secondFarm"
-                    type="text"
-                    value={farmer.secondFarm}
-                    placeholder="Enter farm name"
-                    name="secondFarm"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="thirdFarm" value="Crop grown" />
-                  </div>
-                  <TextInput
-                    id="secondFarm"
-                    type="text"
-                    value={farmer.thirdFarm}
-                    placeholder="Enter crop grown"
-                    name="secondFarm"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="size" value="Farm size(acres)" />
-                  </div>
-                  <TextInput
-                    id="sie"
-                    type="number"
-                    value={farmer.primaryFarm}
-                    placeholder="Enter sze"
-                    name="size"
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-            )}
-          </section>
-          <Button type="submit" className="my-4">
-            Save
-          </Button>
-        </form>
-      </div> */
-  }
   return (
     <>
+      <h2 className="md:text-2xl text-green-500 font-bold my-4 border-l-4 pl-4 border-green-500">
+        Add new farmer
+      </h2>
       <div className="bg-white h-full rounded-lg shadow-md">
-        <section className="flex flex-col justify-center items-center mt-10">
-          <form className="w-[80vw] md:w-[60vw] mt-10">
+        <section className="flex flex-col justify-center items-center md:my-10">
+          <form className="w-[80vw] md:w-[60vw] my-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
               <section>
+                <h2 className="text-green-500 font-bold md:text-2xl mb-4">
+                  Farmer Details
+                </h2>
                 <div className="flex flex-col md:flex-row md:justify-evenly">
-                  <div>
-                    <div className="mb-2">
-                      <Label htmlFor="file-upload" value="Select picture" />
-                    </div>
-                    <FileInput
-                      id="file-upload"
-                      onChange={handleImageChange}
-                      name="picture"
-                    />
-                  </div>
                   <fieldset className="flex flex-col md:flex-row gap-4">
-                    <legend className="mb-4"> Gender</legend>
+                    <legend className="font-semibold mb-4"> Gender</legend>
                     <div className="flex items-center gap-2">
                       <Radio
                         id="male"
                         name="gender"
                         value="Male"
-                        onChange={handleFarmerTypeChange}
+                        onChange={handleInputChange}
                         required
                       />
                       <Label htmlFor="male">Male</Label>
@@ -477,12 +130,26 @@ const AddFarmerForm = () => {
                         id="female"
                         name="gender"
                         value="Female"
-                        onChange={handleFarmerTypeChange}
+                        onChange={handleInputChange}
                         required
                       />
                       <Label htmlFor="female">Female</Label>
                     </div>
                   </fieldset>
+                  <div>
+                    <div className="mb-2">
+                      <Label
+                        className="font-semibold"
+                        htmlFor="file-upload"
+                        value="Select picture"
+                      />
+                    </div>
+                    <FileInput
+                      id="file-upload"
+                      onChange={handleImageChange}
+                      name="picture"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex flex-col">
@@ -501,7 +168,7 @@ const AddFarmerForm = () => {
                       value={farmer.firstName}
                       placeholder="Enter firstname"
                       name="firstName"
-                      onChange={handleChange}
+                      onChange={handleInputChange}
                       required
                     />
                   </div>
@@ -520,7 +187,7 @@ const AddFarmerForm = () => {
                       placeholder="Enter last name"
                       value={farmer.lastName}
                       name="lastName"
-                      onChange={handleChange}
+                      onChange={handleInputChange}
                       required
                     />
                   </div>
@@ -538,7 +205,7 @@ const AddFarmerForm = () => {
                       icon={BiHome}
                       name="homeAddress"
                       value={farmer.homeAddress}
-                      onChange={handleChange}
+                      onChange={handleInputChange}
                       placeholder="Enter home address"
                       required
                     />
@@ -556,9 +223,9 @@ const AddFarmerForm = () => {
                       type="text"
                       icon={BiMap}
                       placeholder="Enter GPS"
-                      name="GPS"
-                      onChange={handleChange}
-                      value={farmer.GPS}
+                      name="gps"
+                      onChange={handleInputChange}
+                      value={farmer.gps}
                       required
                     />
                   </div>
@@ -574,9 +241,10 @@ const AddFarmerForm = () => {
                       id="contact"
                       type="number"
                       icon={BiPhone}
+                      maxLength={10}
                       name="contact"
                       value={farmer.contact}
-                      onChange={handleChange}
+                      onChange={handleInputChange}
                       placeholder="Enter contact"
                       required
                     />
@@ -590,11 +258,10 @@ const AddFarmerForm = () => {
                       />
                     </div>
                     <Datepicker
-                      minDate={new Date(2020, 0, 1)}
+                      name="dateOfBirth"
+                      maxDate={new Date(2010, 1, 30)}
                       selected={farmer.dateOfBirth}
-                      onChange={(date) =>
-                        setFarmer({ ...farmer, dateOfBirth: date })
-                      }
+                      onSelectedDateChanged={handleDateChange}
                     />
                   </div>
                   <div>
@@ -606,12 +273,11 @@ const AddFarmerForm = () => {
                       />
                     </div>
                     <Select
-                      id="crop"
+                      id="region"
                       required
-                      onClick={handleCropType}
-                      className="w-full"
+                      onChange={(e) => handleRegionSelect(e)}
                     >
-                      <option value="">Select region</option>
+                      <option>Select region</option>
                       {regions.map((region) => (
                         <option value={region.name} key={region.id}>
                           {region.name}
@@ -635,9 +301,9 @@ const AddFarmerForm = () => {
                     className="w-full"
                   >
                     <option value="">Select District</option>
-                    {regions.map((region) => (
-                      <option value={region.name} key={region.id}>
-                        {region.name}
+                    {showDistricts.map((district) => (
+                      <option value={district} key={district}>
+                        {district}
                       </option>
                     ))}
                   </Select>
@@ -657,7 +323,7 @@ const AddFarmerForm = () => {
                       value={farmer.community}
                       placeholder="Enter community"
                       name="community"
-                      onChange={handleChange}
+                      onChange={handleInputChange}
                       required
                     />
                   </div>
@@ -671,7 +337,7 @@ const AddFarmerForm = () => {
                       id="farmer"
                       name="farmerType"
                       value="farmer"
-                      onChange={handleFarmerTypeChange}
+                      onChange={handleInputChange}
                       required
                     />
                     <Label htmlFor="farmer">farmer</Label>
@@ -681,7 +347,7 @@ const AddFarmerForm = () => {
                       id="processor"
                       name="farmerType"
                       value="Processor"
-                      onChange={handleFarmerTypeChange}
+                      onChange={handleInputChange}
                       required
                     />
                     <Label htmlFor="processor">Processor</Label>
@@ -691,7 +357,7 @@ const AddFarmerForm = () => {
                       id="farmerProcessor"
                       name="farmerType"
                       value="Farmer and Processor"
-                      onChange={handleFarmerTypeChange}
+                      onChange={handleInputChange}
                       required
                     />
                     <Label htmlFor="farmerProcessor">
@@ -730,7 +396,9 @@ const AddFarmerForm = () => {
                 </div>
               </section>
               <section>
-                <h2>Farm Details</h2>
+                <h2 className="text-green-500 font-bold md:text-2xl mb-4">
+                  Farm Details
+                </h2>
                 <div>
                   <div className="my-2 block">
                     <Label
@@ -745,7 +413,7 @@ const AddFarmerForm = () => {
                     value={farmer.primaryFarm}
                     placeholder="Enter primary farm name"
                     name="primaryFarm"
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>
@@ -763,7 +431,7 @@ const AddFarmerForm = () => {
                     value={farmer.primaryFarm}
                     placeholder="Enter crop grown"
                     name="crop"
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>
@@ -781,7 +449,7 @@ const AddFarmerForm = () => {
                     value={farmer.primaryFarm}
                     placeholder="Enter sze"
                     name="size"
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -842,10 +510,135 @@ const AddFarmerForm = () => {
                     value={farmer.community}
                     placeholder="Enter community"
                     name="community"
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>
+                <Button onClick={() => setAddFarms(!addFarms)}>
+                  {addFarms ? "Hide farm" : "Add another farm"}
+                </Button>
+                {addFarms && (
+                  <section>
+                    <div>
+                      <div className="my-2 block">
+                        <Label
+                          className="font-semibold"
+                          htmlFor="farmName"
+                          value="Farm name"
+                        />
+                      </div>
+                      <TextInput
+                        id="farmName"
+                        type="text"
+                        value={farmer.primaryFarm}
+                        placeholder="Enter primary farm name"
+                        name="primaryFarm"
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <div className="my-2 block">
+                        <Label
+                          className="font-semibold"
+                          htmlFor="crop"
+                          value="Crop grown"
+                        />
+                      </div>
+                      <TextInput
+                        id="crop"
+                        type="text"
+                        value={farmer.primaryFarm}
+                        placeholder="Enter crop grown"
+                        name="crop"
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <div className="my-2 block">
+                        <Label
+                          className="font-semibold"
+                          htmlFor="size"
+                          value="Farm size(acres)"
+                        />
+                      </div>
+                      <TextInput
+                        id="sie"
+                        type="number"
+                        value={farmer.primaryFarm}
+                        placeholder="Enter sze"
+                        name="size"
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                    <div>
+                      <div className="my-2 block">
+                        <Label
+                          className="font-semibold"
+                          htmlFor="region"
+                          value="Region"
+                        />
+                      </div>
+                      <Select
+                        id="crop"
+                        required
+                        onClick={handleCropType}
+                        className="w-full"
+                      >
+                        <option value="">Select region</option>
+                        {regions.map((region) => (
+                          <option value={region.name} key={region.id}>
+                            {region.name}
+                          </option>
+                        ))}
+                      </Select>
+                    </div>
+                    <div>
+                      <div className="my-2 block">
+                        <Label
+                          htmlFor="district"
+                          value="District"
+                          className="font-semibold"
+                        />
+                      </div>
+                      <Select
+                        id="district"
+                        required
+                        onClick={handleCropType}
+                        className="w-full"
+                      >
+                        <option value="">Select District</option>
+                        {regions.map((region) => (
+                          <option value={region.name} key={region.id}>
+                            {region.name}
+                          </option>
+                        ))}
+                      </Select>
+                    </div>
+                    <div className="my-2 block">
+                      <Label
+                        htmlFor="community"
+                        value="Community"
+                        className="font-semibold"
+                      />
+
+                      <TextInput
+                        id="community"
+                        type="text"
+                        icon={FaRegUserCircle}
+                        value={farmer.community}
+                        placeholder="Enter community"
+                        name="community"
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                  </section>
+                )}
+                <Button type="submit" className="mt-10">
+                  Save Details
+                </Button>
               </section>
             </div>
           </form>
