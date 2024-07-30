@@ -13,67 +13,58 @@ import {
 } from "flowbite-react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
-import { regions, districts } from "../../data/dummyData";
+import { regions, districts, groups, crops } from "../../data/dummyData";
 
 const AddFarmerForm = () => {
   const { dispatch } = useFarmersContext();
   const [addFarms, setAddFarms] = useState(false);
   const [farmer, setFarmer] = useState({
     gender: "",
-    picture: null,
+    picture: "",
     firstName: "",
     lastName: "",
-    contact: null,
+    contact: "",
     homeAddress: "",
     gps: "",
-    dateOfBirth: null,
+    dateOfBirth: "",
     region: "",
     district: "",
     community: "",
-    farmerType: null,
-    cropType: null,
-    farmerGroup: null,
+    farmerType: "",
+    farmerGroup: "",
+  });
+  const [farm, setFarm] = useState({
     farmName: "",
     farmSize: "",
+    cropGrown: "",
     farmRegion: "",
     farmDistrict: "",
     farmCommunity: "",
   });
-  const [showDistricts, setShowDistricts] = useState([]);
-
+  const [secondFarm, setSecondFarm] = useState({
+    name: "",
+    size: "",
+    crop: "",
+    region: "",
+    district: "",
+    community: "",
+  });
   console.log(farmer);
+  const [showDistricts, setShowDistricts] = useState([]);
 
   const getDistricts = (id) => {
     const result = districts.find((district) => district.regionId === id);
     setShowDistricts(result.listDistrict);
   };
-  const handleInputChange = (e) => {
+
+  const handleFarmerInputChange = (e) => {
     const { name, value } = e.target;
     setFarmer({ ...farmer, [name]: value });
+
+    getDistricts(e.target.selectedIndex);
   };
   const handleDateChange = (date) => {
     setFarmer({ ...farmer, dateOfBirth: date.toLocaleDateString() });
-  };
-  const handleRegionSelect = (e) => {
-    setFarmer({ ...farmer, region: e.target.value });
-    getDistricts(e.target.selectedIndex);
-  };
-  const handleDistrictSelect = (e) => {
-    setFarmer({ ...farmer, district: e.target.value });
-  };
-  const handleCropType = (event) => {
-    const { value } = event.target;
-    setFarmer({
-      ...farmer,
-      cropType: value,
-    });
-  };
-  const handleSelectGroup = (event) => {
-    const { value } = event.target;
-    setFarmer({
-      ...farmer,
-      farmerGroup: value,
-    });
   };
 
   const handleImageChange = (e) => {
@@ -82,6 +73,28 @@ const AddFarmerForm = () => {
       ...farmer,
       [name]: e.target.files[0],
     });
+  };
+
+  // first farm
+  const handleFarmInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setFarm({ ...farm, [name]: value });
+    getDistricts(e.target.selectedIndex);
+  };
+  // const handleFarmRegionSelect = (e) => {
+  //   setFarm({ ...farm, farmRegion: e.target.value });
+  //   getDistricts(e.target.selectedIndex);
+  // };
+  const handleFarmDistrictSelect = (e) => {
+    setFarm({ ...farm, farmDistrict: e.target.value });
+  };
+  //second farm
+  const handleSecondFarmChange = (e) => {
+    const { value, name } = e.target;
+
+    setSecondFarm({ ...secondFarm, [name]: value });
+    getDistricts(e.target.selectedIndex);
   };
   const handleAddFarmer = () => {
     dispatch({
@@ -122,7 +135,7 @@ const AddFarmerForm = () => {
                         id="male"
                         name="gender"
                         value="Male"
-                        onChange={handleInputChange}
+                        onChange={handleFarmerInputChange}
                         required
                       />
                       <Label htmlFor="male">Male</Label>
@@ -132,7 +145,7 @@ const AddFarmerForm = () => {
                         id="female"
                         name="gender"
                         value="Female"
-                        onChange={handleInputChange}
+                        onChange={handleFarmerInputChange}
                         required
                       />
                       <Label htmlFor="female">Female</Label>
@@ -170,7 +183,7 @@ const AddFarmerForm = () => {
                       value={farmer.firstName}
                       placeholder="Enter firstname"
                       name="firstName"
-                      onChange={handleInputChange}
+                      onChange={handleFarmerInputChange}
                       required
                     />
                   </div>
@@ -189,7 +202,7 @@ const AddFarmerForm = () => {
                       placeholder="Enter last name"
                       value={farmer.lastName}
                       name="lastName"
-                      onChange={handleInputChange}
+                      onChange={handleFarmerInputChange}
                       required
                     />
                   </div>
@@ -207,7 +220,7 @@ const AddFarmerForm = () => {
                       icon={BiHome}
                       name="homeAddress"
                       value={farmer.homeAddress}
-                      onChange={handleInputChange}
+                      onChange={handleFarmerInputChange}
                       placeholder="Enter home address"
                       required
                     />
@@ -226,7 +239,7 @@ const AddFarmerForm = () => {
                       icon={BiMap}
                       placeholder="Enter GPS"
                       name="gps"
-                      onChange={handleInputChange}
+                      onChange={handleFarmerInputChange}
                       value={farmer.gps}
                       required
                     />
@@ -246,7 +259,7 @@ const AddFarmerForm = () => {
                       maxLength={10}
                       name="contact"
                       value={farmer.contact}
-                      onChange={handleInputChange}
+                      onChange={handleFarmerInputChange}
                       placeholder="Enter contact"
                       required
                     />
@@ -277,7 +290,8 @@ const AddFarmerForm = () => {
                     <Select
                       id="region"
                       required
-                      onChange={(e) => handleRegionSelect(e)}
+                      name="region"
+                      onChange={handleFarmerInputChange}
                     >
                       <option>Select region</option>
                       {regions.map((region) => (
@@ -299,10 +313,11 @@ const AddFarmerForm = () => {
                   <Select
                     id="district"
                     required
-                    onChange={handleDistrictSelect}
+                    onChange={handleFarmerInputChange}
                     className="w-full"
+                    name="district"
                   >
-                    <option value="">Select District</option>
+                    <option>Select District</option>
                     {showDistricts.map((district) => (
                       <option value={district} key={district}>
                         {district}
@@ -325,7 +340,7 @@ const AddFarmerForm = () => {
                       value={farmer.community}
                       placeholder="Enter community"
                       name="community"
-                      onChange={handleInputChange}
+                      onChange={handleFarmerInputChange}
                       required
                     />
                   </div>
@@ -339,7 +354,7 @@ const AddFarmerForm = () => {
                       id="farmer"
                       name="farmerType"
                       value="farmer"
-                      onChange={handleInputChange}
+                      onChange={handleFarmerInputChange}
                       required
                     />
                     <Label htmlFor="farmer">farmer</Label>
@@ -349,7 +364,7 @@ const AddFarmerForm = () => {
                       id="processor"
                       name="farmerType"
                       value="Processor"
-                      onChange={handleInputChange}
+                      onChange={handleFarmerInputChange}
                       required
                     />
                     <Label htmlFor="processor">Processor</Label>
@@ -359,7 +374,7 @@ const AddFarmerForm = () => {
                       id="farmerProcessor"
                       name="farmerType"
                       value="Farmer and Processor"
-                      onChange={handleInputChange}
+                      onChange={handleFarmerInputChange}
                       required
                     />
                     <Label htmlFor="farmerProcessor">
@@ -371,29 +386,23 @@ const AddFarmerForm = () => {
                   <div className="my-2 block">
                     <Label
                       className="font-semibold"
-                      htmlFor="crop"
+                      htmlFor="group"
                       value="Select farmer group"
                     />
                   </div>
                   <Select
-                    id="crop"
+                    id="group"
                     required
-                    onClick={handleSelectGroup}
+                    onChange={handleFarmerInputChange}
                     className="w-full"
+                    name="farmerGroup"
                   >
                     <option>group</option>
-                    <option value="Group 1" name="group">
-                      Group 1
-                    </option>
-                    <option value="Group 2" name="group">
-                      Group 2
-                    </option>
-                    <option value="Group 3" name="group">
-                      Group 3
-                    </option>
-                    <option value="Group 4" name="group">
-                      Group 4
-                    </option>
+                    {groups.map((group) => (
+                      <option value={group.name} key={group.id}>
+                        {group.name}
+                      </option>
+                    ))}
                   </Select>
                 </div>
               </section>
@@ -412,10 +421,10 @@ const AddFarmerForm = () => {
                   <TextInput
                     id="farmName"
                     type="text"
-                    value={farmer.primaryFarm}
+                    value={secondFarm.name}
                     placeholder="Enter primary farm name"
-                    name="primaryFarm"
-                    onChange={handleInputChange}
+                    name="name"
+                    onChange={handleFarmInputChange}
                     required
                   />
                 </div>
@@ -430,10 +439,10 @@ const AddFarmerForm = () => {
                   <TextInput
                     id="crop"
                     type="text"
-                    value={farmer.primaryFarm}
+                    value={secondFarm.crop}
                     placeholder="Enter crop grown"
                     name="crop"
-                    onChange={handleInputChange}
+                    onChange={handleFarmInputChange}
                     required
                   />
                 </div>
@@ -448,10 +457,10 @@ const AddFarmerForm = () => {
                   <TextInput
                     id="sie"
                     type="number"
-                    value={farmer.primaryFarm}
-                    placeholder="Enter sze"
+                    value={secondFarm.size}
+                    placeholder="Enter size"
                     name="size"
-                    onChange={handleInputChange}
+                    onChange={handleFarmInputChange}
                   />
                 </div>
                 <div>
@@ -465,8 +474,9 @@ const AddFarmerForm = () => {
                   <Select
                     id="crop"
                     required
-                    onClick={handleCropType}
+                    onChange={handleFarmInputChange}
                     className="w-full"
+                    name="farmRegion"
                   >
                     <option value="">Select region</option>
                     {regions.map((region) => (
@@ -487,13 +497,13 @@ const AddFarmerForm = () => {
                   <Select
                     id="district"
                     required
-                    onClick={handleCropType}
+                    onChange={handleFarmDistrictSelect}
                     className="w-full"
                   >
                     <option value="">Select District</option>
-                    {regions.map((region) => (
-                      <option value={region.name} key={region.id}>
-                        {region.name}
+                    {showDistricts.map((district) => (
+                      <option value={district} key={district}>
+                        {district}
                       </option>
                     ))}
                   </Select>
@@ -512,7 +522,7 @@ const AddFarmerForm = () => {
                     value={farmer.community}
                     placeholder="Enter community"
                     name="community"
-                    onChange={handleInputChange}
+                    onChange={handleFarmerInputChange}
                     required
                   />
                 </div>
@@ -532,31 +542,14 @@ const AddFarmerForm = () => {
                       <TextInput
                         id="farmName"
                         type="text"
-                        value={farmer.primaryFarm}
-                        placeholder="Enter primary farm name"
-                        name="primaryFarm"
-                        onChange={handleInputChange}
+                        value={secondFarm.name}
+                        placeholder="Enter second farm name"
+                        name="name"
+                        onChange={handleSecondFarmChange}
                         required
                       />
                     </div>
-                    <div>
-                      <div className="my-2 block">
-                        <Label
-                          className="font-semibold"
-                          htmlFor="crop"
-                          value="Crop grown"
-                        />
-                      </div>
-                      <TextInput
-                        id="crop"
-                        type="text"
-                        value={farmer.primaryFarm}
-                        placeholder="Enter crop grown"
-                        name="crop"
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
+
                     <div>
                       <div className="my-2 block">
                         <Label
@@ -568,11 +561,34 @@ const AddFarmerForm = () => {
                       <TextInput
                         id="sie"
                         type="number"
-                        value={farmer.primaryFarm}
-                        placeholder="Enter sze"
+                        value={secondFarm.size}
+                        placeholder="Enter size"
                         name="size"
-                        onChange={handleInputChange}
+                        onChange={handleSecondFarmChange}
                       />
+                    </div>
+                    <div>
+                      <div className="my-2 block">
+                        <Label
+                          htmlFor="crop"
+                          value="Crop grown"
+                          className="font-semibold"
+                        />
+                      </div>
+                      <Select
+                        id="crop"
+                        required
+                        onClick={handleSecondFarmChange}
+                        className="w-full"
+                        name="crop"
+                      >
+                        <option value="">Select crop</option>
+                        {crops.map((crop) => (
+                          <option value={crop} key={crop}>
+                            {crop}
+                          </option>
+                        ))}
+                      </Select>
                     </div>
                     <div>
                       <div className="my-2 block">
@@ -585,8 +601,9 @@ const AddFarmerForm = () => {
                       <Select
                         id="crop"
                         required
-                        onClick={handleCropType}
+                        onChange={handleSecondFarmChange}
                         className="w-full"
+                        name="region"
                       >
                         <option value="">Select region</option>
                         {regions.map((region) => (
@@ -607,34 +624,17 @@ const AddFarmerForm = () => {
                       <Select
                         id="district"
                         required
-                        onClick={handleCropType}
+                        onChange={handleSecondFarmChange}
                         className="w-full"
+                        name="district"
                       >
                         <option value="">Select District</option>
-                        {regions.map((region) => (
-                          <option value={region.name} key={region.id}>
-                            {region.name}
+                        {showDistricts.map((district) => (
+                          <option value={district} key={district}>
+                            {district}
                           </option>
                         ))}
                       </Select>
-                    </div>
-                    <div className="my-2 block">
-                      <Label
-                        htmlFor="community"
-                        value="Community"
-                        className="font-semibold"
-                      />
-
-                      <TextInput
-                        id="community"
-                        type="text"
-                        icon={FaRegUserCircle}
-                        value={farmer.community}
-                        placeholder="Enter community"
-                        name="community"
-                        onChange={handleInputChange}
-                        required
-                      />
                     </div>
                   </section>
                 )}
