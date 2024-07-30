@@ -3,7 +3,6 @@ import { useFarmersContext } from "../../context/FarmersProvider";
 import { useStateContext } from "../../context/ContextProvider";
 import {
   Button,
-  Modal,
   Label,
   TextInput,
   Radio,
@@ -33,13 +32,13 @@ const AddFarmerForm = () => {
     farmerType: "",
     farmerGroup: "",
   });
-  const [farm, setFarm] = useState({
-    farmName: "",
-    farmSize: "",
-    cropGrown: "",
-    farmRegion: "",
-    farmDistrict: "",
-    farmCommunity: "",
+  const [firstFarm, setFirstFarm] = useState({
+    name: "",
+    size: "",
+    crop: "",
+    region: "",
+    district: "",
+    community: "",
   });
   const [secondFarm, setSecondFarm] = useState({
     name: "",
@@ -49,7 +48,8 @@ const AddFarmerForm = () => {
     district: "",
     community: "",
   });
-  console.log(farmer);
+  console.log(firstFarm);
+  console.log(secondFarm);
   const [showDistricts, setShowDistricts] = useState([]);
 
   const getDistricts = (id) => {
@@ -79,15 +79,12 @@ const AddFarmerForm = () => {
   const handleFarmInputChange = (e) => {
     const { name, value } = e.target;
 
-    setFarm({ ...farm, [name]: value });
+    setFirstFarm({ ...firstFarm, [name]: value });
     getDistricts(e.target.selectedIndex);
   };
-  // const handleFarmRegionSelect = (e) => {
-  //   setFarm({ ...farm, farmRegion: e.target.value });
-  //   getDistricts(e.target.selectedIndex);
-  // };
+
   const handleFarmDistrictSelect = (e) => {
-    setFarm({ ...farm, farmDistrict: e.target.value });
+    setFirstFarm({ ...firstFarm, district: e.target.value });
   };
   //second farm
   const handleSecondFarmChange = (e) => {
@@ -96,22 +93,24 @@ const AddFarmerForm = () => {
     setSecondFarm({ ...secondFarm, [name]: value });
     getDistricts(e.target.selectedIndex);
   };
-  const handleAddFarmer = () => {
-    dispatch({
-      type: "ADD_FARMER",
-      payload: { id: Math.floor(Math.random() * 1000000), ...farmer },
-    });
-    setOpenModal(false);
-    setFarmer({
-      firstName: "",
-      lastName: "",
-      contact: "",
-      homeAddress: "",
-      GPS: "",
-      primaryFarm: "",
-      secondFarm: "",
-      thirdFarm: "",
-    });
+  const onFormSubmit = () => {
+    e.preventDefault();
+    console.log("Add data");
+    // dispatch({
+
+    //   type: "ADD_FARMER",
+    //   payload: { id: Math.floor(Math.random() * 1000000), ...farmer },
+    // });
+    // setFarmer({
+    //   firstName: "",
+    //   lastName: "",
+    //   contact: "",
+    //   homeAddress: "",
+    //   GPS: "",
+    //   primaryFarm: "",
+    //   secondFarm: "",
+    //   thirdFarm: "",
+    // });
   };
 
   return (
@@ -121,7 +120,7 @@ const AddFarmerForm = () => {
       </h2>
       <div className="bg-white h-full rounded-lg shadow-md">
         <section className="flex flex-col justify-center items-center md:my-10">
-          <form className="w-[80vw] md:w-[60vw] my-10">
+          <form className="w-[80vw] md:w-[60vw] my-10" onSubmit={onFormSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
               <section>
                 <h2 className="text-green-500 font-bold md:text-2xl mb-4">
@@ -294,8 +293,8 @@ const AddFarmerForm = () => {
                       onChange={handleFarmerInputChange}
                     >
                       <option>Select region</option>
-                      {regions.map((region) => (
-                        <option value={region.name} key={region.id}>
+                      {regions.map((region, index) => (
+                        <option value={region.name} key={index}>
                           {region.name}
                         </option>
                       ))}
@@ -421,7 +420,7 @@ const AddFarmerForm = () => {
                   <TextInput
                     id="farmName"
                     type="text"
-                    value={secondFarm.name}
+                    value={firstFarm.name}
                     placeholder="Enter primary farm name"
                     name="name"
                     onChange={handleFarmInputChange}
@@ -431,20 +430,25 @@ const AddFarmerForm = () => {
                 <div>
                   <div className="my-2 block">
                     <Label
-                      className="font-semibold"
                       htmlFor="crop"
                       value="Crop grown"
+                      className="font-semibold"
                     />
                   </div>
-                  <TextInput
+                  <Select
                     id="crop"
-                    type="text"
-                    value={secondFarm.crop}
-                    placeholder="Enter crop grown"
-                    name="crop"
-                    onChange={handleFarmInputChange}
                     required
-                  />
+                    onChange={handleFarmInputChange}
+                    className="w-full"
+                    name="crop"
+                  >
+                    <option value="">Select crop</option>
+                    {crops.map((crop) => (
+                      <option value={crop} key={crop}>
+                        {crop}
+                      </option>
+                    ))}
+                  </Select>
                 </div>
                 <div>
                   <div className="my-2 block">
@@ -457,7 +461,7 @@ const AddFarmerForm = () => {
                   <TextInput
                     id="sie"
                     type="number"
-                    value={secondFarm.size}
+                    value={firstFarm.size}
                     placeholder="Enter size"
                     name="size"
                     onChange={handleFarmInputChange}
@@ -476,11 +480,11 @@ const AddFarmerForm = () => {
                     required
                     onChange={handleFarmInputChange}
                     className="w-full"
-                    name="farmRegion"
+                    name="region"
                   >
-                    <option value="">Select region</option>
-                    {regions.map((region) => (
-                      <option value={region.name} key={region.id}>
+                    <option>Select region</option>
+                    {regions.map((region, index) => (
+                      <option value={region.name} key={index}>
                         {region.name}
                       </option>
                     ))}
@@ -500,7 +504,7 @@ const AddFarmerForm = () => {
                     onChange={handleFarmDistrictSelect}
                     className="w-full"
                   >
-                    <option value="">Select District</option>
+                    <option>Select District</option>
                     {showDistricts.map((district) => (
                       <option value={district} key={district}>
                         {district}
@@ -519,18 +523,24 @@ const AddFarmerForm = () => {
                     id="community"
                     type="text"
                     icon={FaRegUserCircle}
-                    value={farmer.community}
+                    value={firstFarm.community}
                     placeholder="Enter community"
                     name="community"
-                    onChange={handleFarmerInputChange}
+                    onChange={handleFarmInputChange}
                     required
                   />
                 </div>
-                <Button onClick={() => setAddFarms(!addFarms)}>
+                <Button
+                  className="mt-10"
+                  onClick={() => setAddFarms(!addFarms)}
+                >
                   {addFarms ? "Hide farm" : "Add another farm"}
                 </Button>
                 {addFarms && (
                   <section>
+                    <h3 className="text-md font-semibold mt-6">
+                      Second Farm (optional)
+                    </h3>
                     <div>
                       <div className="my-2 block">
                         <Label
@@ -546,7 +556,6 @@ const AddFarmerForm = () => {
                         placeholder="Enter second farm name"
                         name="name"
                         onChange={handleSecondFarmChange}
-                        required
                       />
                     </div>
 
@@ -559,7 +568,7 @@ const AddFarmerForm = () => {
                         />
                       </div>
                       <TextInput
-                        id="sie"
+                        id="size"
                         type="number"
                         value={secondFarm.size}
                         placeholder="Enter size"
@@ -577,12 +586,11 @@ const AddFarmerForm = () => {
                       </div>
                       <Select
                         id="crop"
-                        required
-                        onClick={handleSecondFarmChange}
+                        onChange={handleSecondFarmChange}
                         className="w-full"
                         name="crop"
                       >
-                        <option value="">Select crop</option>
+                        <option>Select crop</option>
                         {crops.map((crop) => (
                           <option value={crop} key={crop}>
                             {crop}
@@ -599,15 +607,14 @@ const AddFarmerForm = () => {
                         />
                       </div>
                       <Select
-                        id="crop"
-                        required
+                        id="region"
                         onChange={handleSecondFarmChange}
                         className="w-full"
                         name="region"
                       >
-                        <option value="">Select region</option>
-                        {regions.map((region) => (
-                          <option value={region.name} key={region.id}>
+                        <option>Select region</option>
+                        {regions.map((region, index) => (
+                          <option value={region.name} key={index}>
                             {region.name}
                           </option>
                         ))}
@@ -623,18 +630,34 @@ const AddFarmerForm = () => {
                       </div>
                       <Select
                         id="district"
-                        required
                         onChange={handleSecondFarmChange}
                         className="w-full"
                         name="district"
                       >
-                        <option value="">Select District</option>
+                        <option>Select District</option>
                         {showDistricts.map((district) => (
                           <option value={district} key={district}>
                             {district}
                           </option>
                         ))}
                       </Select>
+                    </div>
+                    <div className="my-2 block">
+                      <Label
+                        htmlFor="community"
+                        value="Community"
+                        className="font-semibold"
+                      />
+
+                      <TextInput
+                        id="community"
+                        type="text"
+                        icon={FaRegUserCircle}
+                        value={secondFarm.community}
+                        placeholder="Enter community"
+                        name="community"
+                        onChange={handleSecondFarmChange}
+                      />
                     </div>
                   </section>
                 )}
