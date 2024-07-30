@@ -13,8 +13,6 @@ import {
 } from "flowbite-react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { regions, districts } from "../../data/dummyData";
 
 const AddFarmerForm = () => {
@@ -25,7 +23,7 @@ const AddFarmerForm = () => {
     picture: null,
     firstName: "",
     lastName: "",
-    contact: "",
+    contact: null,
     homeAddress: "",
     gps: "",
     dateOfBirth: null,
@@ -43,6 +41,8 @@ const AddFarmerForm = () => {
   });
   const [showDistricts, setShowDistricts] = useState([]);
 
+  console.log(farmer);
+
   const getDistricts = (id) => {
     const result = districts.find((district) => district.regionId === id);
     setShowDistricts(result.listDistrict);
@@ -58,7 +58,9 @@ const AddFarmerForm = () => {
     setFarmer({ ...farmer, region: e.target.value });
     getDistricts(e.target.selectedIndex);
   };
-
+  const handleDistrictSelect = (e) => {
+    setFarmer({ ...farmer, district: e.target.value });
+  };
   const handleCropType = (event) => {
     const { value } = event.target;
     setFarmer({
@@ -297,7 +299,7 @@ const AddFarmerForm = () => {
                   <Select
                     id="district"
                     required
-                    onClick={handleCropType}
+                    onChange={handleDistrictSelect}
                     className="w-full"
                   >
                     <option value="">Select District</option>
