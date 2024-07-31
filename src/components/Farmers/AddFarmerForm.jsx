@@ -13,6 +13,7 @@ import {
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import { regions, districts, groups, crops } from "../../data/dummyData";
+import { list } from "postcss";
 
 const AddFarmerForm = () => {
   const { dispatch } = useFarmersContext();
@@ -23,14 +24,14 @@ const AddFarmerForm = () => {
     firstName: "",
     lastName: "",
     contact: "",
-    homeAddress: "",
+    address: "",
     gps: "",
     dateOfBirth: "",
     region: "",
     district: "",
     community: "",
-    farmerType: "",
-    farmerGroup: "",
+    type: "",
+    group: "",
   });
   const [firstFarm, setFirstFarm] = useState({
     name: "",
@@ -48,20 +49,25 @@ const AddFarmerForm = () => {
     district: "",
     community: "",
   });
-  console.log(firstFarm);
-  console.log(secondFarm);
+
   const [showDistricts, setShowDistricts] = useState([]);
+
+  console.log(farmer);
 
   const getDistricts = (id) => {
     const result = districts.find((district) => district.regionId === id);
-    setShowDistricts(result.listDistrict);
+    const { listDistrict } = result;
+    setShowDistricts(listDistrict);
   };
 
   const handleFarmerInputChange = (e) => {
     const { name, value } = e.target;
     setFarmer({ ...farmer, [name]: value });
-
-    getDistricts(e.target.selectedIndex);
+    {
+      if (e.target.selectedIndex !== null) {
+        getDistricts(e.target.selectedIndex);
+      }
+    }
   };
   const handleDateChange = (date) => {
     setFarmer({ ...farmer, dateOfBirth: date.toLocaleDateString() });
@@ -93,19 +99,31 @@ const AddFarmerForm = () => {
     setSecondFarm({ ...secondFarm, [name]: value });
     getDistricts(e.target.selectedIndex);
   };
-  const onFormSubmit = () => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Add data");
-    // dispatch({
-
-    //   type: "ADD_FARMER",
-    //   payload: { id: Math.floor(Math.random() * 1000000), ...farmer },
-    // });
+    //console.log(farmer);
+    //console.log(firstFarm);
+    dispatch({
+      type: "ADD_FARMER",
+      farmer: {
+        id: Math.floor(Math.random() * 1000000),
+        ...farmer,
+        farms: [firstFarm, secondFarm],
+      },
+      // firstFarm: {
+      //   id: Math.floor(Math.random() * 1000000),
+      //   ...firstFarm,
+      // },
+      // secondFarm: {
+      //   id: Math.floor(Math.random() * 1000000),
+      //   ...secondFarm,
+      // },
+    });
     // setFarmer({
     //   firstName: "",
     //   lastName: "",
     //   contact: "",
-    //   homeAddress: "",
+    //   address: "",
     //   GPS: "",
     //   primaryFarm: "",
     //   secondFarm: "",
@@ -120,7 +138,10 @@ const AddFarmerForm = () => {
       </h2>
       <div className="bg-white h-full rounded-lg shadow-md">
         <section className="flex flex-col justify-center items-center md:my-10">
-          <form className="w-[80vw] md:w-[60vw] my-10" onSubmit={onFormSubmit}>
+          <form
+            className="w-[80vw] md:w-[60vw] my-10"
+            onSubmit={(e) => onFormSubmit(e)}
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
               <section>
                 <h2 className="text-green-500 font-bold md:text-2xl mb-4">
@@ -208,17 +229,17 @@ const AddFarmerForm = () => {
                   <div>
                     <div className="my-2 block">
                       <Label
-                        htmlFor="homeAddress"
+                        htmlFor="address"
                         value="Home address"
                         className="font-semibold"
                       />
                     </div>
                     <TextInput
-                      id="homeAddress"
+                      id="address"
                       type="text"
                       icon={BiHome}
-                      name="homeAddress"
-                      value={farmer.homeAddress}
+                      name="address"
+                      value={farmer.address}
                       onChange={handleFarmerInputChange}
                       placeholder="Enter home address"
                       required
@@ -312,7 +333,9 @@ const AddFarmerForm = () => {
                   <Select
                     id="district"
                     required
-                    onChange={handleFarmerInputChange}
+                    onChange={(e) =>
+                      setFarmer({ ...farmer, district: e.target.value })
+                    }
                     className="w-full"
                     name="district"
                   >
@@ -351,7 +374,7 @@ const AddFarmerForm = () => {
                   <div className="flex items-center gap-2">
                     <Radio
                       id="farmer"
-                      name="farmerType"
+                      name="type"
                       value="farmer"
                       onChange={handleFarmerInputChange}
                       required
@@ -361,7 +384,7 @@ const AddFarmerForm = () => {
                   <div className="flex items-center gap-2">
                     <Radio
                       id="processor"
-                      name="farmerType"
+                      name="type"
                       value="Processor"
                       onChange={handleFarmerInputChange}
                       required
@@ -371,7 +394,7 @@ const AddFarmerForm = () => {
                   <div className="flex items-center gap-2">
                     <Radio
                       id="farmerProcessor"
-                      name="farmerType"
+                      name="type"
                       value="Farmer and Processor"
                       onChange={handleFarmerInputChange}
                       required
@@ -394,7 +417,7 @@ const AddFarmerForm = () => {
                     required
                     onChange={handleFarmerInputChange}
                     className="w-full"
-                    name="farmerGroup"
+                    name="group"
                   >
                     <option>group</option>
                     {groups.map((group) => (
@@ -661,11 +684,11 @@ const AddFarmerForm = () => {
                     </div>
                   </section>
                 )}
-                <Button type="submit" className="mt-10">
-                  Save Details
-                </Button>
               </section>
             </div>
+            <Button type="submit" className="mt-10">
+              Save Details
+            </Button>
           </form>
         </section>
       </div>

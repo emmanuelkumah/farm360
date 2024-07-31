@@ -3,34 +3,39 @@ import { Button, Table } from "flowbite-react";
 import { MdDelete, MdEdit, MdViewAgenda } from "react-icons/md";
 import { useFarmersContext } from "../../context/FarmersProvider";
 import { FaEye } from "react-icons/fa";
+import { TbH2 } from "react-icons/tb";
+import { lineChartData } from "../../data/linechart";
 const FarmsList = () => {
   useFarmersContext;
   const { state } = useFarmersContext();
+  const { farmers } = state;
 
-  const newFarms = state.farmers.map((farmer) => farmer.farms);
-  console.log(newFarms);
+  const farms = farmers.map((farmer) => farmer.farms);
+  console.log(farms);
   return (
     <>
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>Farm name</Table.HeadCell>
           <Table.HeadCell>Farm size(acres)</Table.HeadCell>
+          <Table.HeadCell>Crop grown </Table.HeadCell>
+          <Table.HeadCell>District</Table.HeadCell>
           <Table.HeadCell>Community</Table.HeadCell>
-          <Table.HeadCell>Crop</Table.HeadCell>
         </Table.Head>
-        <Table.Body className="divide-y">
-          {state.farmers.map((farmer) =>
-            farmer.farms.map((farm) => (
+        {farmers.map((farmer) => (
+          <Table.Body className="divide-y">
+            {farmer.farms.map((farm, index) => (
               <Table.Row
-                key={farm.id}
+                key={index}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {farm.farmName}
+                  {farm.name}
                 </Table.Cell>
-                <Table.Cell>{farm.area}</Table.Cell>
-                <Table.Cell>{farm.community}</Table.Cell>
+                <Table.Cell>{farm.size}</Table.Cell>
                 <Table.Cell>{farm.crop}</Table.Cell>
+                <Table.Cell>{farm.district}</Table.Cell>
+                <Table.Cell>{farm.community}</Table.Cell>
 
                 <Table.Cell>
                   <div className="flex md:items-center md:justify-evenly">
@@ -43,9 +48,9 @@ const FarmsList = () => {
                   </div>
                 </Table.Cell>
               </Table.Row>
-            ))
-          )}
-        </Table.Body>
+            ))}
+          </Table.Body>
+        ))}
       </Table>
     </>
   );

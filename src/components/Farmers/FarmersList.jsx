@@ -8,7 +8,7 @@ import { FaUser } from "react-icons/fa6";
 const FarmersList = () => {
   const { dispatch, state } = useFarmersContext();
   console.log(state);
-  // const { farmers } = state;
+  const { farmers } = state;
 
   const [editFarmer, setEditFarmer] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -47,7 +47,7 @@ const FarmersList = () => {
           <Table.HeadCell>Number of farms</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {state.farmers.map((farmer) => (
+          {farmers.map((farmer) => (
             <Table.Row
               key={farmer.id}
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
