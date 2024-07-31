@@ -11,8 +11,6 @@ const farmersReducer = (data, action) => {
       return {
         ...data,
         farmers: [...data.farmers, action.farmer],
-        //farms: [...data.farms, action.firstFarm],
-        // farms: [...data.farmers.farms, action.firstFarm, action.secondFarm],
       };
     case "DELETE_FARMER":
       return {
