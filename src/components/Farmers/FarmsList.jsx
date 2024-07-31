@@ -24,31 +24,35 @@ const FarmsList = () => {
         </Table.Head>
         {farmers.map((farmer) => (
           <Table.Body className="divide-y">
-            {farmer.farms.map((farm, index) => (
-              <Table.Row
-                key={index}
-                className="bg-white dark:border-gray-700 dark:bg-gray-800"
-              >
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {farm.name}
-                </Table.Cell>
-                <Table.Cell>{farm.size}</Table.Cell>
-                <Table.Cell>{farm.crop}</Table.Cell>
-                <Table.Cell>{farm.district}</Table.Cell>
-                <Table.Cell>{farm.community}</Table.Cell>
+            {farmer.farms.map((farm, index) =>
+              farm.name !== "" ? (
+                <Table.Row
+                  key={index}
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {farm.name}
+                  </Table.Cell>
+                  <Table.Cell>{farm.size}</Table.Cell>
+                  <Table.Cell>{farm.crop}</Table.Cell>
+                  <Table.Cell>{farm.district}</Table.Cell>
+                  <Table.Cell>{farm.community}</Table.Cell>
 
-                <Table.Cell>
-                  <div className="flex md:items-center md:justify-evenly">
-                    <Button>Start Activity</Button>
-                    <div className="md:flex md:gap-10">
-                      <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
-                      <MdDelete className="text-xl hover:text-red-700 cursor-pointer" />
-                      <FaEye />
+                  <Table.Cell>
+                    <div className="flex md:items-center md:justify-evenly">
+                      <Button>Start Activity</Button>
+                      <div className="md:flex md:gap-10">
+                        <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                        <MdDelete className="text-xl hover:text-red-700 cursor-pointer" />
+                        <FaEye />
+                      </div>
                     </div>
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-            ))}
+                  </Table.Cell>
+                </Table.Row>
+              ) : (
+                ""
+              )
+            )}
           </Table.Body>
         ))}
       </Table>

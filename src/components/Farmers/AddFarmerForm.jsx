@@ -18,7 +18,6 @@ import "react-toastify/dist/ReactToastify.css";
 const AddFarmerForm = () => {
   const { dispatch } = useFarmersContext();
   const [addFarms, setAddFarms] = useState(false);
-  const [isSubmited, setIsSubmited] = useState(false);
   const [farmer, setFarmer] = useState({
     gender: "",
     picture: "",
@@ -59,6 +58,11 @@ const AddFarmerForm = () => {
     const result = districts.find((district) => district.regionId === id);
     const { listDistrict } = result;
     setShowDistricts(listDistrict);
+  };
+  const hasNoSecondFarm = () => {
+    if (secondFarm.name === "" || secondFarm.crop === "") {
+      setSecondFarm(null);
+    }
   };
 
   const handleFarmerInputChange = (e) => {
@@ -103,6 +107,7 @@ const AddFarmerForm = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     toast.success("Form submitted successfully!");
+    hasNoSecondFarm();
     dispatch({
       type: "ADD_FARMER",
       farmer: {
@@ -145,17 +150,6 @@ const AddFarmerForm = () => {
     });
   };
 
-  {
-    isSubmited && (
-      <Toast>
-        <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-cyan-500 dark:bg-cyan-800 dark:text-cyan-200">
-          <HiFire className="h-5 w-5" />
-        </div>
-        <div className="ml-3 text-sm font-normal">Set yourself free.</div>
-        <Toast.Toggle />
-      </Toast>
-    );
-  }
   return (
     <>
       <h2 className="md:text-2xl text-green-500 font-bold my-4 border-l-4 pl-4 border-green-500">
