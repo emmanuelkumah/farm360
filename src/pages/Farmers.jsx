@@ -15,11 +15,6 @@ const Farmers = () => {
           id=""
           placeholder="Search"
         />
-        <div className="my-10">
-          <Link to="/app/add">
-            <Button>Add new farmer</Button>
-          </Link>
-        </div>
 
         {state.farmers.length >= 1 ? (
           <FarmersList />

@@ -56,8 +56,6 @@ const AddFarmerForm = () => {
 
   const [showDistricts, setShowDistricts] = useState([]);
 
-  // const history = useHistory();
-
   console.log(farmer);
 
   const getDistricts = (id) => {
@@ -121,9 +119,9 @@ const AddFarmerForm = () => {
   const handleGoBack = () => {
     navigate("/app/farmers");
   };
+
   const onFormSubmit = (e) => {
     e.preventDefault();
-    toast.success("Form submitted successfully!");
     hasNoSecondFarm();
     dispatch({
       type: "ADD_FARMER",
@@ -165,8 +163,11 @@ const AddFarmerForm = () => {
       district: "",
       community: "",
     });
-    //redirect
-    // history.goBack();
+    toast.success("Form submitted successfully!");
+    //redirect to farmers list
+    setTimeout(() => {
+      navigate("/app/farmers");
+    }, 2500);
   };
 
   return (

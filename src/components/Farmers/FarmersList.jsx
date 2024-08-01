@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Pagination } from "flowbite-react";
+import { Table, Button, Pagination } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useFarmersContext } from "../../context/FarmersProvider";
 import { FaUser } from "react-icons/fa6";
@@ -28,6 +28,11 @@ const FarmersList = () => {
 
   return (
     <div>
+      <div className="my-10">
+        <Link to="/app/add">
+          <Button>Add new farmer</Button>
+        </Link>
+      </div>
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>Picture</Table.HeadCell>
