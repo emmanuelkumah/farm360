@@ -13,16 +13,15 @@ import {
   Farms,
   Reports,
   FarmManagement,
-  Collectors,
   Traceability,
   FarmActivity,
   Landing,
   AddFarmer,
+  EditFarmer,
 } from "./pages";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 import TraaceabilityProvider from "./context/TraaceabilityProvider";
-// import AuthProvider from "./context/AuthProvider";
 import UserProvider from "./context/UserProvider";
 import HomeLayout from "./routes/HomeLayout";
 
@@ -55,6 +54,10 @@ const router = createBrowserRouter([
         element: <Farmers />,
       },
       {
+        path: "farmers/:id/edit",
+        element: <EditFarmer />,
+      },
+      {
         path: "farms",
         element: <Farms />,
       },
@@ -74,6 +77,7 @@ const router = createBrowserRouter([
         path: "add",
         element: <AddFarmer />,
       },
+
       {
         path: "reports",
         element: <Reports />,

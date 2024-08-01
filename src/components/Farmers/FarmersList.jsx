@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { Table } from "flowbite-react";
+import { Table, Pagination } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useFarmersContext } from "../../context/FarmersProvider";
-import EditFarmer from "./EditFarmer";
 import { FaUser } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const FarmersList = () => {
   const { dispatch, state } = useFarmersContext();
-  console.log(state);
   const { farmers } = state;
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [editFarmer, setEditFarmer] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  const onPageChange = (page) => setCurrentPage(page);
 
   const handleDeleteFarmer = (id) => {
     dispatch({
@@ -19,21 +21,13 @@ const FarmersList = () => {
       id: id,
     });
   };
-  const handleEditFarmer = (farmer) => {
+  const onEditClick = (farmer) => {
     setEditFarmer(farmer);
     setIsEditing(true);
   };
 
   return (
     <div>
-      {isEditing && (
-        <EditFarmer
-          editFarmer={editFarmer}
-          setEditFarmer={setEditFarmer}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-        />
-      )}
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>Picture</Table.HeadCell>
@@ -53,7 +47,7 @@ const FarmersList = () => {
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
             >
               <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                {farmer.picture !== null ? (
+                {farmer.picture !== "" ? (
                   <FaUser />
                 ) : (
                   <img
@@ -70,14 +64,18 @@ const FarmersList = () => {
               <Table.Cell>{farmer.district}</Table.Cell>
               <Table.Cell>{farmer.community}</Table.Cell>
               <Table.Cell>{farmer.group}</Table.Cell>
-              <Table.Cell>{farmer.farms.length}</Table.Cell>
+              {farmer.farms[1].name === "" ? (
+                <Table.Cell>1</Table.Cell>
+              ) : (
+                <Table.Cell>{farmer.farms.length}</Table.Cell>
+              )}
 
               <Table.Cell>
                 <div className="flex gap-5">
-                  <MdEdit
-                    className="text-xl hover:text-teal-500 cursor-pointer"
-                    onClick={() => handleEditFarmer(farmer)}
-                  />
+                  <Link to={`/app/farmers/${farmer.id}/edit`}>
+                    <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                  </Link>
+
                   <MdDelete
                     className="text-xl hover:text-red-700 cursor-pointer"
                     onClick={() => handleDeleteFarmer(farmer.id)}
@@ -88,6 +86,13 @@ const FarmersList = () => {
           ))}
         </Table.Body>
       </Table>
+      <div className="flex overflow-x-auto mt-10 sm:justify-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={100}
+          onPageChange={onPageChange}
+        />
+      </div>
     </div>
   );
 };

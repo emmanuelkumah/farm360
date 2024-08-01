@@ -20,7 +20,7 @@ export const farmersData = {
       group: "Group 1",
       region: "Upper East",
       district: "Savlanga",
-      community: "Danso",
+      community: "Danba",
 
       farms: [
         {
@@ -29,15 +29,15 @@ export const farmersData = {
           crop: "Soya",
           size: 10,
           district: "Danso",
-          // crop: ["Cattle", "Sheep"],
+          community: "Danba",
         },
         {
           farmId: 102,
           name: "John's Groundnut",
           crop: "Groundnut",
           size: 30,
-          district: "Kasand",
-          // livestock: [],
+          district: "Kasanba",
+          community: "Danba",
         },
       ],
     },
@@ -63,6 +63,7 @@ export const farmersData = {
           crop: "Soya",
           size: 100,
           district: "Asoni",
+          community: "Kasena",
         },
         {
           farmId: 102,
@@ -70,6 +71,7 @@ export const farmersData = {
           crop: "Groundnut",
           size: 50,
           district: "Damba",
+          community: "Kasena",
         },
       ],
     },
