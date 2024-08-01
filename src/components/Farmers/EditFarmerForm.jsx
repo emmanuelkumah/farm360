@@ -16,13 +16,14 @@ import { regions, districts, groups, crops } from "../../data/dummyData";
 import { useFarmersContext } from "../../context/FarmersProvider";
 
 const EditFarmerForm = () => {
-  const { id } = useParams();
   const [editFarmerDetails, setEditFarmerDetails] = useState(null);
   const [editFirstFarmDetails, setEditFirstFarmDetails] = useState(null);
+
   const { state } = useFarmersContext();
+  const { id } = useParams();
 
   useEffect(() => {
-    findFarmerById(id);
+    findFarmerById();
   }, [id]);
 
   //should be async await if fetching from server
@@ -30,11 +31,12 @@ const EditFarmerForm = () => {
     const foundFarmer = state.farmers.find(
       (farmer) => farmer.id === Number(id)
     );
+    console.log(foundFarmer);
     setEditFarmerDetails(foundFarmer);
-    setEditFirstFarmDetails(foundFarmer.farms[0]);
+    //setEditFirstFarmDetails(foundFarmer.farms[0]);
   };
-  console.log(editFarmerDetails);
-  console.log(editFirstFarmDetails);
+  //console.log(editFarmerDetails);
+  //console.log(editFirstFarmDetails);
   return (
     <>
       <h2 className="md:text-2xl text-green-500 font-bold my-4 border-l-4 pl-4 border-green-500">
@@ -56,6 +58,7 @@ const EditFarmerForm = () => {
                         id="male"
                         name="gender"
                         value="Male"
+                        checked={editFarmerDetails.gender === "male"}
                         onChange={() => console.log("something")}
                         required
                       />
@@ -66,6 +69,7 @@ const EditFarmerForm = () => {
                         id="female"
                         name="gender"
                         value="Female"
+                        // checked={editFarmerDetails?.gender === "female"}
                         onChange={() => console.log("something")}
                         required
                       />
@@ -194,7 +198,7 @@ const EditFarmerForm = () => {
                     </div>
                     <Datepicker
                       name="dateOfBirth"
-                      maxDate={new Date(2010, 1, 30)}
+                      //   maxDate={new Date(2010, 1, 30)}
                       selected={editFarmerDetails?.dateOfBirth}
                       //   onSelectedDateChanged={handleDateChange}
                     />

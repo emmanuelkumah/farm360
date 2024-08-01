@@ -12,6 +12,7 @@ export const farmersData = {
       firstName: "John ",
       lastName: "Doe",
       gender: "male",
+      picture: "",
       dateOfBirth: "Fri Jul 26 2024",
       contact: "244123123",
       address: "Accra Darkuman",
@@ -46,6 +47,8 @@ export const farmersData = {
       firstName: "Emma ",
       lastName: "Kumah",
       gender: "male",
+      picture: "",
+
       dateOfBirth: "Fri Jul 26 2024",
       contact: "244123123",
       address: "Accra Darkuman",

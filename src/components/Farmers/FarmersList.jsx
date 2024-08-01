@@ -47,11 +47,11 @@ const FarmersList = () => {
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
             >
               <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                {farmer.picture !== "" ? (
+                {farmer.picture === "" ? (
                   <FaUser />
                 ) : (
                   <img
-                    src={URL.createObjectURL(farmer.picture)}
+                    src={farmer.picture}
                     alt="image"
                     className="rounded-full w-10 h-10"
                   />

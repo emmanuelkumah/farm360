@@ -9,6 +9,8 @@ import {
   Select,
   Datepicker,
 } from "flowbite-react";
+import { useNavigate } from "react-router-dom";
+
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import { regions, districts, groups, crops } from "../../data/dummyData";
@@ -17,6 +19,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 const AddFarmerForm = () => {
   const { dispatch } = useFarmersContext();
+  let navigate = useNavigate();
+
   const [addFarms, setAddFarms] = useState(false);
   const [farmer, setFarmer] = useState({
     gender: "",
@@ -52,6 +56,8 @@ const AddFarmerForm = () => {
 
   const [showDistricts, setShowDistricts] = useState([]);
 
+  // const history = useHistory();
+
   console.log(farmer);
 
   const getDistricts = (id) => {
@@ -79,11 +85,18 @@ const AddFarmerForm = () => {
   };
 
   const handleImageChange = (e) => {
-    const { name } = e.target;
-    setFarmer({
-      ...farmer,
-      [name]: e.target.files[0],
-    });
+    const reader = new FileReader();
+    const file = e.target.files[0];
+
+    reader.onloadend = () => {
+      setFarmer({
+        ...farmer,
+        picture: reader.result,
+      });
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   };
 
   // first farm
@@ -103,6 +116,10 @@ const AddFarmerForm = () => {
 
     setSecondFarm({ ...secondFarm, [name]: value });
     getDistricts(e.target.selectedIndex);
+  };
+
+  const handleGoBack = () => {
+    navigate("/app/farmers");
   };
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -148,10 +165,15 @@ const AddFarmerForm = () => {
       district: "",
       community: "",
     });
+    //redirect
+    // history.goBack();
   };
 
   return (
     <>
+      <div>
+        <Button onClick={handleGoBack}>Go Back</Button>
+      </div>
       <h2 className="md:text-2xl text-green-500 font-bold my-4 border-l-4 pl-4 border-green-500">
         Add new farmer
       </h2>
@@ -200,6 +222,7 @@ const AddFarmerForm = () => {
                     </div>
                     <FileInput
                       id="file-upload"
+                      accept="image/*"
                       onChange={handleImageChange}
                       name="picture"
                     />

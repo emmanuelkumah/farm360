@@ -7,11 +7,6 @@ const AddFarmer = () => {
   return (
     <>
       <section className="container mx-auto">
-        <div>
-          <Link to="farmers">
-            <Button>Go Back</Button>
-          </Link>
-        </div>
         <AddFarmerForm />
       </section>
     </>
