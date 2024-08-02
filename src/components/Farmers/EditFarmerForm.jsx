@@ -16,14 +16,16 @@ import { regions, districts, groups, crops } from "../../data/dummyData";
 import { useFarmersContext } from "../../context/FarmersProvider";
 
 const EditFarmerForm = () => {
-  const [editFarmerDetails, setEditFarmerDetails] = useState(null);
-  const [editFirstFarmDetails, setEditFirstFarmDetails] = useState(null);
+  const [editFarmerDetails, setEditFarmerDetails] = useState({});
+  const [editFirstFarmDetails, setEditFirstFarmDetails] = useState({});
+  const [editSecondFarmDetails, setEditSecondFarmDetails] = useState({});
+  const [showDistrict, setShowDistricts] = useState("");
 
   const { state } = useFarmersContext();
   const { id } = useParams();
 
   useEffect(() => {
-    findFarmerById();
+    findFarmerById(id);
   }, [id]);
 
   //should be async await if fetching from server
@@ -31,12 +33,16 @@ const EditFarmerForm = () => {
     const foundFarmer = state.farmers.find(
       (farmer) => farmer.id === Number(id)
     );
-    console.log(foundFarmer);
     setEditFarmerDetails(foundFarmer);
-    //setEditFirstFarmDetails(foundFarmer.farms[0]);
+    setEditFirstFarmDetails(foundFarmer.farms[0]);
+    setEditSecondFarmDetails(foundFarmer.farms[1]);
   };
-  //console.log(editFarmerDetails);
-  //console.log(editFirstFarmDetails);
+
+  const handleFarmerEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditFarmerDetails({ ...editFarmerDetails, [name]: value });
+  };
+  console.log(editFarmerDetails);
   return (
     <>
       <h2 className="md:text-2xl text-green-500 font-bold my-4 border-l-4 pl-4 border-green-500">
@@ -58,8 +64,9 @@ const EditFarmerForm = () => {
                         id="male"
                         name="gender"
                         value="Male"
-                        checked={editFarmerDetails.gender === "male"}
-                        onChange={() => console.log("something")}
+                        // checked={true}
+                        checked={editFarmerDetails?.gender === "male"}
+                        onChange={handleFarmerEditInputChange}
                         required
                       />
                       <Label htmlFor="male">Male</Label>
@@ -69,8 +76,8 @@ const EditFarmerForm = () => {
                         id="female"
                         name="gender"
                         value="Female"
-                        // checked={editFarmerDetails?.gender === "female"}
-                        onChange={() => console.log("something")}
+                        checked={editFarmerDetails?.gender === "Female"}
+                        onChange={handleFarmerEditInputChange}
                         required
                       />
                       <Label htmlFor="female">Female</Label>
@@ -86,7 +93,7 @@ const EditFarmerForm = () => {
                     </div>
                     <FileInput
                       id="file-upload"
-                      // onChange={handleImageChange}
+                      onChange={() => console.log("file upload")}
                       name="picture"
                     />
                   </div>
@@ -107,7 +114,7 @@ const EditFarmerForm = () => {
                       value={editFarmerDetails?.firstName}
                       placeholder="Enter firstname"
                       name="firstName"
-                      //   onChange={handleFarmerInputChange}
+                      onChange={handleFarmerEditInputChange}
                       required
                     />
                   </div>
@@ -126,7 +133,7 @@ const EditFarmerForm = () => {
                       placeholder="Enter last name"
                       value={editFarmerDetails?.lastName}
                       name="lastName"
-                      //   onChange={handleFarmerInputChange}
+                      onChange={handleFarmerEditInputChange}
                       required
                     />
                   </div>
@@ -144,7 +151,7 @@ const EditFarmerForm = () => {
                       icon={BiHome}
                       name="address"
                       value={editFarmerDetails?.address}
-                      //   onChange={handleFarmerInputChange}
+                      onChange={handleFarmerEditInputChange}
                       placeholder="Enter home address"
                       required
                     />
@@ -163,7 +170,7 @@ const EditFarmerForm = () => {
                       icon={BiMap}
                       placeholder="Enter GPS"
                       name="gps"
-                      //   onChange={handleFarmerInputChange}
+                      onChange={handleFarmerEditInputChange}
                       value={editFarmerDetails?.gps}
                       required
                     />
@@ -183,7 +190,7 @@ const EditFarmerForm = () => {
                       maxLength={10}
                       name="contact"
                       value={editFarmerDetails?.contact}
-                      //   onChange={handleFarmerInputChange}
+                      onChange={handleFarmerEditInputChange}
                       placeholder="Enter contact"
                       required
                     />
@@ -198,9 +205,9 @@ const EditFarmerForm = () => {
                     </div>
                     <Datepicker
                       name="dateOfBirth"
-                      //   maxDate={new Date(2010, 1, 30)}
+                      maxDate={new Date(2010, 1, 30)}
                       selected={editFarmerDetails?.dateOfBirth}
-                      //   onSelectedDateChanged={handleDateChange}
+                      onSelectedDateChanged={() => console.log("date")}
                     />
                   </div>
                   <div>
@@ -215,7 +222,8 @@ const EditFarmerForm = () => {
                       id="region"
                       required
                       name="region"
-                      //   onChange={handleFarmerInputChange}
+                      value={editFarmerDetails?.region}
+                      onChange={() => console.log("region")}
                     >
                       <option>Select region</option>
                       {regions.map((region, index) => (
@@ -237,11 +245,10 @@ const EditFarmerForm = () => {
                   <Select
                     id="district"
                     required
-                    // onChange={(e) =>
-                    //   setFarmer({ ...farmer, district: e.target.value })
-                    // }
+                    onChange={() => console.log("district")}
                     className="w-full"
                     name="district"
+                    value={editFarmerDetails?.district}
                   >
                     <option>Select District</option>
                     {/* {showDistricts.map((district) => (
@@ -266,7 +273,7 @@ const EditFarmerForm = () => {
                       value={editFarmerDetails?.community}
                       placeholder="Enter community"
                       name="community"
-                      //   onChange={handleFarmerInputChange}
+                      onChange={handleFarmerEditInputChange}
                       required
                     />
                   </div>
@@ -280,7 +287,8 @@ const EditFarmerForm = () => {
                       id="farmer"
                       name="type"
                       value="farmer"
-                      //   onChange={handleFarmerInputChange}
+                      checked={editFarmerDetails?.type === "Farmer"}
+                      onChange={handleFarmerEditInputChange}
                       required
                     />
                     <Label htmlFor="farmer">farmer</Label>
@@ -290,7 +298,8 @@ const EditFarmerForm = () => {
                       id="processor"
                       name="type"
                       value="Processor"
-                      //   onChange={handleFarmerInputChange}
+                      checked={editFarmerDetails?.type === "Processor"}
+                      onChange={handleFarmerEditInputChange}
                       required
                     />
                     <Label htmlFor="processor">Processor</Label>
@@ -300,7 +309,7 @@ const EditFarmerForm = () => {
                       id="farmerProcessor"
                       name="type"
                       value="Farmer and Processor"
-                      //   onChange={handleFarmerInputChange}
+                      onChange={handleFarmerEditInputChange}
                       required
                     />
                     <Label htmlFor="farmerProcessor">
@@ -319,8 +328,9 @@ const EditFarmerForm = () => {
                   <Select
                     id="group"
                     required
-                    // onChange={handleFarmerInputChange}
+                    onChange={handleFarmerEditInputChange}
                     className="w-full"
+                    value={editFarmerDetails?.group}
                     name="group"
                   >
                     <option>group</option>
@@ -347,10 +357,10 @@ const EditFarmerForm = () => {
                   <TextInput
                     id="farmName"
                     type="text"
-                    // value={editFirstFarmDetails.name}
+                    value={editFirstFarmDetails?.name}
                     placeholder="Enter primary farm name"
                     name="name"
-                    // onChange={handleFarmInputChange}
+                    onChange={() => console.log("change name")}
                     required
                   />
                 </div>
@@ -365,7 +375,8 @@ const EditFarmerForm = () => {
                   <Select
                     id="crop"
                     required
-                    // onChange={handleFarmInputChange}
+                    value={editFirstFarmDetails?.crop}
+                    onChange={() => console.log("crop")}
                     className="w-full"
                     name="crop"
                   >
@@ -388,10 +399,10 @@ const EditFarmerForm = () => {
                   <TextInput
                     id="sie"
                     type="number"
-                    // value={firstFarm.size}
+                    value={editFirstFarmDetails?.size}
                     placeholder="Enter size"
                     name="size"
-                    // onChange={handleFarmInputChange}
+                    onChange={() => console.log("size")}
                   />
                 </div>
                 <div>
@@ -405,7 +416,8 @@ const EditFarmerForm = () => {
                   <Select
                     id="crop"
                     required
-                    // onChange={handleFarmInputChange}
+                    value={editFirstFarmDetails?.region}
+                    onChange={() => console.log("select region")}
                     className="w-full"
                     name="region"
                   >
@@ -425,19 +437,19 @@ const EditFarmerForm = () => {
                       className="font-semibold"
                     />
                   </div>
-                  <Select
+                  {/* <Select
                     id="district"
                     required
-                    // onChange={handleFarmDistrictSelect}
+                    onChange={handleFarmDistrictSelect}
                     className="w-full"
                   >
                     <option>Select District</option>
-                    {/* {showDistricts.map((district) => (
+                    {showDistricts.map((district) => (
                       <option value={district} key={district}>
                         {district}
                       </option>
-                    ))} */}
-                  </Select>
+                    ))}
+                  </Select> */}
                 </div>
                 <div className="my-2 block">
                   <Label
@@ -450,23 +462,143 @@ const EditFarmerForm = () => {
                     id="community"
                     type="text"
                     icon={FaRegUserCircle}
-                    // value={editFirstFarmDetails?.community}
+                    value={editFirstFarmDetails?.community}
                     placeholder="Enter community"
                     name="community"
-                    // onChange={handleFarmInputChange}
+                    onChange={() => console.log("community")}
                     required
                   />
                 </div>
-                <Button
-                  className="mt-10"
-                  //   onClick={() => setAddFarms(!addFarms)}
-                >
-                  {/* {addFarms ? "Hide farm" : "Add another farm"} */}
-                </Button>
+                <h3 className="mt-10 font-semibold">
+                  Edit Second Farm Details
+                </h3>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      className="font-semibold"
+                      htmlFor="farmName"
+                      value="Farm name"
+                    />
+                  </div>
+                  <TextInput
+                    id="farmName"
+                    type="text"
+                    value={editSecondFarmDetails?.name}
+                    placeholder="Enter primary farm name"
+                    name="name"
+                    onChange={() => console.log("change name")}
+                    required
+                  />
+                </div>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      htmlFor="crop"
+                      value="Crop grown"
+                      className="font-semibold"
+                    />
+                  </div>
+                  <Select
+                    id="crop"
+                    required
+                    value={editSecondFarmDetails?.crop}
+                    onChange={() => console.log("crop")}
+                    className="w-full"
+                    name="crop"
+                  >
+                    <option value="">Select crop</option>
+                    {crops.map((crop) => (
+                      <option value={crop} key={crop}>
+                        {crop}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      className="font-semibold"
+                      htmlFor="size"
+                      value="Farm size(acres)"
+                    />
+                  </div>
+                  <TextInput
+                    id="sie"
+                    type="number"
+                    value={editSecondFarmDetails?.size}
+                    placeholder="Enter size"
+                    name="size"
+                    onChange={() => console.log("size")}
+                  />
+                </div>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      className="font-semibold"
+                      htmlFor="region"
+                      value="Region"
+                    />
+                  </div>
+                  <Select
+                    id="crop"
+                    required
+                    value={editSecondFarmDetails?.region}
+                    onChange={() => console.log("select region")}
+                    className="w-full"
+                    name="region"
+                  >
+                    <option>Select region</option>
+                    {regions.map((region, index) => (
+                      <option value={region.name} key={index}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                <div>
+                  <div className="my-2 block">
+                    <Label
+                      htmlFor="district"
+                      value="District"
+                      className="font-semibold"
+                    />
+                  </div>
+                  {/* <Select
+                    id="district"
+                    required
+                    onChange={handleFarmDistrictSelect}
+                    className="w-full"
+                  >
+                    <option>Select District</option>
+                    {showDistricts.map((district) => (
+                      <option value={district} key={district}>
+                        {district}
+                      </option>
+                    ))}
+                  </Select> */}
+                </div>
+                <div className="my-2 block">
+                  <Label
+                    htmlFor="community"
+                    value="Community"
+                    className="font-semibold"
+                  />
+
+                  <TextInput
+                    id="community"
+                    type="text"
+                    icon={FaRegUserCircle}
+                    value={editSecondFarmDetails?.community}
+                    placeholder="Enter community"
+                    name="community"
+                    onChange={() => console.log("community")}
+                    required
+                  />
+                </div>
               </section>
             </div>
             <Button type="submit" className="mt-10">
-              Save Details
+              Save Edits
             </Button>
           </form>
         </section>
