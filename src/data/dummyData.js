@@ -61,7 +61,7 @@ export const farmersData = {
 
       farms: [
         {
-          farmId: 101,
+          farmId: 103,
           name: "Emma's Soya ",
           crop: "Soya",
           size: 100,
@@ -69,7 +69,7 @@ export const farmersData = {
           community: "Kasena",
         },
         {
-          farmId: 102,
+          farmId: 104,
           name: "Emma's Groundnut",
           crop: "Groundnut",
           size: 50,

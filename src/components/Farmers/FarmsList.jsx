@@ -5,6 +5,7 @@ import { useFarmersContext } from "../../context/FarmersProvider";
 import { FaEye } from "react-icons/fa";
 import { TbH2 } from "react-icons/tb";
 import { lineChartData } from "../../data/linechart";
+import { Link } from "react-router-dom";
 const FarmsList = () => {
   useFarmersContext;
   const { state } = useFarmersContext();
@@ -23,7 +24,7 @@ const FarmsList = () => {
           <Table.HeadCell>Community</Table.HeadCell>
         </Table.Head>
         {farmers.map((farmer) => (
-          <Table.Body className="divide-y">
+          <Table.Body className="divide-y" key={farmer.id}>
             {farmer.farms.map((farm, index) =>
               farm.name !== "" ? (
                 <Table.Row
@@ -40,7 +41,9 @@ const FarmsList = () => {
 
                   <Table.Cell>
                     <div className="flex md:items-center md:justify-evenly">
-                      <Button>Start Activity</Button>
+                      <Link to={`/app/farms/${farm.farmId}/activities`}>
+                        <Button>Start Activity</Button>
+                      </Link>
                       <div className="md:flex md:gap-10">
                         <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
                         <MdDelete className="text-xl hover:text-red-700 cursor-pointer" />

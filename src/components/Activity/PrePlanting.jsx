@@ -1,15 +1,7 @@
 import React from "react";
-import {
-  Button,
-  Checkbox,
-  Label,
-  TextInput,
-  Datepicker,
-  Select,
-  Radio,
-} from "flowbite-react";
 import LandPreparation from "./LandPreparation";
 import PlantingMaterial from "./PlantingMaterial";
+import { Button } from "flowbite-react";
 
 const PrePlanting = () => {
   const handlePrePlantingSubmit = (e) => {

@@ -1,7 +1,43 @@
-import React from "react";
-import { Button, Checkbox, Label, TextInput, Datepicker } from "flowbite-react";
+import React, { useState } from "react";
+import { Label, TextInput, Datepicker, Button } from "flowbite-react";
 
 const LandPreparation = () => {
+  const [preparationDates, setPreparationDates] = useState({
+    season: "",
+    preparationDate: "",
+    landSize: "",
+    clearing: "",
+    ploughing: "",
+    harrowing: "",
+    manualPrep: "",
+    ridging: "",
+    moundMolding: "",
+  });
+  const [sprayingActivities, setSprayingActivities] = useState({
+    chemicalName: "",
+    rateOfApplication: "",
+    dateofApplication: "",
+  });
+  const [plantingMaterial, setPlantingMaterial] = useState({
+    plantPart: "",
+    source: "",
+    otherSource: "",
+    quantity: "",
+    yield: "",
+    isPlantPartTreated: "",
+    treatmentMethod: "",
+    chemicalUsed: "",
+  });
+
+  const handlePreplantingDateChange = (activity, date) => {
+    setPreparationDates({
+      ...preparationDates,
+      [activity]: date.toISOString().split("T")[0],
+    });
+  };
+
+  console.log(preparationDates);
+
   return (
     <div>
       <section className="flex max-w-md flex-col gap-4">
@@ -11,7 +47,16 @@ const LandPreparation = () => {
             value="Select the planting season"
             className="mb-2"
           />
-          <Datepicker id="season" />;
+          <Datepicker
+            id="season"
+            value={preparationDates.season}
+            placeholder="Select season"
+            maxDate={new Date()}
+            onSelectedDateChanged={(date) =>
+              handlePreplantingDateChange("season", date)
+            }
+          />
+          ;
         </div>
         <div className="flex flex-col">
           <Label
@@ -19,15 +64,31 @@ const LandPreparation = () => {
             value="Select the date land was prepared"
             className="mb-2"
           />
-          <Datepicker id="date" />;
+          <Datepicker
+            id="date"
+            placeholder="Select date"
+            value={preparationDates.preparationDate}
+            maxDate={new Date()}
+            onSelectedDateChanged={(date) =>
+              handlePreplantingDateChange("preparationDate", date)
+            }
+          />
         </div>
         <div className="flex flex-col">
           <Label htmlFor="landsize" value="Land size" className="mb-2" />
           <TextInput
             id="landsize"
-            type="text"
+            type="number"
+            min={1}
             required
+            value={preparationDates.landSize}
             placeholder="Enter land size"
+            onChange={(e) =>
+              setPreparationDates({
+                ...preparationDates,
+                landSize: e.target.value,
+              })
+            }
           />
         </div>
         <section>
@@ -37,21 +98,45 @@ const LandPreparation = () => {
             <Label htmlFor="Clearing" className="text-md font-semibold my-2">
               Clearing
             </Label>
-            <Datepicker id="Clearing" />
+            <Datepicker
+              id="Clearing"
+              value={preparationDates.clearing}
+              placeholder="Select clearing date"
+              maxDate={new Date()}
+              onSelectedDateChanged={(date) =>
+                handlePreplantingDateChange("clearing", date)
+              }
+            />
           </div>
 
           <div className="flex flex-col my-2">
             <Label htmlFor="Ploughing" className="text-md font-semibold my-2">
               Ploughing
             </Label>
-            <Datepicker id="Ploughing" />
+            <Datepicker
+              id="Ploughing"
+              value={preparationDates.ploughing}
+              placeholder="Select ploughing date"
+              maxDate={new Date()}
+              onSelectedDateChanged={(date) =>
+                handlePreplantingDateChange("ploughing", date)
+              }
+            />
           </div>
 
           <div className="flex flex-col my-2">
             <Label htmlFor="harrowing" className="text-md font-semibold my-2">
               Harrowing
             </Label>
-            <Datepicker id="harrowing" />
+            <Datepicker
+              id="harrowing"
+              value={preparationDates.harrowing}
+              placeholder="Select harrowing date"
+              maxDate={new Date()}
+              onSelectedDateChanged={(date) =>
+                handlePreplantingDateChange("harrowing", date)
+              }
+            />
           </div>
 
           <div className="flex flex-col my-2">
@@ -61,7 +146,15 @@ const LandPreparation = () => {
             >
               Manual Preparation
             </Label>
-            <Datepicker id="Manual Preparation" />
+            <Datepicker
+              id="Manual Preparation"
+              value={preparationDates.manualPrep}
+              placeholder="Select manual preparation date"
+              maxDate={new Date()}
+              onSelectedDateChanged={(date) =>
+                handlePreplantingDateChange("manualPrep", date)
+              }
+            />
           </div>
 
           <div className="flex flex-col my-2">
@@ -69,7 +162,15 @@ const LandPreparation = () => {
               Ridging
             </Label>
 
-            <Datepicker id="Ridging" />
+            <Datepicker
+              id="Ridging"
+              value={preparationDates.ridging}
+              placeholder="Select ridging date"
+              maxDate={new Date()}
+              onSelectedDateChanged={(date) =>
+                handlePreplantingDateChange("ridging", date)
+              }
+            />
           </div>
 
           <div className="flex flex-col my-2">
@@ -80,7 +181,15 @@ const LandPreparation = () => {
               Mound Molding
             </Label>
 
-            <Datepicker id="mound Molding" />
+            <Datepicker
+              id="mound Molding"
+              value={preparationDates.moundMolding}
+              placeholder="Select mound molding  date"
+              maxDate={new Date()}
+              onSelectedDateChanged={(date) =>
+                handlePreplantingDateChange("moundMolding", date)
+              }
+            />
           </div>
         </section>
         <h2 className="text-md font-bold">Spraying Activities</h2>

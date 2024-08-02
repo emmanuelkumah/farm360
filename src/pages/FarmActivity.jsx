@@ -1,7 +1,5 @@
 import React from "react";
-// import { Activities } from "../components";
-import { Activities, PrePlanting } from "../components";
-PrePlanting;
+import { Activities } from "../components";
 const FarmActivity = () => {
   return (
     <>
