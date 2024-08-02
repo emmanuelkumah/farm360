@@ -21,8 +21,8 @@ const farmersReducer = (data, action) => {
       return {
         ...data,
         farmers: data.farmers.map((farmer) => {
-          return farmer.id === action.payload.id
-            ? action.payload.update
+          return farmer.id === action.payload.farmerId
+            ? action.payload.updateFarmer
             : farmer;
         }),
       };

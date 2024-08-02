@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const FarmersList = () => {
   const { dispatch, state } = useFarmersContext();
   const { farmers } = state;
+  console.log(farmers);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [editFarmer, setEditFarmer] = useState(null);

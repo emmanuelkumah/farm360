@@ -101,7 +101,11 @@ const AddFarmerForm = () => {
   const handleFarmInputChange = (e) => {
     const { name, value } = e.target;
 
-    setFirstFarm({ ...firstFarm, [name]: value });
+    setFirstFarm({
+      ...firstFarm,
+      id: Math.floor(Math.random() * 20000),
+      [name]: value,
+    });
     getDistricts(e.target.selectedIndex);
   };
 
@@ -112,7 +116,11 @@ const AddFarmerForm = () => {
   const handleSecondFarmChange = (e) => {
     const { value, name } = e.target;
 
-    setSecondFarm({ ...secondFarm, [name]: value });
+    setSecondFarm({
+      ...secondFarm,
+      id: Math.floor(Math.random() * 20000),
+      [name]: value,
+    });
     getDistricts(e.target.selectedIndex);
   };
 

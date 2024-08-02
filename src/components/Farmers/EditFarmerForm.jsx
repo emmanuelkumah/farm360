@@ -21,7 +21,7 @@ const EditFarmerForm = () => {
   const [editSecondFarmDetails, setEditSecondFarmDetails] = useState({});
   const [showDistrict, setShowDistricts] = useState("");
 
-  const { state } = useFarmersContext();
+  const { state, dispatch } = useFarmersContext();
   const { id } = useParams();
 
   useEffect(() => {
@@ -34,15 +34,56 @@ const EditFarmerForm = () => {
       (farmer) => farmer.id === Number(id)
     );
     setEditFarmerDetails(foundFarmer);
-    setEditFirstFarmDetails(foundFarmer.farms[0]);
-    setEditSecondFarmDetails(foundFarmer.farms[1]);
+    setEditFirstFarmDetails(foundFarmer?.farms[0]);
+    setEditSecondFarmDetails(foundFarmer?.farms[1]);
   };
 
   const handleFarmerEditInputChange = (e) => {
     const { name, value } = e.target;
     setEditFarmerDetails({ ...editFarmerDetails, [name]: value });
   };
-  console.log(editFarmerDetails);
+  const handleFirstFarmEdit = (e) => {
+    const { name, value } = e.target;
+    setEditFirstFarmDetails({ ...editFirstFarmDetails, [name]: value });
+  };
+  const handleSecondFarmEdit = (e) => {
+    const { name, value } = e.target;
+    setEditSecondFarmDetails({ ...editSecondFarmDetails, [name]: value });
+  };
+  const handleImageChange = (e) => {
+    const reader = new FileReader();
+    const file = e.target.files[0];
+
+    reader.onloadend = () => {
+      setEditFarmerDetails({ ...editFarmerDetails, picture: value });
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    };
+  };
+  const handleDateChange = (date) => {
+    setEditFarmerDetails({
+      ...editFarmerDetails,
+      dateOfBirth: date.toLocaleDateString(),
+    });
+  };
+  const onEditSubmit = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: "UPDATE_FARMER",
+      payload: {
+        farmerId: editFarmerDetails.id,
+        updateFarmer: {
+          ...editFarmerDetails,
+          farms: [editFirstFarmDetails, editSecondFarmDetails],
+        },
+      },
+    });
+    // console.log(editFarmerDetails);
+    // console.log(editFirstFarmDetails);
+    //console.log(editSecondFarmDetails);
+  };
   return (
     <>
       <h2 className="md:text-2xl text-green-500 font-bold my-4 border-l-4 pl-4 border-green-500">
@@ -50,7 +91,7 @@ const EditFarmerForm = () => {
       </h2>
       <div className="bg-white h-full rounded-lg shadow-md">
         <section className="flex flex-col justify-center items-center md:my-10">
-          <form className="w-[80vw] md:w-[60vw] my-10">
+          <form className="w-[80vw] md:w-[60vw] my-10" onSubmit={onEditSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
               <section>
                 <h2 className="text-green-500 font-bold md:text-2xl mb-4">
@@ -64,8 +105,7 @@ const EditFarmerForm = () => {
                         id="male"
                         name="gender"
                         value="Male"
-                        // checked={true}
-                        checked={editFarmerDetails?.gender === "male"}
+                        checked={editFarmerDetails?.gender === "Male"}
                         onChange={handleFarmerEditInputChange}
                         required
                       />
@@ -84,6 +124,7 @@ const EditFarmerForm = () => {
                     </div>
                   </fieldset>
                   <div>
+                    {/* <img src={editFarmerDetails.picture} alt="" /> */}
                     <div className="mb-2">
                       <Label
                         className="font-semibold"
@@ -93,7 +134,7 @@ const EditFarmerForm = () => {
                     </div>
                     <FileInput
                       id="file-upload"
-                      onChange={() => console.log("file upload")}
+                      onChange={handleImageChange}
                       name="picture"
                     />
                   </div>
@@ -206,8 +247,8 @@ const EditFarmerForm = () => {
                     <Datepicker
                       name="dateOfBirth"
                       maxDate={new Date(2010, 1, 30)}
-                      selected={editFarmerDetails?.dateOfBirth}
-                      onSelectedDateChanged={() => console.log("date")}
+                      value={editFarmerDetails?.dateOfBirth}
+                      onSelectedDateChanged={handleDateChange}
                     />
                   </div>
                   <div>
@@ -287,7 +328,7 @@ const EditFarmerForm = () => {
                       id="farmer"
                       name="type"
                       value="farmer"
-                      checked={editFarmerDetails?.type === "Farmer"}
+                      checked={editFarmerDetails?.type === "farmer"}
                       onChange={handleFarmerEditInputChange}
                       required
                     />
@@ -309,6 +350,9 @@ const EditFarmerForm = () => {
                       id="farmerProcessor"
                       name="type"
                       value="Farmer and Processor"
+                      checked={
+                        editFarmerDetails?.type === "Farmer and Processor"
+                      }
                       onChange={handleFarmerEditInputChange}
                       required
                     />
@@ -360,7 +404,7 @@ const EditFarmerForm = () => {
                     value={editFirstFarmDetails?.name}
                     placeholder="Enter primary farm name"
                     name="name"
-                    onChange={() => console.log("change name")}
+                    onChange={handleFirstFarmEdit}
                     required
                   />
                 </div>
@@ -376,7 +420,7 @@ const EditFarmerForm = () => {
                     id="crop"
                     required
                     value={editFirstFarmDetails?.crop}
-                    onChange={() => console.log("crop")}
+                    onChange={handleFirstFarmEdit}
                     className="w-full"
                     name="crop"
                   >
@@ -402,7 +446,7 @@ const EditFarmerForm = () => {
                     value={editFirstFarmDetails?.size}
                     placeholder="Enter size"
                     name="size"
-                    onChange={() => console.log("size")}
+                    onChange={handleFirstFarmEdit}
                   />
                 </div>
                 <div>
@@ -417,7 +461,7 @@ const EditFarmerForm = () => {
                     id="crop"
                     required
                     value={editFirstFarmDetails?.region}
-                    onChange={() => console.log("select region")}
+                    onChange={handleFirstFarmEdit}
                     className="w-full"
                     name="region"
                   >
@@ -465,7 +509,7 @@ const EditFarmerForm = () => {
                     value={editFirstFarmDetails?.community}
                     placeholder="Enter community"
                     name="community"
-                    onChange={() => console.log("community")}
+                    onChange={handleFirstFarmEdit}
                     required
                   />
                 </div>
@@ -486,7 +530,7 @@ const EditFarmerForm = () => {
                     value={editSecondFarmDetails?.name}
                     placeholder="Enter primary farm name"
                     name="name"
-                    onChange={() => console.log("change name")}
+                    onChange={handleSecondFarmEdit}
                     required
                   />
                 </div>
@@ -502,7 +546,7 @@ const EditFarmerForm = () => {
                     id="crop"
                     required
                     value={editSecondFarmDetails?.crop}
-                    onChange={() => console.log("crop")}
+                    onChange={handleSecondFarmEdit}
                     className="w-full"
                     name="crop"
                   >
@@ -528,7 +572,7 @@ const EditFarmerForm = () => {
                     value={editSecondFarmDetails?.size}
                     placeholder="Enter size"
                     name="size"
-                    onChange={() => console.log("size")}
+                    onChange={handleSecondFarmEdit}
                   />
                 </div>
                 <div>
@@ -543,7 +587,7 @@ const EditFarmerForm = () => {
                     id="crop"
                     required
                     value={editSecondFarmDetails?.region}
-                    onChange={() => console.log("select region")}
+                    onChange={handleSecondFarmEdit}
                     className="w-full"
                     name="region"
                   >
@@ -591,7 +635,7 @@ const EditFarmerForm = () => {
                     value={editSecondFarmDetails?.community}
                     placeholder="Enter community"
                     name="community"
-                    onChange={() => console.log("community")}
+                    onChange={handleSecondFarmEdit}
                     required
                   />
                 </div>
