@@ -1,25 +1,80 @@
-import React from "react";
+import React, { useState } from "react";
 import LandPreparation from "./LandPreparation";
 import PlantingMaterial from "./PlantingMaterial";
-import { Button } from "flowbite-react";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PrePlanting = () => {
-  let allPrePlantingData;
-  let allPlantingMaterialData;
-  let prePlantingData = {};
-  const getLandPreprationData = (landPrep) => {
-    allPrePlantingData = landPrep;
-  };
+  const { farmId } = useParams();
+  const [preparationDates, setPreparationDates] = useState({
+    season: "",
+    preparationDate: "",
+    landSize: "",
+    clearing: "",
+    ploughing: "",
+    harrowing: "",
+    manualPrep: "",
+    ridging: "",
+    moundMolding: "",
+  });
+  const [sprayingActivities, setSprayingActivities] = useState({
+    chemicalName: "",
+    rateOfApplication: "",
+    dateofApplication: "",
+  });
+  const [plantingMaterial, setPlantingMaterial] = useState({
+    plantPart: "",
+    source: "",
+    otherSource: "",
+    quantity: "",
+    yield: "",
+    isPlantPartTreated: "",
+    treatmentMethod: "",
+    chemicalUsed: "",
+    isTreated: "",
+  });
 
-  const getPlantingMaterialData = (plantingMat) => {
-    allPlantingMaterialData = plantingMat;
-  };
   const handlePrePlantingSubmit = (e) => {
     e.preventDefault();
-
-    const data = { ...allPlantingMaterialData, ...allPrePlantingData };
-    console.log(data);
+    const allPrePlanting = {
+      farmId: farmId,
+      ...preparationDates,
+      ...sprayingActivities,
+      ...plantingMaterial,
+    };
+    console.log(allPrePlanting);
+    //clear fields
+    setPreparationDates({
+      season: "",
+      preparationDate: "",
+      landSize: "",
+      clearing: "",
+      ploughing: "",
+      harrowing: "",
+      manualPrep: "",
+      ridging: "",
+      moundMolding: "",
+    });
+    setPlantingMaterial({
+      plantPart: "",
+      source: "",
+      otherSource: "",
+      quantity: "",
+      yield: "",
+      isPlantPartTreated: "",
+      treatmentMethod: "",
+      chemicalUsed: "",
+      isTreated: "",
+    });
+    setSprayingActivities({
+      chemicalName: "",
+      rateOfApplication: "",
+      dateofApplication: "",
+    });
+    toast.success("Pre-Planting activities submitted successfully!");
   };
+
   return (
     <>
       <div className="m-10">
@@ -32,11 +87,18 @@ const PrePlanting = () => {
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
             onSubmit={handlePrePlantingSubmit}
           >
-            <LandPreparation onCaptureLandPreparation={getLandPreprationData} />
+            <LandPreparation
+              preparationDates={preparationDates}
+              setPreparationDates={setPreparationDates}
+              sprayingActivities={sprayingActivities}
+              setSprayingActivities={setSprayingActivities}
+            />
             <PlantingMaterial
-              onCapturePlantingMaterial={getPlantingMaterialData}
+              plantingMaterial={plantingMaterial}
+              setPlantingMaterial={setPlantingMaterial}
             />
           </form>
+          <ToastContainer />
         </div>
       </div>
     </>

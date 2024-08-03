@@ -1,23 +1,28 @@
 import React, { useState } from "react";
 import { Label, TextInput, Datepicker, Button } from "flowbite-react";
 
-const LandPreparation = ({ onCaptureLandPreparation }) => {
-  const [preparationDates, setPreparationDates] = useState({
-    season: "",
-    preparationDate: "",
-    landSize: "",
-    clearing: "",
-    ploughing: "",
-    harrowing: "",
-    manualPrep: "",
-    ridging: "",
-    moundMolding: "",
-  });
-  const [sprayingActivities, setSprayingActivities] = useState({
-    chemicalName: "",
-    rateOfApplication: "",
-    dateofApplication: "",
-  });
+const LandPreparation = ({
+  preparationDates,
+  setPreparationDates,
+  sprayingActivities,
+  setSprayingActivities,
+}) => {
+  // const [preparationDates, setPreparationDates] = useState({
+  //   season: "",
+  //   preparationDate: "",
+  //   landSize: "",
+  //   clearing: "",
+  //   ploughing: "",
+  //   harrowing: "",
+  //   manualPrep: "",
+  //   ridging: "",
+  //   moundMolding: "",
+  // });
+  // const [sprayingActivities, setSprayingActivities] = useState({
+  //   chemicalName: "",
+  //   rateOfApplication: "",
+  //   dateofApplication: "",
+  // });
 
   const handlePreplantingDateChange = (activity, date) => {
     setPreparationDates({
@@ -31,7 +36,6 @@ const LandPreparation = ({ onCaptureLandPreparation }) => {
     setSprayingActivities({ ...sprayingActivities, [name]: value });
   };
 
-  onCaptureLandPreparation(preparationDates);
   return (
     <div>
       <section className="flex max-w-md flex-col gap-4">

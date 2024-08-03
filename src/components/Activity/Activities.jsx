@@ -11,10 +11,8 @@ import Storage from "./Storage";
 import Sales from "./Sales";
 import Shippment from "./Shipment";
 import PestControl from "./PestControl";
-import { useParams } from "react-router-dom";
 
 const Activities = () => {
-  console.log(useParams());
   return (
     <div className="mx-10 my-[20%] md:my-0">
       <Tabs aria-label="Tabs with underline" variant="underline">

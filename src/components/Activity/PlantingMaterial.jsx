@@ -1,31 +1,9 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Checkbox,
-  Label,
-  TextInput,
-  Datepicker,
-  Select,
-  Radio,
-} from "flowbite-react";
-const PlantingMaterial = ({ onCapturePlantingMaterial }) => {
-  const [plantingMaterial, setPlantingMaterial] = useState({
-    plantPart: "",
-    source: "",
-    otherSource: "",
-    quantity: "",
-    yield: "",
-    isPlantPartTreated: "",
-    treatmentMethod: "",
-    chemicalUsed: "",
-    isTreated: "",
-  });
-
+import { Button, Label, TextInput, Select, Radio } from "flowbite-react";
+const PlantingMaterial = ({ plantingMaterial, setPlantingMaterial }) => {
   const handlePlantingMaterialChange = (e) => {
     const { name, value } = e.target;
     setPlantingMaterial({ ...plantingMaterial, [name]: value });
   };
-  onCapturePlantingMaterial(plantingMaterial);
   return (
     <div>
       <section className="flex max-w-md flex-col gap-4">
@@ -66,6 +44,7 @@ const PlantingMaterial = ({ onCapturePlantingMaterial }) => {
             onChange={handlePlantingMaterialChange}
             required
           >
+            <option>Select Source of planting material</option>
             <option value="Local inputs dealer">Local inputs dealer</option>
             <option value="MOFA">MOFA</option>
             <option value="BJL">BJL</option>
@@ -164,6 +143,7 @@ const PlantingMaterial = ({ onCapturePlantingMaterial }) => {
             value={plantingMaterial.treatmentMethod}
             onChange={handlePlantingMaterialChange}
           >
+            <option>Select treatment method</option>
             <option value="chemical">Chemical</option>
             <option value="hot water">Hot water</option>
             <option value="other">Other</option>
