@@ -1,10 +1,9 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { Button, Table } from "flowbite-react";
 import { MdDelete, MdEdit, MdViewAgenda } from "react-icons/md";
 import { useFarmersContext } from "../../context/FarmersProvider";
 import { FaEye } from "react-icons/fa";
-import { TbH2 } from "react-icons/tb";
-import { lineChartData } from "../../data/linechart";
+
 import { Link } from "react-router-dom";
 const FarmsList = () => {
   useFarmersContext;

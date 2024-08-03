@@ -1,17 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
 
 const WeedControl = () => {
+  const [weedControlActivities, setWeedControlActivities] = useState({
+    dateOfWeeding: "",
+    weedControlMethod: "",
+    chemical: "",
+    rateOfApplication: "",
+    supervisor: "",
+    contact: "",
+    certificateOfSupervisor: "",
+    otherCert: "",
+  });
+  console.log(weedControlActivities);
+  const handleWeedingDate = (date) => {
+    setWeedControlActivities({
+      ...weedControlActivities,
+      dateOfWeeding: date.toISOString().split("T")[0],
+    });
+  };
+  const handleWeedingActivities = (e) => {
+    const { name, value } = e.target;
+    setWeedControlActivities({
+      ...weedControlActivities,
+      [name]: value,
+    });
+  };
+
+  const onWeedControlActivitiesSubmit = (e) => {
+    e.preventDefault();
+    setWeedControlActivities({
+      dateOfWeeding: "",
+      weedControlMethod: "",
+      chemical: "",
+      rateOfApplication: "",
+      supervisor: "",
+      contact: "",
+      certificateOfSupervisor: "",
+      otherCert: "",
+    });
+    console.log(weedControlActivities);
+  };
   return (
     <div>
       <div>
         <h2 className="mb-2 text-xl">Weed Control Activities</h2>
-        <form className="flex max-w-md flex-col gap-4">
+        <form
+          className="flex max-w-md flex-col gap-4"
+          onSubmit={onWeedControlActivitiesSubmit}
+        >
           <div>
             <Label htmlFor="weed" className="font-semibold my-2">
               Date of weed control
             </Label>
-            <Datepicker id="weed" />
+            <Datepicker
+              id="weed"
+              name="dateOfWeeding"
+              placeholder="Select date of weed control"
+              value={weedControlActivities.dateOfWeeding}
+              maxDate={new Date()}
+              onSelectedDateChanged={(date) => handleWeedingDate(date)}
+            />
           </div>
 
           <div>
@@ -21,10 +70,16 @@ const WeedControl = () => {
               className="my-2 font-semibold"
             />
 
-            <Select id="method" required>
+            <Select
+              id="method"
+              required
+              name="weedControlMethod"
+              onChange={handleWeedingActivities}
+              value={weedControlActivities.weedControlMethod}
+            >
               <option>Select method of weed control</option>
-              <option>Hand</option>
-              <option>Chemical</option>
+              <option value="Hand">Hand</option>
+              <option value="Chemical">Chemical</option>
             </Select>
           </div>
           <div>
@@ -38,6 +93,9 @@ const WeedControl = () => {
               required
               placeholder="Enter name of chemical"
               id="chemical"
+              name="chemical"
+              value={weedControlActivities.chemical}
+              onChange={handleWeedingActivities}
             />
           </div>
           <div>
@@ -51,6 +109,9 @@ const WeedControl = () => {
               required
               placeholder="Enter rate of application"
               id="rate"
+              name="rateOfApplication"
+              value={weedControlActivities.rateOfApplication}
+              onChange={handleWeedingActivities}
             />
           </div>
           <div>
@@ -64,6 +125,9 @@ const WeedControl = () => {
               required
               placeholder="Enter name of supervisor"
               id="supervisor"
+              name="supervisor"
+              value={weedControlActivities.supervisor}
+              onChange={handleWeedingActivities}
             />
           </div>
           <div>
@@ -77,6 +141,9 @@ const WeedControl = () => {
               required
               placeholder="Enter name of supervisor"
               id="contact"
+              name="contact"
+              value={weedControlActivities.contact}
+              onChange={handleWeedingActivities}
             />
           </div>
           <div>
@@ -86,27 +153,39 @@ const WeedControl = () => {
               className="my-2 font-semibold"
             />
 
-            <Select id="cert" required>
+            <Select
+              id="cert"
+              required
+              name="certificateOfSupervisor"
+              onChange={handleWeedingActivities}
+              value={weedControlActivities.certificateOfSupervisor}
+            >
               <option>Select certificate of supervisor</option>
-              <option>MOFA</option>
-              <option>EPA</option>
-              <option>PPRSD/NPPO</option>
-              <option>Others</option>
+              <option value="MOFA">MOFA</option>
+              <option value="EPA">EPA</option>
+              <option value="PPRSD/NPPO">PPRSD/NPPO</option>
+              <option value="Others">Others</option>
             </Select>
           </div>
-          <div>
-            <Label
-              htmlFor="certificate"
-              value="Other Certificate"
-              className="my-2 font-semibold"
-            />
-            <TextInput
-              type="text"
-              required
-              placeholder="Enter the certificate of supervisor if not listed above"
-              id="certificate"
-            />
-          </div>
+          {weedControlActivities.certificateOfSupervisor === "Others" && (
+            <div>
+              <Label
+                htmlFor="certificate"
+                value="Other Certificate"
+                className="my-2 font-semibold"
+              />
+              <TextInput
+                type="text"
+                required
+                placeholder="Enter the certificate of supervisor if not listed above"
+                id="certificate"
+                name="otherCert"
+                value={weedControlActivities.otherCert}
+                onChange={handleWeedingActivities}
+              />
+            </div>
+          )}
+
           <Button type="submit">Submit</Button>
         </form>
       </div>

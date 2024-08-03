@@ -7,23 +7,6 @@ const LandPreparation = ({
   sprayingActivities,
   setSprayingActivities,
 }) => {
-  // const [preparationDates, setPreparationDates] = useState({
-  //   season: "",
-  //   preparationDate: "",
-  //   landSize: "",
-  //   clearing: "",
-  //   ploughing: "",
-  //   harrowing: "",
-  //   manualPrep: "",
-  //   ridging: "",
-  //   moundMolding: "",
-  // });
-  // const [sprayingActivities, setSprayingActivities] = useState({
-  //   chemicalName: "",
-  //   rateOfApplication: "",
-  //   dateofApplication: "",
-  // });
-
   const handlePreplantingDateChange = (activity, date) => {
     setPreparationDates({
       ...preparationDates,
