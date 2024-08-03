@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -9,6 +9,23 @@ import {
   Radio,
 } from "flowbite-react";
 const PlantingMaterial = () => {
+  const [plantingMaterial, setPlantingMaterial] = useState({
+    plantPart: "",
+    source: "",
+    otherSource: "",
+    quantity: "",
+    yield: "",
+    isPlantPartTreated: "",
+    treatmentMethod: "",
+    chemicalUsed: "",
+    isTreated: "",
+  });
+
+  const handlePlantingMaterialChange = (e) => {
+    const { name, value } = e.target;
+    setPlantingMaterial({ ...plantingMaterial, [name]: value });
+  };
+  console.log(plantingMaterial);
   return (
     <div>
       <section className="flex max-w-md flex-col gap-4">
@@ -18,58 +35,78 @@ const PlantingMaterial = () => {
             value="Select planting material"
             className="my-2 font-semibold"
           />
-          <Select id="planting" required>
-            <option value="">Select planting material</option>
-            <option>Seed</option>
-            <option>Sucker</option>
-            <option>Seedlings</option>
-            <option>Tuber</option>
-            <option>Stem</option>
-            <option>Rhizome</option>
-            <option>Bulbs</option>
+          <Select
+            id="planting"
+            required
+            name="plantPart"
+            value={plantingMaterial.plantPart}
+            onChange={handlePlantingMaterialChange}
+          >
+            <option>Select planting material</option>
+            <option value="seed">Seed</option>
+            <option value="sucker">Sucker</option>
+            <option value="seedlings">Seedlings</option>
+            <option value="tuber">Tuber</option>
+            <option value="stem">Stem</option>
+            <option value="rhizome">Rhizome</option>
+            <option value="bulbs">Bulbs</option>
           </Select>
         </div>
         <div className="flex flex-col">
           <Label
-            htmlFor="planting"
+            htmlFor="source"
             value="Source of planting material"
             className="my-2 font-semibold"
           />
 
-          <Select id="planting" required>
-            <option>Local inputs dealer</option>
-            <option>MOFA</option>
-            <option>BJL</option>
-            <option>Own field</option>
-            <option>Imported</option>
-            <option>Others</option>
+          <Select
+            id="source"
+            name="source"
+            value={plantingMaterial.source}
+            onChange={handlePlantingMaterialChange}
+            required
+          >
+            <option value="Local inputs dealer">Local inputs dealer</option>
+            <option value="MOFA">MOFA</option>
+            <option value="BJL">BJL</option>
+            <option value="Own field">Own field</option>
+            <option value="Imported">Imported</option>
+            <option value="Others">Others</option>
           </Select>
         </div>
-        <div className="flex flex-col">
-          <Label
-            htmlFor="seed"
-            value="Other Source"
-            className="my-2 font-semibold"
-          />
-          <TextInput
-            id="seed"
-            type="text"
-            placeholder="Enter where you got the source from"
-            helperText={
-              <>
-                Enter the name of the company or individual you got the planting
-                material from
-              </>
-            }
-          />
-        </div>
+        {plantingMaterial.source && (
+          <div className="flex flex-col">
+            <Label
+              htmlFor="seed"
+              value="Other Source"
+              className="my-2 font-semibold"
+            />
+            <TextInput
+              id="seed"
+              type="text"
+              name="otherSource"
+              value={plantingMaterial.otherSource}
+              placeholder="Enter where you got the source from"
+              onChange={handlePlantingMaterialChange}
+            />
+          </div>
+        )}
+
         <div>
           <Label
             htmlFor="quantity"
             value="Quantity of planting material"
             className="my-2 font-semibold"
           />
-          <TextInput id="quantity" type="number" />
+          <TextInput
+            id="quantity"
+            type="number"
+            min="1"
+            name="quantity"
+            placeholder="Enter quantity"
+            value={plantingMaterial.quantity}
+            onChange={handlePlantingMaterialChange}
+          />
         </div>
 
         <div>
@@ -78,7 +115,15 @@ const PlantingMaterial = () => {
             value="Yield of planting material per acre"
             className="mb-2 font-semibold"
           />
-          <TextInput id="yield" type="number" />
+          <TextInput
+            id="yield"
+            type="number"
+            min="1"
+            name="yield"
+            placeholder="Enter yield"
+            value={plantingMaterial.yield}
+            onChange={handlePlantingMaterialChange}
+          />
         </div>
         <div>
           <fieldset className="flex max-w-md flex-col gap-4">
@@ -88,14 +133,20 @@ const PlantingMaterial = () => {
             <div className="flex items-center gap-2">
               <Radio
                 id="yes-treatment"
-                name="treatment"
+                name="isTreated"
                 value="Yes"
+                onChange={handlePlantingMaterialChange}
                 defaultChecked
               />
               <Label htmlFor="yes-treatment">Yes</Label>
             </div>
             <div className="flex items-center gap-2">
-              <Radio id="no-treatment" name="treatment" value="No" />
+              <Radio
+                id="no-treatment"
+                name="isTreated"
+                value="No"
+                onChange={handlePlantingMaterialChange}
+              />
               <Label htmlFor="no-treatment">No</Label>
             </div>
           </fieldset>
@@ -106,25 +157,36 @@ const PlantingMaterial = () => {
             htmlFor="method"
             value="Treatment method"
           />
-          <Select id="method" required>
-            <option>Chemical</option>
-            <option>Hot water</option>
-            <option>Other</option>
+          <Select
+            id="method"
+            required
+            name="treatmentMethod"
+            value={plantingMaterial.treatmentMethod}
+            onChange={handlePlantingMaterialChange}
+          >
+            <option value="chemical">Chemical</option>
+            <option value="hot water">Hot water</option>
+            <option value="other">Other</option>
           </Select>
         </div>
-        <div>
-          <Label
-            className="mb-2 font-semibold"
-            htmlFor="other"
-            value="Chemical name"
-          />
-          <TextInput
-            id="other"
-            type="text"
-            placeholder="Chemical used"
-            helperText={<>Enter the other treatment method or chemical used</>}
-          />
-        </div>
+        {(plantingMaterial.treatmentMethod === "chemical" ||
+          plantingMaterial.treatmentMethod === "other") && (
+          <div>
+            <Label
+              className="mb-2 font-semibold"
+              htmlFor="other"
+              value="Other treatment method or chemical used"
+            />
+            <TextInput
+              id="other"
+              type="text"
+              required
+              name="chemicalUsed"
+              onChange={handlePlantingMaterialChange}
+              placeholder="Enter the other treatment method or chemical used"
+            />
+          </div>
+        )}
       </section>
     </div>
   );

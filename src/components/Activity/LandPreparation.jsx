@@ -18,16 +18,6 @@ const LandPreparation = () => {
     rateOfApplication: "",
     dateofApplication: "",
   });
-  const [plantingMaterial, setPlantingMaterial] = useState({
-    plantPart: "",
-    source: "",
-    otherSource: "",
-    quantity: "",
-    yield: "",
-    isPlantPartTreated: "",
-    treatmentMethod: "",
-    chemicalUsed: "",
-  });
 
   const handlePreplantingDateChange = (activity, date) => {
     setPreparationDates({
@@ -35,9 +25,14 @@ const LandPreparation = () => {
       [activity]: date.toISOString().split("T")[0],
     });
   };
+  const handleSprayingActivities = (e) => {
+    const { name, value } = e.target;
 
-  console.log(preparationDates);
-
+    setSprayingActivities({ ...sprayingActivities, [name]: value });
+  };
+  const handlePlantingMaterial = () => {
+    console.log("planting");
+  };
   return (
     <div>
       <section className="flex max-w-md flex-col gap-4">
@@ -56,7 +51,6 @@ const LandPreparation = () => {
               handlePreplantingDateChange("season", date)
             }
           />
-          ;
         </div>
         <div className="flex flex-col">
           <Label
@@ -201,8 +195,11 @@ const LandPreparation = () => {
           <TextInput
             id="chemical"
             type="text"
+            name="chemicalName"
             required
             placeholder="Enter the name of chemical used"
+            value={sprayingActivities.chemicalName}
+            onChange={handleSprayingActivities}
           />
         </div>
         <div className="flex flex-col">
@@ -212,9 +209,13 @@ const LandPreparation = () => {
 
           <TextInput
             id="rate"
-            type="text"
+            type="number"
+            name="rateOfApplication"
+            min={1}
+            value={sprayingActivities.rateOfApplication}
             required
             placeholder="Enter the rate of application"
+            onChange={handleSprayingActivities}
           />
         </div>
 
@@ -222,7 +223,18 @@ const LandPreparation = () => {
           <Label htmlFor="date-applied" className="text-md font-semibold my-2">
             Date of application
           </Label>
-          <Datepicker id="date-applied" />
+          <Datepicker
+            id="date-applied"
+            placeholder="Select date of application"
+            value={sprayingActivities.dateofApplication}
+            maxDate={new Date()}
+            onSelectedDateChanged={(date) =>
+              setSprayingActivities({
+                ...sprayingActivities,
+                dateofApplication: date.toISOString().split("T")[0],
+              })
+            }
+          />
         </div>
       </section>
     </div>
