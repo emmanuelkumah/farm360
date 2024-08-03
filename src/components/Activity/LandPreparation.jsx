@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Label, TextInput, Datepicker, Button } from "flowbite-react";
 
-const LandPreparation = () => {
+const LandPreparation = ({ onCaptureLandPreparation }) => {
   const [preparationDates, setPreparationDates] = useState({
     season: "",
     preparationDate: "",
@@ -30,9 +30,8 @@ const LandPreparation = () => {
 
     setSprayingActivities({ ...sprayingActivities, [name]: value });
   };
-  const handlePlantingMaterial = () => {
-    console.log("planting");
-  };
+
+  onCaptureLandPreparation(preparationDates);
   return (
     <div>
       <section className="flex max-w-md flex-col gap-4">

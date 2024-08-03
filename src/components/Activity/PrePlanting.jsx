@@ -4,9 +4,21 @@ import PlantingMaterial from "./PlantingMaterial";
 import { Button } from "flowbite-react";
 
 const PrePlanting = () => {
+  let allPrePlantingData;
+  let allPlantingMaterialData;
+  let prePlantingData = {};
+  const getLandPreprationData = (landPrep) => {
+    allPrePlantingData = landPrep;
+  };
+
+  const getPlantingMaterialData = (plantingMat) => {
+    allPlantingMaterialData = plantingMat;
+  };
   const handlePrePlantingSubmit = (e) => {
     e.preventDefault();
-    console.log("submitted");
+
+    const data = { ...allPlantingMaterialData, ...allPrePlantingData };
+    console.log(data);
   };
   return (
     <>
@@ -20,11 +32,10 @@ const PrePlanting = () => {
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
             onSubmit={handlePrePlantingSubmit}
           >
-            <LandPreparation />
-            <PlantingMaterial />
-            <Button className="max-w-md" type="submit">
-              Save Activity
-            </Button>
+            <LandPreparation onCaptureLandPreparation={getLandPreprationData} />
+            <PlantingMaterial
+              onCapturePlantingMaterial={getPlantingMaterialData}
+            />
           </form>
         </div>
       </div>

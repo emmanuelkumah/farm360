@@ -8,7 +8,7 @@ import {
   Select,
   Radio,
 } from "flowbite-react";
-const PlantingMaterial = () => {
+const PlantingMaterial = ({ onCapturePlantingMaterial }) => {
   const [plantingMaterial, setPlantingMaterial] = useState({
     plantPart: "",
     source: "",
@@ -25,7 +25,7 @@ const PlantingMaterial = () => {
     const { name, value } = e.target;
     setPlantingMaterial({ ...plantingMaterial, [name]: value });
   };
-  console.log(plantingMaterial);
+  onCapturePlantingMaterial(plantingMaterial);
   return (
     <div>
       <section className="flex max-w-md flex-col gap-4">
@@ -74,7 +74,7 @@ const PlantingMaterial = () => {
             <option value="Others">Others</option>
           </Select>
         </div>
-        {plantingMaterial.source && (
+        {plantingMaterial.source === "Others" && (
           <div className="flex flex-col">
             <Label
               htmlFor="seed"
@@ -187,6 +187,9 @@ const PlantingMaterial = () => {
             />
           </div>
         )}
+        <Button className="max-w-md" type="submit">
+          Save Pre-Planting Activities
+        </Button>
       </section>
     </div>
   );
