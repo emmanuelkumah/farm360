@@ -64,6 +64,7 @@ const Shipment = () => {
               onSelectedDateChanged={handleShipmentDates}
               value={shipment.date}
               placeholder="select shipment date"
+              maxDate={new Date()}
             />
           </div>
           <div className="my-2">
