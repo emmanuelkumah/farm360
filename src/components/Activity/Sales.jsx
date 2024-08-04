@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Select,
@@ -9,17 +9,85 @@ import {
 } from "flowbite-react";
 
 const Sales = () => {
+  const [sales, setSales] = useState({
+    date: "",
+    authorizer: "",
+    contact: "",
+    quantity: "",
+    receipt: "",
+    individualBuyerName: "",
+    individualBuyerQuantity: "",
+    individualBuyerContact: "",
+    companyBuyerName: "",
+    companyBuyerQuantity: "",
+    companyBuyerContact: "",
+    transport: "",
+    vehicleName: "",
+    vehicleRegNumber: "",
+    driversLicense: "",
+  });
+
+  const handleSalesDate = (date) => {
+    setSales({
+      ...sales,
+      date: date.toISOString().split("T")[0],
+    });
+  };
+  const handleSalesActivities = (e) => {
+    const { name, value } = e.target;
+    setSales({
+      ...sales,
+      [name]: value,
+    });
+  };
+  const handleReceiptUpload = (e) => {
+    const file = e.target.files[0];
+    setSales({
+      ...sales,
+      receipt: file,
+    });
+  };
+  const onSalesActivitiesSubmit = (e) => {
+    e.preventDefault();
+    console.log(sales);
+    setSales({
+      date: "",
+      authorizer: "",
+      contact: "",
+      quantity: "",
+      receipt: "",
+      individualBuyerName: "",
+      individualBuyerQuantity: "",
+      individualBuyerContact: "",
+      companyBuyerName: "",
+      companyBuyerQuantity: "",
+      companyBuyerContact: "",
+      transport: "",
+      vehicleName: "",
+      vehicleRegNumber: "",
+      driversLicense: "",
+    });
+  };
   return (
     <div>
       <h2 className="mb-2 text-xl">Sales</h2>
-      <form className="flex max-w-md flex-col gap-4">
+      <form
+        className="flex max-w-md flex-col gap-4"
+        onSubmit={onSalesActivitiesSubmit}
+      >
         <section>
           <h4>Authorizer of relese of products for sale</h4>
           <div className="my-2">
             <Label htmlFor="release" className="font-semibold my-2">
               Release date
             </Label>
-            <Datepicker id="release" />
+            <Datepicker
+              id="release"
+              onSelectedDateChanged={handleSalesDate}
+              value={sales.date}
+              maxDate={new Date()}
+              placeholder="Select the release date"
+            />
           </div>
           <div className="my-2">
             <Label htmlFor="name" className="font-semibold my-2">
@@ -30,6 +98,9 @@ const Sales = () => {
               placeholder="Enter name of authorizer"
               type="text"
               required
+              value={sales.authorizer}
+              name="authorizer"
+              onChange={handleSalesActivities}
             />
           </div>
           <div className="my-2">
@@ -40,16 +111,22 @@ const Sales = () => {
               id="contact"
               placeholder="Enter phone number"
               type="number"
+              name="contact"
+              value={sales.contact}
+              onChange={handleSalesActivities}
             />
           </div>
           <div className="my-2">
-            <Label htmlFor="contact" className="font-semibold my-2">
+            <Label htmlFor="quantity" className="font-semibold my-2">
               Quantity
             </Label>
             <TextInput
-              id="contact"
+              id="quantity"
               placeholder="Enter quantity"
               type="number"
+              value={sales.quantity}
+              name="quantity"
+              onChange={handleSalesActivities}
             />
           </div>
         </section>
@@ -58,13 +135,25 @@ const Sales = () => {
           <Label htmlFor="sale" className="font-semibold my-2">
             Evidence of sale
           </Label>
-          <FileInput id="sale" />
+          <FileInput
+            id="sale"
+            accept="image/*"
+            name="receipt"
+            onChange={handleReceiptUpload}
+          />
         </div>
         <section>
           <h4>Indivial Buyer Details</h4>
           <div className="my-2">
             <Label htmlFor="name" value="Name" className="my-2 font-semibold" />
-            <TextInput id="name" type="text" placeholder="Enter name" />
+            <TextInput
+              id="name"
+              type="text"
+              placeholder="Enter name"
+              name="individualBuyerName"
+              value={sales.individualBuyerName}
+              onChange={handleSalesActivities}
+            />
           </div>
           <div className="my-2">
             <Label
@@ -76,6 +165,9 @@ const Sales = () => {
               id="quantity"
               type="number"
               placeholder="Enter quantity"
+              name="individualBuyerQuantity"
+              value={sales.individualBuyerQuantity}
+              onChange={handleSalesActivities}
             />
           </div>
           <div className="my-2">
@@ -88,6 +180,9 @@ const Sales = () => {
               id="contact"
               type="number"
               placeholder="Enter phone number"
+              name="individualBuyerContact"
+              value={sales.individualBuyerContact}
+              onChange={handleSalesActivities}
             />
           </div>
         </section>
@@ -96,7 +191,14 @@ const Sales = () => {
           <h4>Company Buyer Details</h4>
           <div className="my-2">
             <Label htmlFor="name" value="Name" className="my-2 font-semibold" />
-            <TextInput id="name" type="text" placeholder="Enter company name" />
+            <TextInput
+              id="name"
+              type="text"
+              placeholder="Enter company name"
+              name="companyBuyerName"
+              value={sales.companyBuyerName}
+              onChange={handleSalesActivities}
+            />
           </div>
           <div className="my-2">
             <Label
@@ -108,6 +210,9 @@ const Sales = () => {
               id="quantity"
               type="number"
               placeholder="Enter quantity"
+              name="companyBuyerQuantity"
+              value={sales.companyBuyerQuantity}
+              onChange={handleSalesActivities}
             />
           </div>
           <div className="my-2">
@@ -120,6 +225,9 @@ const Sales = () => {
               id="contact"
               type="number"
               placeholder="Enter phone number"
+              name="companyBuyerContact"
+              value={sales.companyBuyerContact}
+              onChange={handleSalesActivities}
             />
           </div>
         </section>
@@ -130,10 +238,16 @@ const Sales = () => {
             value="Means of Transport"
             className="my-2 font-semibold"
           />
-          <Select id="transport" required>
+          <Select
+            id="transport"
+            required
+            name="transport"
+            value={sales.transport}
+            onChange={handleSalesActivities}
+          >
             <option>Select transport</option>
-            <option>Manual</option>
-            <option>Tractor</option>
+            <option value="Manual">Manual</option>
+            <option value="Tractor">Tractor</option>
           </Select>
         </div>
         <div>
@@ -146,6 +260,9 @@ const Sales = () => {
             type="text"
             placeholder="Enter vehicle name"
             id="vehicle"
+            name="vehicleName"
+            value={sales.vehicleName}
+            onChange={handleSalesActivities}
           />
         </div>
         <div>
@@ -158,6 +275,9 @@ const Sales = () => {
             type="text"
             placeholder="Enter registration number"
             id="registration"
+            name="vehicleRegNumber"
+            value={sales.vehicleRegNumber}
+            onChange={handleSalesActivities}
           />
         </div>
 
@@ -172,10 +292,13 @@ const Sales = () => {
             required
             placeholder="Enter driver's license number"
             id="license"
+            name="driversLicense"
+            value={sales.driversLicense}
+            onChange={handleSalesActivities}
           />
         </div>
 
-        <Button type="submit">Save </Button>
+        <Button type="submit">Save Sales activities </Button>
       </form>
     </div>
   );

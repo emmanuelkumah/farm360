@@ -1,6 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Label, TextInput, Select, Datepicker } from "flowbite-react";
 const PestControl = () => {
+  const [pestControl, setPestControl] = useState({
+    date: "",
+    chemical: "",
+    rate: "",
+    growingStageDate: "",
+    chemicalUsed: "",
+    rateAppOfChem: "",
+    preharvestingDate: "",
+    preharvestingChemical: "",
+    supervisor: "",
+    contact: "",
+    certificate: "",
+    anycert: "",
+  });
+
+  const handlePestControlDate = () => {
+    setPestControl({
+      ...pestControl,
+      date: date.toISOString().split("T")[0],
+    });
+  };
+  const handlePestActivities = (e) => {
+    const { name, value } = e.target;
+    setPestControl({
+      ...pest,
+      [name]: value,
+    });
+  };
   return (
     <div>
       <h2 className="mb-2 text-xl">Plant Protection</h2>
@@ -11,7 +39,11 @@ const PestControl = () => {
             <Label htmlFor="date" className="font-semibold my-2">
               Date
             </Label>
-            <Datepicker id="date" />
+            <Datepicker
+              id="date"
+              value={pestControl.date}
+              onSelectedDateChanged={handlePestControlDate}
+            />
           </div>
           <div className="my-2">
             <Label htmlFor="chemical" className="font-semibold my-2">
@@ -21,6 +53,9 @@ const PestControl = () => {
               id="chemical"
               type="text"
               placeholder="Enter the name of chemical"
+              name="chemical"
+              value={pestControl.chemical}
+              onChange={handlePestActivities}
             />
           </div>
           <div className="my-2">
@@ -31,6 +66,9 @@ const PestControl = () => {
               id="entry"
               type="text"
               placeholder="Enter the rate of application"
+              name="rate"
+              onChange={handlePestActivities}
+              value={pestControl.rate}
             />
           </div>
         </section>

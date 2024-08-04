@@ -1,16 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
 
 const Harvesting = () => {
+  const [harvesting, setHarvesting] = useState({
+    date: "",
+    acres: "",
+    bags: "",
+    weight: "",
+    mode: "",
+    machine: "",
+    supervisor: "",
+    contact: "",
+    cert: "",
+    otherCert: "",
+  });
+  const handleharvestingDate = (date) => {
+    setHarvesting({
+      ...harvesting,
+      date: date.toISOString().split("T")[0],
+    });
+  };
+  const handleHarvestingActivities = (e) => {
+    const { name, value } = e.target;
+    setHarvesting({
+      ...harvesting,
+      [name]: value,
+    });
+  };
+  const onHarvestingActivitiesSubmit = (e) => {
+    e.preventDefault();
+    console.log(harvesting);
+    setHarvesting({
+      date: "",
+      acres: "",
+      bags: "",
+      weight: "",
+      mode: "",
+      machine: "",
+      supervisor: "",
+      contact: "",
+      cert: "",
+      otherCert: "",
+    });
+  };
   return (
     <div>
       <h2 className="mb-2 text-xl">Harvesting</h2>
-      <form className="flex max-w-md flex-col gap-4">
+      <form
+        className="flex max-w-md flex-col gap-4"
+        onSubmit={onHarvestingActivitiesSubmit}
+      >
         <div>
           <Label htmlFor="date" className="font-semibold my-2">
             Date of harvest
           </Label>
-          <Datepicker id="date" />
+          <Datepicker
+            id="date"
+            value={harvesting.date}
+            placeholder="Select the harvesting date"
+            maxDate={new Date()}
+            onSelectedDateChanged={handleharvestingDate}
+          />
         </div>
         <div>
           <Label htmlFor="acres" className="font-semibold my-2">
@@ -21,6 +71,9 @@ const Harvesting = () => {
             type="text"
             required
             placeholder="Enter acres harvested"
+            name="acres"
+            value={harvesting.acres}
+            onChange={handleHarvestingActivities}
           />
         </div>
         <div>
@@ -32,6 +85,9 @@ const Harvesting = () => {
             type="number"
             required
             placeholder="Enter number of bags harvested"
+            value={harvesting.bags}
+            name="bags"
+            onChange={handleHarvestingActivities}
           />
         </div>
         <div>
@@ -43,6 +99,9 @@ const Harvesting = () => {
             type="number"
             required
             placeholder="Enter weight per bag harvested"
+            value={harvesting.weight}
+            name="weight"
+            onChange={handleHarvestingActivities}
           />
         </div>
 
@@ -53,10 +112,16 @@ const Harvesting = () => {
             className="my-2 font-semibold"
           />
 
-          <Select id="modeofHarvesting" required>
+          <Select
+            id="modeofHarvesting"
+            required
+            value={harvesting.mode}
+            name="mode"
+            onChange={handleHarvestingActivities}
+          >
             <option>Select the mode of harvesting</option>
-            <option>Manual</option>
-            <option>Machinery</option>
+            <option value="Manual">Manual</option>
+            <option value="Machinery">Machinery</option>
           </Select>
         </div>
         <div>
@@ -65,13 +130,34 @@ const Harvesting = () => {
             value="Name of machine"
             className="my-2 font-semibold"
           />
-          <Select id="machine" required>
+          <Select
+            id="machine"
+            required
+            value={harvesting.machine}
+            name="machine"
+            onChange={handleHarvestingActivities}
+          >
             <option>Select machine used</option>
-            <option>Sheller</option>
-            <option>Threshing</option>
+            <option value="Sheller">Sheller</option>
+            <option value="Threshing">Threshing</option>
           </Select>
         </div>
-
+        <div>
+          <Label
+            htmlFor="supervisor"
+            value="Name of the supervisor"
+            className="my-2 font-semibold"
+          />
+          <TextInput
+            type="text"
+            required
+            placeholder="Enter name of supervisor"
+            id="contact"
+            name="supervisor"
+            value={harvesting.supervisor}
+            onChange={handleHarvestingActivities}
+          />
+        </div>
         <div>
           <Label
             htmlFor="contact"
@@ -81,8 +167,11 @@ const Harvesting = () => {
           <TextInput
             type="number"
             required
-            placeholder="Enter name of supervisor"
+            placeholder="Enter contact of supervisor"
             id="contact"
+            value={harvesting.contact}
+            name="contact"
+            onChange={handleHarvestingActivities}
           />
         </div>
         <div>
@@ -92,27 +181,39 @@ const Harvesting = () => {
             className="my-2 font-semibold"
           />
 
-          <Select id="cert" required>
+          <Select
+            id="cert"
+            required
+            value={harvesting.cert}
+            name="cert"
+            onChange={handleHarvestingActivities}
+          >
             <option>Select certificate of supervisor</option>
-            <option>MOFA</option>
-            <option>EPA</option>
-            <option>PPRSD/NPPO</option>
-            <option>Others</option>
+            <option value="MOFA">MOFA</option>
+            <option value="EPA">EPA</option>
+            <option value="PPRSD/NPPO">PPRSD/NPPO</option>
+            <option value="Others">Others</option>
           </Select>
         </div>
-        <div>
-          <Label
-            htmlFor="certificate"
-            value="Other Certificate"
-            className="my-2 font-semibold"
-          />
-          <TextInput
-            type="text"
-            required
-            placeholder="Enter the certificate of supervisor if not listed above"
-            id="certificate"
-          />
-        </div>
+        {harvesting.cert === "Others" && (
+          <div>
+            <Label
+              htmlFor="certificate"
+              value="Other Certificate"
+              className="my-2 font-semibold"
+            />
+            <TextInput
+              type="text"
+              required
+              placeholder="Enter the certificate of supervisor if not listed above"
+              id="certificate"
+              name="otherCert"
+              value={harvesting.otherCert}
+              onChange={handleHarvestingActivities}
+            />
+          </div>
+        )}
+
         <Button type="submit">Submit</Button>
       </form>
     </div>
