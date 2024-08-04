@@ -10,8 +10,6 @@ const FarmsList = () => {
   const { state } = useFarmersContext();
   const { farmers } = state;
 
-  const farms = farmers.map((farmer) => farmer.farms);
-  console.log(farms);
   return (
     <>
       <Table hoverable>

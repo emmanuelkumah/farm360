@@ -19,7 +19,6 @@ const Activities = () => {
         <Tabs.Item active title="Pre-Planting" icon={HiClipboardList}>
           <PrePlanting />
         </Tabs.Item>
-
         <Tabs.Item title="Planting" icon={HiClipboardList}>
           <Planting />
         </Tabs.Item>

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Label, TextInput, Datepicker, Button } from "flowbite-react";
+import { Label, TextInput, Datepicker } from "flowbite-react";
 
 const LandPreparation = ({
   preparationDates,
@@ -22,22 +21,6 @@ const LandPreparation = ({
   return (
     <div>
       <section className="flex max-w-md flex-col gap-4">
-        <div className="flex flex-col mt-4">
-          <Label
-            htmlFor="season"
-            value="Select the planting season"
-            className="mb-2"
-          />
-          <Datepicker
-            id="season"
-            value={preparationDates.season}
-            placeholder="Select season"
-            maxDate={new Date()}
-            onSelectedDateChanged={(date) =>
-              handlePreplantingDateChange("season", date)
-            }
-          />
-        </div>
         <div className="flex flex-col">
           <Label
             htmlFor="date"

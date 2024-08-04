@@ -4,11 +4,14 @@ import PlantingMaterial from "./PlantingMaterial";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useFarmersContext } from "../../context/FarmersProvider";
 
 const PrePlanting = () => {
   const { farmId } = useParams();
+  const { state } = useFarmersContext();
+  const { farmers } = state;
+
   const [preparationDates, setPreparationDates] = useState({
-    season: "",
     preparationDate: "",
     landSize: "",
     clearing: "",
@@ -35,18 +38,17 @@ const PrePlanting = () => {
     isTreated: "",
   });
 
-  const handlePrePlantingSubmit = (e) => {
+  const onPreplantingActivitiesSubmit = (e) => {
     e.preventDefault();
-    const allPrePlanting = {
+    const allPrePlantingActivities = {
       farmId: farmId,
       ...preparationDates,
       ...sprayingActivities,
       ...plantingMaterial,
     };
-    console.log(allPrePlanting);
+    console.log(allPrePlantingActivities);
     //clear fields
     setPreparationDates({
-      season: "",
       preparationDate: "",
       landSize: "",
       clearing: "",
@@ -85,7 +87,7 @@ const PrePlanting = () => {
 
           <form
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
-            onSubmit={handlePrePlantingSubmit}
+            onSubmit={onPreplantingActivitiesSubmit}
           >
             <LandPreparation
               preparationDates={preparationDates}

@@ -115,7 +115,6 @@ const PlantingMaterial = ({ plantingMaterial, setPlantingMaterial }) => {
                 name="isTreated"
                 value="Yes"
                 onChange={handlePlantingMaterialChange}
-                defaultChecked
               />
               <Label htmlFor="yes-treatment">Yes</Label>
             </div>
