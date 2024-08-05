@@ -33,3 +33,4 @@ export { default as Sales } from "./Activity/Sales";
 export { default as Shipment } from "./Activity/Shipment";
 export { default as PestControl } from "./Activity/PestControl";
 export { default as EditFarmerForm } from "./Farmers/EditFarmerForm";
+export { default as PlantingMaterial } from "./Activity/PlantingMaterial";

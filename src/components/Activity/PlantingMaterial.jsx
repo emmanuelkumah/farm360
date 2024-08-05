@@ -1,4 +1,5 @@
 import { Button, Label, TextInput, Select, Radio } from "flowbite-react";
+
 const PlantingMaterial = ({ plantingMaterial, setPlantingMaterial }) => {
   const handlePlantingMaterialChange = (e) => {
     const { name, value } = e.target;
@@ -129,25 +130,29 @@ const PlantingMaterial = ({ plantingMaterial, setPlantingMaterial }) => {
             </div>
           </fieldset>
         </div>
-        <div>
-          <Label
-            className="mb-2 font-semibold"
-            htmlFor="method"
-            value="Treatment method"
-          />
-          <Select
-            id="method"
-            required
-            name="treatmentMethod"
-            value={plantingMaterial.treatmentMethod}
-            onChange={handlePlantingMaterialChange}
-          >
-            <option>Select treatment method</option>
-            <option value="chemical">Chemical</option>
-            <option value="hot water">Hot water</option>
-            <option value="other">Other</option>
-          </Select>
-        </div>
+
+        {plantingMaterial.isTreated === "Yes" && (
+          <div>
+            <Label
+              className="mb-2 font-semibold"
+              htmlFor="method"
+              value="Treatment method"
+            />
+            <Select
+              id="method"
+              required
+              name="treatmentMethod"
+              value={plantingMaterial.treatmentMethod}
+              onChange={handlePlantingMaterialChange}
+            >
+              <option>Select treatment method</option>
+              <option value="chemical">Chemical</option>
+              <option value="hot water">Hot water</option>
+              <option value="other">Other</option>
+            </Select>
+          </div>
+        )}
+
         {(plantingMaterial.treatmentMethod === "chemical" ||
           plantingMaterial.treatmentMethod === "other") && (
           <div>

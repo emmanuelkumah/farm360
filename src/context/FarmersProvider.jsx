@@ -1,7 +1,9 @@
 import { createContext, useContext, useReducer } from "react";
-import { dummyData, farmersData } from "../data/dummyData";
+import { farmersData, trackedActivities } from "../data/dummyData";
 
 const FarmersContext = createContext();
+
+const ActivitiesContext = createContext();
 
 // const farmContext = createContext(null);
 
@@ -32,13 +34,34 @@ const farmersReducer = (data, action) => {
   }
 };
 
+const activitiesReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_PrePlantingActivity":
+      return {
+        ...state,
+        prePlanting: [...state.prePlanting, action.payload],
+      };
+      break;
+
+    default:
+      break;
+  }
+};
 const FarmersProvider = ({ children }) => {
   const [state, dispatch] = useReducer(farmersReducer, farmersData);
+  const [activitiesState, dispatchActivity] = useReducer(
+    activitiesReducer,
+    trackedActivities
+  );
 
   return (
     <>
       <FarmersContext.Provider value={{ state, dispatch }}>
-        {children}
+        <ActivitiesContext.Provider
+          value={{ activitiesState, dispatchActivity }}
+        >
+          {children}
+        </ActivitiesContext.Provider>
       </FarmersContext.Provider>
     </>
   );
@@ -47,3 +70,5 @@ const FarmersProvider = ({ children }) => {
 export default FarmersProvider;
 
 export const useFarmersContext = () => useContext(FarmersContext);
+
+export const useActivitiesContext = () => useContext(ActivitiesContext);

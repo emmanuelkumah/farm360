@@ -4,12 +4,13 @@ import PlantingMaterial from "./PlantingMaterial";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useFarmersContext } from "../../context/FarmersProvider";
+import { useActivitiesContext } from "../../context/FarmersProvider";
 
 const PrePlanting = () => {
   const { farmId } = useParams();
-  const { state } = useFarmersContext();
-  const { farmers } = state;
+
+  const { activitiesState, dispatchActivity } = useActivitiesContext();
+  console.log(activitiesState);
 
   const [preparationDates, setPreparationDates] = useState({
     preparationDate: "",
@@ -32,7 +33,6 @@ const PrePlanting = () => {
     otherSource: "",
     quantity: "",
     yield: "",
-    isPlantPartTreated: "",
     treatmentMethod: "",
     chemicalUsed: "",
     isTreated: "",
@@ -40,13 +40,17 @@ const PrePlanting = () => {
 
   const onPreplantingActivitiesSubmit = (e) => {
     e.preventDefault();
-    const allPrePlantingActivities = {
+    const prePlantingActivities = {
       farmId: farmId,
       ...preparationDates,
       ...sprayingActivities,
       ...plantingMaterial,
     };
-    console.log(allPrePlantingActivities);
+    //dispatch Activity
+    dispatchActivity({
+      type: "ADD_PrePlantingActivity",
+      payload: prePlantingActivities,
+    });
     //clear fields
     setPreparationDates({
       preparationDate: "",

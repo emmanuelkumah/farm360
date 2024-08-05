@@ -535,3 +535,7 @@ export const groups = [
 ];
 
 export const crops = ["Soya", "Shea", "Groundnut"];
+
+export const trackedActivities = {
+  prePlanting: ["testing 1"],
+};

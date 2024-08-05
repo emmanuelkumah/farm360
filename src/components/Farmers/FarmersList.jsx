@@ -1,18 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button, Pagination } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useFarmersContext } from "../../context/FarmersProvider";
 import { FaUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+// import axios from "axios";
 
 const FarmersList = () => {
   const { dispatch, state } = useFarmersContext();
   const { farmers } = state;
-  console.log(farmers);
   const [currentPage, setCurrentPage] = useState(1);
-
   const [editFarmer, setEditFarmer] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  // useEffect(() => {
+  //   const fetchFarmers = async () => {
+  //     try {
+  //       const response = await axios.get("http://18.134.98.183:8080/groups");
+  //       console.log(response);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchFarmers();
+  // }, []);
 
   const onPageChange = (page) => setCurrentPage(page);
 
