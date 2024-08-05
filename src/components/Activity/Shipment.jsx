@@ -6,10 +6,15 @@ import {
   FileInput,
   Datepicker,
 } from "flowbite-react";
+import { ToastContainer, toast } from "react-toastify";
+import { useActivitiesContext } from "../../context/FarmersProvider";
+import { useParams } from "react-router-dom";
 
 const Shipment = () => {
+  const { dispatchActivity } = useActivitiesContext();
+  const { farmId } = useParams();
   const [shipment, setShipment] = useState({
-    date: "",
+    shipmentDate: "",
     destination: "",
     entry: "",
     exit: "",
@@ -21,10 +26,10 @@ const Shipment = () => {
     kilosPerPackage: "",
   });
 
-  const handleShipmentDates = () => {
+  const handleShipmentDates = (date) => {
     setShipment({
       ...shipment,
-      date: date.toISOString().split("T")[0],
+      shipmentDate: date.toISOString().split("T")[0],
     });
   };
   const handleShipmentActivities = (e) => {
@@ -35,17 +40,33 @@ const Shipment = () => {
       [name]: value,
     });
   };
-  const handleReceiptUpload = (e) => {
+  const handleCertificateUpload = (e) => {
     const file = e.target.files[0];
     setShipment({
       ...shipment,
-      receipt: file,
+      certificate: file,
     });
   };
 
   const onShipmentSubmit = (e) => {
     e.preventDefault();
-    console.log(shipment);
+    dispatchActivity({
+      type: "Add_ShipmentActivity",
+      payload: { farmId, ...shipment },
+    });
+    setShipment({
+      shipmentDate: "",
+      destination: "",
+      entry: "",
+      exit: "",
+      name: "",
+      contact: "",
+      address: "",
+      certificate: "",
+      packingMethod: "",
+      kilosPerPackage: "",
+    });
+    toast.success("Shipment activities added successfully");
   };
   return (
     <div>
@@ -61,10 +82,11 @@ const Shipment = () => {
             </Label>
             <Datepicker
               id="exit"
-              onSelectedDateChanged={handleShipmentDates}
-              value={shipment.date}
+              onSelectedDateChanged={(date) => handleShipmentDates(date)}
+              value={shipment.shipmentDate}
               placeholder="select shipment date"
               maxDate={new Date()}
+              required
             />
           </div>
           <div className="my-2">
@@ -78,6 +100,7 @@ const Shipment = () => {
               name="destination"
               value={shipment.destination}
               onChange={handleShipmentActivities}
+              required
             />
           </div>
           <div className="my-2">
@@ -91,6 +114,7 @@ const Shipment = () => {
               name="entry"
               value={shipment.entry}
               onChange={handleShipmentActivities}
+              required
             />
           </div>
           <div className="my-2">
@@ -101,9 +125,10 @@ const Shipment = () => {
               id="exit"
               type="text"
               placeholder="Port of exit"
-              name="entry"
-              value={shipment.entry}
+              name="exit"
+              value={shipment.exit}
               onChange={handleShipmentActivities}
+              required
             />
           </div>
         </section>
@@ -121,6 +146,7 @@ const Shipment = () => {
               name="name"
               value={shipment.name}
               onChange={handleShipmentActivities}
+              required
             />
           </div>
           <div className="my-2">
@@ -134,6 +160,7 @@ const Shipment = () => {
               name="contact"
               value={shipment.contact}
               onChange={handleShipmentActivities}
+              required
             />
           </div>
           <div className="my-2">
@@ -147,6 +174,7 @@ const Shipment = () => {
               name="address"
               value={shipment.address}
               onChange={handleShipmentActivities}
+              required
             />
           </div>
         </section>
@@ -159,9 +187,9 @@ const Shipment = () => {
 
             <FileInput
               id="certificate"
-              onChange={handleReceiptUpload}
+              onChange={handleCertificateUpload}
               name="certificate"
-              value={shipment.certificate}
+              required
             />
           </div>
         </section>
@@ -175,8 +203,9 @@ const Shipment = () => {
               id="mode"
               placeholder="Enter mode of packaging"
               type="text"
-              name="certificate"
-              value={shipment.certificate}
+              name="packingMethod"
+              value={shipment.packingMethod}
+              required
               onChange={handleShipmentActivities}
             />
           </div>
@@ -191,12 +220,14 @@ const Shipment = () => {
               name="kilosPerPackage"
               value={shipment.kilosPerPackage}
               onChange={handleShipmentActivities}
+              required
             />
           </div>
         </section>
 
         <Button type="submit">Save</Button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

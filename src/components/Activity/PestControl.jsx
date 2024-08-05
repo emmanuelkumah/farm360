@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Button, Label, TextInput, Select, Datepicker } from "flowbite-react";
+import { useActivitiesContext } from "../../context/FarmersProvider";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 const PestControl = () => {
+  const { dispatchActivity, activitiesState } = useActivitiesContext();
+  console.log(activitiesState);
+  const { farmId } = useParams();
   const [pestControl, setPestControl] = useState({
     earlyStageDate: "",
     earlyStageChemical: "",
@@ -32,7 +38,14 @@ const PestControl = () => {
   };
   const onPestControlActivitiesSubmit = (e) => {
     e.preventDefault();
-    console.log(pestControl);
+    dispatchActivity({
+      type: "Add_PestControlActivity",
+      payload: {
+        farmId,
+        ...pestControl,
+      },
+    });
+    toast.success("Pest control activity submitted successfully");
   };
   return (
     <div>
@@ -248,6 +261,7 @@ const PestControl = () => {
         </section>
         <Button type="submit">Save</Button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

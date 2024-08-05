@@ -9,8 +9,7 @@ import { useActivitiesContext } from "../../context/FarmersProvider";
 const PrePlanting = () => {
   const { farmId } = useParams();
 
-  const { activitiesState, dispatchActivity } = useActivitiesContext();
-  console.log(activitiesState);
+  const { dispatchActivity } = useActivitiesContext();
 
   const [preparationDates, setPreparationDates] = useState({
     preparationDate: "",

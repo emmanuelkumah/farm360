@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
+import { useActivitiesContext } from "../../context/FarmersProvider";
+import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const Harvesting = () => {
+  const { dispatchActivity, activitiesState } = useActivitiesContext();
+  console.log(activitiesState);
+  const { farmId } = useParams();
   const [harvesting, setHarvesting] = useState({
     date: "",
     acres: "",
@@ -29,7 +35,10 @@ const Harvesting = () => {
   };
   const onHarvestingActivitiesSubmit = (e) => {
     e.preventDefault();
-    console.log(harvesting);
+    dispatchActivity({
+      type: "Add_HarvestingActivity",
+      payload: { farmId, ...harvesting },
+    });
     setHarvesting({
       date: "",
       acres: "",
@@ -42,6 +51,7 @@ const Harvesting = () => {
       cert: "",
       otherCert: "",
     });
+    toast.success("Harvesting activities submitted successfully!");
   };
   return (
     <div>
@@ -216,6 +226,7 @@ const Harvesting = () => {
 
         <Button type="submit">Submit</Button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

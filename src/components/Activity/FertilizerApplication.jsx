@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
+import { useActivitiesContext } from "../../context/FarmersProvider";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const FertilizerApplication = () => {
+  const { farmId } = useParams();
+  const { dispatchActivity } = useActivitiesContext();
+
   const [fertApplication, setFertApplication] = useState({
     date: "",
     type: "",
@@ -29,7 +35,6 @@ const FertilizerApplication = () => {
   };
   const onFertilizerActivitiesSubmit = (e) => {
     e.preventDefault();
-    console.log(fertApplication);
     setFertApplication({
       date: "",
       type: "",
@@ -43,6 +48,14 @@ const FertilizerApplication = () => {
       certificate: "",
       otherCert: "",
     });
+    dispatchActivity({
+      type: "Add_FertilizerActivity",
+      payload: {
+        farmId,
+        ...fertApplication,
+      },
+    });
+    toast.success("Fertilizer application submitted successfully!");
   };
   return (
     <div>
@@ -229,6 +242,7 @@ const FertilizerApplication = () => {
 
         <Button type="submit">Submit</Button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

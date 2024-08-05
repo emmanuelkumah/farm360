@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-
+import { useActivitiesContext } from "../../context/FarmersProvider";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 const WeedControl = () => {
   const [weedControlActivities, setWeedControlActivities] = useState({
     dateOfWeeding: "",
@@ -12,7 +14,8 @@ const WeedControl = () => {
     certificateOfSupervisor: "",
     otherCert: "",
   });
-  console.log(weedControlActivities);
+  const { dispatchActivity } = useActivitiesContext();
+  const { farmId } = useParams();
   const handleWeedingDate = (date) => {
     setWeedControlActivities({
       ...weedControlActivities,
@@ -39,7 +42,11 @@ const WeedControl = () => {
       certificateOfSupervisor: "",
       otherCert: "",
     });
-    console.log(weedControlActivities);
+    dispatchActivity({
+      type: "Add_WeedControlActivity",
+      payload: { farmId, ...weedControlActivities },
+    });
+    toast.success("Weed control activities submitted successfully!");
   };
   return (
     <div>
@@ -82,22 +89,25 @@ const WeedControl = () => {
               <option value="Chemical">Chemical</option>
             </Select>
           </div>
-          <div>
-            <Label
-              htmlFor="chemical"
-              value="Name of chemical"
-              className="my-2 font-semibold"
-            />
-            <TextInput
-              type="text"
-              required
-              placeholder="Enter name of chemical"
-              id="chemical"
-              name="chemical"
-              value={weedControlActivities.chemical}
-              onChange={handleWeedingActivities}
-            />
-          </div>
+          {weedControlActivities.weedControlMethod === "Chemical" && (
+            <div>
+              <Label
+                htmlFor="chemical"
+                value="Name of chemical"
+                className="my-2 font-semibold"
+              />
+              <TextInput
+                type="text"
+                required
+                placeholder="Enter name of chemical"
+                id="chemical"
+                name="chemical"
+                value={weedControlActivities.chemical}
+                onChange={handleWeedingActivities}
+              />
+            </div>
+          )}
+
           <div>
             <Label
               htmlFor="rate"
@@ -188,6 +198,7 @@ const WeedControl = () => {
 
           <Button type="submit">Submit</Button>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );

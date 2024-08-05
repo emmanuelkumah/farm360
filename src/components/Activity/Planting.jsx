@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
 import { useParams } from "react-router-dom";
+import { useActivitiesContext } from "../../context/FarmersProvider";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Planting = () => {
   const { farmId } = useParams();
+  const { activitiesState, dispatchActivity } = useActivitiesContext();
   const [plantingActivities, setPlantingActivities] = useState({
     plantingDate: "",
     cropPlanted: "",
@@ -31,7 +35,10 @@ const Planting = () => {
 
   const onPlantingActivitiesSubmit = (e) => {
     e.preventDefault();
-    console.log({ farmId, ...plantingActivities });
+    dispatchActivity({
+      type: "Add_PlantingActivity",
+      payload: { farmId, ...plantingActivities },
+    });
     setPlantingActivities({
       plantingDate: "",
       cropPlanted: "",
@@ -42,6 +49,7 @@ const Planting = () => {
       certificate: "",
       otherCertificate: "",
     });
+    toast.success("Planting activities submitted successfully!");
   };
   return (
     <div>
@@ -192,6 +200,7 @@ const Planting = () => {
 
         <Button type="submit">Submit</Button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

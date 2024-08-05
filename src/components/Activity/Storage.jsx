@@ -7,8 +7,13 @@ import {
   FileInput,
   Datepicker,
 } from "flowbite-react";
+import { useActivitiesContext } from "../../context/FarmersProvider";
+import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const Storage = () => {
+  const { dispatchActivity } = useActivitiesContext();
+  const { farmId } = useParams();
   const [storage, setStorage] = useState({
     date: "",
     quantity: "",
@@ -49,7 +54,6 @@ const Storage = () => {
   };
   const onStorageActivitiesSubmit = (e) => {
     e.preventDefault();
-    console.log(storage);
     setStorage({
       date: "",
       quantity: "",
@@ -66,6 +70,11 @@ const Storage = () => {
       otherCert: "",
       receipt: "",
     });
+    dispatchActivity({
+      type: "Add_StorageActivity",
+      payload: { farmId, ...storage },
+    });
+    toast.success("Storage activity submitted successfully");
   };
   return (
     <div>
@@ -306,6 +315,7 @@ const Storage = () => {
         </div>
         <Button type="submit">Submit</Button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

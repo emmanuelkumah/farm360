@@ -7,8 +7,14 @@ import {
   FileInput,
   Datepicker,
 } from "flowbite-react";
+import { useActivitiesContext } from "../../context/FarmersProvider";
+import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const Sales = () => {
+  const { dispatchActivity, activitiesState } = useActivitiesContext();
+  console.log(activitiesState);
+  const { farmId } = useParams();
   const [sales, setSales] = useState({
     date: "",
     authorizer: "",
@@ -49,7 +55,6 @@ const Sales = () => {
   };
   const onSalesActivitiesSubmit = (e) => {
     e.preventDefault();
-    console.log(sales);
     setSales({
       date: "",
       authorizer: "",
@@ -67,6 +72,11 @@ const Sales = () => {
       vehicleRegNumber: "",
       driversLicense: "",
     });
+    dispatchActivity({
+      type: "Add_SalesActivity",
+      payload: { farmId, ...sales },
+    });
+    toast.success("Sales activities submitted successfully");
   };
   return (
     <div>
@@ -300,6 +310,7 @@ const Sales = () => {
 
         <Button type="submit">Save Sales activities </Button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

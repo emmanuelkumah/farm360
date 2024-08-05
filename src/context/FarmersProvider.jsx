@@ -41,6 +41,47 @@ const activitiesReducer = (state, action) => {
         ...state,
         prePlanting: [...state.prePlanting, action.payload],
       };
+    case "Add_PlantingActivity":
+      return {
+        ...state,
+        planting: [...state.planting, action.payload],
+      };
+
+    case "Add_WeedControlActivity":
+      return {
+        ...state,
+        weedControl: [...state.weedControl, action.payload],
+      };
+    case "Add_FertilizerActivity":
+      return {
+        ...state,
+        fertilizerApplication: [...state.fertilizerApplication, action.payload],
+      };
+    case "Add_HarvestingActivity":
+      return {
+        ...state,
+        harvesting: [...state.harvesting, action.payload],
+      };
+    case "Add_StorageActivity":
+      return {
+        ...state,
+        storage: [...state.storage, action.payload],
+      };
+    case "Add_SalesActivity":
+      return {
+        ...state,
+        sales: [...state.sales, action.payload],
+      };
+    case "Add_ShipmentActivity":
+      return {
+        ...state,
+        shipment: [...state.shipment, action.payload],
+      };
+    case "Add_PestControlActivity":
+      return {
+        ...state,
+        pestControl: [...state.pestControl, action.payload],
+      };
       break;
 
     default:
