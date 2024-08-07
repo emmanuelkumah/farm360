@@ -5,8 +5,8 @@ module.exports = {
   darkMode: "class",
   theme: {
     fontFamily: {
-      display: ["Source Sans 3", "sans-serif"],
-      body: ["Source Sans 3", "sans-serif"],
+      display: ["Josefin Sans", "sans-serif"],
+      body: ["Josefin Sans", "sans-serif"],
     },
     extend: {
       fontSize: {

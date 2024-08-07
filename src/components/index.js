@@ -34,3 +34,5 @@ export { default as Shipment } from "./Activity/Shipment";
 export { default as PestControl } from "./Activity/PestControl";
 export { default as EditFarmerForm } from "./Farmers/EditFarmerForm";
 export { default as PlantingMaterial } from "./Activity/PlantingMaterial";
+export { default as Hero } from "./Landing/Hero";
+import { default as TrackingFAQ } from "./Landing/TrackingFAQ";
