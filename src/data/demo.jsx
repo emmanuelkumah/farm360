@@ -34,9 +34,9 @@ export const links = [
     url: "collectors",
   },
   {
-    name: "management",
+    name: "Activities",
     icon: <PiPottedPlantDuotone />,
-    url: "management",
+    url: "all-activities",
   },
 
   {

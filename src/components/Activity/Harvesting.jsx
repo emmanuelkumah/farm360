@@ -6,7 +6,6 @@ import { toast, ToastContainer } from "react-toastify";
 
 const Harvesting = () => {
   const { dispatchActivity, activitiesState } = useActivitiesContext();
-  console.log(activitiesState);
   const { farmId } = useParams();
   const [harvesting, setHarvesting] = useState({
     date: "",
@@ -134,24 +133,27 @@ const Harvesting = () => {
             <option value="Machinery">Machinery</option>
           </Select>
         </div>
-        <div>
-          <Label
-            htmlFor="machine"
-            value="Name of machine"
-            className="my-2 font-semibold"
-          />
-          <Select
-            id="machine"
-            required
-            value={harvesting.machine}
-            name="machine"
-            onChange={handleHarvestingActivities}
-          >
-            <option>Select machine used</option>
-            <option value="Sheller">Sheller</option>
-            <option value="Threshing">Threshing</option>
-          </Select>
-        </div>
+        {harvesting.mode === "Machinery" && (
+          <div>
+            <Label
+              htmlFor="machine"
+              value="Name of machine"
+              className="my-2 font-semibold"
+            />
+            <Select
+              id="machine"
+              required
+              value={harvesting.machine}
+              name="machine"
+              onChange={handleHarvestingActivities}
+            >
+              <option>Select machine used</option>
+              <option value="Sheller">Sheller</option>
+              <option value="Threshing">Threshing</option>
+            </Select>
+          </div>
+        )}
+
         <div>
           <Label
             htmlFor="supervisor"

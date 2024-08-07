@@ -1,7 +1,6 @@
 import React from "react";
 import { Tabs } from "flowbite-react";
-import { HiAdjustments, HiClipboardList, HiUserCircle } from "react-icons/hi";
-import { MdDashboard } from "react-icons/md";
+import { PiPottedPlantFill } from "react-icons/pi";
 import PrePlanting from "./PrePlanting";
 import Planting from "./Planting";
 import WeedControl from "./WeedControl";
@@ -16,32 +15,33 @@ const Activities = () => {
   return (
     <div className="mx-10 my-[20%] md:my-0">
       <Tabs aria-label="Tabs with underline" variant="underline">
-        <Tabs.Item active title="Pre-Planting" icon={HiClipboardList}>
+        <Tabs.Item active title="Pre-Planting" icon={PiPottedPlantFill}>
           <PrePlanting />
         </Tabs.Item>
-        <Tabs.Item title="Planting" icon={HiClipboardList}>
+        <Tabs.Item title="Planting" icon={PiPottedPlantFill}>
           <Planting />
         </Tabs.Item>
-        <Tabs.Item title="Weed Control" icon={HiClipboardList}>
+        <Tabs.Item title="Weed Control" icon={PiPottedPlantFill}>
           <WeedControl />
         </Tabs.Item>
-        <Tabs.Item title="Fertilizer Application" icon={HiClipboardList}>
+        <Tabs.Item title="Fertilizer Application" icon={PiPottedPlantFill}>
           <FertilizerApplication />
         </Tabs.Item>
-        <Tabs.Item title="Harvesting" icon={HiClipboardList}>
+        <Tabs.Item title="Harvesting" icon={PiPottedPlantFill}>
           <Harvesting />
         </Tabs.Item>
-        <Tabs.Item title="Storage" icon={HiClipboardList}>
+        <Tabs.Item title="Storage" icon={PiPottedPlantFill}>
           <Storage />
         </Tabs.Item>
-        <Tabs.Item title="Sales" icon={HiClipboardList}>
+        <Tabs.Item title="Sales" icon={PiPottedPlantFill}>
           <Sales />
         </Tabs.Item>
-        <Tabs.Item title="Shipment " icon={HiClipboardList}>
-          <Shippment />
-        </Tabs.Item>
-        <Tabs.Item title="Pest Control " icon={HiClipboardList}>
+
+        <Tabs.Item title="Pest Control " icon={PiPottedPlantFill}>
           <PestControl />
+        </Tabs.Item>
+        <Tabs.Item title="Shipment " icon={PiPottedPlantFill}>
+          <Shippment />
         </Tabs.Item>
       </Tabs>
     </div>

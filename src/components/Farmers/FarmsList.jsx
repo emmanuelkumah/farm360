@@ -41,11 +41,6 @@ const FarmsList = () => {
                       <Link to={`/app/farms/${farm.farmId}/activities`}>
                         <Button>Start Activity</Button>
                       </Link>
-                      <div className="md:flex md:gap-10">
-                        <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
-                        <MdDelete className="text-xl hover:text-red-700 cursor-pointer" />
-                        <FaEye />
-                      </div>
                     </div>
                   </Table.Cell>
                 </Table.Row>

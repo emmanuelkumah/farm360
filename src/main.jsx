@@ -66,7 +66,7 @@ const router = createBrowserRouter([
         element: <FarmActivity />,
       },
       {
-        path: "management",
+        path: "all-activities",
         element: <FarmManagement />,
       },
       {
