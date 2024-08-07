@@ -19,12 +19,14 @@ const HomeLayout = () => {
             </span>
           </Navbar.Brand>
           <div className="flex md:order-2">
-            <Button className="bg-[#357960] text-xl">Get started</Button>
+            <Link to="/login">
+              <Button className="bg-[#357960] text-xl">Get started</Button>
+            </Link>
           </div>
           <Navbar.Toggle />
 
           <Navbar.Collapse>
-            <Navbar.Link href="/" active className="text-xl bg-[#357960]">
+            <Navbar.Link href="#" active className="text-xl bg-[#357960]">
               Home
             </Navbar.Link>
             <Navbar.Link as={Link} href="#" className="text-xl">

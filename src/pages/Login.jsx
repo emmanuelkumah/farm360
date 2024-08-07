@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import axios from "../api/axios";
+import loginFarm from "../assets/images/loginFarm.jpg";
 // import { useAuthContext } from "../context/AuthProvider";
 // import { useNavigate } from "react-router-dom";
 
@@ -55,56 +56,61 @@ const Login = () => {
   };
   return (
     <>
-      <section className="h-screen flex flex-col md:flex-row justify-center   items-center ">
-        <div className="md:w-1/3 max-w-sm">
-          <img
-            src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-            alt="Sample image"
-          />
-        </div>
-        <div className="md:w-1/3 max-w-sm">
-          <h3 className="text-2xl my-5">Login to the app </h3>
-          <form
-            className="flex max-w-2xl flex-col gap-4"
-            onSubmit={handleLoginSubmit}
-          >
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="username" value="Your username" />
+      <div className="bg-[#E6F0DC]">
+        <section className=" container mx-auto h-screen flex flex-col md:flex-row md:gap-10 justify-center items-center">
+          <div className="w-1/2">
+            <img
+              src={loginFarm}
+              alt="Sample image"
+              style={{ borderRadius: "20px" }}
+            />
+          </div>
+          <div className="w-1/2">
+            <h3 className="text-2xl my-5">Login to the app </h3>
+            <form
+              className="flex max-w-2xl flex-col gap-4 text-xl"
+              onSubmit={handleLoginSubmit}
+            >
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="username" value="Your email" />
+                </div>
+                <TextInput
+                  id="username"
+                  type="text"
+                  placeholder="Enter your email"
+                  name="username"
+                  value={loginDetails.username}
+                  onChange={(e) => handleInputChange(e)}
+                  required
+                  autoFocus
+                />
               </div>
-              <TextInput
-                id="username"
-                type="text"
-                placeholder="Enter your username"
-                name="username"
-                value={loginDetails.username}
-                onChange={(e) => handleInputChange(e)}
-                required
-                autoFocus
-              />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="password" value="Your password" />
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="password" value="Your password" />
+                </div>
+                <TextInput
+                  id="password"
+                  type="password"
+                  name="password"
+                  value={loginDetails.password}
+                  onChange={(e) => handleInputChange(e)}
+                  required
+                />
               </div>
-              <TextInput
-                id="password"
-                type="password"
-                name="password"
-                value={loginDetails.password}
-                onChange={(e) => handleInputChange(e)}
-                required
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox id="remember" />
-              <Label htmlFor="remember">Remember me</Label>
-            </div>
-            <Button type="submit">Submit</Button>
-          </form>
-          {message.error}
-        </div>
-      </section>
+              <div className="flex items-center gap-2">
+                <Checkbox id="remember" />
+                <Label htmlFor="remember">Remember me</Label>
+              </div>
+              <Button type="submit" className="bg-[#357960]">
+                Login
+              </Button>
+            </form>
+            {message.error}
+          </div>
+        </section>
+      </div>
     </>
   );
 };
