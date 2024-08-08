@@ -24,7 +24,7 @@ import FarmersProvider from "./context/FarmersProvider";
 import TraaceabilityProvider from "./context/TraaceabilityProvider";
 import UserProvider from "./context/UserProvider";
 import HomeLayout from "./routes/HomeLayout";
-
+import { getFarms } from "./services/loaders";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -60,6 +60,7 @@ const router = createBrowserRouter([
       {
         path: "farms",
         element: <Farms />,
+        loader: getFarms,
       },
       {
         path: "farms/:farmId/activities",

@@ -4,12 +4,13 @@ import { MdDelete, MdEdit, MdViewAgenda } from "react-icons/md";
 import { useFarmersContext } from "../../context/FarmersProvider";
 import { FaEye } from "react-icons/fa";
 
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 const FarmsList = () => {
   useFarmersContext;
   const { state } = useFarmersContext();
   const { farmers } = state;
-
+  const { listFarms } = useLoaderData();
+  console.log(useLoaderData());
   return (
     <>
       <Table hoverable>
