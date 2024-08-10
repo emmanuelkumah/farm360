@@ -1,16 +1,8 @@
 import React from "react";
 import { Button, Table } from "flowbite-react";
-import { MdDelete, MdEdit, MdViewAgenda } from "react-icons/md";
-import { useFarmersContext } from "../../context/FarmersProvider";
-import { FaEye } from "react-icons/fa";
-
 import { Link, useLoaderData } from "react-router-dom";
 const FarmsList = () => {
-  useFarmersContext;
-  const { state } = useFarmersContext();
-  const { farmers } = state;
-  const { listFarms } = useLoaderData();
-  console.log(useLoaderData());
+  const loadFarmers = useLoaderData();
   return (
     <>
       <Table hoverable>
@@ -21,7 +13,7 @@ const FarmsList = () => {
           <Table.HeadCell>District</Table.HeadCell>
           <Table.HeadCell>Community</Table.HeadCell>
         </Table.Head>
-        {farmers.map((farmer) => (
+        {loadFarmers.map((farmer) => (
           <Table.Body className="divide-y" key={farmer.id}>
             {farmer.farms.map((farm, index) =>
               farm.name !== "" ? (
@@ -39,7 +31,7 @@ const FarmsList = () => {
 
                   <Table.Cell>
                     <div className="flex md:items-center md:justify-evenly">
-                      <Link to={`/app/farms/${farm.farmId}/activities`}>
+                      <Link to={`${farm.farmId}/activities`}>
                         <Button>Start Activity</Button>
                       </Link>
                     </div>

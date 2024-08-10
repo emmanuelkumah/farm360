@@ -1,12 +1,12 @@
-import { Button } from "flowbite-react";
+// import { Button } from "flowbite-react";
 import { FarmersList } from "../components";
-import { useFarmersContext } from "../context/FarmersProvider";
-import { Link } from "react-router-dom";
+// import { farmersData } from "../data/dummyData";
+import { farmersData } from "../data/dummyData";
 
 const Farmers = () => {
-  const { state } = useFarmersContext();
   return (
     <>
+      <h2>farmers data will show here</h2>
       <div className="m-10">
         <input
           className="w-1/2 rounded-lg"
@@ -16,17 +16,16 @@ const Farmers = () => {
           placeholder="Search"
         />
 
-        {state.farmers.length >= 1 ? (
-          <FarmersList />
-        ) : (
-          <h3 className="text-xl my-6">
-            No farmer added. Click on the "Add new farmer" to start adding
-            farmer
-          </h3>
-        )}
+        <FarmersList />
       </div>
     </>
   );
 };
 
 export default Farmers;
+
+//should be async await if connect to api
+export const loader = () => {
+  return farmersData;
+  //connect to the api and get the farmers
+};

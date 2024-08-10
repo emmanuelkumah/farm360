@@ -1,29 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Table, Button, Pagination } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { useFarmersContext } from "../../context/FarmersProvider";
+import { LuEye } from "react-icons/lu";
+
 import { FaUser } from "react-icons/fa6";
-import { Link } from "react-router-dom";
-// import axios from "axios";
+import { Link, useLoaderData } from "react-router-dom";
 
 const FarmersList = () => {
-  const { dispatch, state } = useFarmersContext();
-  const { farmers } = state;
   const [currentPage, setCurrentPage] = useState(1);
   const [editFarmer, setEditFarmer] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchFarmers = async () => {
-  //     try {
-  //       const response = await axios.get("http://18.134.98.183:8080/groups");
-  //       console.log(response);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchFarmers();
-  // }, []);
+  const farmersData = useLoaderData();
 
   const onPageChange = (page) => setCurrentPage(page);
 
@@ -41,7 +29,7 @@ const FarmersList = () => {
   return (
     <div>
       <div className="my-10">
-        <Link to="/app/add">
+        <Link to="new">
           <Button>Add new farmer</Button>
         </Link>
       </div>
@@ -55,10 +43,9 @@ const FarmersList = () => {
           <Table.HeadCell>District</Table.HeadCell>
           <Table.HeadCell>Community</Table.HeadCell>
           <Table.HeadCell>Group</Table.HeadCell>
-          <Table.HeadCell>Number of farms</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {farmers.map((farmer) => (
+          {farmersData.map((farmer) => (
             <Table.Row
               key={farmer.id}
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -81,15 +68,18 @@ const FarmersList = () => {
               <Table.Cell>{farmer.district}</Table.Cell>
               <Table.Cell>{farmer.community}</Table.Cell>
               <Table.Cell>{farmer.group}</Table.Cell>
-              {farmer.farms[1].name === "" ? (
+              {/* {farmer.farms[1].name === "" ? (
                 <Table.Cell>1</Table.Cell>
               ) : (
                 <Table.Cell>{farmer.farms.length}</Table.Cell>
-              )}
+              )} */}
 
               <Table.Cell>
                 <div className="flex gap-5">
-                  <Link to={`/app/farmers/${farmer.id}/edit`}>
+                  <Link to={`${farmer.id}`}>
+                    <LuEye className="text-xl hover:text-teal-500 cursor-pointer" />
+                  </Link>
+                  <Link to={`${farmer.id}/edit`}>
                     <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
                   </Link>
 

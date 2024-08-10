@@ -18,13 +18,17 @@ import {
   Landing,
   AddFarmer,
   EditFarmer,
+  ViewFarmer,
 } from "./pages";
+
+import HomeLayout from "./routes/HomeLayout";
+import { loader as farmsLoader } from "./pages/Farms";
+import { loader as farmersLoader } from "./pages/Farmers";
+import { loader as farmerDetailsLoader } from "./pages/ViewFarmer";
+import { action as AddFarmerAction } from "./pages/AddFarmer";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
-import TraaceabilityProvider from "./context/TraaceabilityProvider";
-import UserProvider from "./context/UserProvider";
-import HomeLayout from "./routes/HomeLayout";
-import { getFarms } from "./services/loaders";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -51,16 +55,41 @@ const router = createBrowserRouter([
       },
       {
         path: "farmers",
-        element: <Farmers />,
+        children: [
+          {
+            index: true,
+            element: <Farmers />,
+            loader: farmersLoader,
+          },
+          {
+            path: ":farmerId",
+            id: "farmer-detail",
+            loader: farmerDetailsLoader,
+
+            children: [
+              {
+                index: true,
+                element: <ViewFarmer />,
+              },
+              {
+                path: "edit",
+                element: <EditFarmer />,
+              },
+            ],
+          },
+
+          {
+            path: "new",
+            element: <AddFarmer />,
+            action: AddFarmerAction,
+          },
+        ],
       },
-      {
-        path: "farmers/:id/edit",
-        element: <EditFarmer />,
-      },
+
       {
         path: "farms",
         element: <Farms />,
-        loader: getFarms,
+        loader: farmsLoader,
       },
       {
         path: "farms/:farmId/activities",
@@ -99,11 +128,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ContextProvider>
       <FarmersProvider>
-        <UserProvider>
-          <TraaceabilityProvider>
-            <RouterProvider router={router} />
-          </TraaceabilityProvider>
-        </UserProvider>
+        <RouterProvider router={router} />
       </FarmersProvider>
     </ContextProvider>
   </React.StrictMode>

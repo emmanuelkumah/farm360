@@ -1,9 +1,10 @@
 import React from "react";
-import { Activities } from "../components";
+// import { Activities } from "../components";
 const FarmActivity = () => {
   return (
     <>
-      <Activities />
+      <h2>Farm activities will show here</h2>
+      {/* <Activities /> */}
     </>
   );
 };

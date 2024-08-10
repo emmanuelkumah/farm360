@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useFarmersContext } from "../../context/FarmersProvider";
+// import { useFarmersContext } from "../../context/FarmersProvider";
 import {
   Button,
   Label,
@@ -9,7 +9,7 @@ import {
   Select,
   Datepicker,
 } from "flowbite-react";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
@@ -18,7 +18,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AddFarmerForm = () => {
-  const { dispatch } = useFarmersContext();
+  // const { dispatch } = useFarmersContext();
   let navigate = useNavigate();
 
   const [addFarms, setAddFarms] = useState(false);
@@ -56,7 +56,7 @@ const AddFarmerForm = () => {
 
   const [showDistricts, setShowDistricts] = useState([]);
 
-  console.log(farmer);
+  // console.log(farmer);
 
   const getDistricts = (id) => {
     const result = districts.find((district) => district.regionId === id);
@@ -180,6 +180,45 @@ const AddFarmerForm = () => {
 
   return (
     <>
+      {/* <Form method="post">
+        <div>
+          <div className="my-2 block">
+            <Label
+              htmlFor="firstName"
+              value="First name"
+              className="font-semibold"
+            />
+          </div>
+          <TextInput
+            id="firstName"
+            type="text"
+            icon={FaRegUserCircle}
+            defaultValue=""
+            placeholder="Enter firstname"
+            name="firstName"
+            required
+          />
+        </div>
+        <div>
+          <div className="my-2 block">
+            <Label
+              htmlFor="lastName"
+              value="Last name"
+              className="font-semibold"
+            />
+          </div>
+          <TextInput
+            id="lastName"
+            type="text"
+            icon={FaRegUserCircle}
+            defaultValue=""
+            placeholder="Enter lastName"
+            name="lastName"
+            required
+          />
+        </div>
+        <Button type="submit">Submit</Button>
+      </Form> */}
       <div>
         <Button onClick={handleGoBack}>Go Back</Button>
       </div>
@@ -188,10 +227,7 @@ const AddFarmerForm = () => {
       </h2>
       <div className="bg-white h-full rounded-lg shadow-md">
         <section className="flex flex-col justify-center items-center md:my-10">
-          <form
-            className="w-[80vw] md:w-[60vw] my-10"
-            onSubmit={(e) => onFormSubmit(e)}
-          >
+          <Form className="w-[80vw] md:w-[60vw] my-10" method="post">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
               <section>
                 <h2 className="text-green-500 font-bold md:text-2xl mb-4">
@@ -205,7 +241,7 @@ const AddFarmerForm = () => {
                         id="male"
                         name="gender"
                         value="Male"
-                        onChange={handleFarmerInputChange}
+                        // onChange={handleFarmerInputChange}
                         required
                       />
                       <Label htmlFor="male">Male</Label>
@@ -215,7 +251,7 @@ const AddFarmerForm = () => {
                         id="female"
                         name="gender"
                         value="Female"
-                        onChange={handleFarmerInputChange}
+                        // onChange={handleFarmerInputChange}
                         required
                       />
                       <Label htmlFor="female">Female</Label>
@@ -232,7 +268,7 @@ const AddFarmerForm = () => {
                     <FileInput
                       id="file-upload"
                       accept="image/*"
-                      onChange={handleImageChange}
+                      // onChange={handleImageChange}
                       name="picture"
                     />
                   </div>
@@ -251,10 +287,9 @@ const AddFarmerForm = () => {
                       id="firstName"
                       type="text"
                       icon={FaRegUserCircle}
-                      value={farmer.firstName}
+                      defaultValue=""
                       placeholder="Enter firstname"
                       name="firstName"
-                      onChange={handleFarmerInputChange}
                       required
                     />
                   </div>
@@ -271,9 +306,8 @@ const AddFarmerForm = () => {
                       type="text"
                       icon={FaRegUserCircle}
                       placeholder="Enter last name"
-                      value={farmer.lastName}
+                      defaultValue=""
                       name="lastName"
-                      onChange={handleFarmerInputChange}
                       required
                     />
                   </div>
@@ -290,8 +324,7 @@ const AddFarmerForm = () => {
                       type="text"
                       icon={BiHome}
                       name="address"
-                      value={farmer.address}
-                      onChange={handleFarmerInputChange}
+                      defaultValue=""
                       placeholder="Enter home address"
                       required
                     />
@@ -310,8 +343,7 @@ const AddFarmerForm = () => {
                       icon={BiMap}
                       placeholder="Enter GPS"
                       name="gps"
-                      onChange={handleFarmerInputChange}
-                      value={farmer.gps}
+                      defaultValue=""
                       required
                     />
                   </div>
@@ -329,8 +361,7 @@ const AddFarmerForm = () => {
                       icon={BiPhone}
                       maxLength={10}
                       name="contact"
-                      value={farmer.contact}
-                      onChange={handleFarmerInputChange}
+                      defaultValue=""
                       placeholder="Enter contact"
                       required
                     />
@@ -347,7 +378,7 @@ const AddFarmerForm = () => {
                       name="dateOfBirth"
                       maxDate={new Date(2010, 1, 30)}
                       selected={farmer.dateOfBirth}
-                      onSelectedDateChanged={handleDateChange}
+                      // onSelectedDateChanged={handleDateChange}
                     />
                   </div>
                   <div>
@@ -362,7 +393,7 @@ const AddFarmerForm = () => {
                       id="region"
                       required
                       name="region"
-                      onChange={handleFarmerInputChange}
+                      // onChange={handleFarmerInputChange}
                     >
                       <option>Select region</option>
                       {regions.map((region, index) => (
@@ -740,7 +771,7 @@ const AddFarmerForm = () => {
             <Button type="submit" className="mt-10">
               Save Details
             </Button>
-          </form>
+          </Form>
         </section>
         <ToastContainer />
       </div>

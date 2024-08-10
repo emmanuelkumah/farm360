@@ -169,26 +169,7 @@ export const ContextProvider = ({ children }) => {
         setOpenModal,
       }}
     >
-      <UserContext.Provider
-        value={{
-          users,
-          userForm,
-          passwordsMatch,
-          editing,
-          setEditing,
-          editUser,
-          handleUserInputChange,
-          handleUserFormSubmit,
-          handleImageChange,
-          handleUserDelete,
-          handleEditUserInputChange,
-          handleEditImageChange,
-          onEditClick,
-          handleEditFormSubmit,
-        }}
-      >
-        {children}
-      </UserContext.Provider>
+      {children}
     </StateContext.Provider>
   );
 };

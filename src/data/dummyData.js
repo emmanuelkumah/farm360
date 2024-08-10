@@ -5,81 +5,62 @@ export const dummyData = {
   farms: [],
 };
 
-export const farmersData = {
-  farmers: [
-    {
-      id: 1,
-      firstName: "John ",
-      lastName: "Doe",
-      gender: "male",
-      picture: "",
-      dateOfBirth: "Fri Jul 26 2024",
-      contact: "244123123",
-      address: "Accra Darkuman",
-      gps: "GS-00245-123",
-      type: "Farmer",
-      group: "Group 1",
-      region: "Upper East",
-      district: "Savlanga",
-      community: "Danba",
+export const farmersData = [
+  {
+    id: "1",
+    firstName: "John ",
+    lastName: "Doe",
+    gender: "male",
+    picture: "",
+    dateOfBirth: "Fri Jul 26 2024",
+    contact: "244123123",
+    address: "Accra Darkuman",
+    gps: "GS-00245-123",
+    type: "Farmer",
+    group: "Group 1",
+    region: "Upper East",
+    district: "Savlanga",
+    community: "Danba",
+  },
+  {
+    id: "2",
+    firstName: "Emma ",
+    lastName: "Kumah",
+    gender: "male",
+    picture: "",
 
-      farms: [
-        {
-          farmId: 101,
-          name: "John's Soya ",
-          crop: "Soya",
-          size: 10,
-          district: "Danso",
-          community: "Danba",
-        },
-        {
-          farmId: 102,
-          name: "John's Groundnut",
-          crop: "Groundnut",
-          size: 30,
-          district: "Kasanba",
-          community: "Danba",
-        },
-      ],
-    },
-    {
-      id: 2,
-      firstName: "Emma ",
-      lastName: "Kumah",
-      gender: "male",
-      picture: "",
+    dateOfBirth: "Fri Jul 26 2024",
+    contact: "244123123",
+    address: "Accra Darkuman",
+    gps: "GS-00245-123",
+    type: "Farmer",
+    group: "Group 1",
+    region: "Upper East",
+    district: "Savlanga",
+    community: "Kasena",
+  },
+];
 
-      dateOfBirth: "Fri Jul 26 2024",
-      contact: "244123123",
-      address: "Accra Darkuman",
-      gps: "GS-00245-123",
-      type: "Farmer",
-      group: "Group 1",
-      region: "Upper East",
-      district: "Savlanga",
-      community: "Kasena",
-
-      farms: [
-        {
-          farmId: 103,
-          name: "Emma's Soya ",
-          crop: "Soya",
-          size: 100,
-          district: "Asoni",
-          community: "Kasena",
-        },
-        {
-          farmId: 104,
-          name: "Emma's Groundnut",
-          crop: "Groundnut",
-          size: 50,
-          district: "Damba",
-          community: "Kasena",
-        },
-      ],
-    },
-  ],
-};
+export const farms = [
+  {
+    id: "1",
+    owner: "Emmanuel",
+    crop: "Soya",
+    size: "20 acres",
+    region: "UpperEast",
+    district: "Asoni",
+    community: "Kasena",
+  },
+  {
+    id: "2",
+    owner: "Victor",
+    crop: "Groundnut",
+    size: "10 acres",
+    region: "Upper ESt",
+    district: "Asontaba",
+    community: "Grubi",
+  },
+];
 export const regions = [
   {
     regionId: 1,
