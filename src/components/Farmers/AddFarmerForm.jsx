@@ -28,11 +28,6 @@ const AddFarmerForm = () => {
     const { listDistrict } = result;
     setShowDistricts(listDistrict);
   };
-  const hasNoSecondFarm = () => {
-    if (secondFarm.name === "" || secondFarm.crop === "") {
-      setSecondFarm(null);
-    }
-  };
 
   const handleRegionChange = (e) => {
     const index = e.target.selectedIndex;
@@ -55,17 +50,22 @@ const AddFarmerForm = () => {
   return (
     <>
       <div>
-        <Button onClick={handleGoBack}>Go Back</Button>
+        <Button
+          className="bg-secondary text-primary hover:text-slate-100 hover:bg-main"
+          onClick={handleGoBack}
+        >
+          Go Back
+        </Button>
       </div>
-      <h2 className="md:text-2xl text-green-500 font-bold my-4 border-l-4 pl-4 border-green-500">
+      <h2 className="md:text-2xl text-main font-bold my-4 border-l-4 pl-4 border-main">
         Add new farmer
       </h2>
-      <div className="bg-white h-full rounded-lg shadow-md">
+      <div className="bg-secondary h-full rounded-lg shadow-md">
         <section className="flex flex-col justify-center items-center md:my-10">
-          <Form className="w-[80vw] md:w-[60vw] my-10" method="post">
+          <Form className="w-[80vw] md:w-[60vw] my-10 " method="post">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
               <section>
-                <h2 className="text-green-500 font-bold md:text-2xl mb-4">
+                <h2 className="text-main font-bold md:text-2xl mb-4">
                   Farmer Details
                 </h2>
                 <div className="flex flex-col md:flex-row md:justify-evenly">
@@ -317,7 +317,7 @@ const AddFarmerForm = () => {
                 </div>
               </section>
               <section>
-                <h2 className="text-green-500 font-bold md:text-2xl mb-4">
+                <h2 className="text-main font-bold md:text-2xl mb-4">
                   Farm Details
                 </h2>
                 <div>
@@ -433,7 +433,7 @@ const AddFarmerForm = () => {
                   />
                 </div>
                 <Button
-                  className="mt-10"
+                  className="mt-10 bg-main hover:bg-secondary"
                   onClick={() => setAddFarms(!addFarms)}
                 >
                   {addFarms ? "Hide farm" : "Add another farm"}
@@ -558,11 +558,11 @@ const AddFarmerForm = () => {
                     </div>
                   </section>
                 )}
+                <Button type="submit" className="mt-10 w-[100%] bg-main">
+                  Save Details
+                </Button>
               </section>
             </div>
-            <Button type="submit" className="mt-10">
-              Save Details
-            </Button>
           </Form>
         </section>
         <ToastContainer />

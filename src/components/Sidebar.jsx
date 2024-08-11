@@ -15,7 +15,7 @@ const Sidebar = () => {
   };
 
   const activeLink =
-    "flex items-center gap-5 pl-3 pt-3 pb-2.5 rounded-lg text-xl text-black text-md m-2";
+    "flex items-center gap-5 pl-3 pt-3 pb-2.5 rounded-lg text-xl text-primary text-md m-2";
   const normalLink =
     "flex items-center gap-5 pl-3 pt-3 pb-2.5 rounded-lg text-xl  text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
 
@@ -38,7 +38,7 @@ const Sidebar = () => {
                 className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block"
                 onClick={(prevState) => setActiveMenu(!prevState)}
               >
-                <RiCloseLargeLine />
+                <RiCloseLargeLine className="text-primary" />
               </button>
             </div>
           </div>

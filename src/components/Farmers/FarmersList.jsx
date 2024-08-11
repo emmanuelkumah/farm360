@@ -30,7 +30,9 @@ const FarmersList = () => {
     <div>
       <div className="my-10">
         <Link to="new">
-          <Button>Add new farmer</Button>
+          <Button className="bg-secondary text-primary hover:text-slate-100 hover:bg-primary">
+            Add new farmer
+          </Button>
         </Link>
       </div>
       <Table hoverable>
