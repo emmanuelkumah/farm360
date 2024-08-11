@@ -1,6 +1,4 @@
-// import { Button } from "flowbite-react";
 import { FarmersList } from "../components";
-// import { farmersData } from "../data/dummyData";
 import { farmersData } from "../data/dummyData";
 
 const Farmers = () => {
