@@ -6,7 +6,6 @@ import { farmersData } from "../data/dummyData";
 const Farmers = () => {
   return (
     <>
-      <h2>farmers data will show here</h2>
       <div className="m-10">
         <input
           className="w-1/2 rounded-lg"

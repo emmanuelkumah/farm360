@@ -18,25 +18,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AddFarmerForm = () => {
-  // const { dispatch } = useFarmersContext();
   let navigate = useNavigate();
 
   const [addFarms, setAddFarms] = useState(false);
-  const [farmer, setFarmer] = useState({
-    gender: "",
-    picture: "",
-    firstName: "",
-    lastName: "",
-    contact: "",
-    address: "",
-    gps: "",
-    dateOfBirth: "",
-    region: "",
-    district: "",
-    community: "",
-    type: "",
-    group: "",
-  });
   const [firstFarm, setFirstFarm] = useState({
     name: "",
     size: "",
@@ -55,8 +39,6 @@ const AddFarmerForm = () => {
   });
 
   const [showDistricts, setShowDistricts] = useState([]);
-
-  // console.log(farmer);
 
   const getDistricts = (id) => {
     const result = districts.find((district) => district.regionId === id);
@@ -180,45 +162,6 @@ const AddFarmerForm = () => {
 
   return (
     <>
-      {/* <Form method="post">
-        <div>
-          <div className="my-2 block">
-            <Label
-              htmlFor="firstName"
-              value="First name"
-              className="font-semibold"
-            />
-          </div>
-          <TextInput
-            id="firstName"
-            type="text"
-            icon={FaRegUserCircle}
-            defaultValue=""
-            placeholder="Enter firstname"
-            name="firstName"
-            required
-          />
-        </div>
-        <div>
-          <div className="my-2 block">
-            <Label
-              htmlFor="lastName"
-              value="Last name"
-              className="font-semibold"
-            />
-          </div>
-          <TextInput
-            id="lastName"
-            type="text"
-            icon={FaRegUserCircle}
-            defaultValue=""
-            placeholder="Enter lastName"
-            name="lastName"
-            required
-          />
-        </div>
-        <Button type="submit">Submit</Button>
-      </Form> */}
       <div>
         <Button onClick={handleGoBack}>Go Back</Button>
       </div>
@@ -237,13 +180,7 @@ const AddFarmerForm = () => {
                   <fieldset className="flex flex-col md:flex-row gap-4">
                     <legend className="font-semibold mb-4"> Gender</legend>
                     <div className="flex items-center gap-2">
-                      <Radio
-                        id="male"
-                        name="gender"
-                        value="Male"
-                        // onChange={handleFarmerInputChange}
-                        required
-                      />
+                      <Radio id="male" name="gender" value="Male" required />
                       <Label htmlFor="male">Male</Label>
                     </div>
                     <div className="flex items-center gap-2">
@@ -251,7 +188,6 @@ const AddFarmerForm = () => {
                         id="female"
                         name="gender"
                         value="Female"
-                        // onChange={handleFarmerInputChange}
                         required
                       />
                       <Label htmlFor="female">Female</Label>
@@ -268,7 +204,6 @@ const AddFarmerForm = () => {
                     <FileInput
                       id="file-upload"
                       accept="image/*"
-                      // onChange={handleImageChange}
                       name="picture"
                     />
                   </div>
@@ -377,8 +312,6 @@ const AddFarmerForm = () => {
                     <Datepicker
                       name="dateOfBirth"
                       maxDate={new Date(2010, 1, 30)}
-                      selected={farmer.dateOfBirth}
-                      // onSelectedDateChanged={handleDateChange}
                     />
                   </div>
                   <div>
@@ -389,12 +322,7 @@ const AddFarmerForm = () => {
                         className="font-semibold"
                       />
                     </div>
-                    <Select
-                      id="region"
-                      required
-                      name="region"
-                      // onChange={handleFarmerInputChange}
-                    >
+                    <Select id="region" required name="region">
                       <option>Select region</option>
                       {regions.map((region, index) => (
                         <option value={region.name} key={index}>
@@ -441,7 +369,7 @@ const AddFarmerForm = () => {
                       id="community"
                       type="text"
                       icon={FaRegUserCircle}
-                      value={farmer.community}
+                      value=""
                       placeholder="Enter community"
                       name="community"
                       onChange={handleFarmerInputChange}
@@ -454,13 +382,7 @@ const AddFarmerForm = () => {
                     Choose farmer type
                   </legend>
                   <div className="flex items-center gap-2">
-                    <Radio
-                      id="farmer"
-                      name="type"
-                      value="farmer"
-                      onChange={handleFarmerInputChange}
-                      required
-                    />
+                    <Radio id="farmer" name="type" value="farmer" required />
                     <Label htmlFor="farmer">farmer</Label>
                   </div>
                   <div className="flex items-center gap-2">
@@ -468,7 +390,6 @@ const AddFarmerForm = () => {
                       id="processor"
                       name="type"
                       value="Processor"
-                      onChange={handleFarmerInputChange}
                       required
                     />
                     <Label htmlFor="processor">Processor</Label>
@@ -478,7 +399,6 @@ const AddFarmerForm = () => {
                       id="farmerProcessor"
                       name="type"
                       value="Farmer and Processor"
-                      onChange={handleFarmerInputChange}
                       required
                     />
                     <Label htmlFor="farmerProcessor">
@@ -494,13 +414,7 @@ const AddFarmerForm = () => {
                       value="Select farmer group"
                     />
                   </div>
-                  <Select
-                    id="group"
-                    required
-                    onChange={handleFarmerInputChange}
-                    className="w-full"
-                    name="group"
-                  >
+                  <Select id="group" required className="w-full" name="group">
                     <option>group</option>
                     {groups.map((group) => (
                       <option value={group.name} key={group.id}>

@@ -8,21 +8,26 @@ const FarmerDetails = () => {
 
   return (
     <>
-      <div className="bg-white h-full rounded-lg shadow-md container mx-auto">
-        <Link to="/app/farmers">
-          <Button>Go Back</Button>
-        </Link>
-        <section className="px-10">
+      <div>
+        <div className="m-10">
+          <Link to="/app/farmers">
+            <Button>Go Back</Button>
+          </Link>
+        </div>
+
+        <section className="bg-white h-full rounded-lg shadow-md container mx-auto p-10">
           <h1>{farmerDetail.firstName}</h1>
           <h2>{farmerDetail.lastName}</h2>
           <div>
             <p>{farmerDetail.gender}</p>
             <p>{farmerDetail.dateOfBirth}</p>
+            <p>{farmerDetail.contact}</p>
             <p>{farmerDetail.region}</p>
             <p>{farmerDetail.district}</p>
             <p>{farmerDetail.community}</p>
             <p>{farmerDetail.type}</p>
             <p>{farmerDetail.gps}</p>
+            <p>{farmerDetail.group}</p>
           </div>
         </section>
       </div>

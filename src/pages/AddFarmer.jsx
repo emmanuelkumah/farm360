@@ -19,6 +19,16 @@ export const action = async ({ request }) => {
   const enteredData = {
     firstName: data.get("firstName"),
     lastName: data.get("lastName"),
+    gender: data.get("gender"),
+    picture: data.get("picture"),
+    address: data.get("address"),
+    gps: data.get("gps"),
+    community: data.get("community"),
+    contact: data.get("contact"),
+    dateOfBirth: data.get("dateOfBirth"),
+    region: data.get("region"),
+    type: data.get("type"),
+    group: data.get("group"),
   };
   //use axios.post and send the data in the body
   console.log(enteredData);
