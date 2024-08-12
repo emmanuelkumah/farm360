@@ -1,6 +1,7 @@
 import React from "react";
 import { AddFarmerForm } from "../components";
 import { redirect } from "react-router-dom";
+import { createFarmer } from "../data/dummyData";
 const AddFarmer = () => {
   return (
     <>
@@ -17,6 +18,7 @@ export default AddFarmer;
 export const action = async ({ request }) => {
   const data = await request.formData();
   const enteredFarmerData = {
+    id: String(Math.floor(Math.random() * 200000)),
     firstName: data.get("firstName"),
     lastName: data.get("lastName"),
     gender: data.get("gender"),
@@ -32,7 +34,7 @@ export const action = async ({ request }) => {
     group: data.get("group"),
   };
   //use axios.post and send the data in the body
-  console.log(enteredFarmerData);
+  // console.log(enteredFarmerData);
 
   const enteredFarmData = {
     farmName: data.get("farmName"),
@@ -42,7 +44,7 @@ export const action = async ({ request }) => {
     farmDistrict: data.get("farmDistrict"),
     farmCommunity: data.get("farmCommunity"),
   };
-  console.log(enteredFarmData);
+  // console.log(enteredFarmData);
 
   const enteredSecondFarmData = {
     secondFarmName: data.get("secondFarmName"),
@@ -52,7 +54,9 @@ export const action = async ({ request }) => {
     secondFarmDistrict: data.get("secondFarmDistrict"),
     secondFarmCommunity: data.get("secondFarmCommunity"),
   };
-  console.log(enteredSecondFarmData);
+  // console.log(enteredSecondFarmData);
   ///grab farmers data and append the entered data
-  return redirect("../");
+  // return redirect("../");
+  const farmer = await createFarmer(enteredFarmerData);
+  return farmer;
 };

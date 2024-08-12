@@ -13,6 +13,8 @@ const FarmersList = () => {
 
   const farmersData = useLoaderData();
 
+  console.log(farmersData);
+
   const onPageChange = (page) => setCurrentPage(page);
 
   const handleDeleteFarmer = (id) => {
@@ -42,6 +44,8 @@ const FarmersList = () => {
           <Table.HeadCell>Last Name</Table.HeadCell>
           <Table.HeadCell>Gender</Table.HeadCell>
           <Table.HeadCell>Contact</Table.HeadCell>
+          <Table.HeadCell>Region</Table.HeadCell>
+
           <Table.HeadCell>District</Table.HeadCell>
           <Table.HeadCell>Community</Table.HeadCell>
           <Table.HeadCell>Group</Table.HeadCell>
@@ -67,6 +71,8 @@ const FarmersList = () => {
               <Table.Cell>{farmer.lastName}</Table.Cell>
               <Table.Cell>{farmer.gender}</Table.Cell>
               <Table.Cell>{farmer.contact}</Table.Cell>
+              <Table.Cell>{farmer.region}</Table.Cell>
+
               <Table.Cell>{farmer.district}</Table.Cell>
               <Table.Cell>{farmer.community}</Table.Cell>
               <Table.Cell>{farmer.group}</Table.Cell>

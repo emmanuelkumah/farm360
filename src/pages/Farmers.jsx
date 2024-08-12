@@ -24,5 +24,6 @@ export default Farmers;
 //should be async await if connect to api
 export const loader = () => {
   return farmersData;
+  // console.log(farmersData);
   //connect to the api and get the farmers
 };

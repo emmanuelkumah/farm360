@@ -218,6 +218,7 @@ const AddFarmerForm = () => {
                       id="region"
                       required
                       name="region"
+                      defaultValue=""
                       onChange={handleRegionChange}
                     >
                       <option>Select region</option>
@@ -245,7 +246,7 @@ const AddFarmerForm = () => {
                   >
                     <option>Select District</option>
                     {showDistricts.map((district) => (
-                      <option value={district} key={district}>
+                      <option defaultValue={district} key={district}>
                         {district}
                       </option>
                     ))}
@@ -274,14 +275,19 @@ const AddFarmerForm = () => {
                     Choose farmer type
                   </legend>
                   <div className="flex items-center gap-2">
-                    <Radio id="farmer" name="type" value="farmer" required />
+                    <Radio
+                      id="farmer"
+                      name="type"
+                      defaultValue="farmer"
+                      required
+                    />
                     <Label htmlFor="farmer">farmer</Label>
                   </div>
                   <div className="flex items-center gap-2">
                     <Radio
                       id="processor"
                       name="type"
-                      value="Processor"
+                      defaultValue="Processor"
                       required
                     />
                     <Label htmlFor="processor">Processor</Label>
@@ -290,7 +296,7 @@ const AddFarmerForm = () => {
                     <Radio
                       id="farmerProcessor"
                       name="type"
-                      value="Farmer and Processor"
+                      defaultValue="Farmer and Processor"
                       required
                     />
                     <Label htmlFor="farmerProcessor">
@@ -306,7 +312,13 @@ const AddFarmerForm = () => {
                       value="Select farmer group"
                     />
                   </div>
-                  <Select id="group" required className="w-full" name="group">
+                  <Select
+                    id="group"
+                    required
+                    className="w-full"
+                    name="group"
+                    defaultValue=""
+                  >
                     <option>group</option>
                     {groups.map((group) => (
                       <option value={group.name} key={group.id}>

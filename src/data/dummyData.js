@@ -1,3 +1,5 @@
+import { FarmerDetails } from "../components";
+
 export const dummyData = {
   users: [],
   traceability: [],
@@ -5,7 +7,7 @@ export const dummyData = {
   farms: [],
 };
 
-export const farmersData = [
+export let farmersData = [
   {
     id: "1",
     firstName: "John ",
@@ -527,4 +529,10 @@ export const trackedActivities = {
   sales: [],
   shipment: [],
   pestControl: [],
+};
+
+export const createFarmer = (newFarmer) => {
+  farmersData = [...farmersData, newFarmer];
+  console.log(farmersData);
+  return farmersData;
 };
