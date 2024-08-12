@@ -2,6 +2,7 @@ import React from "react";
 import { AddFarmerForm } from "../components";
 import { redirect } from "react-router-dom";
 import { createFarmer } from "../data/dummyData";
+import { toast } from "react-toastify";
 const AddFarmer = () => {
   return (
     <>
@@ -56,7 +57,10 @@ export const action = async ({ request }) => {
   };
   // console.log(enteredSecondFarmData);
   ///grab farmers data and append the entered data
-  // return redirect("../");
+  //
+
+  toast.success("Form submitted successfully");
   const farmer = await createFarmer(enteredFarmerData);
   return farmer;
+  return redirect("farmers");
 };

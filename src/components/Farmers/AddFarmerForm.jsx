@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { useFarmersContext } from "../../context/FarmersProvider";
 import {
   Button,
   Label,
@@ -49,7 +48,7 @@ const AddFarmerForm = () => {
 
   return (
     <>
-      <div>
+      <div className="mt-[20%] mx-5 md:mt-0 md:mx-0">
         <Button
           className="bg-secondary text-primary hover:text-slate-100 hover:bg-main"
           onClick={handleGoBack}
@@ -243,6 +242,7 @@ const AddFarmerForm = () => {
                     required
                     className="w-full"
                     name="district"
+                    defaultValue=""
                   >
                     <option>Select District</option>
                     {showDistricts.map((district) => (
