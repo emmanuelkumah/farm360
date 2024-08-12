@@ -39,13 +39,14 @@ export const action = async ({ request }) => {
 
   const enteredFarmData = {
     farmName: data.get("farmName"),
+    farmOwner: data.get("firstName"),
     crop: data.get("crop"),
     farmSize: data.get("farmSize"),
     farmRegion: data.get("farmRegion"),
     farmDistrict: data.get("farmDistrict"),
     farmCommunity: data.get("farmCommunity"),
   };
-  // console.log(enteredFarmData);
+  console.log(enteredFarmData);
 
   const enteredSecondFarmData = {
     secondFarmName: data.get("secondFarmName"),

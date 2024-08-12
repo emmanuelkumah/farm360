@@ -13,5 +13,6 @@ export default ViewFarmer;
 
 export const loader = ({ params }) => {
   const id = params.farmerId;
-  return farmersData.find((farmer) => farmer.id === id);
+  const farmer = farmersData.find((farmer) => farmer.id === id);
+  return farmer;
 };
