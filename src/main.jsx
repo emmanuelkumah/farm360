@@ -25,6 +25,7 @@ import HomeLayout from "./routes/HomeLayout";
 import { loader as farmsLoader } from "./pages/Farms";
 import { loader as farmersLoader } from "./pages/Farmers";
 import { loader as farmerDetailsLoader } from "./pages/ViewFarmer";
+import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as AddFarmerAction } from "./pages/AddFarmer";
 import { action as EditFarmerAction } from "./pages/EditFarmer";
 import { ContextProvider } from "./context/ContextProvider";
@@ -71,6 +72,7 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <ViewFarmer />,
+                action: deleteFarmerAction,
               },
               {
                 path: "edit",

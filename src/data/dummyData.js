@@ -536,3 +536,10 @@ export const createFarmer = (newFarmer) => {
   console.log(farmersData);
   //return farmersData;
 };
+export const updateFarmerDetails = (id, updatedDetails) => {
+  console.log(id, updatedDetails);
+};
+export const deleteFarmer = (id) => {
+  farmersData = farmersData.filter((farmer) => farmer.id !== id);
+  console.log(farmersData);
+};

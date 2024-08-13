@@ -1,6 +1,7 @@
 import React from "react";
 import { EditFarmerForm } from "../components";
-
+import { redirect } from "react-router-dom";
+import { updateFarmerDetails } from "../data/dummyData";
 const EditFarmer = () => {
   return (
     <>
@@ -14,7 +15,7 @@ export default EditFarmer;
 export const action = async ({ request }) => {
   const data = await request.formData();
   const enteredFarmerData = {
-    id: String(Math.floor(Math.random() * 200000)),
+    //id: String(Math.floor(Math.random() * 200000)),
     firstName: data.get("firstName"),
     lastName: data.get("lastName"),
     gender: data.get("gender"),
@@ -30,10 +31,11 @@ export const action = async ({ request }) => {
     group: data.get("group"),
   };
   //use axios.post and send the data in the body
-  console.log(enteredFarmerData);
+  //console.log(enteredFarmerData);
+  updateFarmerDetails(enteredFarmerData);
 
   // toast.success("Farmer details submitted successfully");
   // const farmer = createFarmer(enteredFarmerData);
   // return redirect("..");
-  return null;
+  return redirect("/app/farmers");
 };

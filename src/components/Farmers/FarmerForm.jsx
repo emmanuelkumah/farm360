@@ -42,14 +42,14 @@ const FarmerForm = ({ farmer }) => {
     getDistricts(index);
   };
 
-  const handleFarmRegionChange = (e) => {
-    const index = e.target.selectedIndex;
-    getDistricts(index);
-  };
-  const handleSecondFarmRegionChange = (e) => {
-    const index = e.target.selectedIndex;
-    getDistricts(index);
-  };
+  // const handleFarmRegionChange = (e) => {
+  //   const index = e.target.selectedIndex;
+  //   getDistricts(index);
+  // };
+  // const handleSecondFarmRegionChange = (e) => {
+  //   const index = e.target.selectedIndex;
+  //   getDistricts(index);
+  // };
 
   const handleGoBack = () => {
     navigate("/app/farmers");
