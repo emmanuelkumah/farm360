@@ -1,5 +1,5 @@
 import React from "react";
-import { AddFarmerForm } from "../components";
+import { FarmerForm } from "../components";
 import { redirect } from "react-router-dom";
 import { createFarmer } from "../data/dummyData";
 import { toast } from "react-toastify";
@@ -7,7 +7,7 @@ const AddFarmer = () => {
   return (
     <>
       <section className="container mx-auto">
-        <AddFarmerForm />
+        <FarmerForm />
       </section>
     </>
   );
@@ -37,32 +37,7 @@ export const action = async ({ request }) => {
   //use axios.post and send the data in the body
   // console.log(enteredFarmerData);
 
-  // const enteredFarmData = {
-  //   farmName: data.get("farmName"),
-  //   farmOwner: data.get("firstName"),
-  //   crop: data.get("crop"),
-  //   farmSize: data.get("farmSize"),
-  //   farmRegion: data.get("farmRegion"),
-  //   farmDistrict: data.get("farmDistrict"),
-  //   farmCommunity: data.get("farmCommunity"),
-  // };
-  // console.log(enteredFarmData);
-
-  // const enteredSecondFarmData = {
-  //   secondFarmName: data.get("secondFarmName"),
-  //   secondFarmCrop: data.get("secondFarmCrop"),
-  //   secondFarmSize: data.get("secondFarmSize"),
-  //   secondFarmRegion: data.get("secondFarmRegion"),
-  //   secondFarmDistrict: data.get("secondFarmDistrict"),
-  //   secondFarmCommunity: data.get("secondFarmCommunity"),
-  // };
-  // console.log(enteredSecondFarmData);
-  ///grab farmers data and append the entered data
-  //
-
   toast.success("Farmer details submitted successfully");
   const farmer = createFarmer(enteredFarmerData);
-  // return farmer;
-  console.log(farmer);
-  return null;
+  return redirect("..");
 };

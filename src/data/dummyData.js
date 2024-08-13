@@ -12,14 +12,14 @@ export let farmersData = [
     id: "1",
     firstName: "John ",
     lastName: "Doe",
-    gender: "male",
+    gender: "Male",
     picture: "",
-    dateOfBirth: "Fri Jul 26 2024",
+    dateOfBirth: "Jul 16 1987",
     contact: "244123123",
     address: "Accra Darkuman",
     gps: "GS-00245-123",
     type: "Farmer",
-    group: "Group 1",
+    group: "Foana Tale",
     region: "Upper East",
     district: "Savlanga",
     community: "Danba",
@@ -28,15 +28,15 @@ export let farmersData = [
     id: "2",
     firstName: "Emma ",
     lastName: "Kumah",
-    gender: "male",
+    gender: "Male",
     picture: "",
 
-    dateOfBirth: "Fri Jul 26 2024",
+    dateOfBirth: "August 26 2000",
     contact: "244123123",
     address: "Accra Darkuman",
     gps: "GS-00245-123",
     type: "Farmer",
-    group: "Group 1",
+    group: "Talensi",
     region: "Upper East",
     district: "Savlanga",
     community: "Kasena",
@@ -534,5 +534,5 @@ export const trackedActivities = {
 export const createFarmer = (newFarmer) => {
   farmersData = [...farmersData, newFarmer];
   console.log(farmersData);
-  return farmersData;
+  //return farmersData;
 };

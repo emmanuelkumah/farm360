@@ -14,5 +14,10 @@ export default ViewFarmer;
 export const loader = ({ params }) => {
   const id = params.farmerId;
   const farmer = farmersData.find((farmer) => farmer.id === id);
-  return farmer;
+  //handle and throw errors when connecting to backend
+  if (farmer) {
+    return farmer;
+  } else {
+    throw { message: "Could not fetch farmer details" };
+  }
 };

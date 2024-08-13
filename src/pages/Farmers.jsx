@@ -26,4 +26,6 @@ export const loader = () => {
   return farmersData;
   // console.log(farmersData);
   //connect to the api and get the farmers
+  //handle errors
+  // if(!response.ok){ return {isError:true, message:'Could not fetch famers'}}
 };

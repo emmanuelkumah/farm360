@@ -10,7 +10,7 @@ export { default as LineCharts } from "./LineCharts";
 export { default as RecentActs } from "./RecentActs";
 export { default as CustomToast } from "./CustomToast";
 export { default as EditUserModal } from "./EditUserModal";
-export { default as AddFarmerForm } from "./Farmers/AddFarmerForm";
+export { default as FarmerForm } from "./Farmers/FarmerForm";
 export { default as DashboardBarChart } from "./DashboardBarChart";
 export { default as FarmersList } from "./Farmers/FarmersList";
 export { default as Search } from "./Search";
