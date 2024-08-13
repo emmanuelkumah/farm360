@@ -12,7 +12,7 @@ const FarmerDetails = () => {
       <div>
         <div className="m-10">
           <Link to="/app/farmers">
-            <Button className="bg-main  focus:bg-secondary">Go Back</Button>
+            <Button className="bg-main focus:bg-secondary">Go Back</Button>
           </Link>
         </div>
 

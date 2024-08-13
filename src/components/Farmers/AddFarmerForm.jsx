@@ -16,7 +16,7 @@ import { regions, districts, groups, crops } from "../../data/dummyData";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const AddFarmerForm = () => {
+const AddFarmerForm = ({ farmer }) => {
   let navigate = useNavigate();
 
   const [addFarms, setAddFarms] = useState(false);
@@ -62,23 +62,30 @@ const AddFarmerForm = () => {
       <div className="bg-secondary h-full rounded-lg shadow-md">
         <section className="flex flex-col justify-center items-center md:my-10">
           <Form className="w-[80vw] md:w-[60vw] my-10 " method="post">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
+            <div className="grid grid-cols-1 gap-4 md:gap-10">
               <section>
-                <h2 className="text-main font-bold md:text-2xl mb-4">
+                <h2 className="text-main text-center font-bold md:text-2xl mb-4">
                   Farmer Details
                 </h2>
                 <div className="flex flex-col md:flex-row md:justify-evenly">
                   <fieldset className="flex flex-col md:flex-row gap-4">
                     <legend className="font-semibold mb-4"> Gender</legend>
                     <div className="flex items-center gap-2">
-                      <Radio id="male" name="gender" value="Male" required />
+                      <Radio
+                        id="male"
+                        name="gender"
+                        defaultValue="Male"
+                        required
+                        defaultChecked={farmer && farmer.gender === "Male"}
+                      />
                       <Label htmlFor="male">Male</Label>
                     </div>
                     <div className="flex items-center gap-2">
                       <Radio
                         id="female"
                         name="gender"
-                        value="Female"
+                        defaultValue="Female"
+                        defaultChecked={farmer && farmer.gender === "Female"}
                         required
                       />
                       <Label htmlFor="female">Female</Label>
@@ -113,7 +120,7 @@ const AddFarmerForm = () => {
                       id="firstName"
                       type="text"
                       icon={FaRegUserCircle}
-                      defaultValue=""
+                      defaultValue={farmer ? farmer.firstName : ""}
                       placeholder="Enter firstname"
                       name="firstName"
                       required
@@ -132,7 +139,7 @@ const AddFarmerForm = () => {
                       type="text"
                       icon={FaRegUserCircle}
                       placeholder="Enter last name"
-                      defaultValue=""
+                      defaultValue={farmer ? farmer.lastName : ""}
                       name="lastName"
                       required
                     />
@@ -150,7 +157,7 @@ const AddFarmerForm = () => {
                       type="text"
                       icon={BiHome}
                       name="address"
-                      defaultValue=""
+                      defaultValue={farmer ? farmer.address : ""}
                       placeholder="Enter home address"
                       required
                     />
@@ -169,7 +176,7 @@ const AddFarmerForm = () => {
                       icon={BiMap}
                       placeholder="Enter GPS"
                       name="gps"
-                      defaultValue=""
+                      defaultValue={farmer ? farmer.gps : ""}
                       required
                     />
                   </div>
@@ -187,7 +194,7 @@ const AddFarmerForm = () => {
                       icon={BiPhone}
                       maxLength="10"
                       name="contact"
-                      defaultValue=""
+                      defaultValue={farmer ? farmer.contact : ""}
                       placeholder="Enter contact"
                       required
                     />
@@ -203,6 +210,7 @@ const AddFarmerForm = () => {
                     <Datepicker
                       name="dateOfBirth"
                       maxDate={new Date(2010, 1, 30)}
+                      selected={farmer ? farmer.dateOfBirth : ""}
                     />
                   </div>
                   <div>
@@ -217,7 +225,7 @@ const AddFarmerForm = () => {
                       id="region"
                       required
                       name="region"
-                      defaultValue=""
+                      defaultValue={farmer ? farmer.region : ""}
                       onChange={handleRegionChange}
                     >
                       <option>Select region</option>
@@ -242,7 +250,7 @@ const AddFarmerForm = () => {
                     required
                     className="w-full"
                     name="district"
-                    defaultValue=""
+                    defaultValue={farmer ? farmer.district : ""}
                   >
                     <option>Select District</option>
                     {showDistricts.map((district) => (
@@ -264,7 +272,7 @@ const AddFarmerForm = () => {
                       id="community"
                       type="text"
                       icon={FaRegUserCircle}
-                      defaultValue=""
+                      defaultValue={farmer ? farmer.community : ""}
                       placeholder="Enter community"
                       name="community"
                     />
@@ -278,6 +286,7 @@ const AddFarmerForm = () => {
                     <Radio
                       id="farmer"
                       name="type"
+                      defaultChecked={farmer && farmer.type === "farmer"}
                       defaultValue="farmer"
                       required
                     />
@@ -287,6 +296,7 @@ const AddFarmerForm = () => {
                     <Radio
                       id="processor"
                       name="type"
+                      defaultChecked={farmer && farmer.type === "Processor"}
                       defaultValue="Processor"
                       required
                     />
@@ -296,6 +306,9 @@ const AddFarmerForm = () => {
                     <Radio
                       id="farmerProcessor"
                       name="type"
+                      defaultChecked={
+                        farmer && farmer.type === "Farmer and Processor"
+                      }
                       defaultValue="Farmer and Processor"
                       required
                     />
@@ -317,7 +330,7 @@ const AddFarmerForm = () => {
                     required
                     className="w-full"
                     name="group"
-                    defaultValue=""
+                    defaultValue={farmer ? farmer.group : ""}
                   >
                     <option>group</option>
                     {groups.map((group) => (
@@ -328,7 +341,7 @@ const AddFarmerForm = () => {
                   </Select>
                 </div>
               </section>
-              <section>
+              {/* <section>
                 <h2 className="text-main font-bold md:text-2xl mb-4">
                   Farm Details
                 </h2>
@@ -570,11 +583,12 @@ const AddFarmerForm = () => {
                     </div>
                   </section>
                 )}
-                <Button type="submit" className="mt-10 w-[100%] bg-main">
-                  Save Details
-                </Button>
-              </section>
+               
+              </section> */}
             </div>
+            <Button type="submit" className="mt-10 w-[100%] bg-main">
+              Save Details
+            </Button>
           </Form>
         </section>
         <ToastContainer />
