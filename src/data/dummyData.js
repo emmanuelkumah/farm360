@@ -551,7 +551,12 @@ export const deleteFarmer = (id) => {
 };
 
 //farms actions
-export const createFarm = (newFarm) => {
-  farmsData = [...farmsData, ...newFarm];
+export const createFarm = (firstFarm, secondFarm) => {
+  console.log(secondFarm.name);
+  if (secondFarm.name !== null) {
+    farmsData = [...farmsData, firstFarm, secondFarm];
+  } else {
+    farmsData = [...farmsData, firstFarm];
+  }
   console.log(farmsData);
 };

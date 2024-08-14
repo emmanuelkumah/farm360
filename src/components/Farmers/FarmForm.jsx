@@ -237,7 +237,7 @@ const FarmForm = ({ method }) => {
                           icon={FaRegUserCircle}
                           defaultValue={farm ? farm.farmName : ""}
                           placeholder="Enter second farm name"
-                          name="secondFarm"
+                          name="secondfarmName"
                         />
                       </div>
                       <div>
@@ -313,53 +313,6 @@ const FarmForm = ({ method }) => {
                           placeholder="Enter community of farm"
                         />
                       </div>
-
-                      <div>
-                        <div className="my-2 block">
-                          <Label
-                            htmlFor="secondregion"
-                            value="Region"
-                            className="font-semibold"
-                          />
-                        </div>
-                        <Select
-                          id="secondregion"
-                          required
-                          name="secondregion"
-                          defaultValue={farm ? farm.region : ""}
-                          onChange={handleRegionChange}
-                        >
-                          <option>Select region</option>
-                          {regions.map((region, index) => (
-                            <option value={region.name} key={index}>
-                              {region.name}
-                            </option>
-                          ))}
-                        </Select>
-                      </div>
-                      <div>
-                        <div className="my-2 block">
-                          <Label
-                            htmlFor="seconddistrict"
-                            value="District"
-                            className="font-semibold"
-                          />
-                        </div>
-                        <Select
-                          id="seconddistrict"
-                          required
-                          className="w-full"
-                          name="seconddistrict"
-                          defaultValue={farm ? farm.district : ""}
-                        >
-                          <option>Select District</option>
-                          {showDistricts.map((district) => (
-                            <option value={district} key={district}>
-                              {district}
-                            </option>
-                          ))}
-                        </Select>
-                      </div>
                     </section>
                   )}
                 </section>
@@ -379,33 +332,33 @@ export default FarmForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
-  const enteredFarmData = [
-    {
-      id: String(Math.floor(Math.random() * 20000)),
-      name: data.get("farmName"),
-      owner: data.get("owner"),
-      size: data.get("farmSize"),
-      crop: data.get("crop"),
-      gps: data.get("gps"),
-      community: data.get("community"),
-      region: data.get("region"),
-      district: data.get("district"),
-    },
-    {
-      id: String(Math.floor(Math.random() * 20000)),
-      name: data.get("secondFarm"),
-      owner: data.get("owner"),
-      size: data.get("secondfarmSize"),
-      crop: data.get("secondcrop"),
-      gps: data.get("secondgps"),
-      community: data.get("secondcommunity"),
-      region: data.get("secondregion"),
-      district: data.get("seconddistrict"),
-    },
-  ];
+
+  const firstFarm = {
+    id: String(Math.floor(Math.random() * 20000)),
+    name: data.get("farmName"),
+    owner: data.get("owner"),
+    size: data.get("farmSize"),
+    crop: data.get("crop"),
+    gps: data.get("gps"),
+    community: data.get("community"),
+    region: data.get("region"),
+    district: data.get("district"),
+  };
+
+  const secondFarm = {
+    id: String(Math.floor(Math.random() * 20000)),
+    name: data.get("secondfarmName"),
+    owner: data.get("owner"),
+    size: data.get("secondfarmSize"),
+    crop: data.get("secondcrop"),
+    gps: data.get("secondgps"),
+    community: data.get("secondcommunity"),
+    region: data.get("region"),
+    district: data.get("district"),
+  };
 
   //connect to api and sent data
-  createFarm(enteredFarmData);
+  createFarm(firstFarm, secondFarm);
   //redirect to farms route
   return redirect("..");
 };
