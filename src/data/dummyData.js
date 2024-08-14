@@ -552,6 +552,6 @@ export const deleteFarmer = (id) => {
 
 //farms actions
 export const createFarm = (newFarm) => {
-  farmsData = [...farmsData, newFarm];
+  farmsData = [...farmsData, ...newFarm];
   console.log(farmsData);
 };

@@ -97,6 +97,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Farms />,
+            loader: farmsLoader,
           },
           {
             path: ":farmId",

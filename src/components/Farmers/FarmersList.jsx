@@ -31,11 +31,10 @@ const FarmersList = () => {
   return (
     <div>
       <div className="my-10">
-        <Link to="new">
-          <Button className="bg-secondary text-primary hover:text-slate-100 hover:bg-primary">
-            Add new farmer
-          </Button>
-        </Link>
+        <Button className="bg-secondary text-primary hover:text-slate-100 hover:bg-primary">
+          <Link to="new">Add new farmer</Link>
+        </Button>
+        <div />
       </div>
       <div className="overflow-x-auto">
         <Table className="w-full" hoverable>

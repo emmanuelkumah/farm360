@@ -2,48 +2,58 @@ import React from "react";
 import { Button, Table } from "flowbite-react";
 import { Link, useLoaderData } from "react-router-dom";
 const FarmsList = () => {
-  const loadFarmers = useLoaderData();
+  const loadFarmData = useLoaderData();
+  console.log(loadFarmData);
   return (
     <>
-      <Table hoverable>
-        <Table.Head>
-          <Table.HeadCell>Farm name</Table.HeadCell>
-          <Table.HeadCell>Farm size(acres)</Table.HeadCell>
-          <Table.HeadCell>Crop grown </Table.HeadCell>
-          <Table.HeadCell>District</Table.HeadCell>
-          <Table.HeadCell>Community</Table.HeadCell>
-        </Table.Head>
-        {loadFarmers.map((farmer) => (
-          <Table.Body className="divide-y" key={farmer.id}>
-            {farmer.farms.map((farm, index) =>
-              farm.name !== "" ? (
-                <Table.Row
-                  key={index}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                >
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {farm.name}
-                  </Table.Cell>
-                  <Table.Cell>{farm.size}</Table.Cell>
-                  <Table.Cell>{farm.crop}</Table.Cell>
-                  <Table.Cell>{farm.district}</Table.Cell>
-                  <Table.Cell>{farm.community}</Table.Cell>
+      <div className="my-10">
+        <Button className="bg-secondary text-primary hover:text-slate-100 hover:bg-primary">
+          <Link to="new">Add new farm</Link>
+        </Button>
+        <div />
+      </div>
+      <div className="overflow-x-auto">
+        <Table hoverable>
+          <Table.Head>
+            <Table.HeadCell>Farm owner</Table.HeadCell>
+            <Table.HeadCell>Farm name</Table.HeadCell>
+            <Table.HeadCell>Farm size(acres)</Table.HeadCell>
+            <Table.HeadCell>Crop grown </Table.HeadCell>
+            <Table.HeadCell>GPS</Table.HeadCell>
+            <Table.HeadCell>District</Table.HeadCell>
+            <Table.HeadCell>Community</Table.HeadCell>
+            <Table.HeadCell>Actions</Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
+            {loadFarmData.map((farm) => (
+              <Table.Row
+                key={farm.id}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {farm.owner}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {farm.name}
+                </Table.Cell>
+                <Table.Cell>{farm.size}</Table.Cell>
+                <Table.Cell>{farm.crop}</Table.Cell>
+                <Table.Cell>{farm.gps}</Table.Cell>
+                <Table.Cell>{farm.district}</Table.Cell>
+                <Table.Cell>{farm.community}</Table.Cell>
 
-                  <Table.Cell>
-                    <div className="flex md:items-center md:justify-evenly">
-                      <Link to={`${farm.farmId}/activities`}>
-                        <Button>Start Activity</Button>
-                      </Link>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ) : (
-                ""
-              )
-            )}
+                <Table.Cell>
+                  <div className="flex md:items-center md:justify-evenly">
+                    <Link to={`${farm.id}/activities`}>
+                      <Button>Start Activity</Button>
+                    </Link>
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
-        ))}
-      </Table>
+        </Table>
+      </div>
     </>
   );
 };
