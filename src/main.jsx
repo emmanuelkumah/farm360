@@ -19,6 +19,7 @@ import {
   AddFarmer,
   EditFarmer,
   ViewFarmer,
+  AddFarm,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -27,8 +28,7 @@ import { loader as farmersLoader } from "./pages/Farmers";
 import { loader as farmerDetailsLoader } from "./pages/ViewFarmer";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as manipulateFarmerAction } from "./components/Farmers/FarmerForm";
-// import { action as AddFarmerAction } from "./pages/AddFarmer";
-// import { action as EditFarmerAction } from "./pages/EditFarmer";
+import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 
@@ -90,11 +90,24 @@ const router = createBrowserRouter([
           },
         ],
       },
-
+      //farms route
       {
         path: "farms",
-        element: <Farms />,
-        loader: farmsLoader,
+        children: [
+          {
+            index: true,
+            element: <Farms />,
+          },
+          {
+            path: ":farmId",
+            element: <h2>View farm</h2>,
+          },
+          {
+            path: "new",
+            element: <AddFarm />,
+            action: manipulateFarmAction,
+          },
+        ],
       },
       {
         path: "farms/:farmId/activities",
@@ -109,8 +122,8 @@ const router = createBrowserRouter([
         element: "Farm activities",
       },
       {
-        path: "add",
-        element: <AddFarmer />,
+        path: "add-farm",
+        element: <AddFarm />,
       },
 
       {

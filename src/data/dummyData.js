@@ -44,12 +44,14 @@ export let farmersData = [
   },
 ];
 
-export const farms = [
+export let farmsData = [
   {
     id: "1",
     owner: "Emmanuel",
+    name: "Anigye farms",
     crop: "Soya",
-    size: "20 acres",
+    size: "20",
+    gps: "GS-0259012",
     region: "UpperEast",
     district: "Asoni",
     community: "Kasena",
@@ -57,9 +59,11 @@ export const farms = [
   {
     id: "2",
     owner: "Victor",
+    name: "Vic farms",
     crop: "Groundnut",
-    size: "10 acres",
-    region: "Upper ESt",
+    size: "10",
+    gps: "GS-0243-122-12",
+    region: "Upper East",
     district: "Asontaba",
     community: "Grubi",
   },
@@ -544,4 +548,10 @@ export const updateFarmerDetails = (data) => {
 };
 export const deleteFarmer = (id) => {
   farmersData = farmersData.filter((farmer) => farmer.id !== id);
+};
+
+//farms actions
+export const createFarm = (newFarm) => {
+  farmsData = [...farmsData, newFarm];
+  console.log(farmsData);
 };
