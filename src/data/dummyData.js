@@ -1,3 +1,4 @@
+import { FaMercury } from "react-icons/fa";
 import { FarmerDetails } from "../components";
 
 export const dummyData = {
@@ -534,12 +535,13 @@ export const trackedActivities = {
 export const createFarmer = (newFarmer) => {
   farmersData = [...farmersData, newFarmer];
   console.log(farmersData);
-  //return farmersData;
+  return farmersData;
 };
-export const updateFarmerDetails = (id, updatedDetails) => {
-  console.log(id, updatedDetails);
+export const updateFarmerDetails = (data) => {
+  farmersData = farmersData.map((farmer) => {
+    return farmer.id === data.id ? data : farmer;
+  });
 };
 export const deleteFarmer = (id) => {
   farmersData = farmersData.filter((farmer) => farmer.id !== id);
-  console.log(farmersData);
 };

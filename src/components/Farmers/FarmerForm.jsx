@@ -12,11 +12,19 @@ import { Form, useNavigate } from "react-router-dom";
 
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
-import { regions, districts, groups, crops } from "../../data/dummyData";
+import {
+  regions,
+  districts,
+  groups,
+  crops,
+  updateFarmerDetails,
+} from "../../data/dummyData";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DatePicker from "react-datepicker";
-const FarmerForm = ({ farmer }) => {
+import { createFarmer } from "../../data/dummyData";
+import { redirect } from "react-router-dom";
+
+const FarmerForm = ({ farmer, method }) => {
   let navigate = useNavigate();
 
   const [addFarms, setAddFarms] = useState(false);
@@ -42,15 +50,6 @@ const FarmerForm = ({ farmer }) => {
     getDistricts(index);
   };
 
-  // const handleFarmRegionChange = (e) => {
-  //   const index = e.target.selectedIndex;
-  //   getDistricts(index);
-  // };
-  // const handleSecondFarmRegionChange = (e) => {
-  //   const index = e.target.selectedIndex;
-  //   getDistricts(index);
-  // };
-
   const handleGoBack = () => {
     navigate("/app/farmers");
   };
@@ -68,7 +67,7 @@ const FarmerForm = ({ farmer }) => {
         </div>
 
         <section className="flex flex-col justify-center items-center">
-          <Form className="w-[80vw] md:w-[80%] my-4 " method="post">
+          <Form className="w-[80vw] md:w-[80%] my-4 " method={method}>
             <div className="grid grid-cols-1 gap-4 md:gap-10">
               <section>
                 <h2 className="text-xl text-main border-l-4 border-main pl-2 mb-4">
@@ -368,3 +367,51 @@ const FarmerForm = ({ farmer }) => {
 };
 
 export default FarmerForm;
+
+export const action = async ({ request, params }) => {
+  const method = request.method;
+  const data = await request.formData();
+
+  //check the method
+  if (method === "PATCH") {
+    //const id = params.farmerId;
+    let updateData = {
+      id: params.farmerId,
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
+      gender: data.get("gender"),
+      picture: data.get("picture"),
+      address: data.get("address"),
+      gps: data.get("gps"),
+      contact: data.get("contact"),
+      dateOfBirth: data.get("dateOfBirth"),
+      region: data.get("region"),
+      district: data.get("district"),
+      community: data.get("community"),
+      type: data.get("type"),
+      group: data.get("group"),
+    };
+    updateFarmerDetails(updateData);
+  }
+  //use axios.post and send the data in the body
+  if (method === "POST") {
+    let enteredFarmerData = {
+      id: String(Math.floor(Math.random() * 1000)),
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
+      gender: data.get("gender"),
+      picture: data.get("picture"),
+      address: data.get("address"),
+      gps: data.get("gps"),
+      contact: data.get("contact"),
+      dateOfBirth: data.get("dateOfBirth"),
+      region: data.get("region"),
+      district: data.get("district"),
+      community: data.get("community"),
+      type: data.get("type"),
+      group: data.get("group"),
+    };
+    createFarmer(enteredFarmerData);
+  }
+  return redirect("..");
+};

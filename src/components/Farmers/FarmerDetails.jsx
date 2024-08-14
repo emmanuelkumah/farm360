@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useSubmit } from "react-router-dom";
 import { Button } from "flowbite-react";
 import userImage from "../../assets/images/emma2.png";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const FarmerDetails = ({ farmerData }) => {
   const submit = useSubmit();
@@ -81,7 +82,15 @@ const FarmerDetails = ({ farmerData }) => {
             <p className="text-xs">Group</p>
           </div>
         </div>
-        <Button onClick={startDeleteHandler}>Delete farm</Button>
+        <div className=" mt-10">
+          <Button
+            className="bg-main rounded-full opacity-50 hover:opacity-100 "
+            onClick={startDeleteHandler}
+          >
+            <RiDeleteBin5Line />
+            Delete farmer
+          </Button>
+        </div>
       </section>
     </>
   );

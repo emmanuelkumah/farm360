@@ -86,11 +86,6 @@ const FarmersList = () => {
                     <Link to={`${farmer.id}/edit`}>
                       <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
                     </Link>
-
-                    <MdDelete
-                      className="text-xl hover:text-red-700 cursor-pointer"
-                      onClick={() => handleDeleteFarmer(farmer.id)}
-                    />
                   </div>
                 </Table.Cell>
               </Table.Row>
