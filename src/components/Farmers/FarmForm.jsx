@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import { Button, Label, TextInput, Radio, Select } from "flowbite-react";
-import { regions, districts, crops, farmersData } from "../../data/dummyData";
+import {
+  regions,
+  districts,
+  crops,
+  farmersData,
+  updateFarmDetails,
+} from "../../data/dummyData";
 import { Form, redirect } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiMap } from "react-icons/bi";
 import { createFarm } from "../../data/dummyData";
 
-const FarmForm = ({ method }) => {
+const FarmForm = ({ farm, method }) => {
   const [showDistricts, setShowDistricts] = useState([]);
   const [anotherFarm, setAnotherFarm] = useState(false);
+
   //get all farmer name
   const farmersName = farmersData.map((farmer) => {
     return `${farmer.firstName} ${farmer.lastName}`;
   });
-
-  const farm = {};
 
   const getDistricts = (id) => {
     const result = districts.find((district) => district.regionId === id);
@@ -61,7 +66,7 @@ const FarmForm = ({ method }) => {
                       id="farmowner"
                       required
                       name="owner"
-                      //   defaultValue={farm ? farm.owner : ""}
+                      defaultValue={farm ? farm.owner : ""}
                       // onChange={handleRegionChange}
                     >
                       <option>Select farmer</option>
@@ -86,7 +91,7 @@ const FarmForm = ({ method }) => {
                       id="farmName"
                       type="text"
                       icon={FaRegUserCircle}
-                      defaultValue={farm ? farm.farmName : ""}
+                      defaultValue={farm ? farm.name : ""}
                       placeholder="Enter farm name"
                       name="farmName"
                       required
@@ -106,7 +111,7 @@ const FarmForm = ({ method }) => {
                       icon={BiMap}
                       placeholder="Enter farm size in acres"
                       name="farmSize"
-                      defaultValue={farm ? farm.farmSize : ""}
+                      defaultValue={farm ? farm.size : ""}
                       required
                     />
                   </div>
@@ -122,7 +127,7 @@ const FarmForm = ({ method }) => {
                       id="crop"
                       required
                       name="crop"
-                      //   defaultValue={farm ? farm.owner : ""}
+                      defaultValue={farm ? farm.crop : ""}
                       // onChange={handleRegionChange}
                     >
                       <option>Select farmer</option>
@@ -235,7 +240,7 @@ const FarmForm = ({ method }) => {
                           id="secondName"
                           type="text"
                           icon={FaRegUserCircle}
-                          defaultValue={farm ? farm.farmName : ""}
+                          defaultValue={farm ? farm.secondfarmName : ""}
                           placeholder="Enter second farm name"
                           name="secondfarmName"
                         />
@@ -251,7 +256,7 @@ const FarmForm = ({ method }) => {
                         <Select
                           id="secondcrop"
                           name="secondcrop"
-                          //   defaultValue={farm ? farm.owner : ""}
+                          defaultValue={farm ? farm.owner : ""}
                           // onChange={handleRegionChange}
                         >
                           <option>Select farmer</option>
@@ -275,7 +280,7 @@ const FarmForm = ({ method }) => {
                             icon={BiMap}
                             placeholder="Enter farm size in acres"
                             name="secondfarmSize"
-                            defaultValue={farm ? farm.farmSize : ""}
+                            defaultValue={farm ? farm.secondfarmSize : ""}
                           />
                         </div>
                       </div>
@@ -292,7 +297,7 @@ const FarmForm = ({ method }) => {
                           type="text"
                           icon={FaRegUserCircle}
                           placeholder="Enter farm GPS"
-                          defaultValue={farm ? farm.gps : ""}
+                          defaultValue={farm ? farm.secondgps : ""}
                           name="secondgps"
                         />
                       </div>
@@ -309,7 +314,7 @@ const FarmForm = ({ method }) => {
                           type="text"
                           icon={BiMap}
                           name="secondcommunity"
-                          defaultValue={farm ? farm.community : ""}
+                          defaultValue={farm ? farm.secondcommunity : ""}
                           placeholder="Enter community of farm"
                         />
                       </div>
@@ -331,34 +336,51 @@ const FarmForm = ({ method }) => {
 export default FarmForm;
 
 export const action = async ({ request, params }) => {
+  const method = request.method;
   const data = await request.formData();
+  if (method === "POST") {
+    const firstFarm = {
+      id: String(Math.floor(Math.random() * 20000)),
+      name: data.get("farmName"),
+      owner: data.get("owner"),
+      size: data.get("farmSize"),
+      crop: data.get("crop"),
+      gps: data.get("gps"),
+      community: data.get("community"),
+      region: data.get("region"),
+      district: data.get("district"),
+    };
+    const secondFarm = {
+      id: String(Math.floor(Math.random() * 20000)),
+      name: data.get("secondfarmName"),
+      owner: data.get("owner"),
+      size: data.get("secondfarmSize"),
+      crop: data.get("secondcrop"),
+      gps: data.get("secondgps"),
+      community: data.get("secondcommunity"),
+      region: data.get("region"),
+      district: data.get("district"),
+    };
+    //connect to api and sent data
+    createFarm(firstFarm, secondFarm);
+  }
 
-  const firstFarm = {
-    id: String(Math.floor(Math.random() * 20000)),
-    name: data.get("farmName"),
-    owner: data.get("owner"),
-    size: data.get("farmSize"),
-    crop: data.get("crop"),
-    gps: data.get("gps"),
-    community: data.get("community"),
-    region: data.get("region"),
-    district: data.get("district"),
-  };
+  if (method === "PATCH") {
+    const updateFarm = {
+      id: params.farmId,
+      name: data.get("farmName"),
+      owner: data.get("owner"),
+      size: data.get("farmSize"),
+      crop: data.get("crop"),
+      gps: data.get("gps"),
+      community: data.get("community"),
+      region: data.get("region"),
+      district: data.get("district"),
+    };
+    //connect to api and update farm
+    updateFarmDetails(updateFarm);
+  }
 
-  const secondFarm = {
-    id: String(Math.floor(Math.random() * 20000)),
-    name: data.get("secondfarmName"),
-    owner: data.get("owner"),
-    size: data.get("secondfarmSize"),
-    crop: data.get("secondcrop"),
-    gps: data.get("secondgps"),
-    community: data.get("secondcommunity"),
-    region: data.get("region"),
-    district: data.get("district"),
-  };
-
-  //connect to api and sent data
-  createFarm(firstFarm, secondFarm);
   //redirect to farms route
   return redirect("..");
 };

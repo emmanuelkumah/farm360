@@ -1,5 +1,4 @@
 import FarmsList from "../components/Farmers/FarmsList";
-//import { farmersData } from "../data/dummyData";
 import { farmsData } from "../data/dummyData";
 const Farms = () => {
   return (

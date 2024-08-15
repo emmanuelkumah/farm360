@@ -21,6 +21,7 @@ import {
   ViewFarmer,
   AddFarm,
   ViewFarm,
+  EditFarm,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -115,8 +116,8 @@ const router = createBrowserRouter([
               },
               {
                 path: "edit",
-                element: "Edit farm",
-                // action: manipulateFarmerAction,
+                element: <EditFarm />,
+                action: manipulateFarmAction,
               },
             ],
           },

@@ -563,3 +563,9 @@ export const deleteFarm = (id) => {
   farmsData = farmsData.filter((farm) => farm.id !== id);
   console.log(farmsData);
 };
+
+export const updateFarmDetails = (data) => {
+  farmsData = farmsData.map((farm) => {
+    return farm.id === data.id ? data : farm;
+  });
+};
