@@ -47,3 +47,4 @@ export { default as PestControlData } from "./SavedActivities/PestControlData";
 export { default as ShipmentData } from "./SavedActivities/ShipmentData";
 export { default as FarmerDetails } from "./Farmers/FarmerDetails";
 export { default as FarmForm } from "./Farmers/FarmForm";
+export { default as FarmDetails } from "./Farmers/FarmDetails";

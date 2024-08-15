@@ -13,3 +13,4 @@ export { default as AddFarmer } from "./AddFarmer";
 export { default as EditFarmer } from "./EditFarmer";
 export { default as ViewFarmer } from "./ViewFarmer";
 export { default as AddFarm } from "./AddFarm";
+export { default as ViewFarm } from "./ViewFarm";

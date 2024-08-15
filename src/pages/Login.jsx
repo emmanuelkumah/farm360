@@ -4,7 +4,7 @@ import axios from "../api/axios";
 import loginFarm from "../assets/images/loginFarm.jpg";
 // import { useAuthContext } from "../context/AuthProvider";
 // import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 const LOGIN_URL = "/user";
 const Login = () => {
   const [loginDetails, setLoginDetails] = useState({
@@ -103,8 +103,9 @@ const Login = () => {
                 <Checkbox id="remember" />
                 <Label htmlFor="remember">Remember me</Label>
               </div>
+
               <Button type="submit" className="bg-[#357960]">
-                Login
+                <Link to="/app">Login</Link>
               </Button>
             </form>
             {message.error}

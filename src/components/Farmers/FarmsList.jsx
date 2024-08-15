@@ -1,6 +1,9 @@
 import React from "react";
 import { Button, Table } from "flowbite-react";
 import { Link, useLoaderData } from "react-router-dom";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { LuEye } from "react-icons/lu";
+
 const FarmsList = () => {
   const loadFarmData = useLoaderData();
   console.log(loadFarmData);
@@ -43,11 +46,18 @@ const FarmsList = () => {
                 <Table.Cell>{farm.community}</Table.Cell>
 
                 <Table.Cell>
-                  <div className="flex md:items-center md:justify-evenly">
+                  <div className="flex gap-5">
+                    <Link to={`${farm.id}`}>
+                      <LuEye className="text-xl hover:text-primary cursor-pointer" />
+                    </Link>
+                    <Link to={`${""}/edit`}>
+                      <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                    </Link>
                     <Link to={`${farm.id}/activities`}>
                       <Button>Start Activity</Button>
                     </Link>
                   </div>
+                  {/* <div className="flex md:items-center md:justify-evenly"></div> */}
                 </Table.Cell>
               </Table.Row>
             ))}
