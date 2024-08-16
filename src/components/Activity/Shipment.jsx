@@ -7,11 +7,11 @@ import {
   Datepicker,
 } from "flowbite-react";
 import { ToastContainer, toast } from "react-toastify";
-import { useActivitiesContext } from "../../context/FarmersProvider";
+// import { useActivitiesContext } from "../../context/FarmersProvider";
 import { useParams } from "react-router-dom";
 
 const Shipment = () => {
-  const { dispatchActivity } = useActivitiesContext();
+  // const { dispatchActivity } = useActivitiesContext();
   const { farmId } = useParams();
   const [shipment, setShipment] = useState({
     shipmentDate: "",

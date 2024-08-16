@@ -12,7 +12,7 @@ import {
   Login,
   Farms,
   Reports,
-  FarmManagement,
+  PlantingActivities,
   Traceability,
   FarmActivity,
   Landing,
@@ -29,12 +29,14 @@ import { loader as farmsLoader } from "./pages/Farms";
 import { loader as farmersLoader } from "./pages/Farmers";
 import { loader as farmerDetailsLoader } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
-
+import { loader as PlantingActivitiesLoader } from "./pages/PlantingActivities";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as manipulateFarmerAction } from "./components/Farmers/FarmerForm";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
 import { action as manipulateActivities } from "./pages/FarmActivity";
+import { action as manipulatePlantingActivities } from "./components/Activity/Planting";
+// import { action as manipulatePlantingActivities } from "./components/Farms/";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 
@@ -135,13 +137,12 @@ const router = createBrowserRouter([
         action: manipulateActivities,
       },
       {
-        path: "all-activities",
-        element: <FarmManagement />,
+        path: "planting",
+        element: <PlantingActivities />,
+        loader: PlantingActivitiesLoader,
+        action: manipulatePlantingActivities,
       },
-      {
-        path: "management/:farmID",
-        element: "Farm activities",
-      },
+
       {
         path: "add-farm",
         element: <AddFarm />,

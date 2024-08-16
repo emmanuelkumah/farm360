@@ -37,7 +37,7 @@ export { default as PlantingMaterial } from "./Activity/PlantingMaterial";
 export { default as Hero } from "./Landing/Hero";
 export { default as TrackingFAQ } from "./Landing/TrackingFAQ";
 export { default as PrePlantingData } from "./SavedActivities/PrePlantingData";
-export { default as PlantingData } from "./SavedActivities/PlantingData";
+export { default as AllPlantingData } from "./SavedActivities/AllPlantingData";
 export { default as WeedControlData } from "./SavedActivities/WeedControlData";
 export { default as FertilizerApplicationData } from "./SavedActivities/FertilizerApplicationData";
 export { default as HarvestingData } from "./SavedActivities/HarvestingData";

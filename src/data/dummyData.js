@@ -536,6 +536,8 @@ export const trackedActivities = {
   pestControl: [],
 };
 
+export let plantingActivitiesData = [];
+
 export const createFarmer = (newFarmer) => {
   farmersData = [...farmersData, newFarmer];
   console.log(farmersData);
@@ -568,4 +570,11 @@ export const updateFarmDetails = (data) => {
   farmsData = farmsData.map((farm) => {
     return farm.id === data.id ? data : farm;
   });
+};
+
+//activities
+
+export const createPlantingActivities = (data) => {
+  plantingActivitiesData = [...plantingActivitiesData, data];
+  // console.log(plantingActivities);
 };

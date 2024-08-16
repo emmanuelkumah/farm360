@@ -15,3 +15,4 @@ export { default as ViewFarmer } from "./ViewFarmer";
 export { default as AddFarm } from "./AddFarm";
 export { default as ViewFarm } from "./ViewFarm";
 export { default as EditFarm } from "./EditFarm";
+export { default as PlantingActivities } from "./PlantingActivities";

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
 import { useActivitiesContext } from "../../context/FarmersProvider";
-import { useParams } from "react-router-dom";
+import { useParams, Form } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 const WeedControl = () => {
   const [weedControlActivities, setWeedControlActivities] = useState({
@@ -52,7 +52,7 @@ const WeedControl = () => {
     <div>
       <div>
         <h2 className="mb-2 text-xl">Weed Control Activities</h2>
-        <form
+        <Form
           className="flex max-w-md flex-col gap-4"
           onSubmit={onWeedControlActivitiesSubmit}
         >
@@ -197,7 +197,7 @@ const WeedControl = () => {
           )}
 
           <Button type="submit">Submit</Button>
-        </form>
+        </Form>
         <ToastContainer />
       </div>
     </div>

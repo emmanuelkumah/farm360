@@ -7,7 +7,6 @@ import {
   FertilizerApplicationData,
   HarvestingData,
   PestControlData,
-  PlantingData,
   SalesData,
   ShipmentData,
   StorageData,

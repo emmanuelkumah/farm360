@@ -1,63 +1,98 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { useParams, Form } from "react-router-dom";
-import { useActivitiesContext } from "../../context/FarmersProvider";
+import { Form, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { createPlantingActivities, farmsData } from "../../data/dummyData";
 
 const Planting = () => {
-  const { farmId } = useParams();
-
   const defaultValue = new Date();
+  const [hasOtherCert, setHasOtherCert] = useState(false);
+  const [farmDetails, setFarmDetails] = useState({});
+  // let farmOwner;
+  let { farmId } = useParams();
+  useEffect(() => {
+    //get farm info on component mount
+    const farm = getFarmOwner(farmId);
+    // console.log(farm);
+    setFarmDetails(farm);
+  }, []);
 
-  const { activitiesState, dispatchActivity } = useActivitiesContext();
-  const [plantingActivities, setPlantingActivities] = useState({
-    plantingDate: "",
-    cropPlanted: "",
-    kiloPlanted: "",
-    landsizeCovered: "",
-    supervisor: "",
-    contact: "",
-    certificate: "",
-    otherCertificate: "",
-  });
-  const handlePlantingDate = (activity, date) => {
-    setPlantingActivities({
-      ...plantingActivities,
-      [activity]: date.toISOString().split("T")[0],
-    });
+  const handleCertificateChange = (e) => {
+    if (e.target.value === "others") {
+      setHasOtherCert(!hasOtherCert);
+    } else {
+      setHasOtherCert(false);
+    }
   };
 
-  const handlePlantingActivities = (e) => {
-    const { name, value } = e.target;
-    setPlantingActivities({
-      ...plantingActivities,
-      [name]: value,
-    });
+  const getFarmOwner = (farmId) => {
+    return farmsData.find((farm) => farm.id === farmId);
+    // console.log(farmOwner);
   };
 
-  const onPlantingActivitiesSubmit = (e) => {
-    e.preventDefault();
-    dispatchActivity({
-      type: "Add_PlantingActivity",
-      payload: { farmId, ...plantingActivities },
-    });
-    setPlantingActivities({
-      plantingDate: "",
-      cropPlanted: "",
-      kiloPlanted: "",
-      landsizeCovered: "",
-      supervisor: "",
-      contact: "",
-      certificate: "",
-      otherCertificate: "",
-    });
-    toast.success("Planting activities submitted successfully!");
+  // const { activitiesState, dispatchActivity } = useActivitiesContext();
+  // const [plantingActivities, setPlantingActivities] = useState({
+  //   plantingDate: "",
+  //   cropPlanted: "",
+  //   kiloPlanted: "",
+  //   landsizeCovered: "",
+  //   supervisor: "",
+  //   contact: "",
+  //   certificate: "",
+  //   otherCertificate: "",
+  // });
+  // const handlePlantingDate = (activity, date) => {
+  //   setPlantingActivities({
+  //     ...plantingActivities,
+  //     [activity]: date.toISOString().split("T")[0],
+  //   });
+  // };
+
+  // const handlePlantingActivities = (e) => {
+  //   const { name, value } = e.target;
+  //   setPlantingActivities({
+  //     ...plantingActivities,
+  //     [name]: value,
+  //   });
+  // };
+
+  // const onPlantingActivitiesSubmit = (e) => {
+  //   e.preventDefault();
+  //   dispatchActivity({
+  //     type: "Add_PlantingActivity",
+  //     payload: { farmId, ...plantingActivities },
+  //   });
+  //   setPlantingActivities({
+  //     plantingDate: "",
+  //     cropPlanted: "",
+  //     kiloPlanted: "",
+  //     landsizeCovered: "",
+  //     supervisor: "",
+  //     contact: "",
+  //     certificate: "",
+  //     otherCertificate: "",
+  //   });
+  //   toast.success("Planting activities submitted successfully!");
+  // };
+  const showFarmOwner = () => {
+    if (farmDetails.owner !== "") {
+      return `${farmDetails.owner}'s farm`;
+    } else {
+      return "the farm";
+    }
   };
   return (
     <div className="flex flex-col justify-center items-center">
-      <h2 className="mb-2 text-xl">Planting Activities</h2>
-      <Form className="w-full md:w-[70%]" method="post">
+      <h2 className="mb-2 text-xl">
+        {" "}
+        Record Planting Activities on {showFarmOwner()}
+      </h2>
+      <Form
+        className="w-full md:w-[70%]"
+        method="post"
+        action="../../app/planting"
+      >
         <div className="my-4">
           <Label htmlFor="planting" className="font-semibold my-4">
             Date of planting
@@ -153,29 +188,37 @@ const Planting = () => {
             className="my-2 font-semibold"
           />
 
-          <Select id="cert" required name="certificate" defaultValue="">
+          <Select
+            id="cert"
+            required
+            name="certificate"
+            defaultValue=""
+            onChange={handleCertificateChange}
+          >
             <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
-            <option value="EPS">EPA</option>
+            <option value="EPA">EPA</option>
             <option value="PPRSD/NPPO">PPRSD/NPPO</option>
             <option value="others">Others</option>
           </Select>
         </div>
-        <div className="my-4">
-          <Label
-            htmlFor="certificate"
-            value="Other Certificate"
-            className="my-2 font-semibold"
-          />
-          <TextInput
-            type="text"
-            required
-            placeholder="Enter the certificate of supervisor if not listed above"
-            id="certificate"
-            name="otherCertificate"
-            defaultValue=""
-          />
-        </div>
+        {hasOtherCert && (
+          <div className="my-4">
+            <Label
+              htmlFor="certificate"
+              value="Other Certificate"
+              className="my-2 font-semibold"
+            />
+            <TextInput
+              type="text"
+              required
+              placeholder="Enter the certificate of supervisor if not listed above"
+              id="certificate"
+              name="otherCertificate"
+              defaultValue=""
+            />
+          </div>
+        )}
 
         <Button type="submit" className="my-4 w-full md:w-[50%] bg-main">
           Submit planting activities
@@ -187,3 +230,20 @@ const Planting = () => {
 };
 
 export default Planting;
+
+export const action = async ({ request, params }) => {
+  const data = await request.formData();
+  const plantingActivitiesData = {
+    plantingDate: data.get("plantingDate"),
+    cropPlanted: data.get("cropPlanted"),
+    kiloPlanted: data.get("kiloPlanted"),
+    landsizeCovered: data.get("landsizeCovered"),
+    supervisor: data.get("supervisor"),
+    contact: data.get("contact"),
+    certificate: data.get("certificate"),
+    otherCertificate: data.get("otherCertificate"),
+  };
+  //connect to the database to save data
+  createPlantingActivities(plantingActivitiesData);
+  return null;
+};

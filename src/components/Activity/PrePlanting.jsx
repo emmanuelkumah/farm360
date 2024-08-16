@@ -17,7 +17,7 @@ import { useActivitiesContext } from "../../context/FarmersProvider";
 const PrePlanting = ({ method }) => {
   const { farmId } = useParams();
 
-  const { dispatchActivity } = useActivitiesContext();
+  // const { dispatchActivity } = useActivitiesContext();
 
   const [preparationDates, setPreparationDates] = useState({
     preparationDate: "",
