@@ -541,6 +541,7 @@ export let plantingActivitiesData = [];
 export let prePlantingActivitiesData = [];
 export let fertActivitiesData = [];
 export let weedControlActivitiesData = [];
+export let harvestingActivitiesData = [];
 
 export const createFarmer = (newFarmer) => {
   farmersData = [...farmersData, newFarmer];
@@ -592,4 +593,8 @@ export const createFertilizerActivities = (data) => {
 
 export const createWeedControlActivities = (data) => {
   weedControlActivitiesData = [...weedControlActivitiesData, data];
+};
+
+export const createHarvestingActivities = (data) => {
+  harvestingActivitiesData = [...harvestingActivitiesData, data];
 };

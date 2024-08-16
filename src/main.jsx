@@ -25,6 +25,7 @@ import {
   EditFarm,
   FertilizerActivities,
   WeedControlActivities,
+  Harvesting,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -36,6 +37,7 @@ import { loader as PlantingActivitiesLoader } from "./pages/PlantingActivities";
 import { loader as prePlantingActivitiesLoader } from "./pages/PrePlantingActivities";
 import { loader as fertilizerActivitiesLoader } from "./pages/FertilizerActivities";
 import { loader as WeedControlActivitiesLoader } from "./pages/WeedControlActivities";
+import { loader as HarvestingLoader } from "./pages/Harvesting";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as manipulateFarmerAction } from "./components/Farmers/FarmerForm";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
@@ -45,6 +47,7 @@ import { action as manipulatePlantingActivities } from "./components/Activity/Pl
 import { action as manipulatePrePlantingActivities } from "./components/Activity/PrePlanting";
 import { action as manipulateFertilizerActivities } from "./components/Activity/FertilizerApplication";
 import { action as manipulateWeedControlActivities } from "./components/Activity/WeedControl";
+import { action as manipulateHarvestActivities } from "./components/Activity/Harvesting";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 
@@ -167,6 +170,12 @@ const router = createBrowserRouter([
         element: <WeedControlActivities />,
         action: manipulateWeedControlActivities,
         loader: WeedControlActivitiesLoader,
+      },
+      {
+        path: "harvesting",
+        element: <Harvesting />,
+        action: manipulateHarvestActivities,
+        loader: HarvestingLoader,
       },
       {
         path: "add-farm",

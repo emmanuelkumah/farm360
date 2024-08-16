@@ -1,77 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { useActivitiesContext } from "../../context/FarmersProvider";
-import { useParams } from "react-router-dom";
+import { useParams, Form } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { createHarvestingActivities, farmsData } from "../../data/dummyData";
 
 const Harvesting = () => {
-  const { dispatchActivity, activitiesState } = useActivitiesContext();
+  const [hasHarvesting, setHasHarvesting] = useState(false);
+  const [hasCert, setHasCert] = useState(false);
+  const [farmDetails, setFarmDetails] = useState({});
+
   const { farmId } = useParams();
-  const [harvesting, setHarvesting] = useState({
-    date: "",
-    acres: "",
-    bags: "",
-    weight: "",
-    mode: "",
-    machine: "",
-    supervisor: "",
-    contact: "",
-    cert: "",
-    otherCert: "",
-  });
-  const handleharvestingDate = (date) => {
-    setHarvesting({
-      ...harvesting,
-      date: date.toISOString().split("T")[0],
-    });
+
+  useEffect(() => {
+    //coonect to farm api and get farm details
+    const farm = getFarmOwner(farmId);
+    // console.log(farm);
+    setFarmDetails(farm);
+  }, []);
+
+  const getFarmOwner = (farmId) => {
+    return farmsData.find((farm) => farm.id === farmId);
   };
-  const handleHarvestingActivities = (e) => {
-    const { name, value } = e.target;
-    setHarvesting({
-      ...harvesting,
-      [name]: value,
-    });
+  const handleSelectHarvesting = (e) => {
+    if (e.target.value === "Machinery") {
+      setHasHarvesting(!hasHarvesting);
+    } else {
+      setHasHarvesting(false);
+    }
   };
-  const onHarvestingActivitiesSubmit = (e) => {
-    e.preventDefault();
-    dispatchActivity({
-      type: "Add_HarvestingActivity",
-      payload: { farmId, ...harvesting },
-    });
-    setHarvesting({
-      date: "",
-      acres: "",
-      bags: "",
-      weight: "",
-      mode: "",
-      machine: "",
-      supervisor: "",
-      contact: "",
-      cert: "",
-      otherCert: "",
-    });
-    toast.success("Harvesting activities submitted successfully!");
+  const handleSelectCert = (e) => {
+    if (e.target.value === "Others") {
+      setHasCert(!hasCert);
+    } else {
+      setHasCert(false);
+    }
+  };
+  const showFarmOwner = () => {
+    if (farmDetails.owner !== "") {
+      return `${farmDetails.owner}'s farm`;
+    } else {
+      return "the farm";
+    }
   };
   return (
     <div>
-      <h2 className="mb-2 text-xl">Harvesting</h2>
-      <form
-        className="flex max-w-md flex-col gap-4"
-        onSubmit={onHarvestingActivitiesSubmit}
+      <h2 className="mb-2 text-xl text-center">
+        Record harvesting actions on {showFarmOwner}
+      </h2>
+      <Form
+        className="container mx-auto w-full md:w-[70%]"
+        method="post"
+        action="../../app/harvesting"
       >
-        <div>
+        <div className="my-4">
           <Label htmlFor="date" className="font-semibold my-2">
             Date of harvest
           </Label>
           <Datepicker
             id="date"
-            value={harvesting.date}
             placeholder="Select the harvesting date"
             maxDate={new Date()}
-            onSelectedDateChanged={handleharvestingDate}
+            defaultDate={new Date()}
+            name="harvestDate"
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label htmlFor="acres" className="font-semibold my-2">
             Acres Harvested
           </Label>
@@ -81,11 +74,10 @@ const Harvesting = () => {
             required
             placeholder="Enter acres harvested"
             name="acres"
-            value={harvesting.acres}
-            onChange={handleHarvestingActivities}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label htmlFor="bags" className="font-semibold my-2">
             Bags Harvested
           </Label>
@@ -94,12 +86,11 @@ const Harvesting = () => {
             type="number"
             required
             placeholder="Enter number of bags harvested"
-            value={harvesting.bags}
             name="bags"
-            onChange={handleHarvestingActivities}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label htmlFor="weight" className="font-semibold my-2">
             Weight per bag harvested
           </Label>
@@ -108,13 +99,12 @@ const Harvesting = () => {
             type="number"
             required
             placeholder="Enter weight per bag harvested"
-            value={harvesting.weight}
             name="weight"
-            onChange={handleHarvestingActivities}
+            defaultValue=""
           />
         </div>
 
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="modeofHarvesting"
             value="Mode of harvesting"
@@ -124,29 +114,23 @@ const Harvesting = () => {
           <Select
             id="modeofHarvesting"
             required
-            value={harvesting.mode}
+            defaultValue=""
             name="mode"
-            onChange={handleHarvestingActivities}
+            onChange={handleSelectHarvesting}
           >
             <option>Select the mode of harvesting</option>
             <option value="Manual">Manual</option>
             <option value="Machinery">Machinery</option>
           </Select>
         </div>
-        {harvesting.mode === "Machinery" && (
+        {hasHarvesting && (
           <div>
             <Label
               htmlFor="machine"
               value="Name of machine"
               className="my-2 font-semibold"
             />
-            <Select
-              id="machine"
-              required
-              value={harvesting.machine}
-              name="machine"
-              onChange={handleHarvestingActivities}
-            >
+            <Select id="machine" required name="machine" defaultValue="">
               <option>Select machine used</option>
               <option value="Sheller">Sheller</option>
               <option value="Threshing">Threshing</option>
@@ -154,7 +138,7 @@ const Harvesting = () => {
           </div>
         )}
 
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="supervisor"
             value="Name of the supervisor"
@@ -166,8 +150,7 @@ const Harvesting = () => {
             placeholder="Enter name of supervisor"
             id="contact"
             name="supervisor"
-            value={harvesting.supervisor}
-            onChange={handleHarvestingActivities}
+            defaultValue=""
           />
         </div>
         <div>
@@ -181,12 +164,11 @@ const Harvesting = () => {
             required
             placeholder="Enter contact of supervisor"
             id="contact"
-            value={harvesting.contact}
             name="contact"
-            onChange={handleHarvestingActivities}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="cert"
             value="Certificate"
@@ -196,9 +178,9 @@ const Harvesting = () => {
           <Select
             id="cert"
             required
-            value={harvesting.cert}
-            name="cert"
-            onChange={handleHarvestingActivities}
+            name="certificate"
+            defaultValue=""
+            onChange={handleSelectCert}
           >
             <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
@@ -207,7 +189,7 @@ const Harvesting = () => {
             <option value="Others">Others</option>
           </Select>
         </div>
-        {harvesting.cert === "Others" && (
+        {hasCert && (
           <div>
             <Label
               htmlFor="certificate"
@@ -220,17 +202,37 @@ const Harvesting = () => {
               placeholder="Enter the certificate of supervisor if not listed above"
               id="certificate"
               name="otherCert"
-              value={harvesting.otherCert}
-              onChange={handleHarvestingActivities}
+              defaultValue=""
             />
           </div>
         )}
 
-        <Button type="submit">Submit</Button>
-      </form>
+        <Button type="submit" className="bg-main mt-4">
+          Submit
+        </Button>
+      </Form>
       <ToastContainer />
     </div>
   );
 };
 
 export default Harvesting;
+
+export const action = async ({ request }) => {
+  const data = await request.formData();
+  const enteredHarvestingData = {
+    harvestDate: data.get("harvestDate"),
+    acres: data.get("acres"),
+    bags: data.get("bags"),
+    weight: data.get("weight"),
+    mode: data.get("mode"),
+    machine: data.get("machine"),
+    supervisor: data.get("supervisor"),
+    contact: data.get("contact"),
+    certificate: data.get("certificate"),
+    otherCert: data.get("otherCert"),
+  };
+  createHarvestingActivities(enteredHarvestingData);
+
+  return null;
+};

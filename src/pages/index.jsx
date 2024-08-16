@@ -19,3 +19,4 @@ export { default as PlantingActivities } from "./PlantingActivities";
 export { default as PrePlantingActvities } from "./PrePlantingActivities";
 export { default as FertilizerActivities } from "./FertilizerActivities";
 export { default as WeedControlActivities } from "./WeedControlActivities";
+export { default as Harvesting } from "./Harvesting";

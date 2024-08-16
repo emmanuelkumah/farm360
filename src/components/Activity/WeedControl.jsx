@@ -38,11 +38,18 @@ const WeedControl = () => {
       setHasCert(false);
     }
   };
+  const showFarmOwner = () => {
+    if (farmDetails.owner !== "") {
+      return `${farmDetails.owner}'s farm`;
+    } else {
+      return "the farm";
+    }
+  };
 
   return (
     <div>
       <div>
-        <h2 className="mb-2 text-xl">Weed Control Activities</h2>
+        Record Weed control activities on {showFarmOwner()}
         <Form
           className="container mx-auto w-full md:w-[70%]"
           method="post"
