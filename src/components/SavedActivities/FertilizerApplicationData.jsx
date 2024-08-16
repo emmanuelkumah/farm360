@@ -1,11 +1,10 @@
 import React from "react";
 import { Table } from "flowbite-react";
-import { useActivitiesContext } from "../../context/FarmersProvider";
+import { useLoaderData } from "react-router-dom";
 
 const FertilizerApplicationData = () => {
-  const {
-    activitiesState: { fertilizerApplication },
-  } = useActivitiesContext();
+  const data = useLoaderData();
+  console.log(data);
   return (
     <>
       <div className="overflow-x-auto">
@@ -22,20 +21,23 @@ const FertilizerApplicationData = () => {
             <Table.HeadCell>Certificate</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {fertilizerApplication.map((activity) => (
+            {data.map((activity, index) => (
               <Table.Row
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                key={activity.farmId}
+                key={index}
               >
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {activity.farmId}
+                  {activity.name}
                 </Table.Cell>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {activity.date}
+                  {activity.fertilizerdate}
                 </Table.Cell>
-                <Table.Cell>{activity.type}</Table.Cell>
-                <Table.Cell>{activity.method}</Table.Cell>
-                <Table.Cell>{activity.rateInMl}</Table.Cell>
+                <Table.Cell>{activity.fertilizerType}</Table.Cell>
+
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {activity.fertMethod}
+                </Table.Cell>
+                <Table.Cell>{activity.ratePerMl}</Table.Cell>
                 <Table.Cell>{activity.ratePerBag}</Table.Cell>
                 <Table.Cell>{activity.supervisor}</Table.Cell>
                 <Table.Cell>{activity.contact}</Table.Cell>

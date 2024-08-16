@@ -21,21 +21,7 @@ const PrePlanting = () => {
   const [farmDetails, setFarmDetails] = useState({});
   const [hasSource, setSource] = useState(false);
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
-  const [preparationDates, setPreparationDates] = useState({
-    preparationDate: "",
-    landSize: "",
-    clearing: "",
-    ploughing: "",
-    harrowing: "",
-    manualPrep: "",
-    ridging: "",
-    moundMolding: "",
-  });
-  const [sprayingActivities, setSprayingActivities] = useState({
-    chemicalName: "",
-    rateOfApplication: "",
-    dateofApplication: "",
-  });
+
   useEffect(() => {
     //coonect to farm api and get farm details
     const farm = getFarmOwner(farmId);
@@ -68,59 +54,6 @@ const PrePlanting = () => {
       setSource(false);
     }
   };
-  // const [plantingMaterial, setPlantingMaterial] = useState({
-  //   plantPart: "",
-  //   source: "",
-  //   otherSource: "",
-  //   quantity: "",
-  //   yield: "",
-  //   treatmentMethod: "",
-  //   chemicalUsed: "",
-  //   isTreated: "",
-  // });
-
-  // const onPreplantingActivitiesSubmit = (e) => {
-  //   e.preventDefault();
-  //   const prePlantingActivities = {
-  //     farmId: farmId,
-  //     ...preparationDates,
-  //     ...sprayingActivities,
-  //     ...plantingMaterial,
-  //   };
-  //   //dispatch Activity
-  //   dispatchActivity({
-  //     type: "ADD_PrePlantingActivity",
-  //     payload: prePlantingActivities,
-  //   });
-  //   //clear fields
-  //   setPreparationDates({
-  //     preparationDate: "",
-  //     landSize: "",
-  //     clearing: "",
-  //     ploughing: "",
-  //     harrowing: "",
-  //     manualPrep: "",
-  //     ridging: "",
-  //     moundMolding: "",
-  //   });
-  //   setPlantingMaterial({
-  //     plantPart: "",
-  //     source: "",
-  //     otherSource: "",
-  //     quantity: "",
-  //     yield: "",
-  //     isPlantPartTreated: "",
-  //     treatmentMethod: "",
-  //     chemicalUsed: "",
-  //     isTreated: "",
-  //   });
-  //   setSprayingActivities({
-  //     chemicalName: "",
-  //     rateOfApplication: "",
-  //     dateofApplication: "",
-  //   });
-  //   toast.success("Pre-Planting activities submitted successfully!");
-  // };
 
   return (
     <>

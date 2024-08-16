@@ -1,104 +1,90 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { useActivitiesContext } from "../../context/FarmersProvider";
-import { useParams } from "react-router-dom";
+import { useParams, Form } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { createFertilizerActivities } from "../../data/dummyData";
+import { farmsData } from "../../data/dummyData";
 
 const FertilizerApplication = () => {
   const { farmId } = useParams();
-  const { dispatchActivity } = useActivitiesContext();
+  const [hasFertMethod, setHasFertMethod] = useState(false);
+  const [hasCert, setHasCert] = useState(false);
+  const [farmDetails, setFarmDetails] = useState({});
+  const defaultValue = new Date();
 
-  const [fertApplication, setFertApplication] = useState({
-    date: "",
-    type: "",
-    method: "",
-    rateInMl: "",
-    ratePerBag: "",
-    otherFert: "",
-    supervisor: "",
-    contact: "",
-    certificate: "",
-    otherCert: "",
-  });
-  const handleFertApplicationDate = (date) => {
-    setFertApplication({
-      ...fertApplication,
-      date: date.toISOString().split("T")[0],
-    });
+  useEffect(() => {
+    //coonect to farm api and get farm details
+    const farm = getFarmOwner(farmId);
+    // console.log(farm);
+    setFarmDetails(farm);
+  }, []);
+
+  const getFarmOwner = (farmId) => {
+    return farmsData.find((farm) => farm.id === farmId);
   };
-  const handleFertilizerActivities = (e) => {
-    const { name, value } = e.target;
-    setFertApplication({
-      ...fertApplication,
-      [name]: value,
-    });
+  const handleFertMethod = (e) => {
+    console.log(e.target.value);
+    if (e.target.value === "Others") {
+      setHasFertMethod(!hasFertMethod);
+    } else {
+      setHasFertMethod(false);
+    }
   };
-  const onFertilizerActivitiesSubmit = (e) => {
-    e.preventDefault();
-    setFertApplication({
-      date: "",
-      type: "",
-      name: "",
-      method: "",
-      rateInMl: "",
-      ratePerBag: "",
-      otherFert: "",
-      supervisor: "",
-      contact: "",
-      certificate: "",
-      otherCert: "",
-    });
-    dispatchActivity({
-      type: "Add_FertilizerActivity",
-      payload: {
-        farmId,
-        ...fertApplication,
-      },
-    });
-    toast.success("Fertilizer application submitted successfully!");
+
+  const handleSelectCert = (e) => {
+    if (e.target.value === "Others") {
+      setHasCert(!hasCert);
+    } else {
+      setHasCert(false);
+    }
   };
+
+  const showFarmOwner = () => {
+    if (farmDetails.owner !== "") {
+      return `${farmDetails.owner}'s farm`;
+    } else {
+      return "the farm";
+    }
+  };
+
   return (
     <div>
-      <h2 className="mb-2 text-xl">Fertilizer Application</h2>
-      <form
-        className="flex max-w-md flex-col gap-4"
-        onSubmit={onFertilizerActivitiesSubmit}
+      <h2 className="mb-2 text-xl text-center">
+        Record Fertilizer Application activities on {showFarmOwner()}
+      </h2>
+      <Form
+        className="container mx-auto w-full md:w-[70%]"
+        method="post"
+        action="../../app/fertilizer"
       >
-        <div>
+        <div className="my-4">
           <Label htmlFor="date" className="font-semibold my-2">
             Date of application
           </Label>
           <Datepicker
             id="date"
-            value={fertApplication.date}
             placeholder="Select date of fertilizer application"
-            name="date"
-            maxDate={new Date()}
-            onSelectedDateChanged={(date) => handleFertApplicationDate(date)}
+            name="fertilizerdate"
+            maxDate={defaultValue}
+            defaultValue={defaultValue}
           />
         </div>
 
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="method"
             value="Type of application"
             className="my-2 font-semibold"
           />
 
-          <Select
-            id="method"
-            required
-            name="type"
-            value={fertApplication.type}
-            onChange={handleFertilizerActivities}
-          >
+          <Select id="method" required name="fertilizerType" defaultValue="">
             <option>Select the type of application</option>
             <option value="liquid">Liquid</option>
             <option value="organic">Organic</option>
             <option value="inorganic">Inorganic</option>
           </Select>
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="chemical"
             value="Name of fertilizer"
@@ -107,9 +93,9 @@ const FertilizerApplication = () => {
           <Select
             id="method"
             required
-            value={fertApplication.method}
-            name="method"
-            onChange={handleFertilizerActivities}
+            name="fertMethod"
+            defaultValue=""
+            onChange={handleFertMethod}
           >
             <option>Select fertilizer</option>
             <option value="Manure">Manure</option>
@@ -120,8 +106,8 @@ const FertilizerApplication = () => {
             <option value="Others">Others</option>
           </Select>
         </div>
-        {fertApplication.method === "Others" && (
-          <div>
+        {hasFertMethod && (
+          <div className="my-4">
             <Label
               htmlFor="others"
               value="Others(Specify)"
@@ -131,14 +117,13 @@ const FertilizerApplication = () => {
               type="text"
               placeholder="Enter name of fertilizer"
               id="others"
-              name="others"
-              value={fertApplication.otherFert}
-              onChange={handleFertilizerActivities}
+              name="otherFert"
+              defaultValue=""
             />
           </div>
         )}
 
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="rate-apply"
             value="Rate of application(ml per acre)"
@@ -148,12 +133,11 @@ const FertilizerApplication = () => {
             type="text"
             placeholder="Enter the rate of application"
             id="rate-apply"
-            name="rateInMl"
-            value={fertApplication.rateInMl}
-            onChange={handleFertilizerActivities}
+            name="ratePerMl"
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="rate-apply2"
             value="Rate of application(bag per acre)"
@@ -164,11 +148,10 @@ const FertilizerApplication = () => {
             placeholder="Enter the rate of application"
             id="rate-apply2"
             name="ratePerBag"
-            value={fertApplication.ratePerBag}
-            onChange={handleFertilizerActivities}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="supervisor"
             value="Supervisor"
@@ -180,11 +163,10 @@ const FertilizerApplication = () => {
             placeholder="Enter name of supervisor"
             id="supervisor"
             name="supervisor"
-            value={fertApplication.supervisor}
-            onChange={handleFertilizerActivities}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="contact"
             value="Contact of the supervisor"
@@ -196,11 +178,10 @@ const FertilizerApplication = () => {
             placeholder="Enter contact of supervisor"
             id="contact"
             name="contact"
-            value={fertApplication.contact}
-            onChange={handleFertilizerActivities}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="cert"
             value="Certificate"
@@ -210,9 +191,9 @@ const FertilizerApplication = () => {
           <Select
             id="cert"
             required
-            value={fertApplication.certificate}
             name="certificate"
-            onChange={handleFertilizerActivities}
+            defaultValue=""
+            onChange={handleSelectCert}
           >
             <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
@@ -221,8 +202,8 @@ const FertilizerApplication = () => {
             <option value="Others">Others</option>
           </Select>
         </div>
-        {fertApplication.certificate === "Others" && (
-          <div>
+        {hasCert && (
+          <div className="my-4">
             <Label
               htmlFor="certificate"
               value="Other Certificate"
@@ -234,17 +215,38 @@ const FertilizerApplication = () => {
               placeholder="Enter the certificate of supervisor if not listed above"
               id="certificate"
               name="otherCert"
-              value={fertApplication.otherCert}
-              onChange={handleFertilizerActivities}
+              defaultValue=""
             />
           </div>
         )}
 
-        <Button type="submit">Submit</Button>
-      </form>
+        <Button className="w-full md:w-1/2 mt-4" type="submit">
+          Submit
+        </Button>
+      </Form>
       <ToastContainer />
     </div>
   );
 };
 
 export default FertilizerApplication;
+
+export const action = async ({ request }) => {
+  const data = await request.formData();
+
+  const fertilizerAppActivitiesData = {
+    fertilizerdate: data.get("fertilizerdate"),
+    fertilizerType: data.get("fertilizerType"),
+    fertMethod: data.get("fertMethod"),
+    otherFert: data.get("otherFert"),
+    ratePerMl: data.get("ratePerMl"),
+    ratePerBag: data.get("ratePerBag"),
+    supervisor: data.get("supervisor"),
+    contact: data.get("contact"),
+    certificate: data.get("certificate"),
+    otherCertificate: data.get("otherCert"),
+  };
+  //connect to the database to save data
+  createFertilizerActivities(fertilizerAppActivitiesData);
+  return null;
+};

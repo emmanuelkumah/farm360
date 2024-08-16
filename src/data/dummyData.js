@@ -539,6 +539,8 @@ export const trackedActivities = {
 export let plantingActivitiesData = [];
 
 export let prePlantingActivitiesData = [];
+export let fertActivitiesData = [];
+export let weedControlActivitiesData = [];
 
 export const createFarmer = (newFarmer) => {
   farmersData = [...farmersData, newFarmer];
@@ -578,10 +580,16 @@ export const updateFarmDetails = (data) => {
 
 export const createPlantingActivities = (data) => {
   plantingActivitiesData = [...plantingActivitiesData, data];
-  // console.log(plantingActivities);
 };
 
 export const createPrePlantingActivities = (data) => {
   prePlantingActivitiesData = [...prePlantingActivitiesData, data];
-  console.log(prePlantingActivitiesData);
+};
+
+export const createFertilizerActivities = (data) => {
+  fertActivitiesData = [...fertActivitiesData, data];
+};
+
+export const createWeedControlActivities = (data) => {
+  weedControlActivitiesData = [...weedControlActivitiesData, data];
 };

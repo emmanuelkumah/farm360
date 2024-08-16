@@ -23,6 +23,8 @@ import {
   AddFarm,
   ViewFarm,
   EditFarm,
+  FertilizerActivities,
+  WeedControlActivities,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -32,6 +34,8 @@ import { loader as farmerDetailsLoader } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
 import { loader as PlantingActivitiesLoader } from "./pages/PlantingActivities";
 import { loader as prePlantingActivitiesLoader } from "./pages/PrePlantingActivities";
+import { loader as fertilizerActivitiesLoader } from "./pages/FertilizerActivities";
+import { loader as WeedControlActivitiesLoader } from "./pages/WeedControlActivities";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as manipulateFarmerAction } from "./components/Farmers/FarmerForm";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
@@ -39,7 +43,8 @@ import { action as deleteFarmAction } from "./pages/ViewFarm";
 import { action as manipulateActivities } from "./pages/FarmActivity";
 import { action as manipulatePlantingActivities } from "./components/Activity/Planting";
 import { action as manipulatePrePlantingActivities } from "./components/Activity/PrePlanting";
-
+import { action as manipulateFertilizerActivities } from "./components/Activity/FertilizerApplication";
+import { action as manipulateWeedControlActivities } from "./components/Activity/WeedControl";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 
@@ -151,7 +156,18 @@ const router = createBrowserRouter([
         loader: prePlantingActivitiesLoader,
         action: manipulatePrePlantingActivities,
       },
-
+      {
+        path: "fertilizer",
+        element: <FertilizerActivities />,
+        loader: fertilizerActivitiesLoader,
+        action: manipulateFertilizerActivities,
+      },
+      {
+        path: "weedcontrol",
+        element: <WeedControlActivities />,
+        action: manipulateWeedControlActivities,
+        loader: WeedControlActivitiesLoader,
+      },
       {
         path: "add-farm",
         element: <AddFarm />,
