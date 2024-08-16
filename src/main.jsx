@@ -34,6 +34,7 @@ import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as manipulateFarmerAction } from "./components/Farmers/FarmerForm";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
+import { action as manipulateActivities } from "./pages/FarmActivity";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 
@@ -131,6 +132,7 @@ const router = createBrowserRouter([
       {
         path: "farms/:farmId/activities",
         element: <FarmActivity />,
+        action: manipulateActivities,
       },
       {
         path: "all-activities",
