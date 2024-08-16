@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Label,
   TextInput,
@@ -8,17 +8,19 @@ import {
   Button,
 } from "flowbite-react";
 
-//import LandPreparation from "./LandPreparation";
-//import PlantingMaterial from "./PlantingMaterial";
 import { useParams, Form } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useActivitiesContext } from "../../context/FarmersProvider";
-const PrePlanting = ({ method }) => {
+import { farmsData } from "../../data/dummyData";
+import { createPrePlantingActivities } from "../../data/dummyData";
+
+const PrePlanting = () => {
   const { farmId } = useParams();
+  const defaultValue = new Date();
 
-  // const { dispatchActivity } = useActivitiesContext();
-
+  const [farmDetails, setFarmDetails] = useState({});
+  const [hasSource, setSource] = useState(false);
+  const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
   const [preparationDates, setPreparationDates] = useState({
     preparationDate: "",
     landSize: "",
@@ -34,70 +36,100 @@ const PrePlanting = ({ method }) => {
     rateOfApplication: "",
     dateofApplication: "",
   });
-  const [plantingMaterial, setPlantingMaterial] = useState({
-    plantPart: "",
-    source: "",
-    otherSource: "",
-    quantity: "",
-    yield: "",
-    treatmentMethod: "",
-    chemicalUsed: "",
-    isTreated: "",
-  });
-
-  const onPreplantingActivitiesSubmit = (e) => {
-    e.preventDefault();
-    const prePlantingActivities = {
-      farmId: farmId,
-      ...preparationDates,
-      ...sprayingActivities,
-      ...plantingMaterial,
-    };
-    //dispatch Activity
-    dispatchActivity({
-      type: "ADD_PrePlantingActivity",
-      payload: prePlantingActivities,
-    });
-    //clear fields
-    setPreparationDates({
-      preparationDate: "",
-      landSize: "",
-      clearing: "",
-      ploughing: "",
-      harrowing: "",
-      manualPrep: "",
-      ridging: "",
-      moundMolding: "",
-    });
-    setPlantingMaterial({
-      plantPart: "",
-      source: "",
-      otherSource: "",
-      quantity: "",
-      yield: "",
-      isPlantPartTreated: "",
-      treatmentMethod: "",
-      chemicalUsed: "",
-      isTreated: "",
-    });
-    setSprayingActivities({
-      chemicalName: "",
-      rateOfApplication: "",
-      dateofApplication: "",
-    });
-    toast.success("Pre-Planting activities submitted successfully!");
+  useEffect(() => {
+    //coonect to farm api and get farm details
+    const farm = getFarmOwner(farmId);
+    // console.log(farm);
+    setFarmDetails(farm);
+  }, []);
+  const getFarmOwner = (farmId) => {
+    return farmsData.find((farm) => farm.id === farmId);
   };
 
-  const defaultValue = new Date();
+  const showFarmOwner = () => {
+    if (farmDetails.owner !== "") {
+      return `${farmDetails.owner}'s farm`;
+    } else {
+      return "the farm";
+    }
+  };
+  const handleSelectSource = (e) => {
+    if (e.target.value === "Others") {
+      setSource(!hasSource);
+    } else {
+      setSource(false);
+    }
+  };
+
+  const handleSelectTreatment = (e) => {
+    if (e.target.value === "Other") {
+      setHasTreatmentMethod(!hasTreatmentMethod);
+    } else {
+      setSource(false);
+    }
+  };
+  // const [plantingMaterial, setPlantingMaterial] = useState({
+  //   plantPart: "",
+  //   source: "",
+  //   otherSource: "",
+  //   quantity: "",
+  //   yield: "",
+  //   treatmentMethod: "",
+  //   chemicalUsed: "",
+  //   isTreated: "",
+  // });
+
+  // const onPreplantingActivitiesSubmit = (e) => {
+  //   e.preventDefault();
+  //   const prePlantingActivities = {
+  //     farmId: farmId,
+  //     ...preparationDates,
+  //     ...sprayingActivities,
+  //     ...plantingMaterial,
+  //   };
+  //   //dispatch Activity
+  //   dispatchActivity({
+  //     type: "ADD_PrePlantingActivity",
+  //     payload: prePlantingActivities,
+  //   });
+  //   //clear fields
+  //   setPreparationDates({
+  //     preparationDate: "",
+  //     landSize: "",
+  //     clearing: "",
+  //     ploughing: "",
+  //     harrowing: "",
+  //     manualPrep: "",
+  //     ridging: "",
+  //     moundMolding: "",
+  //   });
+  //   setPlantingMaterial({
+  //     plantPart: "",
+  //     source: "",
+  //     otherSource: "",
+  //     quantity: "",
+  //     yield: "",
+  //     isPlantPartTreated: "",
+  //     treatmentMethod: "",
+  //     chemicalUsed: "",
+  //     isTreated: "",
+  //   });
+  //   setSprayingActivities({
+  //     chemicalName: "",
+  //     rateOfApplication: "",
+  //     dateofApplication: "",
+  //   });
+  //   toast.success("Pre-Planting activities submitted successfully!");
+  // };
 
   return (
     <>
       <div className="m-10">
         <div>
           <h3 className="text-xl mt-[20%] md:mt-10">
-            Record Pre Planting Activities
+            Record Pre Planting Activities on {showFarmOwner()}
           </h3>
-          <Form method="POST">
+          <Form method="post" action="../../app/preplanting">
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="flex max-w-md flex-col gap-4">
                 <div className="flex flex-col">
@@ -271,7 +303,12 @@ const PrePlanting = ({ method }) => {
                     value="Select planting material"
                     className="my-2 font-semibold"
                   />
-                  <Select id="planting" required name="plantPart">
+                  <Select
+                    id="planting"
+                    required
+                    name="plantPart"
+                    defaultValue=""
+                  >
                     <option>Select planting material</option>
                     <option value="seed">Seed</option>
                     <option value="sucker">Sucker</option>
@@ -289,7 +326,13 @@ const PrePlanting = ({ method }) => {
                     className="my-2 font-semibold"
                   />
 
-                  <Select id="source" name="source" required>
+                  <Select
+                    id="source"
+                    name="source"
+                    required
+                    defaultValue=""
+                    onChange={handleSelectSource}
+                  >
                     <option>Select Source of planting material</option>
                     <option value="Local inputs dealer">
                       Local inputs dealer
@@ -301,19 +344,23 @@ const PrePlanting = ({ method }) => {
                     <option value="Others">Others</option>
                   </Select>
                 </div>
-                <div className="flex flex-col">
-                  <Label
-                    htmlFor="seed"
-                    value="Other Source"
-                    className="my-2 font-semibold"
-                  />
-                  <TextInput
-                    id="seed"
-                    type="text"
-                    name="otherSource"
-                    placeholder="Enter where you got the source from"
-                  />
-                </div>
+                {hasSource && (
+                  <div className="flex flex-col">
+                    <Label
+                      htmlFor="seed"
+                      value="Other Source"
+                      className="my-2 font-semibold"
+                    />
+                    <TextInput
+                      id="seed"
+                      type="text"
+                      name="otherSource"
+                      defaultValue=""
+                      placeholder="Enter where you got the source from"
+                    />
+                  </div>
+                )}
+
                 <div>
                   <Label
                     htmlFor="quantity"
@@ -325,6 +372,7 @@ const PrePlanting = ({ method }) => {
                     type="number"
                     min="1"
                     name="quantity"
+                    defaultValue="1"
                     placeholder="Enter quantity"
                   />
                 </div>
@@ -363,28 +411,39 @@ const PrePlanting = ({ method }) => {
                     htmlFor="method"
                     value="Treatment method"
                   />
-                  <Select id="method" required name="treatmentMethod">
+                  <Select
+                    id="method"
+                    required
+                    name="treatmentMethod"
+                    onChange={handleSelectTreatment}
+                    defaultValue=""
+                  >
                     <option>Select treatment method</option>
                     <option value="chemical">Chemical</option>
                     <option value="hot water">Hot water</option>
-                    <option value="other">Other</option>
+                    <option value="Other">Other</option>
                   </Select>
-                  <div>
-                    <Label
-                      className="mb-2 font-semibold"
-                      htmlFor="other"
-                      value="Other treatment method or chemical used"
-                    />
-                    <TextInput
-                      id="other"
-                      type="text"
-                      required
-                      name="chemicalUsed"
-                      placeholder="Enter the other treatment method or chemical used"
-                    />
-                  </div>
+                  {hasTreatmentMethod && (
+                    <div className="my-4">
+                      <Label
+                        className="mb-2 font-semibold"
+                        htmlFor="other"
+                        value="Other treatment method or chemical used"
+                      />
+                      <TextInput
+                        id="other"
+                        type="text"
+                        required
+                        defaultValue=""
+                        name="otherTreatmentmethod"
+                        placeholder="Enter the other treatment method or chemical used"
+                      />
+                    </div>
+                  )}
                 </div>
-                <Button type="submit">Add Activity</Button>
+                <Button className="bg-main" type="submit">
+                  Save PrePlanting Activity
+                </Button>
               </div>
             </div>
           </Form>
@@ -397,3 +456,33 @@ const PrePlanting = ({ method }) => {
 };
 
 export default PrePlanting;
+
+export const action = async ({ request }) => {
+  const data = await request.formData();
+
+  const preplantingActivitiesData = {
+    preparedDate: data.get("preparedDate"),
+    landSize: data.get("landSize"),
+    clearingDate: data.get("clearingDate"),
+    ploughingDate: data.get("ploughingDate"),
+    harrowingDate: data.get("harrowingDate"),
+    manualpreparationDate: data.get("manualpreparationDate"),
+    ridgingDate: data.get("ridgingDate"),
+    moundDate: data.get("moundDate"),
+    chemicalUsed: data.get("chemicalUsed"),
+    rateOfApplication: data.get("rateOfApplication"),
+    dateofchemicalapplication: data.get("dateofchemicalapplication"),
+    plantPart: data.get("plantPart"),
+    source: data.get("source"),
+    otherSource: data.get("otherSource"),
+    treatmentMethod: data.get("treatmentMethod"),
+    otherTreatmentmethod: data.get("otherTreatmentmethod"),
+    quantity: data.get("quantity"),
+    yield: data.get("yield"),
+    isTreated: data.get("isTreated"),
+  };
+  //connect to the database to save data
+  //createPlantingActivities(preplantingActivitiesData);
+  createPrePlantingActivities(preplantingActivitiesData);
+  return null;
+};

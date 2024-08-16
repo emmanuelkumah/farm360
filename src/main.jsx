@@ -13,6 +13,7 @@ import {
   Farms,
   Reports,
   PlantingActivities,
+  PrePlantingActvities,
   Traceability,
   FarmActivity,
   Landing,
@@ -30,13 +31,15 @@ import { loader as farmersLoader } from "./pages/Farmers";
 import { loader as farmerDetailsLoader } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
 import { loader as PlantingActivitiesLoader } from "./pages/PlantingActivities";
+import { loader as prePlantingActivitiesLoader } from "./pages/PrePlantingActivities";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as manipulateFarmerAction } from "./components/Farmers/FarmerForm";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
 import { action as manipulateActivities } from "./pages/FarmActivity";
 import { action as manipulatePlantingActivities } from "./components/Activity/Planting";
-// import { action as manipulatePlantingActivities } from "./components/Farms/";
+import { action as manipulatePrePlantingActivities } from "./components/Activity/PrePlanting";
+
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 
@@ -141,6 +144,12 @@ const router = createBrowserRouter([
         element: <PlantingActivities />,
         loader: PlantingActivitiesLoader,
         action: manipulatePlantingActivities,
+      },
+      {
+        path: "preplanting",
+        element: <PrePlantingActvities />,
+        loader: prePlantingActivitiesLoader,
+        action: manipulatePrePlantingActivities,
       },
 
       {

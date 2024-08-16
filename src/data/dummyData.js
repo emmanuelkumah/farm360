@@ -538,6 +538,8 @@ export const trackedActivities = {
 
 export let plantingActivitiesData = [];
 
+export let prePlantingActivitiesData = [];
+
 export const createFarmer = (newFarmer) => {
   farmersData = [...farmersData, newFarmer];
   console.log(farmersData);
@@ -577,4 +579,9 @@ export const updateFarmDetails = (data) => {
 export const createPlantingActivities = (data) => {
   plantingActivitiesData = [...plantingActivitiesData, data];
   // console.log(plantingActivities);
+};
+
+export const createPrePlantingActivities = (data) => {
+  prePlantingActivitiesData = [...prePlantingActivitiesData, data];
+  console.log(prePlantingActivitiesData);
 };

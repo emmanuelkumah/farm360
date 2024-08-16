@@ -12,7 +12,7 @@ const Planting = () => {
   // let farmOwner;
   let { farmId } = useParams();
   useEffect(() => {
-    //get farm info on component mount
+    //coonect to farm api and get farm details
     const farm = getFarmOwner(farmId);
     // console.log(farm);
     setFarmDetails(farm);
@@ -28,53 +28,8 @@ const Planting = () => {
 
   const getFarmOwner = (farmId) => {
     return farmsData.find((farm) => farm.id === farmId);
-    // console.log(farmOwner);
   };
 
-  // const { activitiesState, dispatchActivity } = useActivitiesContext();
-  // const [plantingActivities, setPlantingActivities] = useState({
-  //   plantingDate: "",
-  //   cropPlanted: "",
-  //   kiloPlanted: "",
-  //   landsizeCovered: "",
-  //   supervisor: "",
-  //   contact: "",
-  //   certificate: "",
-  //   otherCertificate: "",
-  // });
-  // const handlePlantingDate = (activity, date) => {
-  //   setPlantingActivities({
-  //     ...plantingActivities,
-  //     [activity]: date.toISOString().split("T")[0],
-  //   });
-  // };
-
-  // const handlePlantingActivities = (e) => {
-  //   const { name, value } = e.target;
-  //   setPlantingActivities({
-  //     ...plantingActivities,
-  //     [name]: value,
-  //   });
-  // };
-
-  // const onPlantingActivitiesSubmit = (e) => {
-  //   e.preventDefault();
-  //   dispatchActivity({
-  //     type: "Add_PlantingActivity",
-  //     payload: { farmId, ...plantingActivities },
-  //   });
-  //   setPlantingActivities({
-  //     plantingDate: "",
-  //     cropPlanted: "",
-  //     kiloPlanted: "",
-  //     landsizeCovered: "",
-  //     supervisor: "",
-  //     contact: "",
-  //     certificate: "",
-  //     otherCertificate: "",
-  //   });
-  //   toast.success("Planting activities submitted successfully!");
-  // };
   const showFarmOwner = () => {
     if (farmDetails.owner !== "") {
       return `${farmDetails.owner}'s farm`;
