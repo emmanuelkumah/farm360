@@ -1,11 +1,10 @@
 import React from "react";
-import { useActivitiesContext } from "../../context/FarmersProvider";
 import { Table } from "flowbite-react";
+import { useLoaderData } from "react-router-dom";
 
 const SalesData = () => {
-  const {
-    activitiesState: { sales },
-  } = useActivitiesContext();
+  const data = useLoaderData();
+  console.log(data);
   return (
     <>
       <div className="overflow-x-auto">
@@ -15,8 +14,8 @@ const SalesData = () => {
             <Table.HeadCell>Release date</Table.HeadCell>
             <Table.HeadCell>Authorizer name</Table.HeadCell>
             <Table.HeadCell>Contact</Table.HeadCell>
+            <Table.HeadCell>Quantity</Table.HeadCell>
             <Table.HeadCell>Buyer name</Table.HeadCell>
-
             <Table.HeadCell>Buyer quantity</Table.HeadCell>
             <Table.HeadCell>Buyer Contact</Table.HeadCell>
             <Table.HeadCell>Company name</Table.HeadCell>
@@ -28,21 +27,21 @@ const SalesData = () => {
             <Table.HeadCell>Driver's license </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {sales.map((activity) => (
+            {data.map((activity, index) => (
               <Table.Row
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                key={activity.farmId}
+                key={index}
               >
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {activity.farmId}
                 </Table.Cell>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {activity.date}
+                  {activity.releaseDate}
                 </Table.Cell>
                 <Table.Cell>{activity.authorizer}</Table.Cell>
-                <Table.Cell>{activity.contact}</Table.Cell>
+                <Table.Cell>{activity.authorizerContact}</Table.Cell>
+                <Table.Cell>{activity.quantity}</Table.Cell>
                 <Table.Cell>{activity.individualBuyerName}</Table.Cell>
-                <Table.Cell>{activity.individualBuyerQuantity}</Table.Cell>
                 <Table.Cell>{activity.individualBuyerContact}</Table.Cell>
                 <Table.Cell>{activity.companyBuyerName}</Table.Cell>
                 <Table.Cell>{activity.companyBuyerQuantity}</Table.Cell>
