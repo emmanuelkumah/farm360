@@ -28,15 +28,49 @@ export const links = [
     icon: <PiPottedPlantDuotone />,
     url: "farms",
   },
+
   {
-    name: "Collectors",
-    icon: <FaUsersLine />,
-    url: "collectors",
-  },
-  {
-    name: "Activities",
+    name: "CTE",
     icon: <PiPottedPlantDuotone />,
-    url: "all-activities",
+    url: "#",
+    subMenu: [
+      {
+        name: "preplanting",
+        url: "cte/preplanting",
+      },
+      {
+        name: "planting",
+        url: "cte/planting",
+      },
+      {
+        name: "Weed control",
+        url: "cte/weedcontrol",
+      },
+      {
+        name: "Fertilizing",
+        url: "cte/fertilizer",
+      },
+      {
+        name: "Pest Control",
+        url: "cte/pestcontrol",
+      },
+      {
+        name: "harvesting",
+        url: "cte/harvesting",
+      },
+      {
+        name: "storage",
+        url: "cte/storage",
+      },
+      {
+        name: "sales",
+        url: "cte/sales",
+      },
+      {
+        name: "shipment",
+        url: "cte/shipment",
+      },
+    ],
   },
 
   {

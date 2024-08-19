@@ -1,193 +1,100 @@
 import React, { useState } from "react";
 import { Button, Label, TextInput, Select, Datepicker } from "flowbite-react";
-import { useActivitiesContext } from "../../context/FarmersProvider";
-import { useParams } from "react-router-dom";
+import { useParams, Form } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-const PestControl = () => {
-  const { dispatchActivity, activitiesState } = useActivitiesContext();
-  console.log(activitiesState);
-  const { farmId } = useParams();
-  const [pestControl, setPestControl] = useState({
-    earlyStageDate: "",
-    earlyStageChemical: "",
-    rateOfAppEarlyStage: "",
-    growingStageDate: "",
-    growingStageChemical: "",
-    rateAppGrowingStage: "",
-    preharvestingDate: "",
-    preharvestingChemical: "",
-    rateOfAppPreharv: "",
-    supervisor: "",
-    contact: "",
-    certificate: "",
-    otherCert: "",
-  });
+import { createPestControlActivities } from "../../data/dummyData";
 
-  const handlePestControlDate = (activity, date) => {
-    setPestControl({
-      ...pestControl,
-      [activity]: date.toISOString().split("T")[0],
-    });
+const PestControl = () => {
+  const [showStage, setShowStage] = useState(false);
+
+  const [showOtherCert, setShowOtherCert] = useState(false);
+
+  const { farmId } = useParams();
+
+  const handleSelectCropStage = () => {
+    setShowStage(true);
   };
-  const handlePestControlActivities = (e) => {
-    const { name, value } = e.target;
-    setPestControl({
-      ...pestControl,
-      [name]: value,
-    });
+  const handleSelectCert = (e) => {
+    const value = e.target.value;
+    if (value === "Others") {
+      setShowOtherCert(!showOtherCert);
+    } else {
+      setShowOtherCert(false);
+    }
   };
-  const onPestControlActivitiesSubmit = (e) => {
-    e.preventDefault();
-    dispatchActivity({
-      type: "Add_PestControlActivity",
-      payload: {
-        farmId,
-        ...pestControl,
-      },
-    });
-    toast.success("Pest control activity submitted successfully");
-  };
+
   return (
     <div>
-      <h2 className="mb-2 text-xl">Plant Protection</h2>
-      <form
-        className="flex max-w-md flex-col gap-4"
-        onSubmit={onPestControlActivitiesSubmit}
+      <h2 className="mb-2 text-xl text-center">
+        Key Data Entry For Pest Control Activities
+      </h2>
+      <Form
+        className="container mx-auto w-full md:w-[70%]"
+        method="post"
+        action="../../app/cte/pestcontrol"
       >
+        <div>
+          <Label
+            htmlFor="stage"
+            value="Crop stage"
+            className="my-2 font-semibold"
+          />
+
+          <Select
+            id="stage"
+            required
+            onChange={handleSelectCropStage}
+            name="stage"
+            defaultValue=""
+          >
+            <option>Select stage of crop</option>
+            <option value="Early stage">Early stage</option>
+            <option value="Growing stage">Growing stage</option>
+            <option value="Preharvesting stage">Preharvesting stage</option>
+          </Select>
+        </div>
+        {showStage && (
+          <section>
+            <div className="my-2">
+              <Label htmlFor="date" className="font-semibold my-2">
+                Date
+              </Label>
+              <Datepicker
+                id="date"
+                name="date"
+                maxDate={new Date()}
+                defaultValue={new Date()}
+              />
+            </div>
+            <div className="my-2">
+              <Label htmlFor="chemical" className="font-semibold my-2">
+                Name of chemical
+              </Label>
+              <TextInput
+                id="chemical"
+                type="text"
+                placeholder="Enter the name of chemical"
+                name="chemical"
+                defaultValue=""
+              />
+            </div>
+            <div className="my-2">
+              <Label htmlFor="entry" className="font-semibold my-2">
+                Rate of application
+              </Label>
+              <TextInput
+                id="entry"
+                type="text"
+                placeholder="Enter the rate of application"
+                name="rate"
+                defaultValue=""
+              />
+            </div>
+          </section>
+        )}
+
         <section>
-          <h4>Early Stage of crop</h4>
-          <div className="my-2">
-            <Label htmlFor="date" className="font-semibold my-2">
-              Date
-            </Label>
-            <Datepicker
-              id="date"
-              value={pestControl.earlyStageDate}
-              name="earlyStageDate"
-              maxDate={new Date()}
-              placeholder="Select the pest control date"
-              onSelectedDateChanged={(date) =>
-                handlePestControlDate("earlyStageDate", date)
-              }
-            />
-          </div>
-          <div className="my-2">
-            <Label htmlFor="chemical" className="font-semibold my-2">
-              Name of chemical
-            </Label>
-            <TextInput
-              id="chemical"
-              type="text"
-              placeholder="Enter the name of chemical"
-              name="earlyStageChemical"
-              value={pestControl.earlyStageChemical}
-              onChange={handlePestControlActivities}
-            />
-          </div>
-          <div className="my-2">
-            <Label htmlFor="entry" className="font-semibold my-2">
-              Rate of application
-            </Label>
-            <TextInput
-              id="entry"
-              type="text"
-              placeholder="Enter the rate of application"
-              name="rateOfAppEarlyStage"
-              onChange={handlePestControlActivities}
-              value={pestControl.rateOfAppEarlyStage}
-            />
-          </div>
-        </section>
-        <section>
-          <h4>Growing Stage of crop</h4>
-          <div className="my-2">
-            <Label htmlFor="date" className="font-semibold my-2">
-              Date
-            </Label>
-            <Datepicker
-              id="date"
-              value={pestControl.growingStageDate}
-              name="growingStageDate"
-              maxDate={new Date()}
-              placeholder="Select the pest control date"
-              onSelectedDateChanged={(date) =>
-                handlePestControlDate("growingStageDate", date)
-              }
-            />
-          </div>
-          <div className="my-2">
-            <Label htmlFor="chemical" className="font-semibold my-2">
-              Name of chemical
-            </Label>
-            <TextInput
-              id="chemical"
-              type="text"
-              name="growingStageChemical"
-              placeholder="Enter the name of chemical"
-              value={pestControl.growingStageChemical}
-              onChange={handlePestControlActivities}
-            />
-          </div>
-          <div className="my-2">
-            <Label htmlFor="entry" className="font-semibold my-2">
-              Rate of application
-            </Label>
-            <TextInput
-              id="entry"
-              type="text"
-              name="rateAppGrowingStage"
-              placeholder="Enter the rate of application"
-              value={pestControl.rateAppGrowingStage}
-              onChange={handlePestControlActivities}
-            />
-          </div>
-        </section>
-        <section>
-          <h4>Pre-harvesting stage</h4>
-          <div className="my-2">
-            <Label htmlFor="date" className="font-semibold my-2">
-              Date
-            </Label>
-            <Datepicker
-              id="date"
-              value={pestControl.preharvestingDate}
-              name="preharvestingDate"
-              maxDate={new Date()}
-              placeholder="Select the pre-harvesting control date"
-              onSelectedDateChanged={(date) =>
-                handlePestControlDate("preharvestingDate", date)
-              }
-            />
-          </div>
-          <div className="my-2">
-            <Label htmlFor="chemical" className="font-semibold my-2">
-              Name of chemical
-            </Label>
-            <TextInput
-              id="chemical"
-              type="text"
-              name="preharvestingChemical"
-              placeholder="Enter the name of chemical"
-              value={pestControl.preharvestingChemical}
-              onChange={handlePestControlActivities}
-            />
-          </div>
-          <div className="my-2">
-            <Label htmlFor="entry" className="font-semibold my-2">
-              Rate of application
-            </Label>
-            <TextInput
-              id="entry"
-              type="text"
-              name="rateOfAppPreharv"
-              value={pestControl.rateOfAppPreharv}
-              onChange={handlePestControlActivities}
-              placeholder="Enter the rate of application"
-            />
-          </div>
-        </section>
-        <section>
-          <div>
+          <div className="my-4">
             <Label
               htmlFor="supervisor"
               value="Supervisor"
@@ -198,12 +105,11 @@ const PestControl = () => {
               required
               placeholder="Enter name of supervisor"
               id="supervisor"
-              value={pestControl.supervisor}
               name="supervisor"
-              onChange={handlePestControlActivities}
+              defaultValue=""
             />
           </div>
-          <div>
+          <div className="my-4">
             <Label
               htmlFor="contact"
               value="Contact of the supervisor"
@@ -215,8 +121,7 @@ const PestControl = () => {
               placeholder="Enter name of supervisor"
               id="contact"
               name="contact"
-              value={pestControl.contact}
-              onChange={handlePestControlActivities}
+              defaultValue=""
             />
           </div>
           <div>
@@ -229,9 +134,9 @@ const PestControl = () => {
             <Select
               id="cert"
               required
-              onChange={handlePestControlActivities}
-              value={pestControl.certificate}
+              onChange={handleSelectCert}
               name="certificate"
+              defaultValue=""
             >
               <option>Select certificate of supervisor</option>
               <option value="MOFA">MOFA</option>
@@ -240,8 +145,8 @@ const PestControl = () => {
               <option value="Others">Others</option>
             </Select>
           </div>
-          {pestControl.certificate === "Others" && (
-            <div>
+          {showOtherCert && (
+            <div className="my-4">
               <Label
                 htmlFor="certificate"
                 value="Other Certificate"
@@ -253,17 +158,36 @@ const PestControl = () => {
                 placeholder="Enter the certificate of supervisor if not listed above"
                 id="certificate"
                 name="otherCert"
-                value={pestControl.otherCert}
-                onChange={handlePestControlActivities}
+                defaultValue=""
               />
             </div>
           )}
         </section>
-        <Button type="submit">Save</Button>
-      </form>
+
+        <Button className="w-full md:w-1/2 mt-10" type="submit">
+          Save
+        </Button>
+      </Form>
       <ToastContainer />
     </div>
   );
 };
 
 export default PestControl;
+
+export const action = async ({ request }) => {
+  const data = await request.formData();
+  const pestControldata = {
+    stage: data.get("stage"),
+    date: data.get("date"),
+    chemical: data.get("chemical"),
+    rate: data.get("rate"),
+    supervisor: data.get("supervisor"),
+    certificate: data.get("certificate"),
+    otherCert: data.get("otherCert"),
+    contact: data.get("contact"),
+  };
+  createPestControlActivities(pestControldata);
+
+  return null;
+};

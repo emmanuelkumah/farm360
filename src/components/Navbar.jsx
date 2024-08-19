@@ -52,13 +52,13 @@ const Navbar = () => {
   return (
     <div className="flex justify-between p-2 md:mx-6 relative">
       <NavButton
-        color="blue"
+        color="#357960"
         customFunc={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)}
         icon={<AiOutlineMenu />}
       />
       <div className="flex">
         <NavButton
-          color="blue"
+          color="#357960"
           dotColor="#03C9D7"
           customFunc={() => handleClick("notification")}
           icon={<IoNotificationsCircleOutline />}
@@ -73,12 +73,10 @@ const Navbar = () => {
             className="rounded-full w-8 h-8"
           />
           <p>
-            <span className="text-gray-400 text-14">Hi, </span>
-            <span className="text-gray-400 font-bold ml-1 text-14">
-              "Emmanuel"
-            </span>
+            <span className="text-primary text-14">Hi, </span>
+            <span className="text-primary font-bold ml-1 text-14">Admin</span>
           </p>
-          <MdKeyboardArrowDown className="text-gray-400 text-14" />
+          <MdKeyboardArrowDown className="text-primary 0 text-14" />
         </div>
         {isClicked.userProfile && <UserProfile />}
         {isClicked.notification && <Notification />}

@@ -1,10 +1,7 @@
-import { Button } from "flowbite-react";
 import { FarmersList } from "../components";
-import { useFarmersContext } from "../context/FarmersProvider";
-import { Link } from "react-router-dom";
+import { farmersData } from "../data/dummyData";
 
 const Farmers = () => {
-  const { state } = useFarmersContext();
   return (
     <>
       <div className="m-10">
@@ -16,17 +13,19 @@ const Farmers = () => {
           placeholder="Search"
         />
 
-        {state.farmers.length >= 1 ? (
-          <FarmersList />
-        ) : (
-          <h3 className="text-xl my-6">
-            No farmer added. Click on the "Add new farmer" to start adding
-            farmer
-          </h3>
-        )}
+        <FarmersList />
       </div>
     </>
   );
 };
 
 export default Farmers;
+
+//should be async await if connect to api
+export const loader = () => {
+  return farmersData;
+  // console.log(farmersData);
+  //connect to the api and get the farmers
+  //handle errors
+  // if(!response.ok){ return {isError:true, message:'Could not fetch famers'}}
+};

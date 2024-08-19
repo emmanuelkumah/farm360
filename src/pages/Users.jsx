@@ -8,11 +8,11 @@ import { useState } from "react";
 import { AddUserModal } from "../components";
 
 const Users = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [updateUser, setUpdateUser] = useState({});
-  const [isEditing, setIsEditing] = useState(false);
-  const { state, dispatch } = UseUserContext();
-  const { users } = state;
+  // const [openModal, setOpenModal] = useState(false);
+  // const [updateUser, setUpdateUser] = useState({});
+  // const [isEditing, setIsEditing] = useState(false);
+  // const { state, dispatch } = UseUserContext();
+  // const { users } = state;
 
   // let editUser = {};
 
@@ -29,7 +29,8 @@ const Users = () => {
   };
   return (
     <>
-      <div className="m-10">
+      <h3>User form will be user</h3>
+      {/* <div className="m-10">
         <div className="mt-10">
           <Button onClick={() => setOpenModal(true)}>Add new user</Button>
         </div>
@@ -97,7 +98,7 @@ const Users = () => {
             No user added. Click on the "add user" button to create users
           </h2>
         )}
-      </div>
+      </div> */}
     </>
   );
 };

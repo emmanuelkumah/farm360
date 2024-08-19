@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Select,
@@ -7,83 +7,42 @@ import {
   FileInput,
   Datepicker,
 } from "flowbite-react";
-import { useActivitiesContext } from "../../context/FarmersProvider";
-import { useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { useParams, Form } from "react-router-dom";
+import { farmsData, createSalesActivities } from "../../data/dummyData";
 
 const Sales = () => {
-  const { dispatchActivity, activitiesState } = useActivitiesContext();
-  console.log(activitiesState);
-  const { farmId } = useParams();
-  const [sales, setSales] = useState({
-    date: "",
-    authorizer: "",
-    contact: "",
-    quantity: "",
-    receipt: "",
-    individualBuyerName: "",
-    individualBuyerQuantity: "",
-    individualBuyerContact: "",
-    companyBuyerName: "",
-    companyBuyerQuantity: "",
-    companyBuyerContact: "",
-    transport: "",
-    vehicleName: "",
-    vehicleRegNumber: "",
-    driversLicense: "",
-  });
+  const [farmDetails, setFarmDetails] = useState({});
 
-  const handleSalesDate = (date) => {
-    setSales({
-      ...sales,
-      date: date.toISOString().split("T")[0],
-    });
+  const { farmId } = useParams();
+
+  useEffect(() => {
+    //coonect to farm api and get farm details
+    const farm = getFarmOwner(farmId);
+    // console.log(farm);
+    setFarmDetails(farm);
+  }, []);
+
+  const getFarmOwner = (farmId) => {
+    return farmsData.find((farm) => farm.id === farmId);
   };
-  const handleSalesActivities = (e) => {
-    const { name, value } = e.target;
-    setSales({
-      ...sales,
-      [name]: value,
-    });
+
+  const showFarmOwner = () => {
+    if (farmDetails.owner !== "") {
+      return `${farmDetails.owner}'s farm`;
+    } else {
+      return "the farm";
+    }
   };
-  const handleReceiptUpload = (e) => {
-    const file = e.target.files[0];
-    setSales({
-      ...sales,
-      receipt: file,
-    });
-  };
-  const onSalesActivitiesSubmit = (e) => {
-    e.preventDefault();
-    setSales({
-      date: "",
-      authorizer: "",
-      contact: "",
-      quantity: "",
-      receipt: "",
-      individualBuyerName: "",
-      individualBuyerQuantity: "",
-      individualBuyerContact: "",
-      companyBuyerName: "",
-      companyBuyerQuantity: "",
-      companyBuyerContact: "",
-      transport: "",
-      vehicleName: "",
-      vehicleRegNumber: "",
-      driversLicense: "",
-    });
-    dispatchActivity({
-      type: "Add_SalesActivity",
-      payload: { farmId, ...sales },
-    });
-    toast.success("Sales activities submitted successfully");
-  };
+  const farmer = showFarmOwner();
   return (
     <div>
-      <h2 className="mb-2 text-xl">Sales</h2>
-      <form
-        className="flex max-w-md flex-col gap-4"
-        onSubmit={onSalesActivitiesSubmit}
+      <h2 className="mb-2 text-xl text-center">
+        Key Data Entry for Sales Activities on {farmer}
+      </h2>
+      <Form
+        className="container mx-auto w-full md:w-[70%]"
+        method="post"
+        action="../../app/cte/sales"
       >
         <section>
           <h4>Authorizer of relese of products for sale</h4>
@@ -93,8 +52,8 @@ const Sales = () => {
             </Label>
             <Datepicker
               id="release"
-              onSelectedDateChanged={handleSalesDate}
-              value={sales.date}
+              name="releaseDate"
+              defaultValue={new Date()}
               maxDate={new Date()}
               placeholder="Select the release date"
             />
@@ -108,9 +67,8 @@ const Sales = () => {
               placeholder="Enter name of authorizer"
               type="text"
               required
-              value={sales.authorizer}
               name="authorizer"
-              onChange={handleSalesActivities}
+              defaultValue=""
             />
           </div>
           <div className="my-2">
@@ -122,8 +80,7 @@ const Sales = () => {
               placeholder="Enter phone number"
               type="number"
               name="contact"
-              value={sales.contact}
-              onChange={handleSalesActivities}
+              defaultValue=""
             />
           </div>
           <div className="my-2">
@@ -134,9 +91,8 @@ const Sales = () => {
               id="quantity"
               placeholder="Enter quantity"
               type="number"
-              value={sales.quantity}
               name="quantity"
-              onChange={handleSalesActivities}
+              defaultValue=""
             />
           </div>
         </section>
@@ -149,7 +105,7 @@ const Sales = () => {
             id="sale"
             accept="image/*"
             name="receipt"
-            onChange={handleReceiptUpload}
+            defaultValue=""
           />
         </div>
         <section>
@@ -161,8 +117,7 @@ const Sales = () => {
               type="text"
               placeholder="Enter name"
               name="individualBuyerName"
-              value={sales.individualBuyerName}
-              onChange={handleSalesActivities}
+              defaultValue=""
             />
           </div>
           <div className="my-2">
@@ -176,8 +131,7 @@ const Sales = () => {
               type="number"
               placeholder="Enter quantity"
               name="individualBuyerQuantity"
-              value={sales.individualBuyerQuantity}
-              onChange={handleSalesActivities}
+              defaultValue=""
             />
           </div>
           <div className="my-2">
@@ -191,8 +145,7 @@ const Sales = () => {
               type="number"
               placeholder="Enter phone number"
               name="individualBuyerContact"
-              value={sales.individualBuyerContact}
-              onChange={handleSalesActivities}
+              defaultValue=""
             />
           </div>
         </section>
@@ -206,8 +159,7 @@ const Sales = () => {
               type="text"
               placeholder="Enter company name"
               name="companyBuyerName"
-              value={sales.companyBuyerName}
-              onChange={handleSalesActivities}
+              defaultValue=""
             />
           </div>
           <div className="my-2">
@@ -221,8 +173,7 @@ const Sales = () => {
               type="number"
               placeholder="Enter quantity"
               name="companyBuyerQuantity"
-              value={sales.companyBuyerQuantity}
-              onChange={handleSalesActivities}
+              defaultValue=""
             />
           </div>
           <div className="my-2">
@@ -236,31 +187,24 @@ const Sales = () => {
               type="number"
               placeholder="Enter phone number"
               name="companyBuyerContact"
-              value={sales.companyBuyerContact}
-              onChange={handleSalesActivities}
+              defaultValue=""
             />
           </div>
         </section>
 
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="transport"
             value="Means of Transport"
             className="my-2 font-semibold"
           />
-          <Select
-            id="transport"
-            required
-            name="transport"
-            value={sales.transport}
-            onChange={handleSalesActivities}
-          >
+          <Select id="transport" required name="transport" defaultValue="">
             <option>Select transport</option>
             <option value="Manual">Manual</option>
             <option value="Tractor">Tractor</option>
           </Select>
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="vehicle"
             value="Vehicle name"
@@ -271,11 +215,10 @@ const Sales = () => {
             placeholder="Enter vehicle name"
             id="vehicle"
             name="vehicleName"
-            value={sales.vehicleName}
-            onChange={handleSalesActivities}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="registration"
             value="Registration number"
@@ -286,12 +229,11 @@ const Sales = () => {
             placeholder="Enter registration number"
             id="registration"
             name="vehicleRegNumber"
-            value={sales.vehicleRegNumber}
-            onChange={handleSalesActivities}
+            defaultValue=""
           />
         </div>
 
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="license"
             value="Driver's License number"
@@ -303,16 +245,36 @@ const Sales = () => {
             placeholder="Enter driver's license number"
             id="license"
             name="driversLicense"
-            value={sales.driversLicense}
-            onChange={handleSalesActivities}
+            defaultValue=""
           />
         </div>
 
         <Button type="submit">Save Sales activities </Button>
-      </form>
-      <ToastContainer />
+      </Form>
     </div>
   );
 };
 
 export default Sales;
+
+export const action = async ({ request }) => {
+  const data = await request.formData();
+  const salesActivitiesData = {
+    releaseDate: data.get("releaseDate"),
+    authorizer: data.get("authorizer"),
+    authorizerContact: data.get("contact"),
+    quantity: data.get("quantity"),
+    receipt: data.get("receipt"),
+    individualBuyerName: data.get("individualBuyerName"),
+    individualBuyerQuantity: data.get("individualBuyerQuantity"),
+    companyBuyerName: data.get("companyBuyerName"),
+    companyBuyerContact: data.get("companyBuyerContact"),
+    transport: data.get("transport"),
+    vehicleName: data.get("vehicleName"),
+    vehicleRegNumber: data.get("vehicleRegNumber"),
+    driversLicense: data.get("driversLicense"),
+  };
+  //connect to the database to save data
+  createSalesActivities(salesActivitiesData);
+  return null;
+};

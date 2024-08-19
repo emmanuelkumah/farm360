@@ -1,10 +1,16 @@
 import React from "react";
-import { EditFarmerForm } from "../components";
+
+import { FarmerForm } from "../components";
+import { useRouteLoaderData } from "react-router-dom";
+// import { EditFarmerForm } from "../components";
 
 const EditFarmer = () => {
+  const farmer = useRouteLoaderData("farmer-detail");
+  console.log(farmer);
+
   return (
     <>
-      <EditFarmerForm />
+      <FarmerForm farmer={farmer} method="patch" />
     </>
   );
 };

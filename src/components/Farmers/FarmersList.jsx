@@ -1,29 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Table, Button, Pagination } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { useFarmersContext } from "../../context/FarmersProvider";
+import { LuEye } from "react-icons/lu";
+
 import { FaUser } from "react-icons/fa6";
-import { Link } from "react-router-dom";
-// import axios from "axios";
+import { Link, useLoaderData } from "react-router-dom";
 
 const FarmersList = () => {
-  const { dispatch, state } = useFarmersContext();
-  const { farmers } = state;
   const [currentPage, setCurrentPage] = useState(1);
   const [editFarmer, setEditFarmer] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchFarmers = async () => {
-  //     try {
-  //       const response = await axios.get("http://18.134.98.183:8080/groups");
-  //       console.log(response);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchFarmers();
-  // }, []);
+  const farmersData = useLoaderData();
+
+  console.log(farmersData);
 
   const onPageChange = (page) => setCurrentPage(page);
 
@@ -41,68 +31,67 @@ const FarmersList = () => {
   return (
     <div>
       <div className="my-10">
-        <Link to="/app/add">
-          <Button>Add new farmer</Button>
-        </Link>
+        <Button className="bg-secondary text-primary hover:text-slate-100 hover:bg-primary">
+          <Link to="new">Add new farmer</Link>
+        </Button>
+        <div />
       </div>
-      <Table hoverable>
-        <Table.Head>
-          <Table.HeadCell>Picture</Table.HeadCell>
-          <Table.HeadCell>First Name</Table.HeadCell>
-          <Table.HeadCell>Last Name</Table.HeadCell>
-          <Table.HeadCell>Gender</Table.HeadCell>
-          <Table.HeadCell>Contact</Table.HeadCell>
-          <Table.HeadCell>District</Table.HeadCell>
-          <Table.HeadCell>Community</Table.HeadCell>
-          <Table.HeadCell>Group</Table.HeadCell>
-          <Table.HeadCell>Number of farms</Table.HeadCell>
-        </Table.Head>
-        <Table.Body className="divide-y">
-          {farmers.map((farmer) => (
-            <Table.Row
-              key={farmer.id}
-              className="bg-white dark:border-gray-700 dark:bg-gray-800"
-            >
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                {farmer.picture === "" ? (
-                  <FaUser />
-                ) : (
-                  <img
-                    src={farmer.picture}
-                    alt="image"
-                    className="rounded-full w-10 h-10"
-                  />
-                )}
-              </Table.Cell>
-              <Table.Cell>{farmer.firstName}</Table.Cell>
-              <Table.Cell>{farmer.lastName}</Table.Cell>
-              <Table.Cell>{farmer.gender}</Table.Cell>
-              <Table.Cell>{farmer.contact}</Table.Cell>
-              <Table.Cell>{farmer.district}</Table.Cell>
-              <Table.Cell>{farmer.community}</Table.Cell>
-              <Table.Cell>{farmer.group}</Table.Cell>
-              {farmer.farms[1].name === "" ? (
-                <Table.Cell>1</Table.Cell>
-              ) : (
-                <Table.Cell>{farmer.farms.length}</Table.Cell>
-              )}
+      <div className="overflow-x-auto">
+        <Table className="w-full" hoverable>
+          <Table.Head>
+            <Table.HeadCell>Picture</Table.HeadCell>
+            <Table.HeadCell>First Name</Table.HeadCell>
+            <Table.HeadCell>Last Name</Table.HeadCell>
+            <Table.HeadCell>Gender</Table.HeadCell>
+            <Table.HeadCell>Contact</Table.HeadCell>
+            <Table.HeadCell>Region</Table.HeadCell>
+            <Table.HeadCell>District</Table.HeadCell>
+            <Table.HeadCell>Community</Table.HeadCell>
+            <Table.HeadCell>Group</Table.HeadCell>
+            <Table.HeadCell>Actions</Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
+            {farmersData.map((farmer) => (
+              <Table.Row
+                key={farmer.id}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {farmer.picture === "" ? (
+                    <FaUser />
+                  ) : (
+                    <img
+                      src={farmer.picture}
+                      alt="farmer picture"
+                      className="rounded-full w-10 h-10"
+                    />
+                  )}
+                </Table.Cell>
+                <Table.Cell>{farmer.firstName}</Table.Cell>
+                <Table.Cell>{farmer.lastName}</Table.Cell>
+                <Table.Cell>{farmer.gender}</Table.Cell>
+                <Table.Cell>{farmer.contact}</Table.Cell>
+                <Table.Cell>{farmer.region}</Table.Cell>
 
-              <Table.Cell>
-                <div className="flex gap-5">
-                  <Link to={`/app/farmers/${farmer.id}/edit`}>
-                    <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
-                  </Link>
+                <Table.Cell>{farmer.district}</Table.Cell>
+                <Table.Cell>{farmer.community}</Table.Cell>
+                <Table.Cell>{farmer.group}</Table.Cell>
 
-                  <MdDelete
-                    className="text-xl hover:text-red-700 cursor-pointer"
-                    onClick={() => handleDeleteFarmer(farmer.id)}
-                  />
-                </div>
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+                <Table.Cell>
+                  <div className="flex gap-5">
+                    <Link to={`${farmer.id}`}>
+                      <LuEye className="text-xl hover:text-primary cursor-pointer" />
+                    </Link>
+                    <Link to={`${farmer.id}/edit`}>
+                      <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                    </Link>
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
       <div className="flex overflow-x-auto mt-10 sm:justify-center">
         <Pagination
           currentPage={currentPage}

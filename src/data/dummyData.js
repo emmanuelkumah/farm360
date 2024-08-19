@@ -1,3 +1,5 @@
+import { FarmerDetails } from "../components";
+
 export const dummyData = {
   users: [],
   traceability: [],
@@ -5,81 +7,66 @@ export const dummyData = {
   farms: [],
 };
 
-export const farmersData = {
-  farmers: [
-    {
-      id: 1,
-      firstName: "John ",
-      lastName: "Doe",
-      gender: "male",
-      picture: "",
-      dateOfBirth: "Fri Jul 26 2024",
-      contact: "244123123",
-      address: "Accra Darkuman",
-      gps: "GS-00245-123",
-      type: "Farmer",
-      group: "Group 1",
-      region: "Upper East",
-      district: "Savlanga",
-      community: "Danba",
+export let farmersData = [
+  {
+    id: "1",
+    firstName: "John ",
+    lastName: "Doe",
+    gender: "Male",
+    picture: "",
+    dateOfBirth: "Jul 16 1987",
+    contact: "244123123",
+    address: "Accra Darkuman",
+    gps: "GS-00245-123",
+    type: "Farmer",
+    group: "Foana Tale",
+    region: "Upper East",
+    district: "Savlanga",
+    community: "Danba",
+  },
+  {
+    id: "2",
+    firstName: "Emma ",
+    lastName: "Kumah",
+    gender: "Male",
+    picture: "",
 
-      farms: [
-        {
-          farmId: 101,
-          name: "John's Soya ",
-          crop: "Soya",
-          size: 10,
-          district: "Danso",
-          community: "Danba",
-        },
-        {
-          farmId: 102,
-          name: "John's Groundnut",
-          crop: "Groundnut",
-          size: 30,
-          district: "Kasanba",
-          community: "Danba",
-        },
-      ],
-    },
-    {
-      id: 2,
-      firstName: "Emma ",
-      lastName: "Kumah",
-      gender: "male",
-      picture: "",
+    dateOfBirth: "August 26 2000",
+    contact: "244123123",
+    address: "Accra Darkuman",
+    gps: "GS-00245-123",
+    type: "Farmer",
+    group: "Talensi",
+    region: "Upper East",
+    district: "Savlanga",
+    community: "Kasena",
+  },
+];
 
-      dateOfBirth: "Fri Jul 26 2024",
-      contact: "244123123",
-      address: "Accra Darkuman",
-      gps: "GS-00245-123",
-      type: "Farmer",
-      group: "Group 1",
-      region: "Upper East",
-      district: "Savlanga",
-      community: "Kasena",
-
-      farms: [
-        {
-          farmId: 103,
-          name: "Emma's Soya ",
-          crop: "Soya",
-          size: 100,
-          district: "Asoni",
-          community: "Kasena",
-        },
-        {
-          farmId: 104,
-          name: "Emma's Groundnut",
-          crop: "Groundnut",
-          size: 50,
-          district: "Damba",
-          community: "Kasena",
-        },
-      ],
-    },
-  ],
-};
+export let farmsData = [
+  {
+    id: "1",
+    owner: "Emmanuel",
+    name: "Anigye farms",
+    crop: "Soya",
+    size: "20",
+    gps: "GS-0259012",
+    region: "UpperEast",
+    district: "Asoni",
+    community: "Kasena",
+  },
+  {
+    id: "2",
+    owner: "Victor",
+    name: "Vic farms",
+    crop: "Groundnut",
+    size: "10",
+    gps: "GS-0243-122-12",
+    region: "Upper East",
+    district: "Asontaba",
+    community: "Grubi",
+  },
+];
 export const regions = [
   {
     regionId: 1,
@@ -534,16 +521,87 @@ export const groups = [
   },
 ];
 
-export const crops = ["Soya", "Shea", "Groundnut"];
+export const crops = ["Soya", "Groundnut"];
 
-export const trackedActivities = {
-  prePlanting: [],
-  planting: [],
-  weedControl: [],
-  fertilizerApplication: [],
-  harvesting: [],
-  storage: [],
-  sales: [],
-  shipment: [],
-  pestControl: [],
+export let plantingActivitiesData = [];
+
+export let prePlantingActivitiesData = [];
+export let fertActivitiesData = [];
+export let weedControlActivitiesData = [];
+export let harvestingActivitiesData = [];
+export let salesActivitiesData = [];
+export let storageActivitiesData = [];
+export let pestControlActivitiesData = [];
+export let shipmentActivities = [];
+
+export const createFarmer = (newFarmer) => {
+  farmersData = [...farmersData, newFarmer];
+  console.log(farmersData);
+  return farmersData;
+};
+export const updateFarmerDetails = (data) => {
+  farmersData = farmersData.map((farmer) => {
+    return farmer.id === data.id ? data : farmer;
+  });
+};
+export const deleteFarmer = (id) => {
+  farmersData = farmersData.filter((farmer) => farmer.id !== id);
+};
+
+//farms actions
+export const createFarm = (firstFarm, secondFarm) => {
+  if (secondFarm.name !== null) {
+    farmsData = [...farmsData, firstFarm, secondFarm];
+  } else {
+    farmsData = [...farmsData, firstFarm];
+  }
+};
+
+export const deleteFarm = (id) => {
+  farmsData = farmsData.filter((farm) => farm.id !== id);
+  console.log(farmsData);
+};
+
+export const updateFarmDetails = (data) => {
+  farmsData = farmsData.map((farm) => {
+    return farm.id === data.id ? data : farm;
+  });
+};
+
+//activities
+
+export const createPlantingActivities = (data) => {
+  plantingActivitiesData = [...plantingActivitiesData, data];
+};
+
+export const createPrePlantingActivities = (data) => {
+  prePlantingActivitiesData = [...prePlantingActivitiesData, data];
+};
+
+export const createFertilizerActivities = (data) => {
+  fertActivitiesData = [...fertActivitiesData, data];
+};
+
+export const createWeedControlActivities = (data) => {
+  weedControlActivitiesData = [...weedControlActivitiesData, data];
+};
+
+export const createHarvestingActivities = (data) => {
+  harvestingActivitiesData = [...harvestingActivitiesData, data];
+};
+
+export const createSalesActivities = (data) => {
+  salesActivitiesData = [...salesActivitiesData, data];
+};
+
+export const createStorageActivities = (data) => {
+  storageActivitiesData = [...storageActivitiesData, data];
+};
+
+export const createPestControlActivities = (data) => {
+  pestControlActivitiesData = [...pestControlActivitiesData, data];
+};
+
+export const createShipmentActivities = (data) => {
+  shipmentActivities = [...shipmentActivities, data];
 };

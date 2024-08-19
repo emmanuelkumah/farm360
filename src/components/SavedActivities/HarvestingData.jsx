@@ -1,11 +1,9 @@
 import React from "react";
 import { Table } from "flowbite-react";
-import { useActivitiesContext } from "../../context/FarmersProvider";
+import { useLoaderData } from "react-router-dom";
 const HarvestingData = () => {
-  const {
-    activitiesState: { harvesting },
-  } = useActivitiesContext();
-  console.log(harvesting);
+  const data = useLoaderData();
+  console.log(data);
   return (
     <>
       <div className="overflow-x-auto">
@@ -23,16 +21,16 @@ const HarvestingData = () => {
             <Table.HeadCell>Certificate</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {harvesting.map((activity) => (
+            {data.map((activity, index) => (
               <Table.Row
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                key={activity.farmId}
+                key={index}
               >
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {activity.farmId}
                 </Table.Cell>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {activity.date}
+                  {activity.harvestDate}
                 </Table.Cell>
                 <Table.Cell>{activity.acres}</Table.Cell>
                 <Table.Cell>{activity.bags}</Table.Cell>
@@ -41,7 +39,7 @@ const HarvestingData = () => {
                 <Table.Cell>{activity.machine}</Table.Cell>
                 <Table.Cell>{activity.supervisor}</Table.Cell>
                 <Table.Cell>{activity.contact}</Table.Cell>
-                <Table.Cell>{activity.cert}</Table.Cell>
+                <Table.Cell>{activity.certificate}</Table.Cell>
 
                 <Table.Cell>
                   <a

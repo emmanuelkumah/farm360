@@ -1,62 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { useActivitiesContext } from "../../context/FarmersProvider";
-import { useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { useParams, Form } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { farmsData } from "../../data/dummyData";
+import { createWeedControlActivities } from "../../data/dummyData";
+
 const WeedControl = () => {
-  const [weedControlActivities, setWeedControlActivities] = useState({
-    dateOfWeeding: "",
-    weedControlMethod: "",
-    chemical: "",
-    rateOfApplication: "",
-    supervisor: "",
-    contact: "",
-    certificateOfSupervisor: "",
-    otherCert: "",
-  });
-  const { dispatchActivity } = useActivitiesContext();
+  const [hasWeedControl, setHasWeedControl] = useState(false);
+  const [hasCert, setHasCert] = useState(false);
+  const [farmDetails, setFarmDetails] = useState({});
+
   const { farmId } = useParams();
-  const handleWeedingDate = (date) => {
-    setWeedControlActivities({
-      ...weedControlActivities,
-      dateOfWeeding: date.toISOString().split("T")[0],
-    });
-  };
-  const handleWeedingActivities = (e) => {
-    const { name, value } = e.target;
-    setWeedControlActivities({
-      ...weedControlActivities,
-      [name]: value,
-    });
+
+  useEffect(() => {
+    //coonect to farm api and get farm details
+    const farm = getFarmOwner(farmId);
+    // console.log(farm);
+    setFarmDetails(farm);
+  }, []);
+
+  const getFarmOwner = (farmId) => {
+    return farmsData.find((farm) => farm.id === farmId);
   };
 
-  const onWeedControlActivitiesSubmit = (e) => {
-    e.preventDefault();
-    setWeedControlActivities({
-      dateOfWeeding: "",
-      weedControlMethod: "",
-      chemical: "",
-      rateOfApplication: "",
-      supervisor: "",
-      contact: "",
-      certificateOfSupervisor: "",
-      otherCert: "",
-    });
-    dispatchActivity({
-      type: "Add_WeedControlActivity",
-      payload: { farmId, ...weedControlActivities },
-    });
-    toast.success("Weed control activities submitted successfully!");
+  const handleSelectWeedControl = (e) => {
+    if (e.target.value === "Chemical") {
+      setHasWeedControl(true);
+    } else {
+      setHasWeedControl(false);
+    }
   };
+
+  const handleSelectCert = (e) => {
+    if (e.target.value === "Others") {
+      setHasCert(!hasCert);
+    } else {
+      setHasCert(false);
+    }
+  };
+  const showFarmOwner = () => {
+    if (farmDetails.owner !== "") {
+      return `${farmDetails.owner}'s farm`;
+    } else {
+      return "the farm";
+    }
+  };
+  const farmer = showFarmOwner();
   return (
     <div>
       <div>
-        <h2 className="mb-2 text-xl">Weed Control Activities</h2>
-        <form
-          className="flex max-w-md flex-col gap-4"
-          onSubmit={onWeedControlActivitiesSubmit}
+        <h2 className="mb-2 text-xl text-center">
+          {" "}
+          Key Data Entry For Weed Control Activities on {farmer}
+        </h2>{" "}
+        <Form
+          className="container mx-auto w-full md:w-[70%]"
+          method="post"
+          action="../../app/cte/weedcontrol"
         >
-          <div>
+          <div className="my-4">
             <Label htmlFor="weed" className="font-semibold my-2">
               Date of weed control
             </Label>
@@ -64,13 +66,12 @@ const WeedControl = () => {
               id="weed"
               name="dateOfWeeding"
               placeholder="Select date of weed control"
-              value={weedControlActivities.dateOfWeeding}
               maxDate={new Date()}
-              onSelectedDateChanged={(date) => handleWeedingDate(date)}
+              defaultValue={new Date()}
             />
           </div>
 
-          <div>
+          <div className="my-4">
             <Label
               htmlFor="method"
               value="Method of weed control"
@@ -81,16 +82,16 @@ const WeedControl = () => {
               id="method"
               required
               name="weedControlMethod"
-              onChange={handleWeedingActivities}
-              value={weedControlActivities.weedControlMethod}
+              onChange={handleSelectWeedControl}
+              defaultValue=""
             >
               <option>Select method of weed control</option>
               <option value="Hand">Hand</option>
               <option value="Chemical">Chemical</option>
             </Select>
           </div>
-          {weedControlActivities.weedControlMethod === "Chemical" && (
-            <div>
+          {hasWeedControl && (
+            <div className="my-4">
               <Label
                 htmlFor="chemical"
                 value="Name of chemical"
@@ -102,13 +103,12 @@ const WeedControl = () => {
                 placeholder="Enter name of chemical"
                 id="chemical"
                 name="chemical"
-                value={weedControlActivities.chemical}
-                onChange={handleWeedingActivities}
+                defaultValue=""
               />
             </div>
           )}
 
-          <div>
+          <div className="my-4">
             <Label
               htmlFor="rate"
               value="Rate of chemical application"
@@ -120,11 +120,10 @@ const WeedControl = () => {
               placeholder="Enter rate of application"
               id="rate"
               name="rateOfApplication"
-              value={weedControlActivities.rateOfApplication}
-              onChange={handleWeedingActivities}
+              defaultValue=""
             />
           </div>
-          <div>
+          <div className="my-4">
             <Label
               htmlFor="supervisor"
               value="Supervisor"
@@ -136,11 +135,10 @@ const WeedControl = () => {
               placeholder="Enter name of supervisor"
               id="supervisor"
               name="supervisor"
-              value={weedControlActivities.supervisor}
-              onChange={handleWeedingActivities}
+              defaultValue=""
             />
           </div>
-          <div>
+          <div className="my-4">
             <Label
               htmlFor="contact"
               value="Contact of the supervisor"
@@ -152,11 +150,10 @@ const WeedControl = () => {
               placeholder="Enter name of supervisor"
               id="contact"
               name="contact"
-              value={weedControlActivities.contact}
-              onChange={handleWeedingActivities}
+              defaultValue=""
             />
           </div>
-          <div>
+          <div className="my-4">
             <Label
               htmlFor="cert"
               value="Certificate"
@@ -167,8 +164,8 @@ const WeedControl = () => {
               id="cert"
               required
               name="certificateOfSupervisor"
-              onChange={handleWeedingActivities}
-              value={weedControlActivities.certificateOfSupervisor}
+              defaultValue=""
+              onChange={handleSelectCert}
             >
               <option>Select certificate of supervisor</option>
               <option value="MOFA">MOFA</option>
@@ -177,8 +174,8 @@ const WeedControl = () => {
               <option value="Others">Others</option>
             </Select>
           </div>
-          {weedControlActivities.certificateOfSupervisor === "Others" && (
-            <div>
+          {hasCert && (
+            <div className="my-4">
               <Label
                 htmlFor="certificate"
                 value="Other Certificate"
@@ -190,14 +187,15 @@ const WeedControl = () => {
                 placeholder="Enter the certificate of supervisor if not listed above"
                 id="certificate"
                 name="otherCert"
-                value={weedControlActivities.otherCert}
-                onChange={handleWeedingActivities}
+                defaultValue=""
               />
             </div>
           )}
 
-          <Button type="submit">Submit</Button>
-        </form>
+          <Button className="w-full md:w-1/2" type="submit">
+            Submit
+          </Button>
+        </Form>
         <ToastContainer />
       </div>
     </div>
@@ -205,3 +203,20 @@ const WeedControl = () => {
 };
 
 export default WeedControl;
+
+export const action = async ({ request }) => {
+  const data = await request.formData();
+  const enteredWeedControlData = {
+    dateOfWeeding: data.get("dateOfWeeding"),
+    weedControlMethod: data.get("weedControlMethod"),
+    chemical: data.get("chemical"),
+    rateOfApplication: data.get("rateOfApplication"),
+    supervisor: data.get("supervisor"),
+    contact: data.get("contact"),
+    certificateOfSupervisor: data.get("certificateOfSupervisor"),
+    otherCert: data.get("otherCert"),
+  };
+  createWeedControlActivities(enteredWeedControlData);
+
+  return null;
+};
