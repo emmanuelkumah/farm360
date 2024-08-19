@@ -39,6 +39,7 @@ const PrePlanting = () => {
       return "the farm";
     }
   };
+  const farmer = showFarmOwner();
   const handleSelectSource = (e) => {
     if (e.target.value === "Others") {
       setSource(!hasSource);
@@ -60,7 +61,7 @@ const PrePlanting = () => {
       <div className="m-10">
         <div>
           <h3 className="text-xl mt-[20%] md:mt-10">
-            Record Pre Planting Activities on {showFarmOwner()}
+            Key Data Entry For Planting Activities on {farmer}
           </h3>
           <Form method="post" action="../../app/preplanting">
             <div className="grid grid-cols-1 md:grid-cols-2">

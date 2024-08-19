@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
 import { useParams, Form } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { createFertilizerActivities } from "../../data/dummyData";
 import { farmsData } from "../../data/dummyData";
 
@@ -46,11 +46,13 @@ const FertilizerApplication = () => {
       return "the farm";
     }
   };
+  const farmer = showFarmOwner();
 
   return (
     <div>
       <h2 className="mb-2 text-xl text-center">
-        Record Fertilizer Application activities on {showFarmOwner()}
+        {" "}
+        Key Data Entry For Fertilizer Activities on {farmer}
       </h2>
       <Form
         className="container mx-auto w-full md:w-[70%]"

@@ -37,11 +37,12 @@ const Planting = () => {
       return "the farm";
     }
   };
+  const farmer = showFarmOwner();
   return (
     <div className="flex flex-col justify-center items-center">
       <h2 className="mb-2 text-xl">
         {" "}
-        Record Planting Activities on {showFarmOwner()}
+        Key Data Entry For Planting Activities on {farmer}
       </h2>
       <Form
         className="w-full md:w-[70%]"

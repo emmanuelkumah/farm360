@@ -45,11 +45,14 @@ const WeedControl = () => {
       return "the farm";
     }
   };
-
+  const farmer = showFarmOwner();
   return (
     <div>
       <div>
-        Record Weed control activities on {showFarmOwner()}
+        <h2 className="mb-2 text-xl text-center">
+          {" "}
+          Key Data Entry For Weed Control Activities on {farmer}
+        </h2>{" "}
         <Form
           className="container mx-auto w-full md:w-[70%]"
           method="post"

@@ -33,11 +33,11 @@ const Sales = () => {
       return "the farm";
     }
   };
-
+  const farmer = showFarmOwner();
   return (
     <div>
       <h2 className="mb-2 text-xl text-center">
-        Record Sales Activities on {showFarmOwner()}
+        Key Data Entry for Sales Activities on {farmer}
       </h2>
       <Form
         className="container mx-auto w-full md:w-[70%]"

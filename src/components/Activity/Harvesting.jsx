@@ -42,10 +42,11 @@ const Harvesting = () => {
       return "the farm";
     }
   };
+  const farmer = showFarmOwner();
   return (
     <div>
       <h2 className="mb-2 text-xl text-center">
-        Record harvesting actions on {showFarmOwner}
+        Key Data Entry For Harvesting Activities on {farmer}
       </h2>
       <Form
         className="container mx-auto w-full md:w-[70%]"

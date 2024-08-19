@@ -36,7 +36,7 @@ const Storage = () => {
       return "the farm";
     }
   };
-
+  const farmer = showFarmOwner();
   const handleSelectMethod = (e) => {
     if (e.target.value === "Others") {
       setHasStorage(!hasStorage);
@@ -56,7 +56,7 @@ const Storage = () => {
   return (
     <div>
       <h2 className="mb-2 text-xl text-center">
-        Record Storage Activities on {showFarmOwner()}
+        Key Data Entry For Storage Activities on {farmer}
       </h2>
       <Form
         className="container mx-auto w-full md:w-[70%]"

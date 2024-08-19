@@ -165,7 +165,9 @@ const Shipment = () => {
           </div>
         </section>
 
-        <Button type="submit">Save</Button>
+        <Button className="w-full md:w-1/2" type="submit">
+          Save
+        </Button>
       </Form>
       <ToastContainer />
     </div>

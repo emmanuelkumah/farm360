@@ -26,7 +26,7 @@ const PestControl = () => {
   return (
     <div>
       <h2 className="mb-2 text-xl text-center">
-        Key Data Entry For Pest Control
+        Key Data Entry For Pest Control Activities
       </h2>
       <Form
         className="container mx-auto w-full md:w-[70%]"
