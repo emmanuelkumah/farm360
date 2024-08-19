@@ -1,11 +1,10 @@
 import React from "react";
-import { useActivitiesContext } from "../../context/FarmersProvider";
 import { Table } from "flowbite-react";
+import { useLoaderData } from "react-router-dom";
 
 const StorageData = () => {
-  const {
-    activitiesState: { storage },
-  } = useActivitiesContext();
+  const data = useLoaderData();
+
   return (
     <>
       <div className="overflow-x-auto">
@@ -25,25 +24,25 @@ const StorageData = () => {
             <Table.HeadCell>Certificate</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {storage.map((activity) => (
+            {data.map((activity, index) => (
               <Table.Row
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                key={activity.farmId}
+                key={index}
               >
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {activity.farmId}
                 </Table.Cell>
-                <Table.Cell>{activity.date}</Table.Cell>
-                <Table.Cell>{activity.quantity}</Table.Cell>
+                <Table.Cell>{activity.storage}</Table.Cell>
+                <Table.Cell>{activity.storageType}</Table.Cell>
 
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {activity.type}
                 </Table.Cell>
-                <Table.Cell>{activity.quality}</Table.Cell>
+                <Table.Cell>{activity.otherType}</Table.Cell>
 
                 <Table.Cell>{activity.community}</Table.Cell>
                 <Table.Cell>{activity.district}</Table.Cell>
-                <Table.Cell>{activity.chemical}</Table.Cell>
+                <Table.Cell>{activity.quality}</Table.Cell>
                 <Table.Cell>{activity.rate}</Table.Cell>
                 <Table.Cell>{activity.supervisor}</Table.Cell>
                 <Table.Cell>{activity.contact}</Table.Cell>

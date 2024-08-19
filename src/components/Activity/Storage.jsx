@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Select,
@@ -7,81 +7,61 @@ import {
   FileInput,
   Datepicker,
 } from "flowbite-react";
-import { useActivitiesContext } from "../../context/FarmersProvider";
-import { useParams } from "react-router-dom";
+import { useParams, Form } from "react-router-dom";
+import { createStorageActivities, farmsData } from "../../data/dummyData";
 import { toast, ToastContainer } from "react-toastify";
 
 const Storage = () => {
-  const { dispatchActivity } = useActivitiesContext();
+  const [farmDetails, setFarmDetails] = useState({});
+
+  const [hasStorage, setHasStorage] = useState(false);
+  const [hasCert, setHasCert] = useState(false);
   const { farmId } = useParams();
-  const [storage, setStorage] = useState({
-    date: "",
-    quantity: "",
-    type: "",
-    otherType: "",
-    community: "",
-    district: "",
-    quality: "",
-    chemical: "",
-    certificate: "",
-    rate: "",
-    supervisor: "",
-    contact: "",
-    otherCert: "",
-    receipt: "",
-  });
 
-  const handleStorageDate = (date) => {
-    setStorage({
-      ...storage,
-      date: date.toISOString().split("T")[0],
-    });
-  };
-  const handleStorageActivities = (e) => {
-    const { name, value } = e.target;
-    setStorage({
-      ...storage,
-      [name]: value,
-    });
+  useEffect(() => {
+    //coonect to farm api and get farm details
+    const farm = getFarmOwner(farmId);
+    // console.log(farm);
+    setFarmDetails(farm);
+  }, []);
+
+  const getFarmOwner = (farmId) => {
+    return farmsData.find((farm) => farm.id === farmId);
   };
 
-  const handleReceiptUpload = (e) => {
-    const file = e.target.files[0];
-    setStorage({
-      ...storage,
-      receipt: file,
-    });
+  const showFarmOwner = () => {
+    if (farmDetails.owner !== "") {
+      return `${farmDetails.owner}'s farm`;
+    } else {
+      return "the farm";
+    }
   };
-  const onStorageActivitiesSubmit = (e) => {
-    e.preventDefault();
-    setStorage({
-      date: "",
-      quantity: "",
-      type: "",
-      otherType: "",
-      community: "",
-      district: "",
-      quality: "",
-      chemical: "",
-      rate: "",
-      supervisor: "",
-      contact: "",
-      certficate: "",
-      otherCert: "",
-      receipt: "",
-    });
-    dispatchActivity({
-      type: "Add_StorageActivity",
-      payload: { farmId, ...storage },
-    });
-    toast.success("Storage activity submitted successfully");
+
+  const handleSelectMethod = (e) => {
+    if (e.target.value === "Others") {
+      setHasStorage(!hasStorage);
+    } else {
+      setHasStorage(false);
+    }
   };
+
+  const handleSelectCert = (e) => {
+    if (e.target.value === "Others") {
+      setHasCert(!hasCert);
+    } else {
+      setHasCert(false);
+    }
+  };
+
   return (
     <div>
-      <h2 className="mb-2 text-xl">Storage</h2>
-      <form
-        className="flex max-w-md flex-col gap-4"
-        onSubmit={onStorageActivitiesSubmit}
+      <h2 className="mb-2 text-xl text-center">
+        Record Storage Activities on {showFarmOwner()}
+      </h2>
+      <Form
+        className="container mx-auto w-full md:w-[70%]"
+        method="post"
+        action="../../app/storage"
       >
         <div>
           <Label htmlFor="storage" className="font-semibold my-2">
@@ -89,13 +69,13 @@ const Storage = () => {
           </Label>
           <Datepicker
             id="storage"
-            onSelectedDateChanged={handleStorageDate}
-            value={storage.date}
             placeholder="Select the storage date"
+            name="storage"
             maxDate={new Date()}
+            defaultValue={new Date()}
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label htmlFor="quantity" className="font-semibold my-2">
             Quantity
           </Label>
@@ -103,13 +83,12 @@ const Storage = () => {
             id="quantity"
             type="text"
             placeholder="Quantity"
-            value={storage.quantity}
             name="quantity"
-            onChange={handleStorageActivities}
+            defaultValue=""
           />
         </div>
 
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="type-storage"
             value="Type of storage"
@@ -119,9 +98,9 @@ const Storage = () => {
           <Select
             id="method"
             required
-            value={storage.type}
-            name="type"
-            onChange={handleStorageActivities}
+            name="storageType"
+            defaultValue=""
+            onChange={handleSelectMethod}
           >
             <option>Select the type of storage</option>
             <option value="Own storage">Own storage</option>
@@ -130,8 +109,8 @@ const Storage = () => {
             <option value="Others">Others</option>
           </Select>
         </div>
-        {storage.type === "Others" && (
-          <div>
+        {hasStorage && (
+          <div className="my-4">
             <Label htmlFor="other-storage" className="font-semibold my-2">
               Others(specify)
             </Label>
@@ -140,13 +119,12 @@ const Storage = () => {
               type="text"
               name="otherType"
               placeholder="Specify the other storage"
-              value={storage.otherType}
-              onChange={handleStorageActivities}
+              defaultValue=""
             />
           </div>
         )}
 
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="community"
             value="Community"
@@ -157,11 +135,10 @@ const Storage = () => {
             placeholder="Enter the name of community"
             id="community"
             name="community"
-            value={storage.community}
-            onChange={handleStorageActivities}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="district"
             value="District"
@@ -172,23 +149,16 @@ const Storage = () => {
             placeholder="Enter the district"
             id="district"
             name="district"
-            value={storage.district}
-            onChange={handleStorageActivities}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="quality"
             value="Quality"
             className="my-2 font-semibold"
           />
-          <Select
-            id="quality"
-            required
-            name="quality"
-            onChange={handleStorageActivities}
-            value={storage.quality}
-          >
+          <Select id="quality" required name="quality" defaultValue="">
             <option>Select quality</option>
             <option value="Good">Good</option>
             <option value="Fairly good">Fairly good</option>
@@ -197,7 +167,7 @@ const Storage = () => {
             <option value="Dry">Dry</option>
           </Select>
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="chemical"
             value="Chemical name"
@@ -208,11 +178,10 @@ const Storage = () => {
             placeholder="Enter chemical name"
             id="chemical"
             name="chemical"
-            onChange={handleStorageActivities}
-            value={storage.chemical}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="rate-apply"
             value="Rate of application(ml per acre)"
@@ -223,12 +192,11 @@ const Storage = () => {
             placeholder="Enter the rate of application"
             id="rate-apply"
             name="rate"
-            onChange={handleStorageActivities}
-            value={storage.rate}
+            defaultValue=""
           />
         </div>
 
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="supervisor"
             value="Supervisor"
@@ -240,11 +208,10 @@ const Storage = () => {
             placeholder="Enter name of supervisor"
             id="supervisor"
             name="supervisor"
-            onChange={handleStorageActivities}
-            value={storage.supervisor}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="contact"
             value="Contact of the supervisor"
@@ -256,11 +223,10 @@ const Storage = () => {
             placeholder="Enter name of supervisor"
             id="contact"
             name="contact"
-            onChange={handleStorageActivities}
-            value={storage.contact}
+            defaultValue=""
           />
         </div>
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="cert"
             value="Certificate"
@@ -271,8 +237,8 @@ const Storage = () => {
             id="cert"
             required
             name="certificate"
-            onChange={handleStorageActivities}
-            value={storage.certificate}
+            defaultValue=""
+            onChange={handleSelectCert}
           >
             <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
@@ -281,7 +247,7 @@ const Storage = () => {
             <option value="Others">Others</option>
           </Select>
         </div>
-        {storage.certificate === "Others" && (
+        {hasCert && (
           <div>
             <Label
               htmlFor="certificate"
@@ -294,30 +260,47 @@ const Storage = () => {
               placeholder="Enter the certificate of supervisor if not listed above"
               id="certificate"
               name="otherCert"
-              value={storage.otherCert}
-              onChange={handleStorageActivities}
+              defaultValue=""
             />
           </div>
         )}
 
-        <div>
+        <div className="my-4">
           <Label
             htmlFor="scanned"
             value="Upload scanned receipt"
             className="my-2 font-semibold"
           />
-          <FileInput
-            id="file"
-            accept="image/*"
-            name="receipt"
-            onChange={handleReceiptUpload}
-          />
+          <FileInput id="file" accept="image/*" name="receipt" />
         </div>
-        <Button type="submit">Submit</Button>
-      </form>
+        <Button className="w-full md:w-full mt-10" type="submit">
+          Submit
+        </Button>
+      </Form>
       <ToastContainer />
     </div>
   );
 };
 
 export default Storage;
+
+export const action = async ({ request }) => {
+  const data = await request.formData();
+  const storageActivitiesData = {
+    storage: data.get("storage"),
+    quantity: data.get("quantity"),
+    storageType: data.get("storageType"),
+    otherType: data.get("otherType"),
+    community: data.get("community"),
+    district: data.get("district"),
+    quality: data.get("quality"),
+    rate: data.get("rate"),
+    supervisor: data.get("supervisor"),
+    contact: data.get("contact"),
+    certificate: data.get("certificate"),
+    otherCert: data.get("otherCert"),
+    receipt: data.get("receipt"),
+  };
+  createStorageActivities(storageActivitiesData);
+  return null;
+};

@@ -8,72 +8,20 @@ import {
 } from "flowbite-react";
 import { ToastContainer, toast } from "react-toastify";
 // import { useActivitiesContext } from "../../context/FarmersProvider";
-import { useParams } from "react-router-dom";
+import { useParams, Form } from "react-router-dom";
+import { createShipmentActivities } from "../../data/dummyData";
 
 const Shipment = () => {
   // const { dispatchActivity } = useActivitiesContext();
   const { farmId } = useParams();
-  const [shipment, setShipment] = useState({
-    shipmentDate: "",
-    destination: "",
-    entry: "",
-    exit: "",
-    name: "",
-    contact: "",
-    address: "",
-    certificate: "",
-    packingMethod: "",
-    kilosPerPackage: "",
-  });
 
-  const handleShipmentDates = (date) => {
-    setShipment({
-      ...shipment,
-      shipmentDate: date.toISOString().split("T")[0],
-    });
-  };
-  const handleShipmentActivities = (e) => {
-    const { name, value } = e.target;
-
-    setShipment({
-      ...shipment,
-      [name]: value,
-    });
-  };
-  const handleCertificateUpload = (e) => {
-    const file = e.target.files[0];
-    setShipment({
-      ...shipment,
-      certificate: file,
-    });
-  };
-
-  const onShipmentSubmit = (e) => {
-    e.preventDefault();
-    dispatchActivity({
-      type: "Add_ShipmentActivity",
-      payload: { farmId, ...shipment },
-    });
-    setShipment({
-      shipmentDate: "",
-      destination: "",
-      entry: "",
-      exit: "",
-      name: "",
-      contact: "",
-      address: "",
-      certificate: "",
-      packingMethod: "",
-      kilosPerPackage: "",
-    });
-    toast.success("Shipment activities added successfully");
-  };
   return (
     <div>
-      <h2 className="mb-2 text-xl">Details Of authorizer</h2>
-      <form
-        className="flex max-w-md flex-col gap-4"
-        onSubmit={onShipmentSubmit}
+      <h2 className="mb-2 text-xl text-center">Key Data Entry for Shipment</h2>
+      <Form
+        className="container mx-auto w-full md:w-[70%]"
+        method="post"
+        action="../../app/shipment"
       >
         <section>
           <div className="my-2">
@@ -82,10 +30,10 @@ const Shipment = () => {
             </Label>
             <Datepicker
               id="exit"
-              onSelectedDateChanged={(date) => handleShipmentDates(date)}
-              value={shipment.shipmentDate}
               placeholder="select shipment date"
+              name="date"
               maxDate={new Date()}
+              defaultValue={new Date()}
               required
             />
           </div>
@@ -98,8 +46,7 @@ const Shipment = () => {
               type="text"
               placeholder="Enter destination country"
               name="destination"
-              value={shipment.destination}
-              onChange={handleShipmentActivities}
+              defaultValue=""
               required
             />
           </div>
@@ -112,8 +59,7 @@ const Shipment = () => {
               type="text"
               placeholder="Port of entry"
               name="entry"
-              value={shipment.entry}
-              onChange={handleShipmentActivities}
+              defaultValue=""
               required
             />
           </div>
@@ -126,8 +72,7 @@ const Shipment = () => {
               type="text"
               placeholder="Port of exit"
               name="exit"
-              value={shipment.exit}
-              onChange={handleShipmentActivities}
+              defaultValue=""
               required
             />
           </div>
@@ -143,9 +88,8 @@ const Shipment = () => {
               id="name"
               type="text"
               placeholder="Enter customer name"
-              name="name"
-              value={shipment.name}
-              onChange={handleShipmentActivities}
+              name="customername"
+              defaultValue=""
               required
             />
           </div>
@@ -158,8 +102,7 @@ const Shipment = () => {
               type="number"
               placeholder="Enter contact"
               name="contact"
-              value={shipment.contact}
-              onChange={handleShipmentActivities}
+              defaultValue=""
               required
             />
           </div>
@@ -172,8 +115,7 @@ const Shipment = () => {
               type="text"
               placeholder="Enter address"
               name="address"
-              value={shipment.address}
-              onChange={handleShipmentActivities}
+              defaultValue=""
               required
             />
           </div>
@@ -187,8 +129,8 @@ const Shipment = () => {
 
             <FileInput
               id="certificate"
-              onChange={handleCertificateUpload}
               name="certificate"
+              defaultValue=""
               required
             />
           </div>
@@ -204,9 +146,8 @@ const Shipment = () => {
               placeholder="Enter mode of packaging"
               type="text"
               name="packingMethod"
-              value={shipment.packingMethod}
+              defaultValue=""
               required
-              onChange={handleShipmentActivities}
             />
           </div>
           <div className="my-2">
@@ -218,18 +159,36 @@ const Shipment = () => {
               placeholder="Enter number of kilos per package"
               type="text"
               name="kilosPerPackage"
-              value={shipment.kilosPerPackage}
-              onChange={handleShipmentActivities}
+              defaultValue=""
               required
             />
           </div>
         </section>
 
         <Button type="submit">Save</Button>
-      </form>
+      </Form>
       <ToastContainer />
     </div>
   );
 };
 
 export default Shipment;
+
+export const action = async ({ request }) => {
+  const data = await request.formData();
+
+  const shipmentActivities = {
+    exitDate: data.get("date"),
+    destination: data.get("destination"),
+    entry: data.get("entry"),
+    exit: data.get("exit"),
+    customername: data.get("customername"),
+    contact: data.get("contact"),
+    address: data.get("address"),
+    certificate: data.get("certificate"),
+    packingMethod: data.get("packingMethod"),
+    kilosPerPackage: data.get("kilosPerPackage"),
+  };
+  createShipmentActivities(shipmentActivities);
+  return null;
+};

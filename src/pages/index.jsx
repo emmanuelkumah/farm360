@@ -21,3 +21,6 @@ export { default as FertilizerActivities } from "./FertilizerActivities";
 export { default as WeedControlActivities } from "./WeedControlActivities";
 export { default as Harvesting } from "./Harvesting";
 export { default as Sales } from "./Sales";
+export { default as Storage } from "./Storage";
+export { default as PestControlActivities } from "./PestControlActivities";
+export { default as Shipment } from "./Shipment";

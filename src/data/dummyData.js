@@ -543,6 +543,9 @@ export let fertActivitiesData = [];
 export let weedControlActivitiesData = [];
 export let harvestingActivitiesData = [];
 export let salesActivitiesData = [];
+export let storageActivitiesData = [];
+export let pestControlActivitiesData = [];
+export let shipmentActivities = [];
 
 export const createFarmer = (newFarmer) => {
   farmersData = [...farmersData, newFarmer];
@@ -602,4 +605,16 @@ export const createHarvestingActivities = (data) => {
 
 export const createSalesActivities = (data) => {
   salesActivitiesData = [...salesActivitiesData, data];
+};
+
+export const createStorageActivities = (data) => {
+  storageActivitiesData = [...storageActivitiesData, data];
+};
+
+export const createPestControlActivities = (data) => {
+  pestControlActivitiesData = [...pestControlActivitiesData, data];
+};
+
+export const createShipmentActivities = (data) => {
+  shipmentActivities = [...shipmentActivities, data];
 };

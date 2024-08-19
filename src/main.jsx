@@ -27,6 +27,9 @@ import {
   WeedControlActivities,
   Harvesting,
   Sales,
+  Storage,
+  PestControlActivities,
+  Shipment,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -40,6 +43,10 @@ import { loader as fertilizerActivitiesLoader } from "./pages/FertilizerActiviti
 import { loader as WeedControlActivitiesLoader } from "./pages/WeedControlActivities";
 import { loader as HarvestingLoader } from "./pages/Harvesting";
 import { loader as SalesLoader } from "./pages/Sales";
+import { loader as StorageLoader } from "./pages/Storage";
+import { loader as PestControlLoader } from "./pages/PestControlActivities";
+import { loader as ShipmentLoader } from "./pages/Shipment";
+
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as manipulateFarmerAction } from "./components/Farmers/FarmerForm";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
@@ -51,6 +58,9 @@ import { action as manipulateFertilizerActivities } from "./components/Activity/
 import { action as manipulateWeedControlActivities } from "./components/Activity/WeedControl";
 import { action as manipulateHarvestActivities } from "./components/Activity/Harvesting";
 import { action as manipulateSalesActivities } from "./components/Activity/Sales";
+import { action as manipulateStorageActivities } from "./components/Activity/Storage";
+import { action as manipulatePestControlActivities } from "./components/Activity/PestControl";
+import { action as manipulateShipmentActivities } from "./components/Activity/Shipment";
 import { ContextProvider } from "./context/ContextProvider";
 import FarmersProvider from "./context/FarmersProvider";
 
@@ -185,6 +195,24 @@ const router = createBrowserRouter([
         element: <Sales />,
         action: manipulateSalesActivities,
         loader: SalesLoader,
+      },
+      {
+        path: "storage",
+        element: <Storage />,
+        action: manipulateStorageActivities,
+        loader: StorageLoader,
+      },
+      {
+        path: "pestcontrol",
+        element: <PestControlActivities />,
+        action: manipulatePestControlActivities,
+        loader: PestControlLoader,
+      },
+      {
+        path: "shipment",
+        element: <Shipment />,
+        action: manipulateShipmentActivities,
+        loader: ShipmentLoader,
       },
       {
         path: "add-farm",

@@ -27,6 +27,9 @@ const Activities = () => {
         <Tabs.Item title="Fertilizer Application" icon={PiPottedPlantFill}>
           <FertilizerApplication />
         </Tabs.Item>
+        <Tabs.Item title="Pest Control " icon={PiPottedPlantFill}>
+          <PestControl />
+        </Tabs.Item>
         <Tabs.Item title="Harvesting" icon={PiPottedPlantFill}>
           <Harvesting />
         </Tabs.Item>
@@ -35,10 +38,6 @@ const Activities = () => {
         </Tabs.Item>
         <Tabs.Item title="Sales" icon={PiPottedPlantFill}>
           <Sales />
-        </Tabs.Item>
-
-        <Tabs.Item title="Pest Control " icon={PiPottedPlantFill}>
-          <PestControl />
         </Tabs.Item>
         <Tabs.Item title="Shipment " icon={PiPottedPlantFill}>
           <Shippment />
