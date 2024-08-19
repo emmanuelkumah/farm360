@@ -57,7 +57,7 @@ const FertilizerApplication = () => {
       <Form
         className="container mx-auto w-full md:w-[70%]"
         method="post"
-        action="../../app/fertilizer"
+        action="../../app/cte/fertilizer"
       >
         <div className="my-4">
           <Label htmlFor="date" className="font-semibold my-2">

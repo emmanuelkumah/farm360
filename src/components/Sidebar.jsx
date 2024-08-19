@@ -4,6 +4,7 @@ import { RiCloseLargeLine } from "react-icons/ri";
 import { Link, NavLink } from "react-router-dom";
 import { links } from "../data/demo.jsx";
 import { useStateContext } from "../context/ContextProvider.jsx";
+import SubMenus from "./SubMenus.jsx";
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize } = useStateContext();
@@ -23,7 +24,7 @@ const Sidebar = () => {
     <div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
       {activeMenu && (
         <>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center ">
             <Link
               to="/app"
               onClick={handleCloseSideBar}
@@ -55,6 +56,13 @@ const Sidebar = () => {
                   {link.icon}
                   <span className="capitalize">{link.name}</span>
                 </NavLink>
+                {link.subMenu && (
+                  <div className="bg-slate-100 md:w-[80%] md:relative md:left-10 rounded-lg">
+                    {link.subMenu.map((subMenu, index) => (
+                      <SubMenus subMenu={subMenu} key={index} />
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>

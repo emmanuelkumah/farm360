@@ -63,7 +63,7 @@ const PrePlanting = () => {
           <h3 className="text-xl mt-[20%] md:mt-10">
             Key Data Entry For Planting Activities on {farmer}
           </h3>
-          <Form method="post" action="../../app/preplanting">
+          <Form method="post" action="../../app/cte/preplanting">
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="flex max-w-md flex-col gap-4">
                 <div className="flex flex-col">

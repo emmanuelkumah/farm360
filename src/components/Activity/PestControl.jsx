@@ -31,7 +31,7 @@ const PestControl = () => {
       <Form
         className="container mx-auto w-full md:w-[70%]"
         method="post"
-        action="../../app/pestcontrol"
+        action="../../app/cte/pestcontrol"
       >
         <div>
           <Label

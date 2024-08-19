@@ -62,7 +62,6 @@ import { action as manipulateStorageActivities } from "./components/Activity/Sto
 import { action as manipulatePestControlActivities } from "./components/Activity/PestControl";
 import { action as manipulateShipmentActivities } from "./components/Activity/Shipment";
 import { ContextProvider } from "./context/ContextProvider";
-import FarmersProvider from "./context/FarmersProvider";
 
 const router = createBrowserRouter([
   {
@@ -160,60 +159,67 @@ const router = createBrowserRouter([
         element: <FarmActivity />,
         action: manipulateActivities,
       },
+      // saved activing
       {
-        path: "planting",
-        element: <PlantingActivities />,
-        loader: PlantingActivitiesLoader,
-        action: manipulatePlantingActivities,
+        path: "cte",
+        children: [
+          {
+            path: "planting",
+            element: <PlantingActivities />,
+            loader: PlantingActivitiesLoader,
+            action: manipulatePlantingActivities,
+          },
+          {
+            path: "preplanting",
+            element: <PrePlantingActvities />,
+            loader: prePlantingActivitiesLoader,
+            action: manipulatePrePlantingActivities,
+          },
+          {
+            path: "fertilizer",
+            element: <FertilizerActivities />,
+            loader: fertilizerActivitiesLoader,
+            action: manipulateFertilizerActivities,
+          },
+          {
+            path: "weedcontrol",
+            element: <WeedControlActivities />,
+            action: manipulateWeedControlActivities,
+            loader: WeedControlActivitiesLoader,
+          },
+          {
+            path: "harvesting",
+            element: <Harvesting />,
+            action: manipulateHarvestActivities,
+            loader: HarvestingLoader,
+          },
+          {
+            path: "sales",
+            element: <Sales />,
+            action: manipulateSalesActivities,
+            loader: SalesLoader,
+          },
+          {
+            path: "storage",
+            element: <Storage />,
+            action: manipulateStorageActivities,
+            loader: StorageLoader,
+          },
+          {
+            path: "pestcontrol",
+            element: <PestControlActivities />,
+            action: manipulatePestControlActivities,
+            loader: PestControlLoader,
+          },
+          {
+            path: "shipment",
+            element: <Shipment />,
+            action: manipulateShipmentActivities,
+            loader: ShipmentLoader,
+          },
+        ],
       },
-      {
-        path: "preplanting",
-        element: <PrePlantingActvities />,
-        loader: prePlantingActivitiesLoader,
-        action: manipulatePrePlantingActivities,
-      },
-      {
-        path: "fertilizer",
-        element: <FertilizerActivities />,
-        loader: fertilizerActivitiesLoader,
-        action: manipulateFertilizerActivities,
-      },
-      {
-        path: "weedcontrol",
-        element: <WeedControlActivities />,
-        action: manipulateWeedControlActivities,
-        loader: WeedControlActivitiesLoader,
-      },
-      {
-        path: "harvesting",
-        element: <Harvesting />,
-        action: manipulateHarvestActivities,
-        loader: HarvestingLoader,
-      },
-      {
-        path: "sales",
-        element: <Sales />,
-        action: manipulateSalesActivities,
-        loader: SalesLoader,
-      },
-      {
-        path: "storage",
-        element: <Storage />,
-        action: manipulateStorageActivities,
-        loader: StorageLoader,
-      },
-      {
-        path: "pestcontrol",
-        element: <PestControlActivities />,
-        action: manipulatePestControlActivities,
-        loader: PestControlLoader,
-      },
-      {
-        path: "shipment",
-        element: <Shipment />,
-        action: manipulateShipmentActivities,
-        loader: ShipmentLoader,
-      },
+
       {
         path: "add-farm",
         element: <AddFarm />,
@@ -238,9 +244,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ContextProvider>
-      <FarmersProvider>
-        <RouterProvider router={router} />
-      </FarmersProvider>
+      <RouterProvider router={router} />
     </ContextProvider>
   </React.StrictMode>
 );

@@ -56,7 +56,7 @@ const WeedControl = () => {
         <Form
           className="container mx-auto w-full md:w-[70%]"
           method="post"
-          action="../../app/weedcontrol"
+          action="../../app/cte/weedcontrol"
         >
           <div className="my-4">
             <Label htmlFor="weed" className="font-semibold my-2">

@@ -1,4 +1,3 @@
-import { FaMercury } from "react-icons/fa";
 import { FarmerDetails } from "../components";
 
 export const dummyData = {
@@ -523,18 +522,6 @@ export const groups = [
 ];
 
 export const crops = ["Soya", "Groundnut"];
-
-export const trackedActivities = {
-  prePlanting: [],
-  planting: [],
-  weedControl: [],
-  fertilizerApplication: [],
-  harvesting: [],
-  storage: [],
-  sales: [],
-  shipment: [],
-  pestControl: [],
-};
 
 export let plantingActivitiesData = [];
 

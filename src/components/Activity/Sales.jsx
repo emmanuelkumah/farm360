@@ -42,7 +42,7 @@ const Sales = () => {
       <Form
         className="container mx-auto w-full md:w-[70%]"
         method="post"
-        action="../../app/sales"
+        action="../../app/cte/sales"
       >
         <section>
           <h4>Authorizer of relese of products for sale</h4>

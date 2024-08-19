@@ -21,7 +21,7 @@ const Shipment = () => {
       <Form
         className="container mx-auto w-full md:w-[70%]"
         method="post"
-        action="../../app/shipment"
+        action="../../app/cte/shipment"
       >
         <section>
           <div className="my-2">

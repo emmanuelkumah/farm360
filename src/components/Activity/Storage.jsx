@@ -61,7 +61,7 @@ const Storage = () => {
       <Form
         className="container mx-auto w-full md:w-[70%]"
         method="post"
-        action="../../app/storage"
+        action="../../app/cte/storage"
       >
         <div>
           <Label htmlFor="storage" className="font-semibold my-2">

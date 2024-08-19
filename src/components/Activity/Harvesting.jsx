@@ -51,7 +51,7 @@ const Harvesting = () => {
       <Form
         className="container mx-auto w-full md:w-[70%]"
         method="post"
-        action="../../app/harvesting"
+        action="../../app/cte/harvesting"
       >
         <div className="my-4">
           <Label htmlFor="date" className="font-semibold my-2">

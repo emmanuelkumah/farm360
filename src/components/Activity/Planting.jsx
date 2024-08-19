@@ -47,7 +47,7 @@ const Planting = () => {
       <Form
         className="w-full md:w-[70%]"
         method="post"
-        action="../../app/planting"
+        action="../../app/cte/planting"
       >
         <div className="my-4">
           <Label htmlFor="planting" className="font-semibold my-4">
