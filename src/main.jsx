@@ -9,7 +9,7 @@ import {
   Dashboard,
   Farmers,
   Users,
-  Login,
+  AuthPage,
   Farms,
   Reports,
   PlantingActivities,
@@ -30,6 +30,7 @@ import {
   Storage,
   PestControlActivities,
   Shipment,
+  Login,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -61,6 +62,7 @@ import { action as manipulateSalesActivities } from "./components/Activity/Sales
 import { action as manipulateStorageActivities } from "./components/Activity/Storage";
 import { action as manipulatePestControlActivities } from "./components/Activity/PestControl";
 import { action as manipulateShipmentActivities } from "./components/Activity/Shipment";
+import { action as loginAction } from "./components/LoginForm";
 import { ContextProvider } from "./context/ContextProvider";
 
 const router = createBrowserRouter([
@@ -74,8 +76,9 @@ const router = createBrowserRouter([
         element: <Landing />,
       },
       {
-        path: "/login",
+        path: "login",
         element: <Login />,
+        action: loginAction,
       },
     ],
   },

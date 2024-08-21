@@ -1,37 +1,48 @@
 import React from "react";
 import { PiPottedPlantBold, PiPottedPlantDuotone } from "react-icons/pi";
+import { MdKeyboardArrowDown, MdOutlineKeyboardArrowUp } from "react-icons/md";
 
 import { TbDeviceDesktopAnalytics } from "react-icons/tb";
 import { FaUsers } from "react-icons/fa";
 import { FaUsersLine } from "react-icons/fa6";
 
-export const links = [
+export const sidebarMenus = [
   {
     name: "Dashboard",
     icon: <PiPottedPlantBold />,
+    iconClose: <MdKeyboardArrowDown />,
+    iconOpened: <MdOutlineKeyboardArrowUp />,
     url: "",
   },
   {
     name: "Users",
     icon: <FaUsers />,
+    iconClose: <MdKeyboardArrowDown />,
+    iconOpened: <MdOutlineKeyboardArrowUp />,
     url: "users",
   },
 
   {
     name: "Farmers",
     icon: <FaUsersLine />,
+    iconClose: <MdKeyboardArrowDown />,
+    iconOpened: <MdOutlineKeyboardArrowUp />,
     url: "farmers",
   },
 
   {
     name: "Farms",
     icon: <PiPottedPlantDuotone />,
+    iconClose: <MdKeyboardArrowDown />,
+    iconOpened: <MdOutlineKeyboardArrowUp />,
     url: "farms",
   },
 
   {
     name: "CTE",
     icon: <PiPottedPlantDuotone />,
+    iconClose: <MdKeyboardArrowDown />,
+    iconOpened: <MdOutlineKeyboardArrowUp />,
     url: "#",
     subMenu: [
       {
@@ -76,6 +87,8 @@ export const links = [
   {
     name: "Reports",
     icon: <TbDeviceDesktopAnalytics />,
+    iconClose: <MdKeyboardArrowDown />,
+    iconOpened: <MdOutlineKeyboardArrowUp />,
     url: "reports",
   },
 ];

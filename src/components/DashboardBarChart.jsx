@@ -68,8 +68,8 @@ const DashboardBarChart = () => {
             <Tooltip />
             <Bar
               dataKey="counts"
-              fill="#419D78"
-              activeBar={<Rectangle fill="green" />}
+              fill="#357960"
+              activeBar={<Rectangle fill="#357960" />}
             />
           </BarChart>
         </ResponsiveContainer>

@@ -24,3 +24,4 @@ export { default as Sales } from "./Sales";
 export { default as Storage } from "./Storage";
 export { default as PestControlActivities } from "./PestControlActivities";
 export { default as Shipment } from "./Shipment";
+export { default as AuthPage } from "./AuthPage";

@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { PiPottedPlantBold } from "react-icons/pi";
 import { RiCloseLargeLine } from "react-icons/ri";
 import { Link, NavLink } from "react-router-dom";
-import { links } from "../data/demo.jsx";
+import { sidebarMenus } from "../data/demo.jsx";
 import { useStateContext } from "../context/ContextProvider.jsx";
 import SubMenus from "./SubMenus.jsx";
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize } = useStateContext();
+  const [showSubMenu, setShowSubMenu] = useState(false);
+
+  const displaySubMenu = () => {
+    setShowSubMenu(true);
+  };
 
   const handleCloseSideBar = () => {
     if (activeMenu && screenSize <= 900) {
       setActiveMenu(false);
+    }
+    if (screenSize >= 900) {
+      setShowSubMenu(!showSubMenu);
     }
   };
 
@@ -44,25 +52,32 @@ const Sidebar = () => {
             </div>
           </div>
           <div className="mt-10">
-            {links.map((link) => (
-              <div key={link.name}>
+            {sidebarMenus.map((menu) => (
+              <div key={menu.name}>
                 <NavLink
-                  to={`/app/${link.url}`}
+                  to={`/app/${menu.url}`}
                   onClick={handleCloseSideBar}
                   className={({ isActive }) =>
                     isActive ? activeLink : normalLink
                   }
                 >
-                  {link.icon}
-                  <span className="capitalize">{link.name}</span>
+                  {menu.icon}
+                  <span className="capitalize">{menu.name}</span>
+                  <span>
+                    {menu.subMenu && showSubMenu
+                      ? menu.iconOpened
+                      : menu.subMenu
+                      ? menu.iconClose
+                      : null}
+                  </span>
                 </NavLink>
-                {link.subMenu && (
-                  <div className="bg-slate-100 md:w-[80%] md:relative md:left-10 rounded-lg">
-                    {link.subMenu.map((subMenu, index) => (
-                      <SubMenus subMenu={subMenu} key={index} />
+                {menu.subMenu && showSubMenu ? (
+                  <section>
+                    {menu.subMenu.map((item) => (
+                      <SubMenus item={item} key={item} />
                     ))}
-                  </div>
-                )}
+                  </section>
+                ) : null}
               </div>
             ))}
           </div>
@@ -73,3 +88,9 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+// menu.subMenu.map((item) => (
+//                   <div className="bg-secondary rounded-lg m-2">
+//                     <SubMenus item={item} key={item} />
+//                   </div>)
+//                   ))

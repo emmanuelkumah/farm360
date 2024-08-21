@@ -49,3 +49,4 @@ export { default as FarmerDetails } from "./Farmers/FarmerDetails";
 export { default as FarmForm } from "./Farmers/FarmForm";
 export { default as FarmDetails } from "./Farmers/FarmDetails";
 export { default as SubMenus } from "./SubMenus";
+export { default as LoginForm } from "./LoginForm";
