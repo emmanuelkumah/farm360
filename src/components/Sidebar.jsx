@@ -11,16 +11,18 @@ const Sidebar = () => {
   const [showSubMenu, setShowSubMenu] = useState(false);
 
   const displaySubMenu = () => {
-    setShowSubMenu(true);
+    setShowSubMenu(!showSubMenu);
   };
-
+  const handleDropDown = () => {
+    displaySubMenu();
+  };
   const handleCloseSideBar = () => {
     if (activeMenu && screenSize <= 900) {
       setActiveMenu(false);
     }
-    if (screenSize >= 900) {
-      setShowSubMenu(!showSubMenu);
-    }
+    // if (screenSize >= 900) {
+    //   setShowSubMenu(!showSubMenu);
+    // }
   };
 
   const activeLink =
@@ -56,14 +58,14 @@ const Sidebar = () => {
               <div key={menu.name}>
                 <NavLink
                   to={`/app/${menu.url}`}
-                  onClick={handleCloseSideBar}
+                  onClick={menu.subMenu && displaySubMenu}
                   className={({ isActive }) =>
                     isActive ? activeLink : normalLink
                   }
                 >
                   {menu.icon}
                   <span className="capitalize">{menu.name}</span>
-                  <span>
+                  <span onClick={() => setShowSubMenu(!showSubMenu)}>
                     {menu.subMenu && showSubMenu
                       ? menu.iconOpened
                       : menu.subMenu
@@ -74,7 +76,11 @@ const Sidebar = () => {
                 {menu.subMenu && showSubMenu ? (
                   <section>
                     {menu.subMenu.map((item) => (
-                      <SubMenus item={item} key={item} />
+                      <SubMenus
+                        item={item}
+                        key={item}
+                        onSubMenuClick={handleCloseSideBar}
+                      />
                     ))}
                   </section>
                 ) : null}

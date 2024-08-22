@@ -1,11 +1,18 @@
-import React, { useState } from "react";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import axios from "axios";
 import loginFarm from "../assets/images/loginFarm.jpg";
-// import { useAuthContext } from "../context/AuthProvider";
-import { Form, Link } from "react-router-dom";
+import {
+  Form,
+  redirect,
+  json,
+  useActionData,
+  useNavigation,
+} from "react-router-dom";
 
 const LoginForm = () => {
+  const data = useActionData();
+  const navigation = useNavigation();
+  //   console.log(navigation);
   return (
     <>
       <div className="bg-[#E6F0DC]">
@@ -19,6 +26,15 @@ const LoginForm = () => {
           </div>
           <div className="w-1/2">
             <h3 className="text-2xl my-5">Login to the app </h3>
+            {data && data.errors && (
+              <ul>
+                {Object.values(data.errors).map((error) => (
+                  <li key={error}>{error}</li>
+                ))}
+              </ul>
+            )}
+            {data && data.message && <p>{data.message}</p>}
+
             <Form
               className="flex max-w-2xl flex-col gap-4 text-xl"
               method="post"
@@ -74,7 +90,6 @@ export const action = async ({ request }) => {
     email: data.get("email"),
     password: data.get("password"),
   };
-  console.log(loginDetails);
   try {
     const response = await axios.post(
       "http://18.134.98.183:8080/auth/login",
@@ -85,11 +100,15 @@ export const action = async ({ request }) => {
         },
       }
     );
-    console.log(response.data);
   } catch (error) {
-    if (error.response) {
-      // The server responded with a status code outside the 2xx range
-      console.log("Error response:", error.response);
+    if (
+      (error.response && error.response.status === 500) ||
+      error.response.status === 401
+    ) {
+      throw json(
+        { message: "Could not authenticate user." },
+        { status: error.response.status }
+      );
     } else if (error.request) {
       // The request was made but no response was received
       console.log("Error request:", error.request);
@@ -98,5 +117,5 @@ export const action = async ({ request }) => {
       console.log("Error message:", error.message);
     }
   }
-  return null;
+  return redirect("/app");
 };
