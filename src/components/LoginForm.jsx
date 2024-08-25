@@ -11,8 +11,10 @@ import {
 
 const LoginForm = () => {
   const data = useActionData();
+  console.log(data);
   const navigation = useNavigation();
-  //   console.log(navigation);
+  const isSubmitting = navigation.state === "submitting";
+
   return (
     <>
       <div className="bg-[#E6F0DC]">
@@ -54,6 +56,7 @@ const LoginForm = () => {
                 />
               </div>
               <div>
+                {data && data.message && <p>{data.message}</p>}
                 <div className="mb-2 block">
                   <Label htmlFor="password" value="Your password" />
                 </div>
@@ -70,9 +73,12 @@ const LoginForm = () => {
                 <Label htmlFor="remember">Remember me</Label>
               </div>
 
-              <Button type="submit" className="bg-[#357960]">
-                Login to app
-                {/* <Link to="/app">Login</Link> */}
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-[#357960]"
+              >
+                {isSubmitting ? "Submitting..." : "Login"}
               </Button>
             </Form>
           </div>
@@ -90,32 +96,25 @@ export const action = async ({ request }) => {
     email: data.get("email"),
     password: data.get("password"),
   };
-  try {
-    const response = await axios.post(
-      "http://18.134.98.183:8080/auth/login",
-      loginDetails,
-      {
-        headers: {
-          "X-Origin": "WEB",
-        },
-      }
-    );
-  } catch (error) {
-    if (
-      (error.response && error.response.status === 500) ||
-      error.response.status === 401
-    ) {
-      throw json(
-        { message: "Could not authenticate user." },
-        { status: error.response.status }
-      );
-    } else if (error.request) {
-      // The request was made but no response was received
-      console.log("Error request:", error.request);
-    } else {
-      // Something happened in setting up the request that triggered an error
-      console.log("Error message:", error.message);
+
+  const response = await axios.post(
+    "http://18.134.98.183:8080/auth/login",
+    loginDetails,
+    {
+      headers: {
+        "X-Origin": "WEB",
+      },
     }
+  );
+  if (response.status === 200) {
+    const token = response.data.token;
+    localStorage.setItem("token", token);
+    return redirect("/app");
   }
-  return redirect("/app");
+  if (response.status === 422 || response.status === 401) {
+    return response;
+  }
+  if (!response.ok) {
+    throw json({ message: "Could not authenticate user" }, { status: 500 });
+  }
 };

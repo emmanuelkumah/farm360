@@ -64,6 +64,7 @@ import { action as manipulatePestControlActivities } from "./components/Activity
 import { action as manipulateShipmentActivities } from "./components/Activity/Shipment";
 import { action as loginAction } from "./components/LoginForm";
 import { ContextProvider } from "./context/ContextProvider";
+import { checkAuthLoader } from "./utils/auth";
 
 const router = createBrowserRouter([
   {
@@ -84,11 +85,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/app",
+    loader: checkAuthLoader,
+
     element: <App />,
     children: [
       {
         index: true,
         element: <Dashboard />,
+        loader: checkAuthLoader,
       },
       {
         path: "farmers",

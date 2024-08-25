@@ -21,8 +21,9 @@ import {
 } from "../../data/dummyData";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createFarmer } from "../../data/dummyData";
 import { redirect } from "react-router-dom";
+import { getAuthToken } from "../../utils/auth";
+import axios from "axios";
 
 const FarmerForm = ({ farmer, method }) => {
   let navigate = useNavigate();
@@ -371,6 +372,7 @@ export default FarmerForm;
 export const action = async ({ request, params }) => {
   const method = request.method;
   const data = await request.formData();
+  const token = getAuthToken();
 
   //check the method
   if (method === "PATCH") {
@@ -411,7 +413,18 @@ export const action = async ({ request, params }) => {
       type: data.get("type"),
       group: data.get("group"),
     };
-    createFarmer(enteredFarmerData);
+    const response = await axios.post(
+      "http://18.134.98.183:8080/farmer",
+      enteredFarmerData,
+      {
+        headers: {
+          "X-Origin": "WEB",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response);
+    // createFarmer(enteredFarmerData);
   }
   return redirect("..");
 };
