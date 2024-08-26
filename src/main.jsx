@@ -63,6 +63,7 @@ import { action as manipulateSalesActivities } from "./components/Activity/Sales
 import { action as manipulateStorageActivities } from "./components/Activity/Storage";
 import { action as manipulatePestControlActivities } from "./components/Activity/PestControl";
 import { action as manipulateShipmentActivities } from "./components/Activity/Shipment";
+import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { ContextProvider } from "./context/ContextProvider";
 // import { checkAuthLoader } from "./utils/auth";
@@ -238,6 +239,7 @@ const router = createBrowserRouter([
       {
         path: "users",
         element: <Users />,
+        action: manipulateUserAction,
       },
       {
         path: "traceability",

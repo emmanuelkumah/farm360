@@ -12,7 +12,7 @@ export const sidebarMenus = [
     icon: <PiPottedPlantBold />,
     iconClose: <MdKeyboardArrowDown />,
     iconOpened: <MdOutlineKeyboardArrowUp />,
-    url: "",
+    url: "#",
   },
   {
     name: "Users",
