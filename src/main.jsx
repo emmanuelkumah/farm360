@@ -31,6 +31,7 @@ import {
   PestControlActivities,
   Shipment,
   Login,
+  Error,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -62,7 +63,7 @@ import { action as manipulateSalesActivities } from "./components/Activity/Sales
 import { action as manipulateStorageActivities } from "./components/Activity/Storage";
 import { action as manipulatePestControlActivities } from "./components/Activity/PestControl";
 import { action as manipulateShipmentActivities } from "./components/Activity/Shipment";
-import { action as loginAction } from "./components/LoginForm";
+import { action as loginAction } from "./pages/Login";
 import { ContextProvider } from "./context/ContextProvider";
 import { checkAuthLoader } from "./utils/auth";
 
@@ -70,7 +71,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayout />,
-    errorElement: <ErrorPage />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
@@ -86,13 +87,11 @@ const router = createBrowserRouter([
   {
     path: "/app",
     loader: checkAuthLoader,
-
     element: <App />,
     children: [
       {
         index: true,
         element: <Dashboard />,
-        loader: checkAuthLoader,
       },
       {
         path: "farmers",

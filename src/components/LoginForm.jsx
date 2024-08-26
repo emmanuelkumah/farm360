@@ -1,19 +1,12 @@
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
-import axios from "axios";
 import loginFarm from "../assets/images/loginFarm.jpg";
-import {
-  Form,
-  redirect,
-  json,
-  useActionData,
-  useNavigation,
-} from "react-router-dom";
+import { Form, useNavigation, useActionData } from "react-router-dom";
 
 const LoginForm = () => {
   const data = useActionData();
   console.log(data);
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+  // const navigation = useNavigation();
+  // const isSubmitting = navigation.state === "submitting";
 
   return (
     <>
@@ -28,14 +21,6 @@ const LoginForm = () => {
           </div>
           <div className="w-1/2">
             <h3 className="text-2xl my-5">Login to the app </h3>
-            {data && data.errors && (
-              <ul>
-                {Object.values(data.errors).map((error) => (
-                  <li key={error}>{error}</li>
-                ))}
-              </ul>
-            )}
-            {data && data.message && <p>{data.message}</p>}
 
             <Form
               className="flex max-w-2xl flex-col gap-4 text-xl"
@@ -56,7 +41,6 @@ const LoginForm = () => {
                 />
               </div>
               <div>
-                {data && data.message && <p>{data.message}</p>}
                 <div className="mb-2 block">
                   <Label htmlFor="password" value="Your password" />
                 </div>
@@ -75,10 +59,11 @@ const LoginForm = () => {
 
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                // disabled={isSubmitting}
                 className="bg-[#357960]"
               >
-                {isSubmitting ? "Submitting..." : "Login"}
+                {/* {isSubmitting ? "Submitting..." : "Login"} */}
+                login
               </Button>
             </Form>
           </div>
@@ -89,32 +74,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-
-export const action = async ({ request }) => {
-  const data = await request.formData();
-  const loginDetails = {
-    email: data.get("email"),
-    password: data.get("password"),
-  };
-
-  const response = await axios.post(
-    "http://18.134.98.183:8080/auth/login",
-    loginDetails,
-    {
-      headers: {
-        "X-Origin": "WEB",
-      },
-    }
-  );
-  if (response.status === 200) {
-    const token = response.data.token;
-    localStorage.setItem("token", token);
-    return redirect("/app");
-  }
-  if (response.status === 422 || response.status === 401) {
-    return response;
-  }
-  if (!response.ok) {
-    throw json({ message: "Could not authenticate user" }, { status: 500 });
-  }
-};

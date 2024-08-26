@@ -1,44 +1,8 @@
-import React, { useState } from "react";
-// import axios from "../api/axios";
-// import loginFarm from "../assets/images/loginFarm.jpg";
+import { redirect } from "react-router-dom";
 import { LoginForm } from "../components";
+import axios from "axios";
 
-// const LOGIN_URL = "/user";
 const Login = () => {
-  // const [message, setMessage] = useState({
-  //   success: "",
-  //   error: "",
-  // });
-
-  // const handleLoginSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post(
-  //       LOGIN_URL,
-  //       JSON.stringify(loginDetails),
-  //       {
-  //         headers: { "Content-Type": "application/json" },
-  //       }
-  //     );
-  //     setAuth({ username, password });
-  //     setLoginDetails({
-  //       username: "",
-  //       password: "",
-  //     });
-  //     setMessage({ ...message, success: "Login successful" });
-  //     navigate("/app/dashboard");
-  //   } catch (error) {
-  //     if (!error.response) {
-  //       setMessage({ ...message, error: "No server response" });
-  //     } else if (error.response?.status === 400) {
-  //       setMessage({ ...message, error: "Missing username or password" });
-  //     } else if (error.response?.status === 401) {
-  //       setMessage({ ...message, error: "Unauthorized" });
-  //     } else {
-  //       setMessage({ ...message, error: "Login failed" });
-  //     }
-  //   }
-  // };
   return (
     <>
       <LoginForm />
@@ -47,3 +11,51 @@ const Login = () => {
 };
 
 export default Login;
+
+export const action = async ({ request }) => {
+  const data = await request.formData();
+  const loginDetails = {
+    email: data.get("email"),
+    password: data.get("password"),
+  };
+
+  const response = await axios.post(
+    "http://18.134.98.183:8080/auth/login",
+    loginDetails,
+    {
+      headers: {
+        "X-Origin": "WEB",
+      },
+    }
+  );
+
+  console.log(response);
+
+  // if (response.status === 422 || response.status === 401) {
+  //   return response;
+  // }
+
+  // if (!response.ok) {
+  //   throw json({ message: "Could not authenticate user." }, { status: 500 });
+  // }
+  if (response.status === 200) {
+    const token = response.data.token;
+    localStorage.setItem("token", token);
+    return redirect("/app");
+    // console.log("yes we have", token);
+  }
+
+  // if (response.status === 200) {
+  //   const token = response.data.token;
+  //   localStorage.setItem("token", token);
+  //   return redirect("/app");
+  // } else if (
+  //   response.status === 422 ||
+  //   response.status === 401 ||
+  //   response.status === 500
+  // ) {
+  //   return response;
+  // } else {
+  //   throw json({ message: "Could not authenticate user" }, { status: 500 });
+  // }
+};
