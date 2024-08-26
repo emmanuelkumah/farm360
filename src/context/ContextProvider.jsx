@@ -28,6 +28,7 @@ export const ContextProvider = ({ children }) => {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [editing, setEditing] = useState(false);
   const [editUser, setEditUser] = useState({});
+
   const handleClick = (clicked) => {
     setIsClicked({ ...isClicked, [clicked]: true });
   };

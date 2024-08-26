@@ -18,20 +18,25 @@ export const action = async ({ request }) => {
     email: data.get("email"),
     password: data.get("password"),
   };
-
-  const response = await axios.post(
-    "http://18.134.98.183:8080/auth/login",
-    loginDetails,
-    {
-      headers: {
-        "X-Origin": "WEB",
-      },
-    }
-  );
-
-  if (response.status === 200) {
+  try {
+    const response = await axios.post(
+      "http://18.134.98.183:8080/auth/login",
+      loginDetails,
+      {
+        headers: {
+          "X-Origin": "WEB",
+        },
+      }
+    );
     const token = response.data.token;
-    localStorage.setItem("token", token);
-    return redirect("/app");
+    console.log(token);
+  } catch (error) {
+    console.log(error);
   }
+
+  // if (response.status === 200) {
+  //   localStorage.setItem("token", token);
+  //   return redirect("/app");
+  // }
+  // redirect null
 };

@@ -9,10 +9,10 @@ export const tokenLoader = () => {
   return getAuthToken();
 };
 
-export const checkAuthLoader = () => {
-  const token = getAuthToken();
-  if (!token) {
-    return redirect("/login");
-  }
-  return null;
-};
+// export const checkAuthLoader = () => {
+//   const token = getAuthToken();
+//   if (!token) {
+//     return redirect("/login");
+//   }
+//   return null;
+// };

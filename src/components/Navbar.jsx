@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
-import {} from "react-icons/io";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import avatar from "../data/avatar.jpg";
-import { Notification, UserProfile } from ".";
+import React, { useEffect, useState } from "react";
+import { Avatar, Dropdown } from "flowbite-react";
+
 import { useStateContext } from "../context/ContextProvider";
 import { AiOutlineMenu } from "react-icons/ai";
-import { IoNotificationsCircleOutline } from "react-icons/io5";
 const NavButton = ({ customFunc, icon, color, dotColor }) => (
   <button
     type="button"
@@ -22,15 +19,7 @@ const NavButton = ({ customFunc, icon, color, dotColor }) => (
 );
 
 const Navbar = () => {
-  const {
-    activeMenu,
-    setActiveMenu,
-    isClicked,
-    setIsClicked,
-    screenSize,
-    setScreenSize,
-    handleClick,
-  } = useStateContext();
+  const { setActiveMenu, screenSize, setScreenSize } = useStateContext();
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
 
@@ -56,30 +45,28 @@ const Navbar = () => {
         customFunc={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)}
         icon={<AiOutlineMenu />}
       />
-      <div className="flex">
-        <NavButton
-          color="#357960"
-          dotColor="#03C9D7"
-          customFunc={() => handleClick("notification")}
-          icon={<IoNotificationsCircleOutline />}
-        />
-        <div
-          className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-          onClick={() => handleClick("userProfile")}
+      <div>
+        <Dropdown
+          arrowIcon={false}
+          inline
+          label={
+            <Avatar
+              alt="User settings"
+              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+              rounded
+            />
+          }
         >
-          <img
-            src={avatar}
-            alt="user profile"
-            className="rounded-full w-8 h-8"
-          />
-          <p>
-            <span className="text-primary text-14">Hi, </span>
-            <span className="text-primary font-bold ml-1 text-14">Admin</span>
-          </p>
-          <MdKeyboardArrowDown className="text-primary 0 text-14" />
-        </div>
-        {isClicked.userProfile && <UserProfile />}
-        {isClicked.notification && <Notification />}
+          <Dropdown.Header>
+            <span className="block text-sm">Bonnie Green</span>
+            <span className="block truncate text-sm font-medium">
+              name@flowbite.com
+            </span>
+          </Dropdown.Header>
+          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item>Settings</Dropdown.Item>
+          <Dropdown.Divider />
+        </Dropdown>
       </div>
     </div>
   );
