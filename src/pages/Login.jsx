@@ -29,33 +29,9 @@ export const action = async ({ request }) => {
     }
   );
 
-  console.log(response);
-
-  // if (response.status === 422 || response.status === 401) {
-  //   return response;
-  // }
-
-  // if (!response.ok) {
-  //   throw json({ message: "Could not authenticate user." }, { status: 500 });
-  // }
   if (response.status === 200) {
     const token = response.data.token;
     localStorage.setItem("token", token);
     return redirect("/app");
-    // console.log("yes we have", token);
   }
-
-  // if (response.status === 200) {
-  //   const token = response.data.token;
-  //   localStorage.setItem("token", token);
-  //   return redirect("/app");
-  // } else if (
-  //   response.status === 422 ||
-  //   response.status === 401 ||
-  //   response.status === 500
-  // ) {
-  //   return response;
-  // } else {
-  //   throw json({ message: "Could not authenticate user" }, { status: 500 });
-  // }
 };
