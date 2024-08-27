@@ -2,16 +2,22 @@ import React, { useState } from "react";
 import { Table, Button, Pagination } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { LuEye } from "react-icons/lu";
-
 import { FaUser } from "react-icons/fa6";
 import { Link, useLoaderData } from "react-router-dom";
 
 const FarmersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemesPerPage] = useState(10);
   const [editFarmer, setEditFarmer] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [search, setSearch] = useState("");
+
   const farmersData = useLoaderData();
+
+  const totalFarmers = farmersData.length;
+  const lastItemIndex = currentPage * itemsPerPage;
+  const firstItemIndex = lastItemIndex - itemsPerPage;
+  const currentFarmersData = farmersData.slice(firstItemIndex, lastItemIndex);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -62,7 +68,7 @@ const FarmersList = () => {
             <Table.HeadCell>Actions</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {farmersData
+            {currentFarmersData
               .filter((item) => {
                 return search.toLowerCase() === ""
                   ? item
@@ -111,9 +117,13 @@ const FarmersList = () => {
       </div>
       <div className="flex overflow-x-auto mt-10 sm:justify-center">
         <Pagination
+          layout="pagination"
           currentPage={currentPage}
-          totalPages={100}
+          totalPages={totalFarmers}
           onPageChange={onPageChange}
+          previousLabel="Go back"
+          nextLabel="Go forward"
+          showIcons
         />
       </div>
     </div>
