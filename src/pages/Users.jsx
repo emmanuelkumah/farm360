@@ -1,14 +1,22 @@
-import { UserForm } from "../components";
+import { UserForm, UsersList } from "../components";
 
+import { usersDummyData } from "../data/dummyData";
 const Users = () => {
   return (
     <>
-      <UserForm />
+      <section className="container mx-auto">
+        {/* <UserForm /> */}
+        <UsersList />
+      </section>
     </>
   );
 };
 
 export default Users;
+
+export const loader = async () => {
+  return usersDummyData;
+};
 
 export const action = async ({ request }) => {
   const data = await request.formData();

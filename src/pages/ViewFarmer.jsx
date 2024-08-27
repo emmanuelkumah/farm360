@@ -5,6 +5,7 @@ import { redirect, useRouteLoaderData } from "react-router-dom";
 import { deleteFarmer } from "../data/dummyData";
 const ViewFarmer = () => {
   const farmerData = useRouteLoaderData("farmer-detail");
+
   return (
     <div>
       <FarmerDetails farmerData={farmerData} />
@@ -16,7 +17,7 @@ export default ViewFarmer;
 
 export const loader = ({ params }) => {
   const id = params.farmerId;
-  const farmer = farmersDummyData.find((farmer) => farmer.id === id);
+  const farmer = farmersDummyData.find((farmer) => farmer.id === Number(id));
   //handle and throw errors when connecting to backend
   if (farmer) {
     return farmer;

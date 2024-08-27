@@ -38,7 +38,7 @@ const FarmersList = () => {
   return (
     <div>
       <div className="my-10">
-        <Button className="bg-secondary text-primary hover:text-slate-100 hover:bg-primary">
+        <Button className="bg-secondary text-primary hover:text-slate-100 hover:bg-main mt-10">
           <Link to="new">Add new farmer</Link>
         </Button>
         <div />

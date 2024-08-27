@@ -6,6 +6,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 
 const FarmerDetails = ({ farmerData }) => {
   const submit = useSubmit();
+
   const startDeleteHandler = () => {
     const proceed = window.confirm("Are you sure");
     if (proceed) {

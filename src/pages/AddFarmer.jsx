@@ -1,6 +1,6 @@
 import React from "react";
 import { FarmerForm } from "../components";
-import axios from "axios";
+// import axios from "axios";
 const AddFarmer = () => {
   return (
     <>
@@ -14,5 +14,5 @@ const AddFarmer = () => {
 export default AddFarmer;
 
 export const loader = async () => {
-  await axios.get("");
+  // await axios.get("");
 };

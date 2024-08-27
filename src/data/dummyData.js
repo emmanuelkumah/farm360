@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { FarmerDetails } from "../components";
 
 export const dummyData = {
@@ -7,6 +8,168 @@ export const dummyData = {
   farms: [],
 };
 
+export let usersDummyData = [
+  {
+    id: 1,
+    firstName: "Florian",
+    lastName: "Sealove",
+    email: "fsealove0@bloglovin.com",
+    contact: "736-997-0718",
+    password: "uQ6}$L$'>tl+#",
+  },
+  {
+    id: 2,
+    firstName: "Floyd",
+    lastName: "MacEnelly",
+    email: "fmacenelly1@nbcnews.com",
+    contact: "819-444-4827",
+    password: "mJ3<tQc`NDtv",
+  },
+  {
+    id: 3,
+    firstName: "Kathryn",
+    lastName: "Siggin",
+    email: "ksiggin2@rambler.ru",
+    contact: "515-987-7036",
+    password: "oJ8?s1s!N3E",
+  },
+  {
+    id: 4,
+    firstName: "Nyssa",
+    lastName: "Feares",
+    email: "nfeares3@1688.com",
+    contact: "274-572-2756",
+    password: "cN9}f4#+",
+  },
+  {
+    id: 5,
+    firstName: "Gael",
+    lastName: "Heak",
+    email: "gheak4@google.com",
+    contact: "507-359-4720",
+    password: "bV1>9&<i",
+  },
+  {
+    id: 6,
+    firstName: "Yetta",
+    lastName: "Peirpoint",
+    email: "ypeirpoint5@europa.eu",
+    contact: "151-214-0947",
+    password: "nV4){gtdC?",
+  },
+  {
+    id: 7,
+    firstName: "Pam",
+    lastName: "Presman",
+    email: "ppresman6@springer.com",
+    contact: "489-583-4095",
+    password: "uB0}FkI+<KEM)#",
+  },
+  {
+    id: 8,
+    firstName: "Cornall",
+    lastName: "Hucker",
+    email: "chucker7@ebay.com",
+    contact: "711-193-0956",
+    password: "gM4.P=m?F%Z~#",
+  },
+  {
+    id: 9,
+    firstName: "Gabi",
+    lastName: "Edowes",
+    email: "gedowes8@techcrunch.com",
+    contact: "254-792-1091",
+    password: "zH7*e+?R)k@LgWt*",
+  },
+  {
+    id: 10,
+    firstName: "Ezri",
+    lastName: "Blanckley",
+    email: "eblanckley9@meetup.com",
+    contact: "194-579-8914",
+    password: "vW6~2~\\cEv~wR=S",
+  },
+  {
+    id: 11,
+    firstName: "Allyson",
+    lastName: "Canape",
+    email: "acanapea@cpanel.net",
+    contact: "773-154-0194",
+    password: "sW4<&S6%C9`>94g",
+  },
+  {
+    id: 12,
+    firstName: "Emerson",
+    lastName: "Dugdale",
+    email: "edugdaleb@spiegel.de",
+    contact: "646-844-1283",
+    password: "sJ5_piA+6s",
+  },
+  {
+    id: 13,
+    firstName: "Jerry",
+    lastName: "Kamienski",
+    email: "jkamienskic@ustream.tv",
+    contact: "166-316-8257",
+    password: "hC9,Z05B3~fN",
+  },
+  {
+    id: 14,
+    firstName: "Jeanna",
+    lastName: "Avent",
+    email: "javentd@cmu.edu",
+    contact: "465-470-3824",
+    password: 'jI3">YXc._P|J',
+  },
+  {
+    id: 15,
+    firstName: "Salem",
+    lastName: "Brobak",
+    email: "sbrobake@toplist.cz",
+    contact: "259-180-4915",
+    password: "oK2%n8wNWa\\",
+  },
+  {
+    id: 16,
+    firstName: "Vin",
+    lastName: "Huyhton",
+    email: "vhuyhtonf@engadget.com",
+    contact: "398-793-9331",
+    password: "yN8+$gauX~nr",
+  },
+  {
+    id: 17,
+    firstName: "Ellary",
+    lastName: "Eyeington",
+    email: "eeyeingtong@loc.gov",
+    contact: "475-290-2513",
+    password: "lI8#WmbnP`KPDh!",
+  },
+  {
+    id: 18,
+    firstName: "Dom",
+    lastName: "Skillman",
+    email: "dskillmanh@prlog.org",
+    contact: "944-229-2874",
+    password: "hK5.+pEFbAWHK1g",
+  },
+  {
+    id: 19,
+    firstName: "Osmund",
+    lastName: "MacSorley",
+    email: "omacsorleyi@histats.com",
+    contact: "396-144-7252",
+    password: "mK1.oB/6w",
+  },
+  {
+    id: 20,
+    firstName: "Lyndsey",
+    lastName: "Lidgey",
+    email: "llidgeyj@wordpress.com",
+    contact: "832-306-8040",
+    password: "tP4\\xG8sVD).C.yb",
+  },
+];
 export let farmersDummyData = [
   {
     id: 1,
@@ -2104,15 +2267,16 @@ export let shipmentActivities = [];
 export const createFarmer = (newFarmer) => {
   farmersDummyData = [...farmersDummyData, newFarmer];
   console.log(farmersDummyData);
+  toast.success("farmer added successfully");
   return farmersDummyData;
 };
 export const updateFarmerDetails = (data) => {
-  farmersData = farmersData.map((farmer) => {
+  farmersDummyData = farmersDummyData.map((farmer) => {
     return farmer.id === data.id ? data : farmer;
   });
 };
 export const deleteFarmer = (id) => {
-  farmersData = farmersData.filter((farmer) => farmer.id !== id);
+  farmersDummyData = farmersDummyData.filter((farmer) => farmer.id !== id);
 };
 
 //farms actions

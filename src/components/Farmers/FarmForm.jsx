@@ -17,7 +17,7 @@ const FarmForm = ({ farm, method }) => {
   const [anotherFarm, setAnotherFarm] = useState(false);
 
   //get all farmer name
-  const farmersName = farmersData.map((farmer) => {
+  const farmersName = farmersDummyData.map((farmer) => {
     return `${farmer.firstName} ${farmer.lastName}`;
   });
 

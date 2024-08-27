@@ -18,12 +18,13 @@ import {
   groups,
   crops,
   updateFarmerDetails,
+  createFarmer,
 } from "../../data/dummyData";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { redirect } from "react-router-dom";
 import { getAuthToken } from "../../utils/auth";
-import axios from "axios";
+// import axios from "axios";
 
 const FarmerForm = ({ farmer, method }) => {
   let navigate = useNavigate();
@@ -35,7 +36,6 @@ const FarmerForm = ({ farmer, method }) => {
   const date = new Date("2010-01-30");
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
-  console.log(formattedDate);
 
   const handleDateChange = (date) => {
     setBirthDate({ ...birthDate, dateOfBirth: date });
@@ -372,7 +372,7 @@ export default FarmerForm;
 export const action = async ({ request, params }) => {
   const method = request.method;
   const data = await request.formData();
-  const token = getAuthToken();
+  // const token = getAuthToken();
 
   //check the method
   if (method === "PATCH") {
@@ -413,18 +413,19 @@ export const action = async ({ request, params }) => {
       type: data.get("type"),
       group: data.get("group"),
     };
-    const response = await axios.post(
-      "http://18.134.98.183:8080/farmer",
-      enteredFarmerData,
-      {
-        headers: {
-          "X-Origin": "WEB",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(response);
-    // createFarmer(enteredFarmerData);
+    // const response = await axios.post(
+    //   "http://18.134.98.183:8080/farmer",
+    //   enteredFarmerData,
+    //   {
+    //     headers: {
+    //       "X-Origin": "WEB",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   }
+    // );
+    // console.log(response);
+    console.log(enteredFarmerData);
+    createFarmer(enteredFarmerData);
   }
   return redirect("..");
 };

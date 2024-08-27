@@ -48,6 +48,7 @@ import { loader as SalesLoader } from "./pages/Sales";
 import { loader as StorageLoader } from "./pages/Storage";
 import { loader as PestControlLoader } from "./pages/PestControlActivities";
 import { loader as ShipmentLoader } from "./pages/Shipment";
+import { loader as UsersLoader } from "./pages/Users";
 
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as manipulateFarmerAction } from "./components/Farmers/FarmerForm";
@@ -239,6 +240,7 @@ const router = createBrowserRouter([
       {
         path: "users",
         element: <Users />,
+        loader: UsersLoader,
         action: manipulateUserAction,
       },
       {
