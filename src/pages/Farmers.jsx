@@ -1,18 +1,10 @@
 import { FarmersList } from "../components";
-import { farmersData } from "../data/dummyData";
+import { farmersDummyData } from "../data/dummyData";
 
 const Farmers = () => {
   return (
     <>
       <div className="m-10">
-        <input
-          className="w-1/2 rounded-lg"
-          type="text"
-          name="search"
-          id=""
-          placeholder="Search"
-        />
-
         <FarmersList />
       </div>
     </>
@@ -23,7 +15,7 @@ export default Farmers;
 
 //should be async await if connect to api
 export const loader = () => {
-  return farmersData;
+  return farmersDummyData;
   // console.log(farmersData);
   //connect to the api and get the farmers
   //handle errors

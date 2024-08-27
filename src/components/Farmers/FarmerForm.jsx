@@ -398,7 +398,7 @@ export const action = async ({ request, params }) => {
   //use axios.post and send the data in the body
   if (method === "POST") {
     let enteredFarmerData = {
-      id: String(Math.floor(Math.random() * 1000)),
+      id: Math.floor(Math.random() * 1000),
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       gender: data.get("gender"),

@@ -10,11 +10,12 @@ const FarmersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [editFarmer, setEditFarmer] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-
+  const [search, setSearch] = useState("");
   const farmersData = useLoaderData();
 
-  console.log(farmersData);
-
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
   const onPageChange = (page) => setCurrentPage(page);
 
   const handleDeleteFarmer = (id) => {
@@ -35,6 +36,16 @@ const FarmersList = () => {
           <Link to="new">Add new farmer</Link>
         </Button>
         <div />
+        <input
+          className="w-full rounded-lg my-10"
+          type="text"
+          name="search"
+          id=""
+          placeholder="Search farmer by first name"
+          value={search}
+          autoFocus
+          onChange={handleSearch}
+        />
       </div>
       <div className="overflow-x-auto">
         <Table className="w-full" hoverable>
@@ -51,44 +62,50 @@ const FarmersList = () => {
             <Table.HeadCell>Actions</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {farmersData.map((farmer) => (
-              <Table.Row
-                key={farmer.id}
-                className="bg-white dark:border-gray-700 dark:bg-gray-800"
-              >
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {farmer.picture === "" ? (
-                    <FaUser />
-                  ) : (
-                    <img
-                      src={farmer.picture}
-                      alt="farmer picture"
-                      className="rounded-full w-10 h-10"
-                    />
-                  )}
-                </Table.Cell>
-                <Table.Cell>{farmer.firstName}</Table.Cell>
-                <Table.Cell>{farmer.lastName}</Table.Cell>
-                <Table.Cell>{farmer.gender}</Table.Cell>
-                <Table.Cell>{farmer.contact}</Table.Cell>
-                <Table.Cell>{farmer.region}</Table.Cell>
+            {farmersData
+              .filter((item) => {
+                return search.toLowerCase() === ""
+                  ? item
+                  : item.firstName.toLowerCase().includes(search);
+              })
+              .map((farmer) => (
+                <Table.Row
+                  key={farmer.id}
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {farmer.picture === "" ? (
+                      <FaUser />
+                    ) : (
+                      <img
+                        src={farmer.picture}
+                        alt="farmer picture"
+                        className="rounded-full w-10 h-10"
+                      />
+                    )}
+                  </Table.Cell>
+                  <Table.Cell>{farmer.firstName}</Table.Cell>
+                  <Table.Cell>{farmer.lastName}</Table.Cell>
+                  <Table.Cell>{farmer.gender}</Table.Cell>
+                  <Table.Cell>{farmer.contact}</Table.Cell>
+                  <Table.Cell>{farmer.region}</Table.Cell>
 
-                <Table.Cell>{farmer.district}</Table.Cell>
-                <Table.Cell>{farmer.community}</Table.Cell>
-                <Table.Cell>{farmer.group}</Table.Cell>
+                  <Table.Cell>{farmer.district}</Table.Cell>
+                  <Table.Cell>{farmer.community}</Table.Cell>
+                  <Table.Cell>{farmer.group}</Table.Cell>
 
-                <Table.Cell>
-                  <div className="flex gap-5">
-                    <Link to={`${farmer.id}`}>
-                      <LuEye className="text-xl hover:text-primary cursor-pointer" />
-                    </Link>
-                    <Link to={`${farmer.id}/edit`}>
-                      <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
-                    </Link>
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-            ))}
+                  <Table.Cell>
+                    <div className="flex gap-5">
+                      <Link to={`${farmer.id}`}>
+                        <LuEye className="text-xl hover:text-primary cursor-pointer" />
+                      </Link>
+                      <Link to={`${farmer.id}/edit`}>
+                        <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                      </Link>
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
           </Table.Body>
         </Table>
       </div>

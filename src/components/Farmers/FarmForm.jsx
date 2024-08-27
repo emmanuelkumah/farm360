@@ -4,7 +4,7 @@ import {
   regions,
   districts,
   crops,
-  farmersData,
+  farmersDummyData,
   updateFarmDetails,
 } from "../../data/dummyData";
 import { Form, redirect } from "react-router-dom";

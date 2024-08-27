@@ -1,6 +1,6 @@
 import React from "react";
 import { FarmerDetails } from "../components";
-import { farmersData } from "../data/dummyData";
+import { farmersDummyData } from "../data/dummyData";
 import { redirect, useRouteLoaderData } from "react-router-dom";
 import { deleteFarmer } from "../data/dummyData";
 const ViewFarmer = () => {
@@ -16,7 +16,7 @@ export default ViewFarmer;
 
 export const loader = ({ params }) => {
   const id = params.farmerId;
-  const farmer = farmersData.find((farmer) => farmer.id === id);
+  const farmer = farmersDummyData.find((farmer) => farmer.id === id);
   //handle and throw errors when connecting to backend
   if (farmer) {
     return farmer;
