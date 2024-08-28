@@ -14,7 +14,7 @@ const Farmers = () => {
 export default Farmers;
 
 //should be async await if connect to api
-export const loader = () => {
+export const loader = async () => {
   return farmersDummyData;
   // console.log(farmersData);
   //connect to the api and get the farmers
