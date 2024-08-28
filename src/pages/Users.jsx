@@ -1,11 +1,10 @@
-import { UserForm, UsersList } from "../components";
+import { UsersList } from "../components";
 
 import { usersDummyData } from "../data/dummyData";
 const Users = () => {
   return (
     <>
-      <section className="container mx-auto">
-        {/* <UserForm /> */}
+      <section className="m-10">
         <UsersList />
       </section>
     </>

@@ -20,9 +20,9 @@ const UsersList = () => {
     setSearch(e.target.value);
   };
   return (
-    <div>
+    <div className="container mx-auto">
       <div className="my-10">
-        <Button className="bg-secondary text-primary hover:text-slate-100 hover:bg-main mt-10">
+        <Button className="bg-secondary mt-[20%] md:mt-10 text-primary hover:text-slate-100 hover:bg-main ">
           <Link to="new">Add new user</Link>
         </Button>
         <div />

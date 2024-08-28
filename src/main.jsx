@@ -32,6 +32,7 @@ import {
   Shipment,
   Login,
   Error,
+  UserForm,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -126,6 +127,25 @@ const router = createBrowserRouter([
             path: "new",
             element: <AddFarmer />,
             action: manipulateFarmerAction,
+          },
+        ],
+      },
+      //user routes
+      {
+        path: "users",
+
+        children: [
+          {
+            index: true,
+            element: <Users />,
+            loader: UsersLoader,
+            action: manipulateUserAction,
+          },
+
+          {
+            path: "new",
+            element: <UserForm />,
+            // action: manipulateFarmerAction,
           },
         ],
       },
@@ -237,12 +257,7 @@ const router = createBrowserRouter([
         path: "reports",
         element: <Reports />,
       },
-      {
-        path: "users",
-        element: <Users />,
-        loader: UsersLoader,
-        action: manipulateUserAction,
-      },
+
       {
         path: "traceability",
         element: <Traceability />,
