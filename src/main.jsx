@@ -33,6 +33,7 @@ import {
   Login,
   Error,
   NewUser,
+  EditUser,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -148,6 +149,10 @@ const router = createBrowserRouter([
             path: "new",
             element: <NewUser />,
             action: manipulateUser,
+          },
+          {
+            path: "edit",
+            element: <EditUser />,
           },
         ],
       },

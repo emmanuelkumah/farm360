@@ -1,12 +1,24 @@
 import React from "react";
 import { Form } from "../components";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
+import { Button } from "flowbite-react";
 
 const NewUser = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
-    <div>
-      <Form />
-    </div>
+    <>
+      <div className="container mx-auto">
+        <div className="my-10">
+          <Button onClick={handleGoBack}>Back </Button>
+        </div>
+        <Form />
+      </div>
+    </>
   );
 };
 

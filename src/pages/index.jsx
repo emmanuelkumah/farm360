@@ -27,3 +27,4 @@ export { default as Shipment } from "./Shipment";
 export { default as AuthPage } from "./AuthPage";
 export { default as Error } from "./Error";
 export { default as NewUser } from "./NewUser";
+export { default as EditUser } from "./EditUser";

@@ -1,9 +1,8 @@
 import { Button, Label, TextInput } from "flowbite-react";
 import { useState } from "react";
-import { Form, useSubmit } from "react-router-dom";
+import { Form } from "react-router-dom";
 
 const UserForm = () => {
-  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -14,23 +13,6 @@ const UserForm = () => {
     setConfirmPassword(e.target.value);
   };
 
-  //   const submit = useSubmit();
-
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-
-  //     if(password !== confirmPassword) {
-  //         setError('Password do not match')
-  //     }
-  //     // const form = e.currentTarget.form;
-  //     // const formData = new FormData(form);
-  //     // console.log("data", formData.get("password"));
-  //     // if (formData.get("fullName") === "" || formData.get("email") === "") {
-  //     //   return;
-  //     // }
-  //     // submit(e.currentTarget.form);
-  //     // e.currentTarget.form.reset();
-  //   };
   return (
     <>
       <div className="bg-secondary w-full h-screen md:w-1/2 md:h-[50%] rounded-lg shadow-md container mx-auto">
@@ -87,7 +69,7 @@ const UserForm = () => {
                 onChange={handleConfirmPassword}
                 name="confirmPassword"
               />
-              <span>
+              <span className="text-red-600">
                 {password !== confirmPassword && "Password do not match"}
               </span>
             </div>

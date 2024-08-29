@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Table, Pagination, Button } from "flowbite-react";
-
-import { useLoaderData, Link } from "react-router-dom";
+import { MdEdit } from "react-icons/md";
+import { LuEye } from "react-icons/lu";
+import { Link, useLoaderData } from "react-router-dom";
 
 const UsersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -68,12 +69,14 @@ const UsersList = () => {
                   <Table.Cell>{user.email}</Table.Cell>
                   <Table.Cell>{user.password}</Table.Cell>
                   <Table.Cell>
-                    <a
-                      href="#"
-                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                    >
-                      Edit
-                    </a>
+                    <div className="flex justify-end gap-5">
+                      <Link to={`${user.id}`}>
+                        <LuEye className="text-xl hover:text-primary cursor-pointer" />
+                      </Link>
+                      <Link to={`${user.id}`}>
+                        <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                      </Link>
+                    </div>
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>

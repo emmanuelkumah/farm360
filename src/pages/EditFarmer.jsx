@@ -6,7 +6,6 @@ import { useRouteLoaderData } from "react-router-dom";
 
 const EditFarmer = () => {
   const farmer = useRouteLoaderData("farmer-detail");
-  console.log(farmer);
 
   return (
     <>
