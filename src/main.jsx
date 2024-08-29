@@ -32,7 +32,7 @@ import {
   Shipment,
   Login,
   Error,
-  UserForm,
+  NewUser,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -69,6 +69,7 @@ import { action as manipulateShipmentActivities } from "./components/Activity/Sh
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { ContextProvider } from "./context/ContextProvider";
+import { action as manipulateUser } from "./pages/NewUser";
 // import { checkAuthLoader } from "./utils/auth";
 
 const router = createBrowserRouter([
@@ -145,8 +146,8 @@ const router = createBrowserRouter([
 
           {
             path: "new",
-            element: <UserForm />,
-            // action: manipulateFarmerAction,
+            element: <NewUser />,
+            action: manipulateUser,
           },
         ],
       },

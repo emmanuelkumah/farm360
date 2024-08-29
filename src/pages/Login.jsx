@@ -19,31 +19,25 @@ export const action = async ({ request }) => {
     password: data.get("password"),
   };
   try {
-    const response = await axiosbaseURL.post("/auth/login", loginDetails, {
+    const rawResponse = await fetch("http://18.134.98.183:8080/auth/login", {
+      method: "POST",
       headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
         "X-Origin": "WEB",
       },
+      body: JSON.stringify(loginDetails),
     });
-    console.log(response);
+    const content = await rawResponse.json();
+    console.log(content);
+    // const response = await axiosbaseURL.post("/auth/login", loginDetails, {
+    //   headers: {
+    //     "X-Origin": "WEB",
+    //   },
+    // });
   } catch (error) {
     console.log(error);
   }
 
-  // const response = await axios.post(
-  //   "http://18.134.98.183:8080/auth/login",
-  //   loginDetails,
-  //   {
-  //     headers: {
-  //       "X-Origin": "WEB",
-  //     },
-  //   }
-  // );
-  // console.log(response);
-
-  // if (response.status === 200) {
-  //   const token = response.data.token;
-  //   localStorage.setItem("token", token);
-  //   return redirect("/app");
-  // }
-  return redirect();
+  return redirect("/login");
 };

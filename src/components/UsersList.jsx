@@ -22,9 +22,13 @@ const UsersList = () => {
   return (
     <div className="container mx-auto">
       <div className="my-10">
-        <Button className="bg-secondary mt-[20%] md:mt-10 text-primary hover:text-slate-100 hover:bg-main ">
-          <Link to="new">Add new user</Link>
+        <Button
+          type="buton"
+          className="bg-secondary mt-[20%] cursor-pointer md:mt-10 text-primary hover:text-slate-100 hover:bg-main "
+        >
+          <Link to="new"> Add new user</Link>
         </Button>
+
         <div />
         <input
           className="w-full rounded-lg my-10"
@@ -56,7 +60,7 @@ const UsersList = () => {
             })
             .map((user) => (
               <Table.Body className="divide-y" key={user.id}>
-                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                <Table.Row className="bg-white border-gray-700 dark:border-gray-700 dark:bg-gray-800">
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                     {user.firstName}
                   </Table.Cell>
