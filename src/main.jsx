@@ -4,6 +4,8 @@ import "./index.css";
 // import Root from "./routes/HomeLayout";
 import ErrorPage from "./error-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AuthProvider from "./context/AuthContext";
+
 import App from "./App";
 import {
   Dashboard,
@@ -276,7 +278,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ContextProvider>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </ContextProvider>
   </React.StrictMode>
 );

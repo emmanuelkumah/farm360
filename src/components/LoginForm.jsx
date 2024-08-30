@@ -1,12 +1,10 @@
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import loginFarm from "../assets/images/loginFarm.jpg";
-import { Form, useNavigation, useActionData } from "react-router-dom";
+import { Form, useActionData, useNavigation } from "react-router-dom";
 
 const LoginForm = () => {
-  const data = useActionData();
-  // console.log(data);
-  // const navigation = useNavigation();
-  // const isSubmitting = navigation.state === "submitting";
+  const actionData = useActionData();
+  const navigation = useNavigation();
 
   return (
     <>
@@ -25,6 +23,7 @@ const LoginForm = () => {
             <Form
               className="flex max-w-2xl flex-col gap-4 text-xl"
               method="post"
+              action="/login"
             >
               <div>
                 <div className="mb-2 block">
@@ -59,11 +58,10 @@ const LoginForm = () => {
 
               <Button
                 type="submit"
-                // disabled={isSubmitting}
+                disabled={navigation.state === "submitting"}
                 className="bg-[#357960]"
               >
-                {/* {isSubmitting ? "Submitting..." : "Login"} */}
-                login
+                {navigation.state === "submitting" ? "Logging in..." : "Login"}
               </Button>
             </Form>
           </div>

@@ -1,7 +1,11 @@
 import { FarmersList } from "../components";
 import { farmersDummyData } from "../data/dummyData";
+import { useAuth } from "../context/AuthContext";
 
 const Farmers = () => {
+  const { token } = useAuth();
+  console.log("the token here", token);
+
   return (
     <>
       <div className="m-10">
