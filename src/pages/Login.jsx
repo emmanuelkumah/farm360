@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 import { LoginForm } from "../components";
-import { axiosbaseURL } from "../api/axios";
+// import { axiosbaseURL } from "../api/axios";
 
 const Login = () => {
   return (
@@ -13,13 +13,14 @@ const Login = () => {
 export default Login;
 
 export const action = async ({ request }) => {
+  //const apiURL = "api/auth/login";
   const data = await request.formData();
   const loginDetails = {
     email: data.get("email"),
     password: data.get("password"),
   };
   try {
-    const rawResponse = await fetch("http://18.134.98.183:8080/auth/login", {
+    const response = await fetch("api/auth/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -28,7 +29,7 @@ export const action = async ({ request }) => {
       },
       body: JSON.stringify(loginDetails),
     });
-    const content = await rawResponse.json();
+    const content = await response.json();
     console.log(content);
     // const response = await axiosbaseURL.post("/auth/login", loginDetails, {
     //   headers: {
