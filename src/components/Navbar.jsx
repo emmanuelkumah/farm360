@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Dropdown } from "flowbite-react";
-
+import { Avatar, Dropdown, Button } from "flowbite-react";
+import { useAuth } from "../context/AuthContext";
 import { useStateContext } from "../context/ContextProvider";
 import { AiOutlineMenu } from "react-icons/ai";
+import { redirect } from "react-router-dom";
+
 const NavButton = ({ customFunc, icon, color, dotColor }) => (
   <button
     type="button"
@@ -19,6 +21,8 @@ const NavButton = ({ customFunc, icon, color, dotColor }) => (
 );
 
 const Navbar = () => {
+  const { token } = useAuth();
+  console.log(token);
   const { setActiveMenu, screenSize, setScreenSize } = useStateContext();
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -37,6 +41,13 @@ const Navbar = () => {
       setActiveMenu(true);
     }
   }, [screenSize]);
+
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+
+    console.log("removed");
+    return redirect("..");
+  };
 
   return (
     <div className="flex justify-between p-2 md:mx-6 relative">
@@ -63,7 +74,11 @@ const Navbar = () => {
               name@flowbite.com
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Sign out</Dropdown.Item>
+
+          <Dropdown.Item>
+            <Button onClick={handleLogOut}>Log out</Button>
+          </Dropdown.Item>
+
           <Dropdown.Item>Settings</Dropdown.Item>
           <Dropdown.Divider />
         </Dropdown>

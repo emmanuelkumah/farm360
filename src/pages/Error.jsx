@@ -3,8 +3,9 @@ import { useRouteError } from "react-router-dom";
 
 const Error = () => {
   const error = useRouteError();
+  console.log(error.response.status, error.response.data.message);
   let title = "An error occurred!";
-  let message = "Something went wrong!";
+  let message = error.response.data.message;
 
   //   if (error.response.status === 500) {
   //     message = error.response.data.message;

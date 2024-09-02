@@ -9,14 +9,14 @@ export default defineConfig({
       plugins: [tailwindcss()],
     },
   },
-  server: {
-    proxy: {
-      "/api": {
-        target: "http://18.134.98.183:8080/",
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-    },
-  },
+  // server: {
+  //   proxy: {
+  //     "/api": {
+  //       target: "http://18.134.98.183:8080/",
+  //       changeOrigin: true,
+  //       secure: false,
+  //       rewrite: (path) => path.replace(/^\/api/, ""),
+  //     },
+  //   },
+  // },
 });

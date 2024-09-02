@@ -1,9 +1,10 @@
 import React, { createContext, useState, useContext } from "react";
 
 const AuthContext = createContext(null);
-
+import { getAuthToken } from "../utils/auth";
 const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  // const [isLoggedIn, setIsLoggedIn] = useState(Boolean(token));
+  const [token, setToken] = useState(getAuthToken());
 
   const loginUser = (newToken) => {
     setToken(newToken);
@@ -12,6 +13,7 @@ const AuthProvider = ({ children }) => {
   const logoutUser = () => {
     setToken(null);
     localStorage.removeItem("token");
+    console.log("user logged out");
   };
   return (
     <div>
