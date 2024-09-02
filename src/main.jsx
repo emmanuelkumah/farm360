@@ -5,7 +5,7 @@ import "./index.css";
 import ErrorPage from "./error-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthProvider from "./context/AuthContext";
-
+import { ProtectedRoute } from "./components";
 import App from "./App";
 import {
   Dashboard,
@@ -100,7 +100,11 @@ const router = createBrowserRouter([
   {
     path: "/app",
     // loader: checkAuthLoader,
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

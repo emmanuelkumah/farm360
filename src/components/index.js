@@ -52,3 +52,4 @@ export { default as SubMenus } from "./SubMenus";
 export { default as LoginForm } from "./LoginForm";
 export { default as Form } from "./UserForm";
 export { default as UsersList } from "./UsersList";
+export { default as ProtectedRoute } from "./ProtectedRoute";
