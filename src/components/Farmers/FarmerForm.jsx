@@ -37,9 +37,12 @@ const FarmerForm = ({ farmer, method }) => {
   const date = new Date("2010-01-30");
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
+  console.log(token);
 
   useEffect(() => {
-    getRegions();
+    if (token) {
+      getRegions();
+    }
   }, []);
 
   useEffect(() => {
