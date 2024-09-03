@@ -10,7 +10,7 @@ import {
 } from "flowbite-react";
 import { Form, useNavigate } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
-import { BiHome, BiMap, BiPhone } from "react-icons/bi";
+import { BiHome, BiHomeAlt, BiMap, BiPhone } from "react-icons/bi";
 import {
   groups,
   crops,
@@ -111,13 +111,13 @@ const FarmerForm = ({ farmer, method }) => {
       console.log(error.message);
     }
   };
+
   const handleRegionChange = (e) => {
     const id = e.target.value;
     setRegionId(id);
   };
   const handleDistrictChange = (e) => {
     const id = e.target.value;
-    console.log(id);
     setDistrictId(id);
   };
 
@@ -349,27 +349,23 @@ const FarmerForm = ({ farmer, method }) => {
                   <div>
                     <div className="my-2 block">
                       <Label
-                        htmlFor="district"
-                        value="Commnuity"
+                        htmlFor="contact"
+                        value="Community"
                         className="font-semibold"
                       />
                     </div>
-                    <Select
-                      id="district"
-                      required
-                      className="w-full"
-                      name="district"
+                    <TextInput
+                      id="community"
+                      type="text"
+                      icon={BiHomeAlt}
+                      name="community"
                       defaultValue={farmer ? farmer.community : ""}
-                    >
-                      <option>Select Community</option>
-                      {communities.map((community) => (
-                        <option value={community.id} key={community.id}>
-                          {community.name}
-                        </option>
-                      ))}
-                    </Select>
+                      placeholder="Enter community"
+                      required
+                    />
                   </div>
                 </div>
+
                 <fieldset className="flex max-w-md flex-col gap-4">
                   <legend className="mb-4 font-semibold">
                     Choose farmer type
