@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Dropdown, Button } from "flowbite-react";
-import { useAuth } from "../context/AuthContext";
 import { useStateContext } from "../context/ContextProvider";
 import { AiOutlineMenu } from "react-icons/ai";
 import { redirect } from "react-router-dom";
@@ -21,8 +20,8 @@ const NavButton = ({ customFunc, icon, color, dotColor }) => (
 );
 
 const Navbar = () => {
-  const { token } = useAuth();
-  console.log(token);
+  // const { token } = useAuth();
+  // console.log(token);
   const { setActiveMenu, screenSize, setScreenSize } = useStateContext();
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);

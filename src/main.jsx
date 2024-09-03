@@ -5,6 +5,9 @@ import "./index.css";
 import ErrorPage from "./error-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthProvider from "./context/AuthContext";
+import { ContextProvider } from "./context/ContextProvider";
+import RegionProvider from "./context/RegionProvider";
+
 import { ProtectedRoute } from "./components";
 import App from "./App";
 import {
@@ -71,7 +74,6 @@ import { action as manipulatePestControlActivities } from "./components/Activity
 import { action as manipulateShipmentActivities } from "./components/Activity/Shipment";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
-import { ContextProvider } from "./context/ContextProvider";
 import { action as manipulateUser } from "./pages/NewUser";
 import { action as logoutAction } from "./pages/Logout";
 // import { checkAuthLoader } from "./utils/auth";
@@ -288,7 +290,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ContextProvider>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <RegionProvider>
+          <RouterProvider router={router} />
+        </RegionProvider>
       </AuthProvider>
     </ContextProvider>
   </React.StrictMode>

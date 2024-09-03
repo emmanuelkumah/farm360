@@ -9,11 +9,10 @@ import {
   Datepicker,
 } from "flowbite-react";
 import { Form, useNavigate } from "react-router-dom";
-
+import { useRegionContext } from "../../context/RegionProvider";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import {
-  regions,
   districts,
   groups,
   crops,
@@ -23,12 +22,12 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { redirect } from "react-router-dom";
-import { getAuthToken } from "../../utils/auth";
 // import axios from "axios";
 
 const FarmerForm = ({ farmer, method }) => {
   let navigate = useNavigate();
-
+  const { regions } = useRegionContext();
+  console.log("at farmerForm", regions);
   const [addFarms, setAddFarms] = useState(false);
   const [birthDate, setBirthDate] = useState(farmer);
   const [showDistricts, setShowDistricts] = useState([]);
@@ -243,8 +242,8 @@ const FarmerForm = ({ farmer, method }) => {
                       onChange={handleRegionChange}
                     >
                       <option>Select region</option>
-                      {regions.map((region, index) => (
-                        <option value={region.name} key={index}>
+                      {regions.map((region) => (
+                        <option value={region.name} key={region.id}>
                           {region.name}
                         </option>
                       ))}
