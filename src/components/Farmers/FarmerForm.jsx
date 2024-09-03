@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Label,
@@ -9,11 +9,9 @@ import {
   Datepicker,
 } from "flowbite-react";
 import { Form, useNavigate } from "react-router-dom";
-import { useRegionContext } from "../../context/RegionProvider";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiMap, BiPhone } from "react-icons/bi";
 import {
-  districts,
   groups,
   crops,
   updateFarmerDetails,
@@ -22,32 +20,102 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { redirect } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
+import { getAuthToken } from "../../utils/auth";
 
 const FarmerForm = ({ farmer, method }) => {
   let navigate = useNavigate();
-  const { regions } = useRegionContext();
-  console.log("at farmerForm", regions);
+  const [token, setToken] = useState(getAuthToken());
+  const [regionId, setRegionId] = useState(null);
+  const [regions, setRegions] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [districtId, setDistrictId] = useState(null);
+  const [communities, setCommunities] = useState([]);
   const [addFarms, setAddFarms] = useState(false);
   const [birthDate, setBirthDate] = useState(farmer);
-  const [showDistricts, setShowDistricts] = useState([]);
 
   const date = new Date("2010-01-30");
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
+  useEffect(() => {
+    getRegions();
+  }, []);
+
+  useEffect(() => {
+    if (regionId) {
+      fetchDistricts(regionId);
+    }
+  }, [regionId]);
+
+  useEffect(() => {
+    if (districtId) {
+      fetchCommunities(districtId);
+    }
+  }, [districtId]);
+
   const handleDateChange = (date) => {
     setBirthDate({ ...birthDate, dateOfBirth: date });
   };
-  const getDistricts = (id) => {
-    const result = districts.find((district) => district.regionId === id);
-    const { listDistrict } = result;
-    setShowDistricts(listDistrict);
+
+  const getRegions = async () => {
+    try {
+      const response = await axios.get(
+        "https://dev.bjlfarmersmarket.net/geo/regions",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-Origin": "WEB",
+          },
+        }
+      );
+      setRegions(response.data);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
+  const fetchDistricts = async (regionId) => {
+    try {
+      const response = await axios.get(
+        `https://dev.bjlfarmersmarket.net/geo/${regionId}/districts`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-Origin": "WEB",
+          },
+        }
+      );
+      setDistricts(response.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const fetchCommunities = async (districtId) => {
+    try {
+      const response = await axios.get(
+        `https://dev.bjlfarmersmarket.net/geo/${districtId}/communities`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-Origin": "WEB",
+          },
+        }
+      );
+      setCommunities(response.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   const handleRegionChange = (e) => {
-    const index = e.target.selectedIndex;
-    getDistricts(index);
+    const id = e.target.value;
+    setRegionId(id);
+  };
+  const handleDistrictChange = (e) => {
+    const id = e.target.value;
+    console.log(id);
+    setDistrictId(id);
   };
 
   const handleGoBack = () => {
@@ -243,7 +311,7 @@ const FarmerForm = ({ farmer, method }) => {
                     >
                       <option>Select region</option>
                       {regions.map((region) => (
-                        <option value={region.name} key={region.id}>
+                        <option value={region.id} key={region.id}>
                           {region.name}
                         </option>
                       ))}
@@ -264,31 +332,39 @@ const FarmerForm = ({ farmer, method }) => {
                     className="w-full"
                     name="district"
                     defaultValue={farmer ? farmer.district : ""}
+                    onChange={handleDistrictChange}
                   >
                     <option>Select District</option>
-                    {showDistricts.map((district) => (
-                      <option value={district} key={district}>
-                        {district}
+                    {districts.map((district) => (
+                      <option value={district.id} key={district.id}>
+                        {district.name}
                       </option>
                     ))}
                   </Select>
                 </div>
                 <div>
-                  <div className="my-2 block">
-                    <Label
-                      htmlFor="community"
-                      value="Community"
-                      className="font-semibold"
-                    />
-
-                    <TextInput
-                      id="community"
-                      type="text"
-                      icon={FaRegUserCircle}
+                  <div>
+                    <div className="my-2 block">
+                      <Label
+                        htmlFor="district"
+                        value="Commnuity"
+                        className="font-semibold"
+                      />
+                    </div>
+                    <Select
+                      id="district"
+                      required
+                      className="w-full"
+                      name="district"
                       defaultValue={farmer ? farmer.community : ""}
-                      placeholder="Enter community"
-                      name="community"
-                    />
+                    >
+                      <option>Select Community</option>
+                      {communities.map((community) => (
+                        <option value={community.id} key={community.id}>
+                          {community.name}
+                        </option>
+                      ))}
+                    </Select>
                   </div>
                 </div>
                 <fieldset className="flex max-w-md flex-col gap-4">

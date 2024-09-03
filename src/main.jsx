@@ -6,7 +6,6 @@ import ErrorPage from "./error-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthProvider from "./context/AuthContext";
 import { ContextProvider } from "./context/ContextProvider";
-import RegionProvider from "./context/RegionProvider";
 
 import { ProtectedRoute } from "./components";
 import App from "./App";
@@ -290,9 +289,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ContextProvider>
       <AuthProvider>
-        <RegionProvider>
-          <RouterProvider router={router} />
-        </RegionProvider>
+        <RouterProvider router={router} />
       </AuthProvider>
     </ContextProvider>
   </React.StrictMode>

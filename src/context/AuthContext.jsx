@@ -3,7 +3,6 @@ import React, { createContext, useState, useContext } from "react";
 const AuthContext = createContext(null);
 import { getAuthToken } from "../utils/auth";
 const AuthProvider = ({ children }) => {
-  // const [isLoggedIn, setIsLoggedIn] = useState(Boolean(token));
   const [token, setToken] = useState(getAuthToken());
 
   const loginUser = (newToken) => {
