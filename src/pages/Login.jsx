@@ -1,13 +1,15 @@
-import { redirect } from "react-router-dom";
+import { redirect, useActionData } from "react-router-dom";
 import { LoginForm } from "../components";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
 const Login = () => {
+  const data = useActionData();
+  console.log("action data", data);
   return (
     <>
-      <LoginForm />
+      <LoginForm data={data} />
     </>
   );
 };

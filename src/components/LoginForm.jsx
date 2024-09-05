@@ -1,9 +1,9 @@
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import loginFarm from "../assets/images/loginFarm.jpg";
-import { Form, useActionData, useNavigation } from "react-router-dom";
+import { Form, useNavigation } from "react-router-dom";
 
-const LoginForm = () => {
-  const actionData = useActionData();
+const LoginForm = ({ data }) => {
+  console.log("data", data);
   const navigation = useNavigation();
 
   return (

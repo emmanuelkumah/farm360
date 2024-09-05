@@ -23,7 +23,7 @@ import { redirect } from "react-router-dom";
 import axios from "axios";
 import { getAuthToken } from "../../utils/auth";
 
-const FarmerForm = ({ farmer, method }) => {
+const FarmerForm = ({ farmer }) => {
   let navigate = useNavigate();
   const [token, setToken] = useState(getAuthToken());
   const [regionId, setRegionId] = useState(null);
@@ -37,7 +37,6 @@ const FarmerForm = ({ farmer, method }) => {
   const date = new Date("2010-01-30");
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
-  console.log(token);
 
   useEffect(() => {
     if (token) {
@@ -107,6 +106,7 @@ const FarmerForm = ({ farmer, method }) => {
         }
       );
       setCommunities(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -114,10 +114,12 @@ const FarmerForm = ({ farmer, method }) => {
 
   const handleRegionChange = (e) => {
     const id = e.target.value;
+    console.log(id);
     setRegionId(id);
   };
   const handleDistrictChange = (e) => {
     const id = e.target.value;
+    console.log(id);
     setDistrictId(id);
   };
 
@@ -138,7 +140,7 @@ const FarmerForm = ({ farmer, method }) => {
         </div>
 
         <section className="flex flex-col justify-center items-center">
-          <Form className="w-[80vw] md:w-[80%] my-4 " method={method}>
+          <Form className="w-[80vw] md:w-[80%] my-4 " method="post">
             <div className="grid grid-cols-1 gap-4 md:gap-10">
               <section>
                 <h2 className="text-xl text-main border-l-4 border-main pl-2 mb-4">
@@ -151,7 +153,7 @@ const FarmerForm = ({ farmer, method }) => {
                       <Radio
                         id="male"
                         name="gender"
-                        defaultValue="Male"
+                        defaultValue="MALE"
                         required
                         defaultChecked={farmer && farmer.gender === "Male"}
                       />
@@ -161,7 +163,7 @@ const FarmerForm = ({ farmer, method }) => {
                       <Radio
                         id="female"
                         name="gender"
-                        defaultValue="Female"
+                        defaultValue="FEMALE"
                         defaultChecked={farmer && farmer.gender === "Female"}
                         required
                       />
@@ -233,13 +235,13 @@ const FarmerForm = ({ farmer, method }) => {
                       id="address"
                       type="text"
                       icon={BiHome}
-                      name="address"
+                      name="homeAddress"
                       defaultValue={farmer ? farmer.address : ""}
                       placeholder="Enter home address"
                       required
                     />
                   </div>
-                  <div>
+                  {/* <div>
                     <div className="my-2 block">
                       <Label
                         htmlFor="GPS"
@@ -256,7 +258,7 @@ const FarmerForm = ({ farmer, method }) => {
                       defaultValue={farmer ? farmer.gps : ""}
                       required
                     />
-                  </div>
+                  </div> */}
                   <div>
                     <div className="my-2 block">
                       <Label
@@ -269,14 +271,14 @@ const FarmerForm = ({ farmer, method }) => {
                       id="contact"
                       type="number"
                       icon={BiPhone}
-                      maxLength="10"
-                      name="contact"
+                      maxLength="12"
+                      name="phone"
                       defaultValue={farmer ? farmer.contact : ""}
                       placeholder="Enter contact"
                       required
                     />
                   </div>
-                  <div>
+                  {/* <div>
                     <div className="my-2 block">
                       <Label
                         htmlFor="dob"
@@ -296,7 +298,7 @@ const FarmerForm = ({ farmer, method }) => {
                         maxDate={new Date(2010, 1, 30)}
                       />
                     )}
-                  </div>
+                  </div> */}
                   <div>
                     <div className="my-2 block">
                       <Label
@@ -308,7 +310,7 @@ const FarmerForm = ({ farmer, method }) => {
                     <Select
                       id="region"
                       required
-                      name="region"
+                      name="regionId"
                       defaultValue={farmer ? farmer.region : ""}
                       onChange={handleRegionChange}
                     >
@@ -333,7 +335,7 @@ const FarmerForm = ({ farmer, method }) => {
                     id="district"
                     required
                     className="w-full"
-                    name="district"
+                    name="districtId"
                     defaultValue={farmer ? farmer.district : ""}
                     onChange={handleDistrictChange}
                   >
@@ -349,20 +351,25 @@ const FarmerForm = ({ farmer, method }) => {
                   <div>
                     <div className="my-2 block">
                       <Label
-                        htmlFor="contact"
-                        value="Community"
+                        htmlFor="community"
+                        value="community"
                         className="font-semibold"
                       />
                     </div>
-                    <TextInput
+                    <Select
                       id="community"
-                      type="text"
-                      icon={BiHomeAlt}
-                      name="community"
-                      defaultValue={farmer ? farmer.community : ""}
-                      placeholder="Enter community"
                       required
-                    />
+                      name="communityId"
+                      defaultValue={farmer ? farmer.community : ""}
+                      // onChange={handleCommunityChange}
+                    >
+                      <option>Select Community</option>
+                      {communities.map((community) => (
+                        <option value={community.id} key={community.id}>
+                          {community.name}
+                        </option>
+                      ))}
+                    </Select>
                   </div>
                 </div>
 
@@ -372,37 +379,44 @@ const FarmerForm = ({ farmer, method }) => {
                   </legend>
                   <div className="flex items-center gap-2">
                     <Radio
-                      id="farmer"
-                      name="type"
-                      defaultChecked={farmer && farmer.type === "farmer"}
-                      defaultValue="farmer"
+                      id="collector"
+                      name="farmerType"
+                      defaultValue="COLLECTOR"
                       required
                     />
-                    <Label htmlFor="farmer">farmer</Label>
+                    <Label htmlFor="collector">Collector</Label>
                   </div>
                   <div className="flex items-center gap-2">
                     <Radio
                       id="processor"
-                      name="type"
-                      defaultChecked={farmer && farmer.type === "Processor"}
-                      defaultValue="Processor"
+                      name="farmerType"
+                      defaultValue="PROCESSOR"
                       required
                     />
                     <Label htmlFor="processor">Processor</Label>
                   </div>
+                </fieldset>
+                <fieldset className="flex max-w-md flex-col gap-4">
+                  <legend className="mb-4 font-semibold">
+                    Choose crop type
+                  </legend>
                   <div className="flex items-center gap-2">
                     <Radio
-                      id="farmerProcessor"
-                      name="type"
-                      defaultChecked={
-                        farmer && farmer.type === "Farmer and Processor"
-                      }
-                      defaultValue="Farmer and Processor"
+                      id="farmer"
+                      name="cropType"
+                      defaultValue="SOYA"
                       required
                     />
-                    <Label htmlFor="farmerProcessor">
-                      Both(farmer & Processor)
-                    </Label>
+                    <Label htmlFor="farmer">Soya</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="cropType"
+                      name="cropType"
+                      defaultValue="SHEA"
+                      required
+                    />
+                    <Label htmlFor="shea">Shea </Label>
                   </div>
                 </fieldset>
                 <div>
@@ -417,12 +431,12 @@ const FarmerForm = ({ farmer, method }) => {
                     id="group"
                     required
                     className="w-full"
-                    name="group"
+                    name="groupId"
                     defaultValue={farmer ? farmer.group : ""}
                   >
                     <option>group</option>
                     {groups.map((group) => (
-                      <option value={group.name} key={group.id}>
+                      <option value={Number(group.id)} key={group.id}>
                         {group.name}
                       </option>
                     ))}
@@ -442,64 +456,3 @@ const FarmerForm = ({ farmer, method }) => {
 };
 
 export default FarmerForm;
-
-export const action = async ({ request, params }) => {
-  const method = request.method;
-  const data = await request.formData();
-  // const token = getAuthToken();
-
-  //check the method
-  if (method === "PATCH") {
-    //const id = params.farmerId;
-    let updateData = {
-      id: params.farmerId,
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      gender: data.get("gender"),
-      picture: data.get("picture"),
-      address: data.get("address"),
-      gps: data.get("gps"),
-      contact: data.get("contact"),
-      dateOfBirth: data.get("dateOfBirth"),
-      region: data.get("region"),
-      district: data.get("district"),
-      community: data.get("community"),
-      type: data.get("type"),
-      group: data.get("group"),
-    };
-    updateFarmerDetails(updateData);
-  }
-  //use axios.post and send the data in the body
-  if (method === "POST") {
-    let enteredFarmerData = {
-      id: Math.floor(Math.random() * 1000),
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      gender: data.get("gender"),
-      picture: data.get("picture"),
-      address: data.get("address"),
-      gps: data.get("gps"),
-      contact: data.get("contact"),
-      dateOfBirth: data.get("dateOfBirth"),
-      region: data.get("region"),
-      district: data.get("district"),
-      community: data.get("community"),
-      type: data.get("type"),
-      group: data.get("group"),
-    };
-    // const response = await axios.post(
-    //   "http://18.134.98.183:8080/farmer",
-    //   enteredFarmerData,
-    //   {
-    //     headers: {
-    //       "X-Origin": "WEB",
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   }
-    // );
-    // console.log(response);
-    console.log(enteredFarmerData);
-    createFarmer(enteredFarmerData);
-  }
-  return redirect("..");
-};

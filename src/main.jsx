@@ -44,7 +44,6 @@ import HomeLayout from "./routes/HomeLayout";
 import { loader as farmsLoader } from "./pages/Farms";
 import { loader as farmersLoader } from "./pages/Farmers";
 import { loader as farmerDetailsLoader } from "./pages/ViewFarmer";
-import { loader as regionsLoader } from "./pages/AddFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
 import { loader as PlantingActivitiesLoader } from "./pages/PlantingActivities";
 import { loader as prePlantingActivitiesLoader } from "./pages/PrePlantingActivities";
