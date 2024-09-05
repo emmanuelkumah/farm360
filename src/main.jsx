@@ -57,7 +57,8 @@ import { loader as ShipmentLoader } from "./pages/Shipment";
 import { loader as UsersLoader } from "./pages/Users";
 
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
-import { action as farmerAction } from "./pages/AddFarmer";
+import { action as farmerAction } from "./components/Farmers/FarmerForm";
+// import { action as farmerAction } from "./pages/AddFarmer";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
 import { action as manipulateActivities } from "./pages/FarmActivity";

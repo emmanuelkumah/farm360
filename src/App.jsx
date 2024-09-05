@@ -3,6 +3,7 @@ import React from "react";
 import { Navbar, Sidebar } from "./components";
 import { useStateContext } from "./context/ContextProvider";
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const { activeMenu } = useStateContext();
@@ -30,6 +31,7 @@ const App = () => {
           <Outlet />
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

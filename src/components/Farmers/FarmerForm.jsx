@@ -8,15 +8,10 @@ import {
   Select,
   Datepicker,
 } from "flowbite-react";
-import { Form, useNavigate } from "react-router-dom";
+import { Form, useNavigation } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
-import { BiHome, BiHomeAlt, BiMap, BiPhone } from "react-icons/bi";
-import {
-  groups,
-  crops,
-  updateFarmerDetails,
-  createFarmer,
-} from "../../data/dummyData";
+import { BiHome, BiPhone } from "react-icons/bi";
+import { groups } from "../../data/dummyData";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { redirect } from "react-router-dom";
@@ -24,19 +19,18 @@ import axios from "axios";
 import { getAuthToken } from "../../utils/auth";
 
 const FarmerForm = ({ farmer }) => {
-  let navigate = useNavigate();
   const [token, setToken] = useState(getAuthToken());
   const [regionId, setRegionId] = useState(null);
   const [regions, setRegions] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [districtId, setDistrictId] = useState(null);
   const [communities, setCommunities] = useState([]);
-  const [addFarms, setAddFarms] = useState(false);
   const [birthDate, setBirthDate] = useState(farmer);
 
   const date = new Date("2010-01-30");
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (token) {
@@ -443,16 +437,54 @@ const FarmerForm = ({ farmer }) => {
                   </Select>
                 </div>
                 <Button type="submit" className="mt-4 w-[100%] bg-main">
-                  Save Details
+                  {navigation.state === "submitting"
+                    ? "Submitting data..."
+                    : "Save details"}
                 </Button>
               </section>
             </div>
           </Form>
         </section>
-        <ToastContainer />
       </div>
     </>
   );
 };
 
 export default FarmerForm;
+
+export const action = async ({ request }) => {
+  const data = await request.formData();
+  const token = getAuthToken();
+
+  let submission = {
+    firstName: data.get("firstName"),
+    lastName: data.get("lastName"),
+    gender: data.get("gender"),
+    homeAddress: data.get("homeAddress"),
+    phone: data.get("phone"),
+    dateOfBirth: "1988-09-05",
+    communityId: data.get("communityId"),
+    farmerType: data.get("farmerType"),
+    cropType: data.get("cropType"),
+  };
+  //console.log(submission);
+
+  try {
+    const response = await axios.post(
+      "https://dev.bjlfarmersmarket.net/farmer",
+      submission,
+      {
+        headers: {
+          "X-Origin": "WEB",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("Response from server:", response.data);
+    toast.success("Data submitted successfully!");
+    return redirect("/app/farmers");
+  } catch (error) {
+    toast.error("Error submitting data. Please try again.");
+    return error;
+  }
+};
