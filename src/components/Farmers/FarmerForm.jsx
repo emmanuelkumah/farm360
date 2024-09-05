@@ -25,6 +25,7 @@ const FarmerForm = ({ farmer }) => {
   const [districts, setDistricts] = useState([]);
   const [districtId, setDistrictId] = useState(null);
   const [communities, setCommunities] = useState([]);
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [birthDate, setBirthDate] = useState(farmer);
 
   const date = new Date("2010-01-30");
@@ -51,7 +52,10 @@ const FarmerForm = ({ farmer }) => {
   }, [districtId]);
 
   const handleDateChange = (date) => {
-    setBirthDate({ ...birthDate, dateOfBirth: date });
+    const formattedDate = date.toISOString().split("T")[0]; // Formats to "YYYY-MM-DD"
+    // console.log(formattedDate);
+    setDateOfBirth(formattedDate);
+    //setBirthDate({ ...birthDate, dateOfBirth: date });
   };
 
   const getRegions = async () => {
@@ -272,7 +276,7 @@ const FarmerForm = ({ farmer }) => {
                       required
                     />
                   </div>
-                  {/* <div>
+                  <div>
                     <div className="my-2 block">
                       <Label
                         htmlFor="dob"
@@ -290,9 +294,10 @@ const FarmerForm = ({ farmer }) => {
                       <Datepicker
                         name="dateOfBirth"
                         maxDate={new Date(2010, 1, 30)}
+                        // onSelectedDateChanged={(date) => handleDateChange(date)}
                       />
                     )}
-                  </div> */}
+                  </div>
                   <div>
                     <div className="my-2 block">
                       <Label
@@ -462,12 +467,12 @@ export const action = async ({ request }) => {
     gender: data.get("gender"),
     homeAddress: data.get("homeAddress"),
     phone: data.get("phone"),
-    dateOfBirth: "1988-09-05",
+    dateOfBirth: "2020-09-09",
     communityId: data.get("communityId"),
     farmerType: data.get("farmerType"),
     cropType: data.get("cropType"),
   };
-  //console.log(submission);
+  console.log(submission);
 
   try {
     const response = await axios.post(
