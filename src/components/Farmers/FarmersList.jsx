@@ -13,12 +13,12 @@ const FarmersList = () => {
   const [search, setSearch] = useState("");
 
   const farmersData = useLoaderData();
-
+  console.log("farmerslist", farmersData);
   const totalFarmers = farmersData.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
   const currentFarmersData = farmersData.slice(firstItemIndex, lastItemIndex);
-
+  console.log("currentFarmersData", currentFarmersData);
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -59,7 +59,7 @@ const FarmersList = () => {
             <Table.HeadCell>Picture</Table.HeadCell>
             <Table.HeadCell>First Name</Table.HeadCell>
             <Table.HeadCell>Last Name</Table.HeadCell>
-            <Table.HeadCell>Gender</Table.HeadCell>
+            <Table.HeadCell>Age</Table.HeadCell>
             <Table.HeadCell>Contact</Table.HeadCell>
             <Table.HeadCell>Region</Table.HeadCell>
             <Table.HeadCell>District</Table.HeadCell>
@@ -80,11 +80,11 @@ const FarmersList = () => {
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
                 >
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {farmer.picture === "" ? (
+                    {farmer.imageUrl === null ? (
                       <FaUser />
                     ) : (
                       <img
-                        src={farmer.picture}
+                        src={farmer.imageUrl}
                         alt="farmer picture"
                         className="rounded-full w-10 h-10"
                       />
@@ -92,13 +92,15 @@ const FarmersList = () => {
                   </Table.Cell>
                   <Table.Cell>{farmer.firstName}</Table.Cell>
                   <Table.Cell>{farmer.lastName}</Table.Cell>
-                  <Table.Cell>{farmer.gender}</Table.Cell>
-                  <Table.Cell>{farmer.contact}</Table.Cell>
-                  <Table.Cell>{farmer.region}</Table.Cell>
+                  <Table.Cell>{farmer.age}</Table.Cell>
+                  <Table.Cell>{farmer.phone}</Table.Cell>
+                  <Table.Cell>{farmer.community.region}</Table.Cell>
 
-                  <Table.Cell>{farmer.district}</Table.Cell>
-                  <Table.Cell>{farmer.community}</Table.Cell>
-                  <Table.Cell>{farmer.group}</Table.Cell>
+                  <Table.Cell>{farmer.community.district}</Table.Cell>
+                  <Table.Cell>{farmer.community.name}</Table.Cell>
+                  <Table.Cell>{`${
+                    farmer.group ? farmer.group : "displayGroup"
+                  }`}</Table.Cell>
 
                   <Table.Cell>
                     <div className="flex gap-5">

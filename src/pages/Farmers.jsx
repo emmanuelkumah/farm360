@@ -1,5 +1,5 @@
 import { FarmersList } from "../components";
-import { farmersDummyData } from "../data/dummyData";
+// import { farmersDummyData } from "../data/dummyData";
 import { getAuthToken } from "../utils/auth";
 import axios from "axios";
 const Farmers = () => {
@@ -18,7 +18,7 @@ export default Farmers;
 export const loader = async () => {
   const token = getAuthToken();
 
-  axios
+  const data = axios
     .get("https://dev.bjlfarmersmarket.net/farmers", {
       headers: {
         "X-Origin": "WEB",
@@ -26,8 +26,9 @@ export const loader = async () => {
       },
     })
     .then((response) => {
-      console.log(response.data);
+      return response.data;
+      //console.log(response.data);
     })
     .catch((error) => console.log(error));
-  return farmersDummyData;
+  return data;
 };
