@@ -52,8 +52,9 @@ const FarmerForm = ({ farmer }) => {
   }, [districtId]);
 
   const handleDateChange = (date) => {
+    console.log(date);
     const formattedDate = date.toISOString().split("T")[0]; // Formats to "YYYY-MM-DD"
-    // console.log(formattedDate);
+    console.log(formattedDate);
     setDateOfBirth(formattedDate);
     //setBirthDate({ ...birthDate, dateOfBirth: date });
   };
@@ -112,12 +113,10 @@ const FarmerForm = ({ farmer }) => {
 
   const handleRegionChange = (e) => {
     const id = e.target.value;
-    console.log(id);
     setRegionId(id);
   };
   const handleDistrictChange = (e) => {
     const id = e.target.value;
-    console.log(id);
     setDistrictId(id);
   };
 
@@ -294,7 +293,9 @@ const FarmerForm = ({ farmer }) => {
                       <Datepicker
                         name="dateOfBirth"
                         maxDate={new Date(2010, 1, 30)}
-                        // onSelectedDateChanged={(date) => handleDateChange(date)}
+                        value={dateOfBirth}
+                        dateFormat="yyyy-MM-dd"
+                        onSelectedDateChanged={(date) => handleDateChange(date)}
                       />
                     )}
                   </div>
@@ -467,12 +468,12 @@ export const action = async ({ request }) => {
     gender: data.get("gender"),
     homeAddress: data.get("homeAddress"),
     phone: data.get("phone"),
-    dateOfBirth: "2020-09-09",
+    dateOfBirth: data.get("dateOfBirth"),
     communityId: data.get("communityId"),
     farmerType: data.get("farmerType"),
     cropType: data.get("cropType"),
   };
-  console.log(submission);
+  // console.log(submission);
 
   try {
     const response = await axios.post(
