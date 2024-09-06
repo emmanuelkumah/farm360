@@ -1,29 +1,33 @@
 import React from "react";
 import { FarmerDetails } from "../components";
-import { farmersDummyData } from "../data/dummyData";
-import { redirect, useRouteLoaderData } from "react-router-dom";
+import { redirect, useRouteLoaderData, useParams } from "react-router-dom";
 import { deleteFarmer } from "../data/dummyData";
+import { getAuthToken } from "../utils/auth";
+import axios from "axios";
+
 const ViewFarmer = () => {
   const farmerData = useRouteLoaderData("farmer-detail");
-
+  const id = useParams();
   return (
     <div>
-      <FarmerDetails farmerData={farmerData} />
+      <FarmerDetails farmerData={farmerData} id={id} />
     </div>
   );
 };
 
 export default ViewFarmer;
 
-export const loader = ({ params }) => {
-  const id = params.farmerId;
-  const farmer = farmersDummyData.find((farmer) => farmer.id === Number(id));
-  //handle and throw errors when connecting to backend
-  if (farmer) {
-    return farmer;
-  } else {
-    throw { message: "Could not fetch farmer details" };
-  }
+export const loader = () => {
+  const token = getAuthToken();
+
+  const response = axios.get("https://dev.bjlfarmersmarket.net/farmers", {
+    headers: {
+      "X-Origin": "WEB",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response;
 };
 
 //action function to delete farmer

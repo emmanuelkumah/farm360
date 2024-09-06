@@ -13,7 +13,6 @@ const FarmersList = () => {
   const [search, setSearch] = useState("");
 
   const farmersData = useLoaderData();
-  console.log("farmerslist", farmersData);
   const totalFarmers = farmersData.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
