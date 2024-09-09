@@ -302,8 +302,9 @@ const FarmerForm = ({ farmer }) => {
                       maxLength="12"
                       name="phone"
                       defaultValue={farmer ? farmer.contact : ""}
-                      placeholder="Enter contact"
+                      placeholder="Prefix contact with 233"
                       required
+                      helperText={<>Contact format: 233244123456</>}
                     />
                   </div>
                   <div>
@@ -518,7 +519,7 @@ export const action = async ({ request }) => {
       }
     );
     console.log("Response from server:", response.data);
-    toast.success("Data submitted successfully!");
+    toast.success("Farmer data submitted successfully!");
     return redirect("/app/farmers");
   } catch (error) {
     toast.error("Error submitting data. Please try again.");
