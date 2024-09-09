@@ -11,7 +11,7 @@ import {
 import { Form, useNavigation } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiPhone } from "react-icons/bi";
-import { groups } from "../../data/dummyData";
+// import { groups } from "../../data/dummyData";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { redirect } from "react-router-dom";
@@ -25,6 +25,9 @@ const FarmerForm = ({ farmer }) => {
   const [districts, setDistricts] = useState([]);
   const [districtId, setDistrictId] = useState(null);
   const [communities, setCommunities] = useState([]);
+  const [communityId, setCommunityId] = useState(null);
+  const [group, setGroup] = useState([]);
+
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [birthDate, setBirthDate] = useState(farmer);
 
@@ -50,6 +53,12 @@ const FarmerForm = ({ farmer }) => {
       fetchCommunities(districtId);
     }
   }, [districtId]);
+
+  useEffect(() => {
+    if (communityId) {
+      fetchGroup();
+    }
+  }, [communityId]);
 
   const handleDateChange = (date) => {
     console.log(date);
@@ -110,6 +119,23 @@ const FarmerForm = ({ farmer }) => {
       console.log(error.message);
     }
   };
+  const fetchGroup = async () => {
+    try {
+      const response = await axios.get(
+        "https://dev.bjlfarmersmarket.net/farmer/groups",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-Origin": "WEB",
+          },
+        }
+      );
+      console.log("group", response.data);
+      setGroup(response.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   const handleRegionChange = (e) => {
     const id = e.target.value;
@@ -120,7 +146,11 @@ const FarmerForm = ({ farmer }) => {
     const id = e.target.value;
     setDistrictId(id);
   };
-
+  const handleCommunityChange = (e) => {
+    const id = e.target.value;
+    setCommunityId(id);
+    console.log("comm", id);
+  };
   const handleGoBack = () => {
     navigate("/app/farmers");
   };
@@ -362,7 +392,7 @@ const FarmerForm = ({ farmer }) => {
                       required
                       name="communityId"
                       defaultValue={farmer ? farmer.community : ""}
-                      // onChange={handleCommunityChange}
+                      onChange={handleCommunityChange}
                     >
                       <option>Select Community</option>
                       {communities.map((community) => (
@@ -436,7 +466,7 @@ const FarmerForm = ({ farmer }) => {
                     defaultValue={farmer ? farmer.group : ""}
                   >
                     <option>group</option>
-                    {groups.map((group) => (
+                    {group.map((group) => (
                       <option value={Number(group.id)} key={group.id}>
                         {group.name}
                       </option>

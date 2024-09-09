@@ -2211,7 +2211,7 @@ export const districts = [
 export const groups = [
   {
     id: 1,
-    name: "Talensi -Fong",
+    name: "Talensi-Fong",
   },
   {
     id: 2,
