@@ -29,14 +29,14 @@ const Storage = () => {
     return farmsData.find((farm) => farm.id === farmId);
   };
 
-  const showFarmOwner = () => {
-    if (farmDetails.owner !== "") {
-      return `${farmDetails.owner}'s farm`;
-    } else {
-      return "the farm";
-    }
-  };
-  const farmer = showFarmOwner();
+  // const showFarmOwner = () => {
+  //   if (farmDetails.owner !== "") {
+  //     return `${farmDetails.owner}'s farm`;
+  //   } else {
+  //     return "the farm";
+  //   }
+  // };
+  // const farmer = showFarmOwner();
   const handleSelectMethod = (e) => {
     if (e.target.value === "Others") {
       setHasStorage(!hasStorage);
@@ -56,7 +56,7 @@ const Storage = () => {
   return (
     <div>
       <h2 className="mb-2 text-xl text-center">
-        Key Data Entry For Storage Activities on {farmer}
+        Key Data Entry For Storage Activities
       </h2>
       <Form
         className="container mx-auto w-full md:w-[70%]"

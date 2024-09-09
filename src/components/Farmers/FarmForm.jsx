@@ -227,7 +227,7 @@ export const action = async ({ request, params }) => {
         }
       );
       console.log("Response from server:", response.data);
-      toast.success("Farmer data submitted successfully!");
+      toast.success("Farm data submitted successfully!");
       return redirect("/app/farms");
     } catch (error) {
       console.log(error);

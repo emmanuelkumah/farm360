@@ -2307,18 +2307,22 @@ export const createPlantingActivities = (data) => {
 
 export const createPrePlantingActivities = (data) => {
   prePlantingActivitiesData = [...prePlantingActivitiesData, data];
+  toast.success("Preplanting data submitted successfully!");
 };
 
 export const createFertilizerActivities = (data) => {
   fertActivitiesData = [...fertActivitiesData, data];
+  toast.success("Fertilizer data submitted successfully!");
 };
 
 export const createWeedControlActivities = (data) => {
   weedControlActivitiesData = [...weedControlActivitiesData, data];
+  toast.success("Weedcontrol data submitted successfully!");
 };
 
 export const createHarvestingActivities = (data) => {
   harvestingActivitiesData = [...harvestingActivitiesData, data];
+  toast.success("Harvesting data submitted successfully!");
 };
 
 export const createSalesActivities = (data) => {

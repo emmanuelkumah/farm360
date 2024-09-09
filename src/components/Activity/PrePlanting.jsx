@@ -32,14 +32,13 @@ const PrePlanting = () => {
     return farmsData.find((farm) => farm.id === farmId);
   };
 
-  const showFarmOwner = () => {
-    if (farmDetails.owner !== "") {
-      return `${farmDetails.owner}'s farm`;
-    } else {
-      return "the farm";
-    }
-  };
-  const farmer = showFarmOwner();
+  // const showFarmOwner = () => {
+  //   if (farmDetails.owner !== "") {
+  //     return `${farmDetails.owner}'s farm`;
+  //   } else {
+  //     return "the farm";
+  //   }
+  // };
   const handleSelectSource = (e) => {
     if (e.target.value === "Others") {
       setSource(!hasSource);
@@ -61,7 +60,7 @@ const PrePlanting = () => {
       <div className="m-10">
         <div>
           <h3 className="text-xl mt-[20%] md:mt-10">
-            Key Data Entry For Planting Activities on {farmer}
+            Key Data Entry For Planting Activities
           </h3>
           <Form method="post" action="../../app/cte/preplanting">
             <div className="grid grid-cols-1 md:grid-cols-2">

@@ -35,18 +35,18 @@ const Harvesting = () => {
       setHasCert(false);
     }
   };
-  const showFarmOwner = () => {
-    if (farmDetails.owner !== "") {
-      return `${farmDetails.owner}'s farm`;
-    } else {
-      return "the farm";
-    }
-  };
-  const farmer = showFarmOwner();
+  // const showFarmOwner = () => {
+  //   if (farmDetails.owner !== "") {
+  //     return `${farmDetails.owner}'s farm`;
+  //   } else {
+  //     return "the farm";
+  //   }
+  // };
+  // const farmer = showFarmOwner();
   return (
     <div>
       <h2 className="mb-2 text-xl text-center">
-        Key Data Entry For Harvesting Activities on {farmer}
+        Key Data Entry For Harvesting Activities
       </h2>
       <Form
         className="container mx-auto w-full md:w-[70%]"

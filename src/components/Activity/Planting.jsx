@@ -30,20 +30,17 @@ const Planting = () => {
     return farmsData.find((farm) => farm.id === farmId);
   };
 
-  const showFarmOwner = () => {
-    if (farmDetails.owner !== "") {
-      return `${farmDetails.owner}'s farm`;
-    } else {
-      return "the farm";
-    }
-  };
-  const farmer = showFarmOwner();
+  // const showFarmOwner = () => {
+  //   if (farmDetails.owner !== "") {
+  //     return `${farmDetails.owner}'s farm`;
+  //   } else {
+  //     return "the farm";
+  //   }
+  // };
+  // const farmer = showFarmOwner();
   return (
     <div className="flex flex-col justify-center items-center">
-      <h2 className="mb-2 text-xl">
-        {" "}
-        Key Data Entry For Planting Activities on {farmer}
-      </h2>
+      <h2 className="mb-2 text-xl"> Key Data Entry For Planting Activities</h2>
       <Form
         className="w-full md:w-[70%]"
         method="post"
