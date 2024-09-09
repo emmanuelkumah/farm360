@@ -113,6 +113,7 @@ const FarmerForm = ({ farmer }) => {
 
   const handleRegionChange = (e) => {
     const id = e.target.value;
+    console.log(id);
     setRegionId(id);
   };
   const handleDistrictChange = (e) => {

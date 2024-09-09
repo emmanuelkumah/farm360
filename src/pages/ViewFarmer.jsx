@@ -34,7 +34,8 @@ export const loader = () => {
 
 export const action = ({ params }) => {
   const id = params.farmerId;
-  deleteFarmer(id);
+  console.log(`delete`, id);
+  //deleteFarmer(id);
   // farmersData = farmersData.filter((farmer) => farmer.id !== id);
   // console.log(farmersData);
 

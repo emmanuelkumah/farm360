@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
 import { Link, useSubmit, useParams } from "react-router-dom";
 import { Button } from "flowbite-react";
-import userImage from "../../assets/images/emma2.png";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaUser } from "react-icons/fa";
 
