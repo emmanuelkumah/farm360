@@ -1,17 +1,44 @@
-import React from "react";
-import { Button, Table } from "flowbite-react";
-import { Link, useLoaderData } from "react-router-dom";
+import React, { useState } from "react";
+import { Button, Table, Pagination } from "flowbite-react";
+import { Link } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { LuEye } from "react-icons/lu";
 
 const FarmsList = ({ listFarms }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemesPerPage] = useState(10);
+  const [search, setSearch] = useState("");
+
+  const totalFarms = listFarms.data.length;
+  const lastItemIndex = currentPage * itemsPerPage;
+  const firstItemIndex = lastItemIndex - itemsPerPage;
+  const currentFarmsData = listFarms.data.slice(firstItemIndex, lastItemIndex);
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const onPageChange = (page) => setCurrentPage(page);
+
   return (
     <>
       <div className="my-10">
         <Button className="bg-secondary text-primary hover:text-slate-100 hover:bg-primary">
           <Link to="new">Add new farm</Link>
         </Button>
-        <div />
+
+        <div>
+          <input
+            className="w-full rounded-lg my-10"
+            type="text"
+            name="search"
+            id=""
+            placeholder="Search farm by name"
+            value={search}
+            autoFocus
+            onChange={handleSearch}
+          />
+        </div>
       </div>
       <div className="overflow-x-auto">
         <Table hoverable>
@@ -25,41 +52,57 @@ const FarmsList = ({ listFarms }) => {
             <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {listFarms.data.map((farm) => (
-              <Table.Row
-                key={farm.id}
-                className="bg-white dark:border-gray-700 dark:bg-gray-800"
-              >
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {farm.name}
-                </Table.Cell>
-                <Table.Cell>{farm.landSize}</Table.Cell>
-                <Table.Cell>{farm.cropType}</Table.Cell>
-                <Table.Cell>{farm.gpsAddress}</Table.Cell>
-                <Table.Cell>{farm.community.name}</Table.Cell>
+            {currentFarmsData
+              .filter((item) => {
+                return search.toLowerCase() === ""
+                  ? item
+                  : item.name.toLowerCase().includes(search);
+              })
+              .map((farm) => (
+                <Table.Row
+                  key={farm.id}
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {farm.name}
+                  </Table.Cell>
+                  <Table.Cell>{farm.landSize}</Table.Cell>
+                  <Table.Cell>{farm.cropType}</Table.Cell>
+                  <Table.Cell>{farm.gpsAddress}</Table.Cell>
+                  <Table.Cell>{farm.community.name}</Table.Cell>
 
-                <Table.Cell>
-                  <div className="flex items-center gap-5">
-                    <Link to={`${farm.id}`}>
-                      <LuEye className="text-xl hover:text-primary cursor-pointer" />
+                  <Table.Cell>
+                    <div className="flex items-center gap-5">
+                      <Link to={`${farm.id}`}>
+                        <LuEye className="text-xl hover:text-primary cursor-pointer" />
+                      </Link>
+                      <Link to={`${farm.id}/edit`}>
+                        <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                      </Link>
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell className="flex justify-end">
+                    <Link to={`${farm.id}/activities`}>
+                      <Button className="bg-main hover:bg-secondary">
+                        Start Activity
+                      </Button>
                     </Link>
-                    <Link to={`${farm.id}/edit`}>
-                      <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
-                    </Link>
-                  </div>
-                  {/* <div className="flex md:items-center md:justify-evenly"></div> */}
-                </Table.Cell>
-                <Table.Cell className="flex justify-end">
-                  <Link to={`${farm.id}/activities`}>
-                    <Button className="bg-main hover:bg-secondary">
-                      Start Activity
-                    </Button>
-                  </Link>
-                </Table.Cell>
-              </Table.Row>
-            ))}
+                  </Table.Cell>
+                </Table.Row>
+              ))}
           </Table.Body>
         </Table>
+        <div className="flex overflow-x-auto mt-10 sm:justify-center">
+          <Pagination
+            layout="pagination"
+            currentPage={currentPage}
+            totalPages={totalFarms}
+            onPageChange={onPageChange}
+            previousLabel="Go back"
+            nextLabel="Go forward"
+            showIcons
+          />
+        </div>
       </div>
     </>
   );

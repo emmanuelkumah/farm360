@@ -17,7 +17,7 @@ const FarmersList = () => {
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
   const currentFarmersData = farmersData.slice(firstItemIndex, lastItemIndex);
-  console.log("currentFarmersData", currentFarmersData);
+
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
