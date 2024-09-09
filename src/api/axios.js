@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosbaseURL = axios.create({
-  baseURL: "http://18.134.98.183:8080/",
+  baseURL: "https://dev.bjlfarmersmarket.net/farmers",
   headers: {
     "X-Origin": "WEB",
   },

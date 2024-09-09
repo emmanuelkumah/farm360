@@ -1,38 +1,55 @@
-import React, { useState } from "react";
-import { Button, Label, TextInput, Radio, Select } from "flowbite-react";
+import React, { useState, useEffect } from "react";
+import { Button, Label, TextInput, Select, Radio } from "flowbite-react";
 import {
   regions,
   districts,
   crops,
-  farmersDummyData,
   updateFarmDetails,
 } from "../../data/dummyData";
 import { Form, redirect } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiMap } from "react-icons/bi";
-import { createFarm } from "../../data/dummyData";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import { createFarm } from "../../data/dummyData";
+import { getAuthToken } from "../../utils/auth";
+import axios from "axios";
 
 const FarmForm = ({ farm, method }) => {
-  const [showDistricts, setShowDistricts] = useState([]);
   const [anotherFarm, setAnotherFarm] = useState(false);
+  const [token, setToken] = useState(getAuthToken());
+  const [farmers, setFarmers] = useState([]);
+  const [communities, setCommunities] = useState([]);
 
-  //get all farmer name
-  const farmersName = farmersDummyData.map((farmer) => {
-    return `${farmer.firstName} ${farmer.lastName}`;
-  });
+  useEffect(() => {
+    fetchFarmersCommunities();
+  }, []);
 
-  const getDistricts = (id) => {
-    const result = districts.find((district) => district.regionId === id);
-    const { listDistrict } = result;
-    setShowDistricts(listDistrict);
-  };
-
-  const handleRegionChange = (e) => {
-    const index = e.target.selectedIndex;
-    getDistricts(index);
-  };
   const onAddSecondFarm = () => {
     setAnotherFarm(!anotherFarm);
+  };
+
+  const fetchFarmersCommunities = async () => {
+    try {
+      const [farmers, communities] = await Promise.all([
+        axios.get("https://dev.bjlfarmersmarket.net/farmers", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-Origin": "WEB",
+          },
+        }),
+        axios.get("https://dev.bjlfarmersmarket.net/geo/communities", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-Origin": "WEB",
+          },
+        }),
+      ]);
+      setCommunities(communities.data.data);
+      setFarmers(farmers.data);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   return (
     <div>
@@ -65,14 +82,14 @@ const FarmForm = ({ farm, method }) => {
                     <Select
                       id="farmowner"
                       required
-                      name="owner"
+                      name="farmerId"
                       defaultValue={farm ? farm.owner : ""}
                       // onChange={handleRegionChange}
                     >
                       <option>Select farmer</option>
-                      {farmersName.map((name, index) => (
-                        <option value={name} key={index}>
-                          {name}
+                      {farmers.map((farmer) => (
+                        <option value={farmer.id} key={farmer.id}>
+                          {farmer.firstName} {farmer.lastName}
                         </option>
                       ))}
                     </Select>
@@ -93,7 +110,7 @@ const FarmForm = ({ farm, method }) => {
                       icon={FaRegUserCircle}
                       defaultValue={farm ? farm.name : ""}
                       placeholder="Enter farm name"
-                      name="farmName"
+                      name="name"
                       required
                     />
                   </div>
@@ -110,33 +127,28 @@ const FarmForm = ({ farm, method }) => {
                       type="number"
                       icon={BiMap}
                       placeholder="Enter farm size in acres"
-                      name="farmSize"
+                      name="landSize"
                       defaultValue={farm ? farm.size : ""}
                       required
                     />
                   </div>
                   <div>
-                    <div className="my-2 block">
-                      <Label
-                        htmlFor="crop"
-                        value="Crop grown"
-                        className="font-semibold"
-                      />
-                    </div>
-                    <Select
-                      id="crop"
-                      required
-                      name="crop"
-                      defaultValue={farm ? farm.crop : ""}
-                      // onChange={handleRegionChange}
-                    >
-                      <option>Select farmer</option>
-                      {crops.map((crop, index) => (
-                        <option value={crop} key={index}>
-                          {crop}
-                        </option>
-                      ))}
-                    </Select>
+                    <fieldset className="flex max-w-md flex-col gap-4">
+                      <legend className="mb-4">Select crop type</legend>
+                      <div className="flex items-center gap-2">
+                        <Radio
+                          id="soy"
+                          name="cropType"
+                          value="SOYA"
+                          defaultChecked
+                        />
+                        <Label htmlFor="soya">Soya</Label>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Radio id="shea" name="shea" value="Shea" disabled />
+                        <Label htmlFor="shea">Shea</Label>
+                      </div>
+                    </fieldset>
                   </div>
                   <div>
                     <div className="my-2 block">
@@ -152,7 +164,7 @@ const FarmForm = ({ farm, method }) => {
                       icon={FaRegUserCircle}
                       placeholder="Enter farm GPS"
                       defaultValue={farm ? farm.gps : ""}
-                      name="gps"
+                      name="gpsAddress"
                       required
                     />
                   </div>
@@ -164,163 +176,23 @@ const FarmForm = ({ farm, method }) => {
                         className="font-semibold"
                       />
                     </div>
-                    <TextInput
-                      id="address"
-                      type="text"
-                      icon={BiMap}
-                      name="community"
-                      defaultValue={farm ? farm.community : ""}
-                      placeholder="Enter community of farm"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <div className="my-2 block">
-                      <Label
-                        htmlFor="region"
-                        value="Region"
-                        className="font-semibold"
-                      />
-                    </div>
                     <Select
-                      id="region"
+                      id="community"
                       required
-                      name="region"
-                      defaultValue={farm ? farm.region : ""}
-                      onChange={handleRegionChange}
+                      name="communityId"
+                      defaultValue={farm ? farm.owner : ""}
+                      // onChange={handleRegionChange}
                     >
-                      <option>Select region</option>
-                      {regions.map((region, index) => (
-                        <option value={region.name} key={index}>
-                          {region.name}
+                      <option>Select community</option>
+                      {communities.map((community) => (
+                        <option value={community.id} key={community.id}>
+                          {community.name}
                         </option>
                       ))}
                     </Select>
                   </div>
                 </div>
-                <div>
-                  <div className="my-2 block">
-                    <Label
-                      htmlFor="district"
-                      value="District"
-                      className="font-semibold"
-                    />
-                  </div>
-                  <Select
-                    id="district"
-                    required
-                    className="w-full"
-                    name="district"
-                    defaultValue={farm ? farm.district : ""}
-                  >
-                    <option>Select District</option>
-                    {showDistricts.map((district) => (
-                      <option value={district} key={district}>
-                        {district}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-                <section>
-                  <Button className="bg-main mt-4" onClick={onAddSecondFarm}>
-                    Add another farm
-                  </Button>
-                  {anotherFarm && (
-                    <section>
-                      <div>
-                        <div className="my-2 block">
-                          <Label
-                            htmlFor="secondName"
-                            value="Farm name"
-                            className="font-semibold"
-                          />
-                        </div>
-                        <TextInput
-                          id="secondName"
-                          type="text"
-                          icon={FaRegUserCircle}
-                          defaultValue={farm ? farm.secondfarmName : ""}
-                          placeholder="Enter second farm name"
-                          name="secondfarmName"
-                        />
-                      </div>
-                      <div>
-                        <div className="my-2 block">
-                          <Label
-                            htmlFor="secondcrop"
-                            value="Crop grown"
-                            className="font-semibold"
-                          />
-                        </div>
-                        <Select
-                          id="secondcrop"
-                          name="secondcrop"
-                          defaultValue={farm ? farm.owner : ""}
-                          // onChange={handleRegionChange}
-                        >
-                          <option>Select farmer</option>
-                          {crops.map((crop, index) => (
-                            <option value={crop} key={index}>
-                              {crop}
-                            </option>
-                          ))}
-                        </Select>
-                        <div>
-                          <div className="my-2 block">
-                            <Label
-                              htmlFor="secondfarmSize"
-                              value="Farm size"
-                              className="font-semibold"
-                            />
-                          </div>
-                          <TextInput
-                            id="secondfarmSize"
-                            type="number"
-                            icon={BiMap}
-                            placeholder="Enter farm size in acres"
-                            name="secondfarmSize"
-                            defaultValue={farm ? farm.secondfarmSize : ""}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <div className="my-2 block">
-                          <Label
-                            htmlFor="secondgps"
-                            value="Farm address"
-                            className="font-semibold"
-                          />
-                        </div>
-                        <TextInput
-                          id="secondgps"
-                          type="text"
-                          icon={FaRegUserCircle}
-                          placeholder="Enter farm GPS"
-                          defaultValue={farm ? farm.secondgps : ""}
-                          name="secondgps"
-                        />
-                      </div>
-                      <div>
-                        <div className="my-2 block">
-                          <Label
-                            htmlFor="secondcommunity"
-                            value="Community"
-                            className="font-semibold"
-                          />
-                        </div>
-                        <TextInput
-                          id="secondcommunity"
-                          type="text"
-                          icon={BiMap}
-                          name="secondcommunity"
-                          defaultValue={farm ? farm.secondcommunity : ""}
-                          placeholder="Enter community of farm"
-                        />
-                      </div>
-                    </section>
-                  )}
-                </section>
+
                 <Button type="submit" className="mt-4 w-[100%] bg-main">
                   Save Details
                 </Button>
@@ -338,31 +210,39 @@ export default FarmForm;
 export const action = async ({ request, params }) => {
   const method = request.method;
   const data = await request.formData();
+  const token = getAuthToken();
   if (method === "POST") {
-    const firstFarm = {
-      id: String(Math.floor(Math.random() * 20000)),
-      name: data.get("farmName"),
-      owner: data.get("owner"),
-      size: data.get("farmSize"),
-      crop: data.get("crop"),
-      gps: data.get("gps"),
-      community: data.get("community"),
-      region: data.get("region"),
-      district: data.get("district"),
+    const farmDetails = {
+      name: data.get("name"),
+      communityId: data.get("communityId"),
+      cropType: data.get("cropType"),
+      gpsAddress: data.get("gpsAddress"),
+      landSize: Number(data.get("landSize")),
+      farmerId: Number(data.get("farmerId")),
     };
-    const secondFarm = {
-      id: String(Math.floor(Math.random() * 20000)),
-      name: data.get("secondfarmName"),
-      owner: data.get("owner"),
-      size: data.get("secondfarmSize"),
-      crop: data.get("secondcrop"),
-      gps: data.get("secondgps"),
-      community: data.get("secondcommunity"),
-      region: data.get("region"),
-      district: data.get("district"),
-    };
+
+    console.log(farmDetails);
+    try {
+      const response = await axios.post(
+        "https://dev.bjlfarmersmarket.net/farm",
+        farmDetails,
+        {
+          headers: {
+            "X-Origin": "WEB",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Response from server:", response.data);
+      toast.success("Farmer data submitted successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error submitting data. Please try again.");
+      return error;
+    }
     //connect to api and sent data
-    createFarm(firstFarm, secondFarm);
+    // createFarm(firstFarm, secondFarm);
   }
 
   if (method === "PATCH") {
