@@ -1,33 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Button, Label, TextInput, Select, Radio } from "flowbite-react";
-import {
-  regions,
-  districts,
-  crops,
-  updateFarmDetails,
-} from "../../data/dummyData";
-import { Form, redirect } from "react-router-dom";
+import { updateFarmDetails } from "../../data/dummyData";
+import { Form, redirect, useNavigation } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiMap } from "react-icons/bi";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import { createFarm } from "../../data/dummyData";
 import { getAuthToken } from "../../utils/auth";
 import axios from "axios";
 
 const FarmForm = ({ farm, method }) => {
-  const [anotherFarm, setAnotherFarm] = useState(false);
   const [token, setToken] = useState(getAuthToken());
   const [farmers, setFarmers] = useState([]);
   const [communities, setCommunities] = useState([]);
 
+  const navigation = useNavigation();
+
   useEffect(() => {
     fetchFarmersCommunities();
   }, []);
-
-  const onAddSecondFarm = () => {
-    setAnotherFarm(!anotherFarm);
-  };
 
   const fetchFarmersCommunities = async () => {
     try {
@@ -180,10 +171,10 @@ const FarmForm = ({ farm, method }) => {
                       id="community"
                       required
                       name="communityId"
-                      defaultValue={farm ? farm.owner : ""}
                       // onChange={handleRegionChange}
                     >
                       <option>Select community</option>
+
                       {communities.map((community) => (
                         <option value={community.id} key={community.id}>
                           {community.name}
@@ -194,7 +185,9 @@ const FarmForm = ({ farm, method }) => {
                 </div>
 
                 <Button type="submit" className="mt-4 w-[100%] bg-main">
-                  Save Details
+                  {navigation.state === "submitting"
+                    ? "Submitting data..."
+                    : "Save details"}{" "}
                 </Button>
               </section>
             </div>

@@ -1,10 +1,15 @@
+import { useLoaderData } from "react-router-dom";
 import FarmsList from "../components/Farmers/FarmsList";
-import { farmsData } from "../data/dummyData";
+import { getAuthToken } from "../utils/auth";
+import axios from "axios";
+
 const Farms = () => {
+  const listFarms = useLoaderData();
+  console.log("farms", listFarms);
   return (
     <div className="m-10">
       <section>
-        <FarmsList />
+        <FarmsList listFarms={listFarms} />
       </section>
     </div>
   );
@@ -14,9 +19,20 @@ export default Farms;
 
 //should have async await if connecting to api
 
-export const loader = () => {
-  //use try catch and handle errors
-  // response = await axios.get()
-  //if(!response.ok) return {isError: true, message:"Could not load farm"}
-  return farmsData;
+export const loader = async () => {
+  const token = getAuthToken();
+
+  const data = axios
+    .get("https://dev.bjlfarmersmarket.net/farms", {
+      headers: {
+        "X-Origin": "WEB",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+      //console.log(response.data);
+    })
+    .catch((error) => console.log(error));
+  return data;
 };
