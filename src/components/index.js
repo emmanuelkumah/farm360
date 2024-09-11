@@ -53,3 +53,5 @@ export { default as LoginForm } from "./LoginForm";
 export { default as Form } from "./UserForm";
 export { default as UsersList } from "./UsersList";
 export { default as ProtectedRoute } from "./ProtectedRoute";
+export { default as PasswordStrengthIndicator } from "./UserRegistration/PasswordStrengthIndicator";
+export { default as UserRegistrationForm } from "./UserRegistration/UserRegistrationForm";

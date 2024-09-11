@@ -1,5 +1,5 @@
 import React from "react";
-import { Form } from "../components";
+import { Form, UserRegistrationForm } from "../components";
 import { redirect, useNavigate } from "react-router-dom";
 import { Button } from "flowbite-react";
 
@@ -16,7 +16,8 @@ const NewUser = () => {
         <div className="my-10">
           <Button onClick={handleGoBack}>Back </Button>
         </div>
-        <Form />
+        <UserRegistrationForm />
+        {/* <Form /> */}
       </div>
     </>
   );
