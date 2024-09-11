@@ -1,7 +1,7 @@
 import React from "react";
-import { Form } from "../components";
 import { useNavigate } from "react-router-dom";
 import { Button } from "flowbite-react";
+import { UserRegistrationForm } from "../components";
 
 const EditUser = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const EditUser = () => {
       <div className="my-10">
         <Button onClick={handleGoBack}>Back </Button>
       </div>
-      <Form />
+      <UserRegistrationForm />
     </div>
   );
 };

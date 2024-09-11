@@ -1,5 +1,5 @@
 import { FarmersList } from "../components";
-// import { farmersDummyData } from "../data/dummyData";
+import { json } from "react-router-dom";
 import { getAuthToken } from "../utils/auth";
 import axios from "axios";
 const Farmers = () => {
@@ -18,7 +18,7 @@ export default Farmers;
 export const loader = async () => {
   const token = getAuthToken();
 
-  const data = axios
+  const response = axios
     .get("https://dev.bjlfarmersmarket.net/farmers", {
       headers: {
         "X-Origin": "WEB",
@@ -29,6 +29,12 @@ export const loader = async () => {
       return response.data;
       //console.log(response.data);
     })
-    .catch((error) => console.log(error));
-  return data;
+    .catch((error) => {
+      console.log(error.response);
+      return error.response;
+    });
+  if (response.status === 401) {
+    throw json({ message: "Could not fetch farmers" });
+  }
+  return response;
 };

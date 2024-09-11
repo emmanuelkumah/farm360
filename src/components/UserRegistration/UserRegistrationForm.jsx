@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { HiInformationCircle } from "react-icons/hi";
 import PasswordStrengthIndicator from "./PasswordStrengthIndicator";
+import { Form } from "react-router-dom";
 
 const UserRegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -72,7 +73,7 @@ const UserRegistrationForm = () => {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
       <h2 className="text-2xl font-bold mb-6 text-center">Create an Account</h2>
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <Form className="space-y-4" method="post">
         <div>
           <label
             htmlFor="email"
@@ -157,7 +158,7 @@ const UserRegistrationForm = () => {
             Register
           </button>
         </div>
-      </form>
+      </Form>
       {Object.keys(errors).length > 0 && (
         <Alert className="mt-4" color="failure" icon={HiInformationCircle}>
           <span>Please correct the errors in the form before submitting.</span>
