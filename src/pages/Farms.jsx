@@ -1,11 +1,9 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, json } from "react-router-dom";
 import FarmsList from "../components/Farmers/FarmsList";
-import { getAuthToken } from "../utils/auth";
-import axios from "axios";
+import { axiosbaseURL } from "../api/axios";
 
 const Farms = () => {
   const listFarms = useLoaderData();
-  console.log("farms", listFarms);
   return (
     <div className="m-10">
       <section>
@@ -20,19 +18,14 @@ export default Farms;
 //should have async await if connecting to api
 
 export const loader = async () => {
-  const token = getAuthToken();
-
-  const data = axios
-    .get("https://dev.bjlfarmersmarket.net/farms", {
-      headers: {
-        "X-Origin": "WEB",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      return response.data;
-      //console.log(response.data);
-    })
-    .catch((error) => console.log(error));
-  return data;
+  const response = await axiosbaseURL.get("farms");
+  console.log("server resonse", response);
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500
+  ) {
+    throw json({ message: "Could not fetch farmers." });
+  }
+  return response.data.data;
 };

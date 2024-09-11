@@ -9,10 +9,10 @@ const FarmsList = ({ listFarms }) => {
   const [itemsPerPage, setItemesPerPage] = useState(10);
   const [search, setSearch] = useState("");
 
-  const totalFarms = listFarms.data.length;
+  const totalFarms = listFarms.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentFarmsData = listFarms.data.slice(firstItemIndex, lastItemIndex);
+  const currentFarmsData = listFarms.slice(firstItemIndex, lastItemIndex);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);

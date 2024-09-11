@@ -175,6 +175,8 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Farms />,
+            errorElement: <Error />,
+
             loader: farmsLoader,
           },
           {
