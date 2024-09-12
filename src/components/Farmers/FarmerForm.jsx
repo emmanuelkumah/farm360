@@ -17,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { redirect } from "react-router-dom";
 import axios from "axios";
 import { getAuthToken } from "../../utils/auth";
+import { axiosbaseURL } from "../../api/axios";
 
 const FarmerForm = ({ farmer }) => {
   const [token, setToken] = useState(getAuthToken());
@@ -459,7 +460,7 @@ const FarmerForm = ({ farmer }) => {
                       value="Select farmer group"
                     />
                   </div>
-                  <Select
+                  {/* <Select
                     id="group"
                     required
                     className="w-full"
@@ -472,7 +473,7 @@ const FarmerForm = ({ farmer }) => {
                         {group.name}
                       </option>
                     ))}
-                  </Select>
+                  </Select> */}
                 </div>
                 <Button type="submit" className="mt-4 w-[100%] bg-main">
                   {navigation.state === "submitting"
@@ -492,7 +493,7 @@ export default FarmerForm;
 
 export const action = async ({ request }) => {
   const data = await request.formData();
-  const token = getAuthToken();
+  // const token = getAuthToken();
 
   let submission = {
     firstName: data.get("firstName"),
@@ -505,24 +506,35 @@ export const action = async ({ request }) => {
     farmerType: data.get("farmerType"),
     cropType: data.get("cropType"),
   };
-  // console.log(submission);
+  console.log(submission);
 
-  try {
-    const response = await axios.post(
-      "https://dev.bjlfarmersmarket.net/farmer",
-      submission,
-      {
-        headers: {
-          "X-Origin": "WEB",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log("Response from server:", response.data);
-    toast.success("Farmer data submitted successfully!");
-    return redirect("/app/farmers");
-  } catch (error) {
-    toast.error("Error submitting data. Please try again.");
-    return error;
+  const response = await axiosbaseURL.post("/farmer", submission);
+  console.log("server resonse", response);
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500
+  ) {
+    throw json({ message: "Could not fetch farms." });
   }
+  return response.data.data;
+
+  // try {
+  //   const response = await axios.post(
+  //     "https://dev.bjlfarmersmarket.net/farmer",
+  //     submission,
+  //     {
+  //       headers: {
+  //         "X-Origin": "WEB",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     }
+  //   );
+  //   console.log("Response from server:", response.data);
+  //   toast.success("Farmer data submitted successfully!");
+  //   return redirect("/app/farmers");
+  // } catch (error) {
+  //   toast.error("Error submitting data. Please try again.");
+  //   return error;
+  // }
 };

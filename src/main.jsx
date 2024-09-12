@@ -113,10 +113,13 @@ const router = createBrowserRouter([
       },
       {
         path: "farmers",
+        errorElement: <Error />,
+
         children: [
           {
             index: true,
             element: <Farmers />,
+
             loader: farmersLoader,
           },
           {
@@ -171,11 +174,11 @@ const router = createBrowserRouter([
       //farms route
       {
         path: "farms",
+        errorElement: <Error />,
         children: [
           {
             index: true,
             element: <Farms />,
-            errorElement: <Error />,
 
             loader: farmsLoader,
           },

@@ -15,8 +15,6 @@ const Farms = () => {
 
 export default Farms;
 
-//should have async await if connecting to api
-
 export const loader = async () => {
   const response = await axiosbaseURL.get("farms");
   console.log("server resonse", response);
@@ -25,7 +23,7 @@ export const loader = async () => {
     response.status === 404 ||
     response.status === 500
   ) {
-    throw json({ message: "Could not fetch farmers." });
+    throw json({ message: "Could not fetch farms." });
   }
   return response.data.data;
 };

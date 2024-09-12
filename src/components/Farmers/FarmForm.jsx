@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Button, Label, TextInput, Select, Radio } from "flowbite-react";
 import { updateFarmDetails } from "../../data/dummyData";
-import { Form, redirect, useNavigation } from "react-router-dom";
+import { Form, redirect, useNavigation, json } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiMap } from "react-icons/bi";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getAuthToken } from "../../utils/auth";
 import axios from "axios";
+import { axiosbaseURL } from "../../api/axios";
 
 const FarmForm = ({ farm, method }) => {
   const [token, setToken] = useState(getAuthToken());
@@ -203,7 +204,6 @@ export default FarmForm;
 export const action = async ({ request, params }) => {
   const method = request.method;
   const data = await request.formData();
-  const token = getAuthToken();
   if (method === "POST") {
     const farmDetails = {
       name: data.get("name"),
@@ -213,47 +213,15 @@ export const action = async ({ request, params }) => {
       landSize: Number(data.get("landSize")),
       farmerId: Number(data.get("farmerId")),
     };
-
-    console.log(farmDetails);
-    try {
-      const response = await axios.post(
-        "https://dev.bjlfarmersmarket.net/farm",
-        farmDetails,
-        {
-          headers: {
-            "X-Origin": "WEB",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("Response from server:", response.data);
-      toast.success("Farm data submitted successfully!");
-      return redirect("/app/farms");
-    } catch (error) {
-      console.log(error);
-      toast.error("Error submitting data. Please try again.");
-      return error;
+    const response = await axiosbaseURL.post("/farm", farmDetails);
+    if (
+      response.status === 401 ||
+      response.status === 404 ||
+      response.status === 500
+    ) {
+      throw json({ message: "Could not save farms." });
     }
-    //connect to api and sent data
-    // createFarm(firstFarm, secondFarm);
+    toast.success("Farm data submitted successfully!");
+    return redirect("/app/farms");
   }
-
-  if (method === "PATCH") {
-    const updateFarm = {
-      id: params.farmId,
-      name: data.get("farmName"),
-      owner: data.get("owner"),
-      size: data.get("farmSize"),
-      crop: data.get("crop"),
-      gps: data.get("gps"),
-      community: data.get("community"),
-      region: data.get("region"),
-      district: data.get("district"),
-    };
-    //connect to api and update farm
-    updateFarmDetails(updateFarm);
-  }
-
-  //redirect to farms route
-  return redirect("..");
 };
