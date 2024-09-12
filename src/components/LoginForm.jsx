@@ -1,9 +1,11 @@
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
+import { Button, Checkbox, Label, TextInput, Alert } from "flowbite-react";
 import loginFarm from "../assets/images/loginFarm.jpg";
 import { Form, useNavigation } from "react-router-dom";
+import { HiInformationCircle } from "react-icons/hi";
 
 const LoginForm = ({ data }) => {
-  console.log("data", data);
+  console.log("response from server", data);
+  const response = data;
   const navigation = useNavigation();
 
   return (
@@ -19,11 +21,20 @@ const LoginForm = ({ data }) => {
           </div>
           <div className="w-1/2">
             <h3 className="text-2xl my-5">Login to the app </h3>
+            {response ? (
+              <Alert
+                color="failure"
+                icon={HiInformationCircle}
+                className="max-w-2xl"
+              >
+                <span className="font-medium">Info alert!</span>{" "}
+                {response?.data.message}
+              </Alert>
+            ) : null}
 
             <Form
               className="flex max-w-2xl flex-col gap-4 text-xl"
               method="post"
-              action="/login"
             >
               <div>
                 <div className="mb-2 block">

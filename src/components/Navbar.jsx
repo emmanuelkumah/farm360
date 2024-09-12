@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Avatar, Dropdown, Button } from "flowbite-react";
 import { useStateContext } from "../context/ContextProvider";
 import { AiOutlineMenu } from "react-icons/ai";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 
 const NavButton = ({ customFunc, icon, color, dotColor }) => (
   <button
@@ -22,6 +22,8 @@ const NavButton = ({ customFunc, icon, color, dotColor }) => (
 const Navbar = () => {
   // const { token } = useAuth();
   // console.log(token);
+  const navigate = useNavigate();
+
   const { setActiveMenu, screenSize, setScreenSize } = useStateContext();
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -44,8 +46,8 @@ const Navbar = () => {
   const handleLogOut = () => {
     localStorage.removeItem("token");
 
-    console.log("removed");
-    return redirect("..");
+    // navigation("/login");
+    navigate("/login");
   };
 
   return (

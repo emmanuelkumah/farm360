@@ -1,12 +1,8 @@
 import { redirect, useActionData } from "react-router-dom";
 import { LoginForm } from "../components";
-import { useLocation, useNavigate } from "react-router-dom";
-
 import axios from "axios";
-
 const Login = () => {
   const data = useActionData();
-  console.log("action data", data);
   return (
     <>
       <LoginForm data={data} />
@@ -22,26 +18,24 @@ export const action = async ({ request }) => {
     email: data.get("email"),
     password: data.get("password"),
   };
-  //connect to api and send request
 
-  const response = await axios.post(
-    "https://dev.bjlfarmersmarket.net/auth/login",
-    loginDetails,
-    {
-      headers: {
-        "X-Origin": "WEB",
-      },
+  try {
+    const response = await axios.post(
+      "https://dev.bjlfarmersmarket.net/auth/login",
+      loginDetails,
+      {
+        headers: {
+          "X-Origin": "WEB",
+        },
+      }
+    );
+    console.log("right creds", response);
+
+    if (response.status === 200) {
+      localStorage.setItem("token", response.data.token);
+      return redirect("/app");
     }
-  );
-  console.log(response.status);
-  if (response.status !== 200) {
-    return response;
+  } catch (error) {
+    return error.response;
   }
-
-  localStorage.setItem("token", response.data.token);
-
-  // const { from } = location.state || { from: { pathname: "/" } };
-  // console.log(from.pathname);
-  // navigate(from.pathname);
-  return redirect("/app");
 };
