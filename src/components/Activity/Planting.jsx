@@ -3,12 +3,14 @@ import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
 import { Form, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createPlantingActivities, farmsData } from "../../data/dummyData";
+import { farmsData } from "../../data/dummyData";
+import { axiosbaseURL } from "../../api/axios";
 
 const Planting = () => {
   const defaultValue = new Date();
   const [hasOtherCert, setHasOtherCert] = useState(false);
   const [farmDetails, setFarmDetails] = useState({});
+  const [activityDate, setActivityDate] = useState("");
   // let farmOwner;
   let { farmId } = useParams();
   useEffect(() => {
@@ -18,6 +20,11 @@ const Planting = () => {
     setFarmDetails(farm);
   }, []);
 
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString();
+    console.log(formattedDate);
+    setActivityDate(formattedDate);
+  };
   const handleCertificateChange = (e) => {
     if (e.target.value === "others") {
       setHasOtherCert(!hasOtherCert);
@@ -30,32 +37,21 @@ const Planting = () => {
     return farmsData.find((farm) => farm.id === farmId);
   };
 
-  // const showFarmOwner = () => {
-  //   if (farmDetails.owner !== "") {
-  //     return `${farmDetails.owner}'s farm`;
-  //   } else {
-  //     return "the farm";
-  //   }
-  // };
-  // const farmer = showFarmOwner();
   return (
     <div className="flex flex-col justify-center items-center">
       <h2 className="mb-2 text-xl"> Key Data Entry For Planting Activities</h2>
-      <Form
-        className="w-full md:w-[70%]"
-        method="post"
-        action="../../app/cte/planting"
-      >
+      <Form className="w-full md:w-[70%]" method="post">
         <div className="my-4">
           <Label htmlFor="planting" className="font-semibold my-4">
             Date of planting
           </Label>
           <Datepicker
             id="planting"
-            name="plantingDate"
+            name="activityDate"
             placeholder="Select planting date"
             maxDate={defaultValue}
-            defaultValue={defaultValue}
+            value={activityDate}
+            onSelectedDateChanged={(date) => handleDateChange(date)}
           />
         </div>
 
@@ -66,7 +62,7 @@ const Planting = () => {
             className="my-2 font-semibold"
           />
 
-          <Select id="crop" required name="cropPlanted" defaultValue="">
+          <Select id="crop" required name="cropName" defaultValue="">
             <option>Select name of crop</option>
             <option value="soya">Soya</option>
             <option value="cowpea">Cowpea</option>
@@ -80,10 +76,10 @@ const Planting = () => {
             className="my-2 font-semibold"
           />
           <TextInput
-            type="text"
+            type="number"
             required
             placeholder="Kilo of seeds planted"
-            name="kiloPlanted"
+            name="kilosPlanted"
             id="kilo"
             defaultValue=""
           />
@@ -95,11 +91,11 @@ const Planting = () => {
             className="my-2 font-semibold"
           />
           <TextInput
-            type="text"
+            type="number"
             required
             placeholder="Enter land size covered"
             id="size"
-            name="landsizeCovered"
+            name="landSizeCovered"
             defaultValue=""
           />
         </div>
@@ -114,7 +110,7 @@ const Planting = () => {
             required
             placeholder="Enter name of supervisor"
             id="supervisor"
-            name="supervisor"
+            name="supervisorName"
             defaultValue=""
           />
         </div>
@@ -129,7 +125,7 @@ const Planting = () => {
             required
             placeholder="Enter contact of supervisor"
             id="contact"
-            name="contact"
+            name="supervisorContact"
             maxLength={10}
             defaultValue=""
           />
@@ -144,7 +140,7 @@ const Planting = () => {
           <Select
             id="cert"
             required
-            name="certificate"
+            name="supervisorQualification"
             defaultValue=""
             onChange={handleCertificateChange}
           >
@@ -187,16 +183,17 @@ export default Planting;
 export const action = async ({ request, params }) => {
   const data = await request.formData();
   const plantingActivitiesData = {
-    plantingDate: data.get("plantingDate"),
-    cropPlanted: data.get("cropPlanted"),
-    kiloPlanted: data.get("kiloPlanted"),
-    landsizeCovered: data.get("landsizeCovered"),
-    supervisor: data.get("supervisor"),
-    contact: data.get("contact"),
-    certificate: data.get("certificate"),
-    otherCertificate: data.get("otherCertificate"),
+    farmId: Number(params.farmId),
+    cropName: data.get("cropName"),
+    kilosPlanted: data.get("kilosPlanted"),
+    landSizeCovered: data.get("landSizeCovered"),
+    supervisorName: data.get("supervisorName"),
+    supervisorContact: data.get("supervisorContact"),
+    supervisorQualification: data.get("supervisorQualification"),
+    activityDate: data.get("activityDate"),
   };
   //connect to the database to save data
-  createPlantingActivities(plantingActivitiesData);
+  console.log(plantingActivitiesData);
+
   return null;
 };
