@@ -20,6 +20,7 @@ import {
   PrePlantingActvities,
   Traceability,
   FarmActivity,
+  FarmActivities,
   Landing,
   AddFarmer,
   EditFarmer,
@@ -209,10 +210,57 @@ const router = createBrowserRouter([
       },
       {
         path: "farms/:farmId/activities",
-        element: <FarmActivity />,
-        loader: ActivitiesLoader,
-        action: manipulateWeedControlActivities,
-        // action: manipulateActivities,
+        children: [
+          {
+            index: true,
+            element: <FarmActivities />,
+          },
+          {
+            path: "pre-planting",
+            element: <h2>Pre-Planting activities</h2>,
+          },
+          {
+            path: "planting",
+            element: <h2>Planting activities</h2>,
+          },
+          {
+            path: "weed-control",
+            element: <h2>Weed activities</h2>,
+          },
+          {
+            path: "fertilizing",
+            element: <h2>Fertilizing activities</h2>,
+          },
+          {
+            path: "pest-control",
+            element: <h2>Pest activities</h2>,
+          },
+          {
+            path: "harvesting",
+            element: <h2>Harvesting activities</h2>,
+          },
+          {
+            path: "storage",
+            element: <h2>Storage activities</h2>,
+          },
+          {
+            path: "sales",
+            element: <h2>Sales activities</h2>,
+          },
+          {
+            path: "shipment",
+            element: <h2>Shipment activities</h2>,
+          },
+        ],
+        // element: <FarmActivity />,
+        // loader: ActivitiesLoader,
+        // action: manipulateWeedControlActivities,
+        // children: [
+        //   {
+        //     path: "pre-planting",
+        //     element: "<h2>planting</h2>",
+        //   },
+        // ],
       },
       // saved activing
       {

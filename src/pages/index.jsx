@@ -28,3 +28,4 @@ export { default as AuthPage } from "./AuthPage";
 export { default as Error } from "./Error";
 export { default as NewUser } from "./NewUser";
 export { default as EditUser } from "./EditUser";
+export { default as FarmActivities } from "./FarmActivities";
