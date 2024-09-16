@@ -6,6 +6,7 @@ import { farmsData } from "../../data/dummyData";
 import { createWeedControlActivities } from "../../data/dummyData";
 
 const WeedControl = () => {
+  const [activityDate, setActivityDate] = useState("");
   const [hasWeedControl, setHasWeedControl] = useState(false);
   const [hasCert, setHasCert] = useState(false);
   const [farmDetails, setFarmDetails] = useState({});
@@ -38,14 +39,12 @@ const WeedControl = () => {
       setHasCert(false);
     }
   };
-  // const showFarmOwner = () => {
-  //   if (farmDetails.owner !== "") {
-  //     return `${farmDetails.owner}'s farm`;
-  //   } else {
-  //     return "the farm";
-  //   }
-  // };
-  // const farmer = showFarmOwner();
+
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString().split("T")[0]; // Formats to "YYYY-MM-DD"
+    console.log(formattedDate);
+    setActivityDate(formattedDate);
+  };
   return (
     <div>
       <div>
@@ -64,10 +63,12 @@ const WeedControl = () => {
             </Label>
             <Datepicker
               id="weed"
-              name="dateOfWeeding"
+              name="activityDate"
               placeholder="Select date of weed control"
               maxDate={new Date()}
-              defaultValue={new Date()}
+              dateFormat="yyyy-MM-dd"
+              value={activityDate}
+              onSelectedDateChanged={(date) => handleDateChange(date)}
             />
           </div>
 
@@ -86,7 +87,7 @@ const WeedControl = () => {
               defaultValue=""
             >
               <option>Select method of weed control</option>
-              <option value="Hand">Hand</option>
+              <option value="MANUAL">Manual</option>
               <option value="Chemical">Chemical</option>
             </Select>
           </div>
@@ -102,7 +103,7 @@ const WeedControl = () => {
                 required
                 placeholder="Enter name of chemical"
                 id="chemical"
-                name="chemical"
+                name="chemicalName"
                 defaultValue=""
               />
             </div>
@@ -119,7 +120,7 @@ const WeedControl = () => {
               required
               placeholder="Enter rate of application"
               id="rate"
-              name="rateOfApplication"
+              name="chemicalApplicationRate"
               defaultValue=""
             />
           </div>
@@ -134,7 +135,7 @@ const WeedControl = () => {
               required
               placeholder="Enter name of supervisor"
               id="supervisor"
-              name="supervisor"
+              name="supervisorName"
               defaultValue=""
             />
           </div>
@@ -145,12 +146,17 @@ const WeedControl = () => {
               className="my-2 font-semibold"
             />
             <TextInput
-              type="number"
+              type="text"
               required
               placeholder="Enter name of supervisor"
               id="contact"
-              name="contact"
+              name="supervisorContact"
               defaultValue=""
+              helperText={
+                <>
+                  <p>Prefix phone number with 233 Eg.233244555333</p>
+                </>
+              }
             />
           </div>
           <div className="my-4">
@@ -163,7 +169,7 @@ const WeedControl = () => {
             <Select
               id="cert"
               required
-              name="certificateOfSupervisor"
+              name="supervisorQualification"
               defaultValue=""
               onChange={handleSelectCert}
             >
@@ -204,19 +210,21 @@ const WeedControl = () => {
 
 export default WeedControl;
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
   const data = await request.formData();
-  const enteredWeedControlData = {
-    dateOfWeeding: data.get("dateOfWeeding"),
+  console.log("param", params.hasOwnProperty());
+  const formData = {
+    activityDate: data.get("activityDate"),
     weedControlMethod: data.get("weedControlMethod"),
-    chemical: data.get("chemical"),
-    rateOfApplication: data.get("rateOfApplication"),
-    supervisor: data.get("supervisor"),
-    contact: data.get("contact"),
-    certificateOfSupervisor: data.get("certificateOfSupervisor"),
+    chemicalName: data.get("chemicalName"),
+    chemicalApplicationRate: data.get("chemicalApplicationRate"),
+    supervisorName: data.get("supervisorName"),
+    supervisorContact: data.get("supervisorContact"),
+    supervisorQualification: data.get("supervisorQualification"),
     otherCert: data.get("otherCert"),
   };
-  createWeedControlActivities(enteredWeedControlData);
+  console.log(formData);
+  // createWeedControlActivities(enteredWeedControlData);
 
   return null;
 };
