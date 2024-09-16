@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, Label, TextInput, Select } from "flowbite-react";
 
-import { districts, regions } from "../../data/demo";
+import { districts, regions } from "../../data/requiredData";
 // import { useFarmersContext } from "../../context/FarmersProvider";
 
 const AddFarm = ({ openFarmForm, setOpenFarmForm }) => {

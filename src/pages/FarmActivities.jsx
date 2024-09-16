@@ -1,10 +1,10 @@
 import React from "react";
-import { ListActivities } from "../components";
+import { FarmActivitiesGrid } from "../components";
 
 const FarmActivities = () => {
   return (
     <div>
-      <ListActivities />
+      <FarmActivitiesGrid />
     </div>
   );
 };

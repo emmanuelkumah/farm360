@@ -1,10 +1,6 @@
 import React from "react";
 import { PiPottedPlantBold, PiPottedPlantDuotone } from "react-icons/pi";
-import {
-  MdKeyboardArrowDown,
-  MdOutlineKeyboardArrowUp,
-  MdAddCircleOutline,
-} from "react-icons/md";
+import { MdKeyboardArrowDown, MdOutlineKeyboardArrowUp } from "react-icons/md";
 
 import { TbDeviceDesktopAnalytics } from "react-icons/tb";
 import { FaUsers } from "react-icons/fa";
@@ -101,55 +97,55 @@ export const activities = [
   {
     activityId: 1,
     name: "Pre-Planting",
-    icon: <MdAddCircleOutline />,
+    icon: "🍂",
     link: "pre-planting",
   },
   {
     activityId: 2,
     name: "Planting",
-    icon: <MdAddCircleOutline />,
+    icon: "🌱",
     link: "planting",
   },
   {
     activityId: 3,
     name: "Weed Control",
-    icon: <MdAddCircleOutline />,
+    icon: "🌿",
     link: "weed-control",
   },
   {
     activityId: 4,
     name: "fertilizing",
-    icon: <MdAddCircleOutline />,
+    icon: "🧪",
     link: "fertilizing",
   },
   {
     activityId: 5,
     name: "Pest control",
-    icon: <MdAddCircleOutline />,
+    icon: "🐛",
     link: "pest-control",
   },
   {
     activityId: 6,
     name: "Harvesting",
-    icon: <MdAddCircleOutline />,
+    icon: "🌾",
     link: "harvesting",
   },
   {
     activityId: 7,
     name: "Storage",
-    icon: <MdAddCircleOutline />,
+    icon: "🏡",
     link: "storage",
   },
   {
     activityId: 8,
     name: "Sales",
-    icon: <MdAddCircleOutline />,
+    icon: "💰",
     link: "sales",
   },
   {
     activityId: 9,
     name: "Shipment",
-    icon: <MdAddCircleOutline />,
+    icon: "🚚",
     link: "Shipment",
   },
 ];

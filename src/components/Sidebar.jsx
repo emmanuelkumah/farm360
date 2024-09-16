@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { PiPottedPlantBold } from "react-icons/pi";
 import { RiCloseLargeLine } from "react-icons/ri";
 import { Link, NavLink } from "react-router-dom";
-import { sidebarMenus } from "../data/demo.jsx";
+import { sidebarMenus } from "../data/requiredData.jsx";
 import { useStateContext } from "../context/ContextProvider.jsx";
 import SubMenus from "./SubMenus.jsx";
 
