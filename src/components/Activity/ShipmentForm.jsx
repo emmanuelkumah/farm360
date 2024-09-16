@@ -10,19 +10,18 @@ import { ToastContainer, toast } from "react-toastify";
 // import { useActivitiesContext } from "../../context/FarmersProvider";
 import { useParams, Form } from "react-router-dom";
 import { createShipmentActivities } from "../../data/dummyData";
+import ActivityHeading from "../ActivityHeading";
+import BackButton from "../BackButton";
 
-const Shipment = () => {
+const ShipmentForm = () => {
   // const { dispatchActivity } = useActivitiesContext();
   const { farmId } = useParams();
 
   return (
-    <div>
-      <h2 className="mb-2 text-xl text-center">Key Data Entry for Shipment</h2>
-      <Form
-        className="container mx-auto w-full md:w-[70%]"
-        method="post"
-        action="../../app/cte/shipment"
-      >
+    <div className="container mx-auto">
+      <BackButton />
+      <ActivityHeading activityHeading="Key Data Entry For Shipment" />
+      <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <section>
           <div className="my-2">
             <Label htmlFor="exit" className="font-semibold my-2">
@@ -165,7 +164,7 @@ const Shipment = () => {
           </div>
         </section>
 
-        <Button className="w-full md:w-1/2" type="submit">
+        <Button className="w-full" type="submit">
           Save
         </Button>
       </Form>
@@ -174,7 +173,7 @@ const Shipment = () => {
   );
 };
 
-export default Shipment;
+export default ShipmentForm;
 
 export const action = async ({ request }) => {
   const data = await request.formData();

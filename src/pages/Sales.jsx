@@ -1,17 +1,12 @@
 import React from "react";
-import { SalesData } from "../components";
-import { salesActivitiesData } from "../data/dummyData";
+import { SalesForm } from "../components";
 
 const Sales = () => {
   return (
     <div>
-      <SalesData />
+      <SalesForm />
     </div>
   );
 };
 
 export default Sales;
-
-export const loader = () => {
-  return salesActivitiesData;
-};

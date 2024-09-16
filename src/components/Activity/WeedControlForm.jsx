@@ -4,7 +4,10 @@ import { useParams, Form, redirect } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { farmsData } from "../../data/dummyData";
 import { axiosbaseURL } from "../../api/axios";
-const WeedControl = ({ id }) => {
+import ActivityHeading from "../ActivityHeading";
+import BackButton from "../BackButton";
+
+const WeedControlForm = ({ id }) => {
   const [activityDate, setActivityDate] = useState("");
   const [hasWeedControl, setHasWeedControl] = useState(false);
   const [hasCert, setHasCert] = useState(false);
@@ -45,11 +48,9 @@ const WeedControl = ({ id }) => {
   };
   return (
     <div>
-      <div>
-        <h2 className="mb-2 text-xl text-center">
-          {" "}
-          Key Data Entry For Weed Control Activities
-        </h2>{" "}
+      <div className="container mx-auto">
+        <BackButton />
+        <ActivityHeading activityHeading="Key Data Entries For Weed Control" />
         <Form className="container mx-auto w-full md:w-[70%]" method="post">
           <div className="my-4">
             <Label htmlFor="weed" className="font-semibold my-2">
@@ -202,7 +203,7 @@ const WeedControl = ({ id }) => {
   );
 };
 
-export default WeedControl;
+export default WeedControlForm;
 //load weed control data
 export const loader = async () => {
   // return await fetchWeedControlData();

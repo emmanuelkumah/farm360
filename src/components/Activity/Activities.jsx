@@ -1,15 +1,15 @@
 import React from "react";
 import { Tabs } from "flowbite-react";
 import { PiPottedPlantFill } from "react-icons/pi";
-import PrePlanting from "./PrePlanting";
-import Planting from "./Planting";
-import WeedControl from "./WeedControl";
-import FertilizerApplication from "./FertilizerApplication";
-import Harvesting from "./Harvesting";
-import Storage from "./Storage";
-import Sales from "./Sales";
-import Shippment from "./Shipment";
-import PestControl from "./PestControl";
+import PrePlanting from "./PrePlantingForm";
+import Planting from "./PlantingForm";
+import WeedControl from "./WeedControlForm";
+import FertilizerApplication from "./FertilizerForm";
+import Harvesting from "./HarvestingForm";
+import Storage from "./StorageForm";
+import Sales from "./SalesForm";
+import Shippment from "./ShipmentForm";
+import PestControl from "./PestControlForm";
 
 const Activities = ({ id }) => {
   return (

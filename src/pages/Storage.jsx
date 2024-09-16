@@ -1,17 +1,12 @@
 import React from "react";
-import { StorageData } from "../components";
-import { storageActivitiesData } from "../data/dummyData";
+import { StorageForm } from "../components";
 
 const Storage = () => {
   return (
     <>
-      <StorageData />
+      <StorageForm />
     </>
   );
 };
 
 export default Storage;
-
-export const loader = () => {
-  return storageActivitiesData;
-};

@@ -10,8 +10,10 @@ import {
 import { useParams, Form } from "react-router-dom";
 import { createStorageActivities, farmsData } from "../../data/dummyData";
 import { toast, ToastContainer } from "react-toastify";
+import ActivityHeading from "../ActivityHeading";
+import BackButton from "../BackButton";
 
-const Storage = () => {
+const StorageForm = () => {
   const [farmDetails, setFarmDetails] = useState({});
 
   const [hasStorage, setHasStorage] = useState(false);
@@ -54,15 +56,10 @@ const Storage = () => {
   };
 
   return (
-    <div>
-      <h2 className="mb-2 text-xl text-center">
-        Key Data Entry For Storage Activities
-      </h2>
-      <Form
-        className="container mx-auto w-full md:w-[70%]"
-        method="post"
-        action="../../app/cte/storage"
-      >
+    <div className="container mx-auto">
+      <BackButton />
+      <ActivityHeading activityHeading="Key Data Entry For Harvesting" />
+      <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <div>
           <Label htmlFor="storage" className="font-semibold my-2">
             Date of storage
@@ -282,7 +279,7 @@ const Storage = () => {
   );
 };
 
-export default Storage;
+export default StorageForm;
 
 export const action = async ({ request }) => {
   const data = await request.formData();

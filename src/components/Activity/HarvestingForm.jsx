@@ -3,8 +3,10 @@ import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
 import { useParams, Form } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { createHarvestingActivities, farmsData } from "../../data/dummyData";
+import BackButton from "../BackButton";
+import ActivityHeading from "../ActivityHeading";
 
-const Harvesting = () => {
+const HarvestingForm = () => {
   const [hasHarvesting, setHasHarvesting] = useState(false);
   const [hasCert, setHasCert] = useState(false);
   const [farmDetails, setFarmDetails] = useState({});
@@ -35,24 +37,12 @@ const Harvesting = () => {
       setHasCert(false);
     }
   };
-  // const showFarmOwner = () => {
-  //   if (farmDetails.owner !== "") {
-  //     return `${farmDetails.owner}'s farm`;
-  //   } else {
-  //     return "the farm";
-  //   }
-  // };
-  // const farmer = showFarmOwner();
+
   return (
-    <div>
-      <h2 className="mb-2 text-xl text-center">
-        Key Data Entry For Harvesting Activities
-      </h2>
-      <Form
-        className="container mx-auto w-full md:w-[70%]"
-        method="post"
-        action="../../app/cte/harvesting"
-      >
+    <div className="container mx-auto">
+      <BackButton />
+      <ActivityHeading activityHeading="Key Data Entry For Harvesting" />
+      <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <div className="my-4">
           <Label htmlFor="date" className="font-semibold my-2">
             Date of harvest
@@ -208,7 +198,7 @@ const Harvesting = () => {
           </div>
         )}
 
-        <Button type="submit" className="bg-main mt-4">
+        <Button type="submit" className="bg-main mt-4 w-full">
           Submit
         </Button>
       </Form>
@@ -217,7 +207,7 @@ const Harvesting = () => {
   );
 };
 
-export default Harvesting;
+export default HarvestingForm;
 
 export const action = async ({ request }) => {
   const data = await request.formData();

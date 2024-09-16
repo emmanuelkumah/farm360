@@ -5,8 +5,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { farmsData } from "../../data/dummyData";
 import { axiosbaseURL } from "../../api/axios";
+import BackButton from "../BackButton";
+import ActivityHeading from "../ActivityHeading";
 
-const Planting = () => {
+const PlantingForm = () => {
   const defaultValue = new Date();
   const [hasOtherCert, setHasOtherCert] = useState(false);
   const [farmDetails, setFarmDetails] = useState({});
@@ -38,9 +40,10 @@ const Planting = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <h2 className="mb-2 text-xl"> Key Data Entry For Planting Activities</h2>
-      <Form className="w-full md:w-[70%]" method="post">
+    <div className="container mx-auto p-4">
+      <BackButton />
+      <ActivityHeading activityHeading="Key Data Entries for Planting" />
+      <Form className="w-full" method="post">
         <div className="my-4">
           <Label htmlFor="planting" className="font-semibold my-4">
             Date of planting
@@ -178,7 +181,7 @@ const Planting = () => {
   );
 };
 
-export default Planting;
+export default PlantingForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();

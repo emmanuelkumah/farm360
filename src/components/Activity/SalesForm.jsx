@@ -9,8 +9,10 @@ import {
 } from "flowbite-react";
 import { useParams, Form } from "react-router-dom";
 import { farmsData, createSalesActivities } from "../../data/dummyData";
+import BackButton from "../BackButton";
+import ActivityHeading from "../ActivityHeading";
 
-const Sales = () => {
+const SalesForm = () => {
   const [farmDetails, setFarmDetails] = useState({});
 
   const { farmId } = useParams();
@@ -26,24 +28,11 @@ const Sales = () => {
     return farmsData.find((farm) => farm.id === farmId);
   };
 
-  // const showFarmOwner = () => {
-  //   if (farmDetails.owner !== "") {
-  //     return `${farmDetails.owner}'s farm`;
-  //   } else {
-  //     return "the farm";
-  //   }
-  // };
-  // const farmer = showFarmOwner();
   return (
-    <div>
-      <h2 className="mb-2 text-xl text-center">
-        Key Data Entry for Sales Activities
-      </h2>
-      <Form
-        className="container mx-auto w-full md:w-[70%]"
-        method="post"
-        action="../../app/cte/sales"
-      >
+    <div className="container mx-auto">
+      <BackButton />
+      <ActivityHeading activityHeading="Key Data Entry For Sales" />
+      <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <section>
           <h4>Authorizer of relese of products for sale</h4>
           <div className="my-2">
@@ -255,7 +244,7 @@ const Sales = () => {
   );
 };
 
-export default Sales;
+export default SalesForm;
 
 export const action = async ({ request }) => {
   const data = await request.formData();

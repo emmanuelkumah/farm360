@@ -3,8 +3,10 @@ import { Button, Label, TextInput, Select, Datepicker } from "flowbite-react";
 import { useParams, Form } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { createPestControlActivities } from "../../data/dummyData";
+import ActivityHeading from "../ActivityHeading";
+import BackButton from "../BackButton";
 
-const PestControl = () => {
+const PestControlForm = () => {
   const [showStage, setShowStage] = useState(false);
 
   const [showOtherCert, setShowOtherCert] = useState(false);
@@ -24,15 +26,10 @@ const PestControl = () => {
   };
 
   return (
-    <div>
-      <h2 className="mb-2 text-xl text-center">
-        Key Data Entry For Pest Control Activities
-      </h2>
-      <Form
-        className="container mx-auto w-full md:w-[70%]"
-        method="post"
-        action="../../app/cte/pestcontrol"
-      >
+    <div className="container mx-auto">
+      <BackButton />
+      <ActivityHeading activityHeading="Key Data Entry" />
+      <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <div>
           <Label
             htmlFor="stage"
@@ -164,7 +161,7 @@ const PestControl = () => {
           )}
         </section>
 
-        <Button className="w-full md:w-1/2 mt-10" type="submit">
+        <Button className="w-full mt-10" type="submit">
           Save
         </Button>
       </Form>
@@ -173,7 +170,7 @@ const PestControl = () => {
   );
 };
 
-export default PestControl;
+export default PestControlForm;
 
 export const action = async ({ request }) => {
   const data = await request.formData();

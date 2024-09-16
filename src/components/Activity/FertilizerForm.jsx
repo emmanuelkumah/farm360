@@ -4,8 +4,10 @@ import { useParams, Form } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { createFertilizerActivities } from "../../data/dummyData";
 import { farmsData } from "../../data/dummyData";
+import ActivityHeading from "../ActivityHeading";
+import BackButton from "../BackButton";
 
-const FertilizerApplication = () => {
+const FertilizerForm = () => {
   const { farmId } = useParams();
   const [hasFertMethod, setHasFertMethod] = useState(false);
   const [hasCert, setHasCert] = useState(false);
@@ -49,16 +51,10 @@ const FertilizerApplication = () => {
   // const farmer = showFarmOwner();
 
   return (
-    <div>
-      <h2 className="mb-2 text-xl text-center">
-        {" "}
-        Key Data Entry For Fertilizer Activities
-      </h2>
-      <Form
-        className="container mx-auto w-full md:w-[70%]"
-        method="post"
-        action="../../app/cte/fertilizer"
-      >
+    <div className="container mx-auto">
+      <BackButton />
+      <ActivityHeading activityHeading="Key Data Entry" />
+      <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <div className="my-4">
           <Label htmlFor="date" className="font-semibold my-2">
             Date of application
@@ -231,7 +227,7 @@ const FertilizerApplication = () => {
   );
 };
 
-export default FertilizerApplication;
+export default FertilizerForm;
 
 export const action = async ({ request }) => {
   const data = await request.formData();

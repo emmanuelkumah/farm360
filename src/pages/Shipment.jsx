@@ -1,17 +1,11 @@
 import React from "react";
-import { ShipmentData } from "../components";
-import { shipmentActivities } from "../data/dummyData";
-
+import { ShipmentForm } from "../components";
 const Shipment = () => {
   return (
     <>
-      <ShipmentData />
+      <ShipmentForm />
     </>
   );
 };
 
 export default Shipment;
-
-export const loader = () => {
-  return shipmentActivities;
-};

@@ -30,7 +30,6 @@ import {
   EditFarm,
   FertilizerActivities,
   WeedControlActivities,
-  Harvesting,
   Sales,
   Storage,
   PestControlActivities,
@@ -39,6 +38,12 @@ import {
   Error,
   NewUser,
   EditUser,
+  PrePlanting,
+  Planting,
+  WeedControl,
+  Fertilizer,
+  PestControl,
+  Harvesting,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -50,11 +55,7 @@ import { loader as PlantingActivitiesLoader } from "./pages/PlantingActivities";
 import { loader as prePlantingActivitiesLoader } from "./pages/PrePlantingActivities";
 import { loader as fertilizerActivitiesLoader } from "./pages/FertilizerActivities";
 import { loader as WeedControlActivitiesLoader } from "./pages/WeedControlActivities";
-import { loader as HarvestingLoader } from "./pages/Harvesting";
-import { loader as SalesLoader } from "./pages/Sales";
-import { loader as StorageLoader } from "./pages/Storage";
 import { loader as PestControlLoader } from "./pages/PestControlActivities";
-import { loader as ShipmentLoader } from "./pages/Shipment";
 import { loader as UsersLoader } from "./pages/Users";
 import { loader as ActivitiesLoader } from "./pages/FarmActivity";
 
@@ -64,15 +65,11 @@ import { action as farmerAction } from "./components/Farmers/FarmerForm";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
 // import { action as manipulateActivities } from "./pages/FarmActivity";
-import { action as manipulatePlantingActivities } from "./components/Activity/Planting";
-import { action as manipulatePrePlantingActivities } from "./components/Activity/PrePlanting";
-import { action as manipulateFertilizerActivities } from "./components/Activity/FertilizerApplication";
-import { action as manipulateWeedControlActivities } from "./components/Activity/WeedControl";
-import { action as manipulateHarvestActivities } from "./components/Activity/Harvesting";
-import { action as manipulateSalesActivities } from "./components/Activity/Sales";
-import { action as manipulateStorageActivities } from "./components/Activity/Storage";
-import { action as manipulatePestControlActivities } from "./components/Activity/PestControl";
-import { action as manipulateShipmentActivities } from "./components/Activity/Shipment";
+import { action as manipulatePlantingActivities } from "./components/Activity/PlantingForm";
+import { action as manipulatePrePlantingActivities } from "./components/Activity/PrePlantingForm";
+import { action as manipulateFertilizerActivities } from "./components/Activity/FertilizerForm";
+import { action as manipulateWeedControlActivities } from "./components/Activity/WeedControlForm";
+import { action as manipulatePestControlActivities } from "./components/Activity/PestControlForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -217,50 +214,41 @@ const router = createBrowserRouter([
           },
           {
             path: "pre-planting",
-            element: <h2>Pre-Planting activities</h2>,
+            element: <PrePlanting />,
           },
           {
             path: "planting",
-            element: <h2>Planting activities</h2>,
+            element: <Planting />,
           },
           {
             path: "weed-control",
-            element: <h2>Weed activities</h2>,
+            element: <WeedControl />,
           },
           {
             path: "fertilizing",
-            element: <h2>Fertilizing activities</h2>,
+            element: <Fertilizer />,
           },
           {
             path: "pest-control",
-            element: <h2>Pest activities</h2>,
+            element: <PestControl />,
           },
           {
             path: "harvesting",
-            element: <h2>Harvesting activities</h2>,
+            element: <Harvesting />,
           },
           {
             path: "storage",
-            element: <h2>Storage activities</h2>,
+            element: <Storage />,
           },
           {
             path: "sales",
-            element: <h2>Sales activities</h2>,
+            element: <Sales />,
           },
           {
             path: "shipment",
-            element: <h2>Shipment activities</h2>,
+            element: <Shipment />,
           },
         ],
-        // element: <FarmActivity />,
-        // loader: ActivitiesLoader,
-        // action: manipulateWeedControlActivities,
-        // children: [
-        //   {
-        //     path: "pre-planting",
-        //     element: "<h2>planting</h2>",
-        //   },
-        // ],
       },
       // saved activing
       {
@@ -292,21 +280,15 @@ const router = createBrowserRouter([
           },
           {
             path: "harvesting",
-            element: <Harvesting />,
-            action: manipulateHarvestActivities,
-            loader: HarvestingLoader,
+            element: <h2>Harvesting Data</h2>,
           },
           {
             path: "sales",
-            element: <Sales />,
-            action: manipulateSalesActivities,
-            loader: SalesLoader,
+            element: "Sales Data",
           },
           {
             path: "storage",
-            element: <Storage />,
-            action: manipulateStorageActivities,
-            loader: StorageLoader,
+            element: <h2>Storage</h2>,
           },
           {
             path: "pestcontrol",
@@ -316,9 +298,7 @@ const router = createBrowserRouter([
           },
           {
             path: "shipment",
-            element: <Shipment />,
-            action: manipulateShipmentActivities,
-            loader: ShipmentLoader,
+            element: "Shipment",
           },
         ],
       },

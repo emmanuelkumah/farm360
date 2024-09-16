@@ -1,16 +1,12 @@
 import React from "react";
-import { HarvestingData } from "../components";
-import { harvestingActivitiesData } from "../data/dummyData";
+import { HarvestingForm } from "../components";
+
 const Harvesting = () => {
   return (
     <>
-      <HarvestingData />
+      <HarvestingForm />
     </>
   );
 };
 
 export default Harvesting;
-
-export const loader = () => {
-  return harvestingActivitiesData;
-};

@@ -1,6 +1,5 @@
 import React from "react";
 import { ResponsiveLine } from "@nivo/line";
-import { lineChartData } from "../data/linechart";
 
 const LineCharts = () => {
   return (
