@@ -11,7 +11,7 @@ import Sales from "./Sales";
 import Shippment from "./Shipment";
 import PestControl from "./PestControl";
 
-const Activities = () => {
+const Activities = ({ id }) => {
   return (
     <div className="mx-10 my-[20%] md:my-0">
       <Tabs aria-label="Tabs with underline" variant="underline">
@@ -22,7 +22,7 @@ const Activities = () => {
           <Planting />
         </Tabs.Item>
         <Tabs.Item title="Weed Control" icon={PiPottedPlantFill}>
-          <WeedControl />
+          <WeedControl id={id} />
         </Tabs.Item>
         <Tabs.Item title="Fertilizer Application" icon={PiPottedPlantFill}>
           <FertilizerApplication />

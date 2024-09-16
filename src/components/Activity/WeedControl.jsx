@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { useParams, Form } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { useParams, Form, redirect } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import { farmsData } from "../../data/dummyData";
-import { createWeedControlActivities } from "../../data/dummyData";
-
-const WeedControl = () => {
+import { axiosbaseURL } from "../../api/axios";
+const WeedControl = ({ id }) => {
   const [activityDate, setActivityDate] = useState("");
   const [hasWeedControl, setHasWeedControl] = useState(false);
   const [hasCert, setHasCert] = useState(false);
@@ -41,8 +40,7 @@ const WeedControl = () => {
   };
 
   const handleDateChange = (date) => {
-    const formattedDate = date.toISOString().split("T")[0]; // Formats to "YYYY-MM-DD"
-    console.log(formattedDate);
+    const formattedDate = date.toISOString(); // Formats to "YYYY-MM-DD"
     setActivityDate(formattedDate);
   };
   return (
@@ -52,11 +50,7 @@ const WeedControl = () => {
           {" "}
           Key Data Entry For Weed Control Activities
         </h2>{" "}
-        <Form
-          className="container mx-auto w-full md:w-[70%]"
-          method="post"
-          action="../../app/cte/weedcontrol"
-        >
+        <Form className="container mx-auto w-full md:w-[70%]" method="post">
           <div className="my-4">
             <Label htmlFor="weed" className="font-semibold my-2">
               Date of weed control
@@ -209,22 +203,41 @@ const WeedControl = () => {
 };
 
 export default WeedControl;
+//load weed control data
+export const loader = async () => {
+  // return await fetchWeedControlData();
+};
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
-  console.log("param", params.hasOwnProperty());
   const formData = {
-    activityDate: data.get("activityDate"),
+    farmId: Number(params.farmId),
     weedControlMethod: data.get("weedControlMethod"),
-    chemicalName: data.get("chemicalName"),
-    chemicalApplicationRate: data.get("chemicalApplicationRate"),
+    chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
+    chemicalName: "Pesticides",
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
     supervisorQualification: data.get("supervisorQualification"),
-    otherCert: data.get("otherCert"),
+    activityDate: data.get("activityDate"),
   };
-  console.log(formData);
-  // createWeedControlActivities(enteredWeedControlData);
 
-  return null;
+  console.log("Form data:", formData);
+
+  const response = await axiosbaseURL.post(
+    "/farm/activity/weed-control",
+    formData
+  );
+  console.log("response for weedactvitiies", response);
+
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    console.log(response.data);
+    throw json({ message: "Could not save data." });
+  }
+  toast.success("Weed control data submitted successfully!");
+  return redirect("/app/farms");
 };

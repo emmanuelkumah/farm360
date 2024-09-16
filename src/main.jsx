@@ -55,13 +55,14 @@ import { loader as StorageLoader } from "./pages/Storage";
 import { loader as PestControlLoader } from "./pages/PestControlActivities";
 import { loader as ShipmentLoader } from "./pages/Shipment";
 import { loader as UsersLoader } from "./pages/Users";
+import { loader as ActivitiesLoader } from "./pages/FarmActivity";
 
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as farmerAction } from "./components/Farmers/FarmerForm";
 // import { action as farmerAction } from "./pages/AddFarmer";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
-import { action as manipulateActivities } from "./pages/FarmActivity";
+// import { action as manipulateActivities } from "./pages/FarmActivity";
 import { action as manipulatePlantingActivities } from "./components/Activity/Planting";
 import { action as manipulatePrePlantingActivities } from "./components/Activity/PrePlanting";
 import { action as manipulateFertilizerActivities } from "./components/Activity/FertilizerApplication";
@@ -209,7 +210,9 @@ const router = createBrowserRouter([
       {
         path: "farms/:farmId/activities",
         element: <FarmActivity />,
-        action: manipulateActivities,
+        loader: ActivitiesLoader,
+        action: manipulateWeedControlActivities,
+        // action: manipulateActivities,
       },
       // saved activing
       {
