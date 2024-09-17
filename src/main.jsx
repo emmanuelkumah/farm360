@@ -59,7 +59,9 @@ import { loader as WeedControlActivitiesLoader } from "./pages/WeedControlActivi
 import { loader as PestControlLoader } from "./pages/PestControlActivities";
 import { loader as UsersLoader } from "./pages/Users";
 import { loader as ActivitiesLoader } from "./pages/FarmActivity";
-
+import ViewPlantingActivities, {
+  loader as PlantingLoader,
+} from "./pages/ViewPlantingActivities";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as farmerAction } from "./components/Farmers/FarmerForm";
 // import { action as farmerAction } from "./pages/AddFarmer";
@@ -268,7 +270,8 @@ const router = createBrowserRouter([
           },
           {
             path: "planting",
-            element: <h2>Display planting activities</h2>,
+            element: <ViewPlantingActivities />,
+            loader: PlantingLoader,
           },
           {
             path: "weed-control",

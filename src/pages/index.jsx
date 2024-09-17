@@ -35,3 +35,4 @@ export { default as Fertilizer } from "./Fertilizer";
 export { default as PestControl } from "./PestControl";
 export { default as Harvesting } from "./Harvesting";
 export { default as ViewActivities } from "./ViewActivities";
+export { default as ViewPlantingActivities } from "./ViewPlantingActivities";
