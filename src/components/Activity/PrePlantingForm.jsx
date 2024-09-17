@@ -12,7 +12,7 @@ import { useParams, Form, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { farmsData } from "../../data/dummyData";
-import { createPrePlantingActivities } from "../../data/dummyData";
+import { axiosbaseURL } from "../../api/axios";
 import BackButton from "../BackButton";
 import ActivityHeading from "../ActivityHeading";
 
@@ -20,6 +20,7 @@ const PrePlantingForm = () => {
   const [farmDetails, setFarmDetails] = useState({});
   const [hasSource, setSource] = useState(false);
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
+  const [activityDate, setActivityDate] = useState("");
 
   const { farmId } = useParams();
   const defaultValue = new Date();
@@ -39,13 +40,12 @@ const PrePlantingForm = () => {
     return farmsData.find((farm) => farm.id === farmId);
   };
 
-  // const showFarmOwner = () => {
-  //   if (farmDetails.owner !== "") {
-  //     return `${farmDetails.owner}'s farm`;
-  //   } else {
-  //     return "the farm";
-  //   }
-  // };
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString();
+    console.log(formattedDate);
+    setActivityDate(formattedDate);
+  };
+
   const handleSelectSource = (e) => {
     if (e.target.value === "Others") {
       setSource(!hasSource);
@@ -79,9 +79,10 @@ const PrePlantingForm = () => {
                 <Datepicker
                   id="date"
                   placeholder="Select date"
-                  defaultValue={defaultValue}
+                  value={activityDate}
+                  onSelectedDateChanged={(date) => handleDateChange(date)}
                   maxDate={defaultValue}
-                  name="preparedDate"
+                  name="activityDate"
                 />
               </div>
               <div className="flex flex-col">
@@ -193,7 +194,7 @@ const PrePlantingForm = () => {
                 <TextInput
                   id="landsize"
                   type="text"
-                  name="chemicalUsed"
+                  name="ChemicalSprayed"
                   required
                   placeholder="Enter chemical name "
                   defaultValue=""
@@ -207,8 +208,8 @@ const PrePlantingForm = () => {
                 />
                 <TextInput
                   id="rate"
-                  type="text"
-                  name="rateOfApplication"
+                  type="number"
+                  name="chemicalApplicationRate"
                   required
                   placeholder="Enter rate of chemical application "
                   defaultValue=""
@@ -234,7 +235,12 @@ const PrePlantingForm = () => {
                   value="Select planting material"
                   className="my-2 font-semibold"
                 />
-                <Select id="planting" required name="plantPart" defaultValue="">
+                <Select
+                  id="planting"
+                  required
+                  name="plantingMaterial"
+                  defaultValue=""
+                >
                   <option>Select planting material</option>
                   <option value="seed">Seed</option>
                   <option value="sucker">Sucker</option>
@@ -254,10 +260,9 @@ const PrePlantingForm = () => {
 
                 <Select
                   id="source"
-                  name="source"
+                  name="plantingMaterialSource"
                   required
                   defaultValue=""
-                  onChange={handleSelectSource}
                 >
                   <option>Select Source of planting material</option>
                   <option value="Local inputs dealer">
@@ -280,7 +285,7 @@ const PrePlantingForm = () => {
                   <TextInput
                     id="seed"
                     type="text"
-                    name="otherSource"
+                    name="plantingMaterialSource"
                     defaultValue=""
                     placeholder="Enter where you got the source from"
                   />
@@ -297,7 +302,7 @@ const PrePlantingForm = () => {
                   id="quantity"
                   type="number"
                   min="1"
-                  name="quantity"
+                  name="plantingMaterialQuantity"
                   defaultValue="1"
                   placeholder="Enter quantity"
                 />
@@ -312,7 +317,7 @@ const PrePlantingForm = () => {
                   id="yield"
                   type="number"
                   min="1"
-                  name="yield"
+                  name="plantingMaterialYield"
                   placeholder="Enter yield"
                 />
               </div>
@@ -322,11 +327,19 @@ const PrePlantingForm = () => {
                     Was planting material treated?
                   </legend>
                   <div className="flex items-center gap-2">
-                    <Radio id="yes-treatment" name="isTreated" value="Yes" />
+                    <Radio
+                      id="yes-treatment"
+                      name="plantingMaterialIsTreated"
+                      value={true}
+                    />
                     <Label htmlFor="yes-treatment">Yes</Label>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Radio id="no-treatment" name="isTreated" value="No" />
+                    <Radio
+                      id="no-treatment"
+                      name="plantingMaterialIsTreated"
+                      value="No"
+                    />
                     <Label htmlFor="no-treatment">No</Label>
                   </div>
                 </fieldset>
@@ -340,12 +353,11 @@ const PrePlantingForm = () => {
                 <Select
                   id="method"
                   required
-                  name="treatmentMethod"
-                  onChange={handleSelectTreatment}
+                  name="plantingMaterialTreatmentMethod"
                   defaultValue=""
                 >
                   <option>Select treatment method</option>
-                  <option value="chemical">Chemical</option>
+                  <option value="Chemical">Chemical</option>
                   <option value="hot water">Hot water</option>
                   <option value="Other">Other</option>
                 </Select>
@@ -367,6 +379,56 @@ const PrePlantingForm = () => {
                   </div>
                 )}
               </div>
+              <div className="my-2">
+                <Label
+                  htmlFor="supervisor"
+                  value="Supervisor"
+                  className="my-2 font-semibold"
+                />
+                <TextInput
+                  type="text"
+                  required
+                  placeholder="Enter name of supervisor"
+                  id="supervisor"
+                  name="supervisorName"
+                  defaultValue=""
+                />
+              </div>
+              <div className="my-2">
+                <Label
+                  htmlFor="supervisor"
+                  value="Supervisor"
+                  className="my-2 font-semibold"
+                />
+                <TextInput
+                  type="text"
+                  required
+                  placeholder="Enter contact of supervisor"
+                  id="supervisor"
+                  name="supervisorContact"
+                  defaultValue=""
+                />
+              </div>
+              <div className="my-2">
+                <Label
+                  htmlFor="cert"
+                  value="Certificate"
+                  className="my-2 font-semibold"
+                />
+
+                <Select
+                  id="cert"
+                  required
+                  name="supervisorQualification"
+                  defaultValue=""
+                >
+                  <option>Select certificate of supervisor</option>
+                  <option value="MOFA">MOFA</option>
+                  <option value="EPA">EPA</option>
+                  <option value="PPRSD/NPPO">PPRSD/NPPO</option>
+                  <option value="Others">Others</option>
+                </Select>
+              </div>
               <Button className="bg-main" type="submit">
                 Save PrePlanting Activity
               </Button>
@@ -382,33 +444,43 @@ const PrePlantingForm = () => {
 
 export default PrePlantingForm;
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
   const data = await request.formData();
-
-  const preplantingActivitiesData = {
-    preparedDate: data.get("preparedDate"),
-    landSize: data.get("landSize"),
-    clearingDate: data.get("clearingDate"),
-    ploughingDate: data.get("ploughingDate"),
-    harrowingDate: data.get("harrowingDate"),
-    manualpreparationDate: data.get("manualpreparationDate"),
-    ridgingDate: data.get("ridgingDate"),
-    moundDate: data.get("moundDate"),
-    chemicalUsed: data.get("chemicalUsed"),
-    rateOfApplication: data.get("rateOfApplication"),
-    dateofchemicalapplication: data.get("dateofchemicalapplication"),
-    plantPart: data.get("plantPart"),
-    source: data.get("source"),
-    otherSource: data.get("otherSource"),
-    treatmentMethod: data.get("treatmentMethod"),
-    otherTreatmentmethod: data.get("otherTreatmentmethod"),
-    quantity: data.get("quantity"),
-    yield: data.get("yield"),
-    isTreated: data.get("isTreated"),
+  const formData = {
+    farmId: Number(params.farmId),
+    chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
+    ChemicalSprayed: data.get("ChemicalSprayed"),
+    plantingMaterial: data.get("plantingMaterial"),
+    plantingMaterialYield: Number(data.get("plantingMaterialYield")),
+    plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
+    plantingMaterialSource: data.get("plantingMaterialSource"),
+    plantingMaterialTreatmentMethod: data.get(
+      "plantingMaterialTreatmentMethod"
+    ),
+    plantingMaterialIsTreated: true,
+    supervisorName: data.get("supervisorName"),
+    supervisorContact: data.get("supervisorContact"),
+    supervisorQualification: data.get("supervisorQualification"),
+    activityDate: data.get("activityDate"),
   };
-  //connect to the database to save data
-  //createPlantingActivities(preplantingActivitiesData);
 
-  createPrePlantingActivities(preplantingActivitiesData);
-  return null;
+  console.log("Form data:", formData);
+
+  const response = await axiosbaseURL.post(
+    "/farm/activity/pre-planting",
+    formData
+  );
+  console.log("response for preplanting", response);
+
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    console.log(response.data);
+    throw json({ message: "Could not save data." });
+  }
+  toast.success("Pre-planting  data submitted successfully!");
+  return redirect("/app/farms");
 };

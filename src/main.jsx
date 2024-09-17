@@ -71,6 +71,8 @@ import { action as manipulatePrePlantingActivities } from "./components/Activity
 import { action as manipulateFertilizerActivities } from "./components/Activity/FertilizerForm";
 import { action as manipulateWeedControlActivities } from "./components/Activity/WeedControlForm";
 import { action as manipulatePestControlActivities } from "./components/Activity/PestControlForm";
+import { action as preplantingAction } from "./components/Activity/PrePlantingForm";
+import { action as plangtingAction } from "./components/Activity/PlantingForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -216,10 +218,12 @@ const router = createBrowserRouter([
           {
             path: "pre-planting",
             element: <PrePlanting />,
+            action: preplantingAction,
           },
           {
             path: "planting",
             element: <Planting />,
+            action: plangtingAction,
           },
           {
             path: "weed-control",

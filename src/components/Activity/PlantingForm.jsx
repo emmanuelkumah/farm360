@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { Form, useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { Form, useParams, redirect } from "react-router-dom";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { farmsData } from "../../data/dummyData";
 import { axiosbaseURL } from "../../api/axios";
@@ -176,7 +176,6 @@ const PlantingForm = () => {
           Submit planting activities
         </Button>
       </Form>
-      <ToastContainer />
     </div>
   );
 };
@@ -185,18 +184,31 @@ export default PlantingForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
-  const plantingActivitiesData = {
+  const formData = {
     farmId: Number(params.farmId),
     cropName: data.get("cropName"),
-    kilosPlanted: data.get("kilosPlanted"),
-    landSizeCovered: data.get("landSizeCovered"),
+    kilosPlanted: Number(data.get("kilosPlanted")),
+    landSizeCovered: Number(data.get("landSizeCovered")),
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
     supervisorQualification: data.get("supervisorQualification"),
     activityDate: data.get("activityDate"),
   };
-  //connect to the database to save data
-  console.log(plantingActivitiesData);
 
-  return null;
+  console.log("Form data:", formData);
+
+  const response = await axiosbaseURL.post("/farm/activity/planting", formData);
+  console.log("response for planting", response);
+
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    console.log(response.data);
+    throw json({ message: "Could not save data." });
+  }
+  toast.success("Planting  data submitted successfully!");
+  return redirect("/app/farms");
 };
