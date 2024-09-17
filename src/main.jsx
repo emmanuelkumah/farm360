@@ -44,6 +44,7 @@ import {
   Fertilizer,
   PestControl,
   Harvesting,
+  ViewActivities,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -247,6 +248,51 @@ const router = createBrowserRouter([
           {
             path: "shipment",
             element: <Shipment />,
+          },
+        ],
+      },
+      {
+        path: "farms/:farmId/viewActivities",
+        children: [
+          {
+            index: true,
+            element: <ViewActivities />,
+          },
+          {
+            path: "pre-planting",
+            element: <h2>Display pre planting activities</h2>,
+          },
+          {
+            path: "planting",
+            element: <h2>Display planting activities</h2>,
+          },
+          {
+            path: "weed-control",
+            element: <h2>Display all weed activities</h2>,
+          },
+          {
+            path: "fertilizing",
+            element: <h2>Display all fertilizing activities</h2>,
+          },
+          {
+            path: "pest-control",
+            element: <h2>Display all pest control activities</h2>,
+          },
+          {
+            path: "harvesting",
+            element: <h2>Display all harvesting</h2>,
+          },
+          {
+            path: "storage",
+            element: <h2>Display all storage</h2>,
+          },
+          {
+            path: "sales",
+            element: <h2>Display all sales</h2>,
+          },
+          {
+            path: "shipment",
+            element: <h2>Display all shipment</h2>,
           },
         ],
       },

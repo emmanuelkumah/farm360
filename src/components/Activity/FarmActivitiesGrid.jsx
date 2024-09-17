@@ -1,13 +1,15 @@
 import React from "react";
 import { activities } from "../../data/requiredData";
 import { Link } from "react-router-dom";
+import BackButton from "../BackButton";
 
 const FarmActivitiesGrid = () => {
   return (
     <div className="container mx-auto p-4">
+      <BackButton />
       <h1 className="text-3xl font-bold mb-6 text-center">Farm Activities</h1>
       <h3 className="text-xl font-bold mb-6 text-center">
-        Select the activity to track
+        Select the activity
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {activities.map((activity) => (

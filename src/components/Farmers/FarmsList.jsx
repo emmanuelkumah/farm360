@@ -87,13 +87,22 @@ const FarmsList = ({ listFarms }) => {
                         </Link>
                       </div>
                     </Table.Cell>
-                    <Table.Cell className="flex justify-end">
-                      <Link to={`${farm.id}/activities`}>
-                        <Button className="bg-main hover:bg-secondary">
-                          Start Activity
-                        </Button>
-                      </Link>
-                    </Table.Cell>
+                    <div className="flex justify-end">
+                      <Table.Cell className="">
+                        <Link to={`${farm.id}/activities`}>
+                          <Button className="bg-main hover:bg-secondary">
+                            Start Activity
+                          </Button>
+                        </Link>
+                      </Table.Cell>
+                      <Table.Cell className="">
+                        <Link to={`${farm.id}/viewactivities`}>
+                          <Button className="bg-main hover:bg-secondary">
+                            View Activity
+                          </Button>
+                        </Link>
+                      </Table.Cell>
+                    </div>
                   </Table.Row>
                 ))}
             </Table.Body>
