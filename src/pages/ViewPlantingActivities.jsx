@@ -1,20 +1,13 @@
 import React from "react";
 import { axiosbaseURL } from "../api/axios";
 import { useLoaderData } from "react-router-dom";
+import { PlantingActivitiesTable } from "../components";
 
 const ViewPlantingActivities = () => {
   const plantingData = useLoaderData();
-  console.log(plantingData);
   return (
-    <div>
-      {plantingData.map((plantingData) => (
-        <div key={plantingData.id}>
-          <h2>{plantingData.farm}</h2>
-          <h2>{plantingData.activityDate}</h2>
-          <h2>{plantingData.cropName}</h2>
-          <h2>{plantingData.landSizeCovered}</h2>
-        </div>
-      ))}
+    <div className="container mx-auto">
+      <PlantingActivitiesTable data={plantingData} />
     </div>
   );
 };
@@ -27,14 +20,13 @@ export const loader = async ({ params }) => {
     const response = axiosbaseURL
       .get(`/farm/${id}/activities/planting`)
       .then((response) => {
-        console.log("server response for planting", response.data);
-
         return response.data;
       });
     return response;
   } catch (error) {
-    console.log("server error", error);
+    console.log("server error", error.response);
+    return error.response;
   }
 
-  return response;
+  // return response;
 };

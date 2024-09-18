@@ -59,3 +59,4 @@ export { default as BackButton } from "./BackButton";
 export { default as ActivityHeading } from "../components/ActivityHeading";
 export { default as HarvestingForm } from "../components/Activity/HarvestingForm";
 export { default as ViewFarmActivities } from "../components/Activity/ViewFarmActivities";
+export { default as PlantingActivitiesTable } from "./Activity/PlantingActivitiesTable";
