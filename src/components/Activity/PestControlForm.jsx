@@ -1,23 +1,28 @@
 import React, { useState } from "react";
 import { Button, Label, TextInput, Select, Datepicker } from "flowbite-react";
-import { useParams, Form } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import { createPestControlActivities } from "../../data/dummyData";
+import { Form, redirect } from "react-router-dom";
+import { toast } from "react-toastify";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
+import { axiosbaseURL } from "../../api/axios";
 
 const PestControlForm = () => {
-  const [showStage, setShowStage] = useState(false);
-
+  const [cropStage, setCropStage] = useState("");
+  const [cert, setCert] = useState("");
   const [showOtherCert, setShowOtherCert] = useState(false);
+  const [activityDate, setActivityDate] = useState("");
 
-  const { farmId } = useParams();
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString();
+    setActivityDate(formattedDate);
+  };
 
-  const handleSelectCropStage = () => {
-    setShowStage(true);
+  const handleSelectCropStage = (e) => {
+    setCropStage(e.target.value);
   };
   const handleSelectCert = (e) => {
     const value = e.target.value;
+    setCert(value);
     if (value === "Others") {
       setShowOtherCert(!showOtherCert);
     } else {
@@ -41,16 +46,16 @@ const PestControlForm = () => {
             id="stage"
             required
             onChange={handleSelectCropStage}
-            name="stage"
-            defaultValue=""
+            name="cropStage"
+            value={cropStage}
           >
             <option>Select stage of crop</option>
-            <option value="Early stage">Early stage</option>
-            <option value="Growing stage">Growing stage</option>
-            <option value="Preharvesting stage">Preharvesting stage</option>
+            <option value="EARLY_STAGE">Early stage</option>
+            <option value="GROWING_STAGE">Growing stage</option>
+            <option value="PRE_HARVESTING_STAGE">Preharvesting stage</option>
           </Select>
         </div>
-        {showStage && (
+        {cropStage && (
           <section>
             <div className="my-2">
               <Label htmlFor="date" className="font-semibold my-2">
@@ -58,9 +63,10 @@ const PestControlForm = () => {
               </Label>
               <Datepicker
                 id="date"
-                name="date"
+                name="activityDate"
                 maxDate={new Date()}
-                defaultValue={new Date()}
+                value={activityDate}
+                onSelectedDateChanged={(date) => handleDateChange(date)}
               />
             </div>
             <div className="my-2">
@@ -102,7 +108,7 @@ const PestControlForm = () => {
               required
               placeholder="Enter name of supervisor"
               id="supervisor"
-              name="supervisor"
+              name="supervisorName"
               defaultValue=""
             />
           </div>
@@ -117,23 +123,23 @@ const PestControlForm = () => {
               required
               placeholder="Enter name of supervisor"
               id="contact"
-              name="contact"
+              name="supervisorContact"
               defaultValue=""
             />
           </div>
           <div>
             <Label
               htmlFor="cert"
-              value="Certificate"
+              value="supervisorQualification"
               className="my-2 font-semibold"
             />
 
             <Select
-              id="cert"
+              id="supervisorQualification"
               required
               onChange={handleSelectCert}
-              name="certificate"
-              defaultValue=""
+              name="supervisorQualification"
+              value={cert}
             >
               <option>Select certificate of supervisor</option>
               <option value="MOFA">MOFA</option>
@@ -165,26 +171,36 @@ const PestControlForm = () => {
           Save
         </Button>
       </Form>
-      <ToastContainer />
     </div>
   );
 };
 
 export default PestControlForm;
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
   const data = await request.formData();
-  const pestControldata = {
-    stage: data.get("stage"),
-    date: data.get("date"),
-    chemical: data.get("chemical"),
-    rate: data.get("rate"),
-    supervisor: data.get("supervisor"),
-    certificate: data.get("certificate"),
-    otherCert: data.get("otherCert"),
-    contact: data.get("contact"),
-  };
-  createPestControlActivities(pestControldata);
 
-  return null;
+  const formData = {
+    farmId: Number(params.farmId),
+    cropStage: data.get("cropStage"),
+    supervisorName: data.get("supervisorName"),
+    supervisorContact: data.get("supervisorContact"),
+    supervisorQualification: data.get("supervisorQualification"),
+    activityDate: data.get("activityDate"),
+  };
+  const response = await axiosbaseURL.post(
+    "/farm/activity/pest-control",
+    formData
+  );
+
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    throw json({ message: "Could not save data." });
+  }
+  toast.success("Pest control  data submitted successfully!");
+  return redirect("/app/farms");
 };

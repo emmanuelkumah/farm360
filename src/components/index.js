@@ -62,3 +62,5 @@ export { default as ViewFarmActivities } from "../components/Activity/ViewFarmAc
 export { default as PlantingActivitiesTable } from "./Activity/PlantingActivitiesTable";
 export { default as WeedControlActivitiesTable } from "./Activity/WeedControlActivitiesTable";
 export { default as ShipmentActivitiesTable } from "./Activity/ShipmentActivitiesTable";
+export { default as SalesActivitiesTable } from "./Activity/SalesActivitiesTable";
+export { default as PestControlActivitiesTable } from "./Activity/PestControlActivitiesTable";

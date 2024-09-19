@@ -63,6 +63,12 @@ import ViewWeedControlActivities, {
 import ViewShipmentActivities, {
   loader as shipmentLoader,
 } from "./pages/ViewShipmentActivities";
+import ViewSalesActivities, {
+  loader as salesLoader,
+} from "./pages/ViewSalesActivities";
+import ViewPestControlActivities, {
+  loader as pestControlLoader,
+} from "./pages/ViewPestControlActivities";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as farmerAction } from "./components/Farmers/FarmerForm";
 // import { action as farmerAction } from "./pages/AddFarmer";
@@ -80,6 +86,7 @@ import { action as weedControlAction } from "./components/Activity/WeedControlFo
 import { action as fertilizerAction } from "./components/Activity/FertilizerForm";
 import { action as shipmentAction } from "./components/Activity/ShipmentForm";
 import { action as salesAction } from "./components/Activity/SalesForm";
+import { action as pestAction } from "./components/Activity/PestControlForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -245,6 +252,7 @@ const router = createBrowserRouter([
           {
             path: "pest-control",
             element: <PestControl />,
+            action: pestAction,
           },
           {
             path: "harvesting",
@@ -293,7 +301,8 @@ const router = createBrowserRouter([
           },
           {
             path: "pest-control",
-            element: <h2>Display all pest control activities</h2>,
+            element: <ViewPestControlActivities />,
+            loader: pestControlLoader,
           },
           {
             path: "harvesting",
@@ -305,7 +314,8 @@ const router = createBrowserRouter([
           },
           {
             path: "sales",
-            element: <h2>Display all sales</h2>,
+            element: <ViewSalesActivities />,
+            loader: salesLoader,
           },
           {
             path: "shipment",

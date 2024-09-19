@@ -38,3 +38,4 @@ export { default as ViewActivities } from "./ViewActivities";
 export { default as ViewPlantingActivities } from "./ViewPlantingActivities";
 export { default as ViewWeedControlActivities } from "./ViewWeedControlActivities";
 export { default as ViewShipmentActivities } from "./ViewShipmentActivities";
+export { default as ViewSalesActivities } from "./ViewSalesActivities";

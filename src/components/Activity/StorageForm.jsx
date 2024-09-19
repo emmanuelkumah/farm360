@@ -7,38 +7,16 @@ import {
   FileInput,
   Datepicker,
 } from "flowbite-react";
-import { useParams, Form } from "react-router-dom";
+import { Form } from "react-router-dom";
 import { createStorageActivities, farmsData } from "../../data/dummyData";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
 
 const StorageForm = () => {
-  const [farmDetails, setFarmDetails] = useState({});
-
   const [hasStorage, setHasStorage] = useState(false);
   const [hasCert, setHasCert] = useState(false);
-  const { farmId } = useParams();
 
-  useEffect(() => {
-    //coonect to farm api and get farm details
-    const farm = getFarmOwner(farmId);
-    // console.log(farm);
-    setFarmDetails(farm);
-  }, []);
-
-  const getFarmOwner = (farmId) => {
-    return farmsData.find((farm) => farm.id === farmId);
-  };
-
-  // const showFarmOwner = () => {
-  //   if (farmDetails.owner !== "") {
-  //     return `${farmDetails.owner}'s farm`;
-  //   } else {
-  //     return "the farm";
-  //   }
-  // };
-  // const farmer = showFarmOwner();
   const handleSelectMethod = (e) => {
     if (e.target.value === "Others") {
       setHasStorage(!hasStorage);
