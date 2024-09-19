@@ -189,13 +189,11 @@ export const action = async ({ request, params }) => {
     customerName: data.get("customerName"),
     customerContact: data.get("customerContact"),
     customerAddress: data.get("customerAddress"),
-    certificateUrl: "https://example.com/certificates/12345",
+    certificateUrl: data.get("certificateUrl"),
     modeOfPackaging: data.get("modeOfPackaging"),
     kilosPerPackage: Number(data.get("kilosPerPackage")),
   };
-  console.log("form", formData);
   const response = await axiosbaseURL.post("/farm/activity/shipment", formData);
-  console.log("shipment response", response);
 
   if (
     response.status === 401 ||
@@ -203,7 +201,6 @@ export const action = async ({ request, params }) => {
     response.status === 500 ||
     response.status === 400
   ) {
-    console.log(response.data);
     throw json({ message: "Could not save data." });
   }
   toast.success("Shipment  data submitted successfully!");

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Select,
@@ -7,27 +7,24 @@ import {
   FileInput,
   Datepicker,
 } from "flowbite-react";
-import { useParams, Form } from "react-router-dom";
-import { farmsData, createSalesActivities } from "../../data/dummyData";
+import { Form, redirect } from "react-router-dom";
 import BackButton from "../BackButton";
 import ActivityHeading from "../ActivityHeading";
+import { axiosbaseURL } from "../../api/axios";
+import { toast } from "react-toastify";
 
 const SalesForm = () => {
-  const [farmDetails, setFarmDetails] = useState({});
+  const [activityDate, setActivityDate] = useState("");
+  const [buyerType, setBuyerType] = useState("");
 
-  const { farmId } = useParams();
-
-  useEffect(() => {
-    //coonect to farm api and get farm details
-    const farm = getFarmOwner(farmId);
-    // console.log(farm);
-    setFarmDetails(farm);
-  }, []);
-
-  const getFarmOwner = (farmId) => {
-    return farmsData.find((farm) => farm.id === farmId);
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString();
+    setActivityDate(formattedDate);
   };
 
+  const handleBuyTypeChange = (e) => {
+    setBuyerType(e.target.value);
+  };
   return (
     <div className="container mx-auto">
       <BackButton />
@@ -44,7 +41,8 @@ const SalesForm = () => {
               name="releaseDate"
               defaultValue={new Date()}
               maxDate={new Date()}
-              placeholder="Select the release date"
+              value={activityDate}
+              onSelectedDateChanged={(date) => handleDateChange(date)}
             />
           </div>
           <div className="my-2">
@@ -56,7 +54,7 @@ const SalesForm = () => {
               placeholder="Enter name of authorizer"
               type="text"
               required
-              name="authorizer"
+              name="authorizerName"
               defaultValue=""
             />
           </div>
@@ -68,7 +66,7 @@ const SalesForm = () => {
               id="contact"
               placeholder="Enter phone number"
               type="number"
-              name="contact"
+              name="authorizerContact"
               defaultValue=""
             />
           </div>
@@ -80,7 +78,7 @@ const SalesForm = () => {
               id="quantity"
               placeholder="Enter quantity"
               type="number"
-              name="quantity"
+              name="authorizerQuantity"
               defaultValue=""
             />
           </div>
@@ -93,19 +91,38 @@ const SalesForm = () => {
           <FileInput
             id="sale"
             accept="image/*"
-            name="receipt"
+            name="saleEvidenceUrl"
             defaultValue=""
           />
         </div>
         <section>
-          <h4>Indivial Buyer Details</h4>
+          <div className="my-4">
+            <Label
+              htmlFor="method"
+              value="Buyer Type"
+              className="my-2 font-semibold"
+            />
+
+            <Select
+              id="method"
+              required
+              name="buyerType"
+              value={buyerType}
+              onChange={handleBuyTypeChange}
+            >
+              <option>Select buyer type</option>
+              <option value="INDIVIDUAL">Individual</option>
+              <option value="Company">Company</option>
+            </Select>
+          </div>
+          <h4> Buyer Details</h4>
           <div className="my-2">
             <Label htmlFor="name" value="Name" className="my-2 font-semibold" />
             <TextInput
               id="name"
               type="text"
               placeholder="Enter name"
-              name="individualBuyerName"
+              name="buyerName"
               defaultValue=""
             />
           </div>
@@ -119,7 +136,7 @@ const SalesForm = () => {
               id="quantity"
               type="number"
               placeholder="Enter quantity"
-              name="individualBuyerQuantity"
+              name="buyerQuantity"
               defaultValue=""
             />
           </div>
@@ -133,49 +150,7 @@ const SalesForm = () => {
               id="contact"
               type="number"
               placeholder="Enter phone number"
-              name="individualBuyerContact"
-              defaultValue=""
-            />
-          </div>
-        </section>
-
-        <section>
-          <h4>Company Buyer Details</h4>
-          <div className="my-2">
-            <Label htmlFor="name" value="Name" className="my-2 font-semibold" />
-            <TextInput
-              id="name"
-              type="text"
-              placeholder="Enter company name"
-              name="companyBuyerName"
-              defaultValue=""
-            />
-          </div>
-          <div className="my-2">
-            <Label
-              htmlFor="quantity"
-              value="Quantity"
-              className="my-2 font-semibold"
-            />
-            <TextInput
-              id="quantity"
-              type="number"
-              placeholder="Enter quantity"
-              name="companyBuyerQuantity"
-              defaultValue=""
-            />
-          </div>
-          <div className="my-2">
-            <Label
-              htmlFor="contact"
-              value="Contact"
-              className="my-2 font-semibold"
-            />
-            <TextInput
-              id="contact"
-              type="number"
-              placeholder="Enter phone number"
-              name="companyBuyerContact"
+              name="buyerContact"
               defaultValue=""
             />
           </div>
@@ -187,9 +162,9 @@ const SalesForm = () => {
             value="Means of Transport"
             className="my-2 font-semibold"
           />
-          <Select id="transport" required name="transport" defaultValue="">
+          <Select id="transport" required name="transportMeans" defaultValue="">
             <option>Select transport</option>
-            <option value="Manual">Manual</option>
+            <option value="MANUAL">Manual</option>
             <option value="Tractor">Tractor</option>
           </Select>
         </div>
@@ -217,7 +192,7 @@ const SalesForm = () => {
             type="text"
             placeholder="Enter registration number"
             id="registration"
-            name="vehicleRegNumber"
+            name="vehicleRegistrationNo"
             defaultValue=""
           />
         </div>
@@ -233,7 +208,7 @@ const SalesForm = () => {
             required
             placeholder="Enter driver's license number"
             id="license"
-            name="driversLicense"
+            name="driversLicenseNo"
             defaultValue=""
           />
         </div>
@@ -246,24 +221,39 @@ const SalesForm = () => {
 
 export default SalesForm;
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
   const data = await request.formData();
-  const salesActivitiesData = {
+
+  const formData = {
+    farmId: Number(params.farmId),
     releaseDate: data.get("releaseDate"),
-    authorizer: data.get("authorizer"),
-    authorizerContact: data.get("contact"),
-    quantity: data.get("quantity"),
-    receipt: data.get("receipt"),
-    individualBuyerName: data.get("individualBuyerName"),
-    individualBuyerQuantity: data.get("individualBuyerQuantity"),
-    companyBuyerName: data.get("companyBuyerName"),
-    companyBuyerContact: data.get("companyBuyerContact"),
-    transport: data.get("transport"),
+    authorizerName: data.get("authorizerName"),
+    authorizerContact: data.get("authorizerContact"),
+    authorizerQuantity: Number(data.get("authorizerQuantity")),
+    saleEvidenceUrl: data.get("saleEvidenceUrl"),
+    buyerName: data.get("buyerName"),
+    buyerQuantity: Number(data.get("buyerQuantity")),
+    buyerContact: data.get("buyerContact"),
+    buyerType: data.get("buyerType"),
+    transportMeans: data.get("transportMeans"),
     vehicleName: data.get("vehicleName"),
-    vehicleRegNumber: data.get("vehicleRegNumber"),
-    driversLicense: data.get("driversLicense"),
+    vehicleRegistrationNo: data.get("vehicleRegistrationNo"),
+    driversLicenseNo: data.get("driversLicenseNo"),
   };
-  //connect to the database to save data
-  createSalesActivities(salesActivitiesData);
-  return null;
+
+  const response = await axiosbaseURL.post(
+    "/farm/activity/crop-sales",
+    formData
+  );
+
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    throw json({ message: "Could not save data." });
+  }
+  toast.success("Sales  data submitted successfully!");
+  return redirect("/app/farms");
 };

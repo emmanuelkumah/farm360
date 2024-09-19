@@ -79,6 +79,7 @@ import { action as plangtingAction } from "./components/Activity/PlantingForm";
 import { action as weedControlAction } from "./components/Activity/WeedControlForm";
 import { action as fertilizerAction } from "./components/Activity/FertilizerForm";
 import { action as shipmentAction } from "./components/Activity/ShipmentForm";
+import { action as salesAction } from "./components/Activity/SalesForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -256,6 +257,7 @@ const router = createBrowserRouter([
           {
             path: "sales",
             element: <Sales />,
+            action: salesAction,
           },
           {
             path: "shipment",
