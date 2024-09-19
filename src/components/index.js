@@ -61,3 +61,4 @@ export { default as HarvestingForm } from "../components/Activity/HarvestingForm
 export { default as ViewFarmActivities } from "../components/Activity/ViewFarmActivities";
 export { default as PlantingActivitiesTable } from "./Activity/PlantingActivitiesTable";
 export { default as WeedControlActivitiesTable } from "./Activity/WeedControlActivitiesTable";
+export { default as ShipmentActivitiesTable } from "./Activity/ShipmentActivitiesTable";

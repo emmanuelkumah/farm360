@@ -60,6 +60,9 @@ import ViewPlantingActivities, {
 import ViewWeedControlActivities, {
   loader as weedControlLoader,
 } from "./pages/ViewWeedControlActivities";
+import ViewShipmentActivities, {
+  loader as shipmentLoader,
+} from "./pages/ViewShipmentActivities";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as farmerAction } from "./components/Farmers/FarmerForm";
 // import { action as farmerAction } from "./pages/AddFarmer";
@@ -304,7 +307,8 @@ const router = createBrowserRouter([
           },
           {
             path: "shipment",
-            element: <h2>Display all shipment</h2>,
+            element: <ViewShipmentActivities />,
+            loader: shipmentLoader,
           },
         ],
       },
