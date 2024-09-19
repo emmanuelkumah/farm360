@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { useParams, Form, redirect } from "react-router-dom";
+import { useParams, Form, redirect, json } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { farmsData } from "../../data/dummyData";
 import { axiosbaseURL } from "../../api/axios";
@@ -204,10 +204,6 @@ const WeedControlForm = ({ id }) => {
 };
 
 export default WeedControlForm;
-//load weed control data
-export const loader = async () => {
-  // return await fetchWeedControlData();
-};
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
@@ -222,13 +218,11 @@ export const action = async ({ request, params }) => {
     activityDate: data.get("activityDate"),
   };
 
-  console.log("Form data:", formData);
-
   const response = await axiosbaseURL.post(
     "/farm/activity/weed-control",
     formData
   );
-  console.log("response for weedactvitiies", response);
+  console.log("weed response", response);
 
   if (
     response.status === 401 ||
@@ -239,6 +233,6 @@ export const action = async ({ request, params }) => {
     console.log(response.data);
     throw json({ message: "Could not save data." });
   }
-  toast.success("Weed control data submitted successfully!");
+  toast.success("Weedcontrol  data submitted successfully!");
   return redirect("/app/farms");
 };

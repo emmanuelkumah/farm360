@@ -1,29 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { useParams, Form } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import { createFertilizerActivities } from "../../data/dummyData";
-import { farmsData } from "../../data/dummyData";
+import { Form, redirect, json } from "react-router-dom";
+import { toast } from "react-toastify";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
+import { axiosbaseURL } from "../../api/axios";
 
 const FertilizerForm = () => {
-  const { farmId } = useParams();
   const [hasFertMethod, setHasFertMethod] = useState(false);
+  const [activityDate, setActivityDate] = useState("");
+
   const [hasCert, setHasCert] = useState(false);
-  const [farmDetails, setFarmDetails] = useState({});
   const defaultValue = new Date();
 
-  useEffect(() => {
-    //coonect to farm api and get farm details
-    const farm = getFarmOwner(farmId);
-    // console.log(farm);
-    setFarmDetails(farm);
-  }, []);
-
-  const getFarmOwner = (farmId) => {
-    return farmsData.find((farm) => farm.id === farmId);
-  };
   const handleFertMethod = (e) => {
     console.log(e.target.value);
     if (e.target.value === "Others") {
@@ -41,14 +30,10 @@ const FertilizerForm = () => {
     }
   };
 
-  // const showFarmOwner = () => {
-  //   if (farmDetails.owner !== "") {
-  //     return `${farmDetails.owner}'s farm`;
-  //   } else {
-  //     return "the farm";
-  //   }
-  // };
-  // const farmer = showFarmOwner();
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString(); // Formats to "YYYY-MM-DD"
+    setActivityDate(formattedDate);
+  };
 
   return (
     <div className="container mx-auto">
@@ -62,9 +47,10 @@ const FertilizerForm = () => {
           <Datepicker
             id="date"
             placeholder="Select date of fertilizer application"
-            name="fertilizerdate"
+            name="activityDate"
             maxDate={defaultValue}
-            defaultValue={defaultValue}
+            value={activityDate}
+            onSelectedDateChanged={(date) => handleDateChange(date)}
           />
         </div>
 
@@ -75,7 +61,7 @@ const FertilizerForm = () => {
             className="my-2 font-semibold"
           />
 
-          <Select id="method" required name="fertilizerType" defaultValue="">
+          <Select id="method" required name="applicationType" defaultValue="">
             <option>Select the type of application</option>
             <option value="liquid">Liquid</option>
             <option value="organic">Organic</option>
@@ -91,7 +77,7 @@ const FertilizerForm = () => {
           <Select
             id="method"
             required
-            name="fertMethod"
+            name="fertilizerName"
             defaultValue=""
             onChange={handleFertMethod}
           >
@@ -128,10 +114,10 @@ const FertilizerForm = () => {
             className="my-2 font-semibold"
           />
           <TextInput
-            type="text"
+            type="number"
             placeholder="Enter the rate of application"
             id="rate-apply"
-            name="ratePerMl"
+            name="applicationRateMlPerAcre"
             defaultValue=""
           />
         </div>
@@ -145,7 +131,7 @@ const FertilizerForm = () => {
             type="text"
             placeholder="Enter the rate of application"
             id="rate-apply2"
-            name="ratePerBag"
+            name="applicationRateBagPerAcre"
             defaultValue=""
           />
         </div>
@@ -160,7 +146,7 @@ const FertilizerForm = () => {
             required
             placeholder="Enter name of supervisor"
             id="supervisor"
-            name="supervisor"
+            name="supervisorName"
             defaultValue=""
           />
         </div>
@@ -175,7 +161,7 @@ const FertilizerForm = () => {
             required
             placeholder="Enter contact of supervisor"
             id="contact"
-            name="contact"
+            name="supervisorContact"
             defaultValue=""
           />
         </div>
@@ -189,7 +175,7 @@ const FertilizerForm = () => {
           <Select
             id="cert"
             required
-            name="certificate"
+            name="supervisorQualification"
             defaultValue=""
             onChange={handleSelectCert}
           >
@@ -222,29 +208,42 @@ const FertilizerForm = () => {
           Submit
         </Button>
       </Form>
-      <ToastContainer />
     </div>
   );
 };
 
 export default FertilizerForm;
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
   const data = await request.formData();
+  const formData = {
+    farmId: Number(params.farmId),
+    fertilizerName: data.get("fertilizerName"),
+    applicationType: data.get("applicationType"),
+    applicationRateMlPerAcre: Number(data.get("applicationRateMlPerAcre")),
+    applicationRateBagPerAcre: Number(data.get("applicationRateBagPerAcre")),
+    supervisorName: data.get("supervisorName"),
 
-  const fertilizerAppActivitiesData = {
-    fertilizerdate: data.get("fertilizerdate"),
-    fertilizerType: data.get("fertilizerType"),
-    fertMethod: data.get("fertMethod"),
-    otherFert: data.get("otherFert"),
-    ratePerMl: data.get("ratePerMl"),
-    ratePerBag: data.get("ratePerBag"),
-    supervisor: data.get("supervisor"),
-    contact: data.get("contact"),
-    certificate: data.get("certificate"),
-    otherCertificate: data.get("otherCert"),
+    supervisorContact: data.get("supervisorContact"),
+    supervisorQualification: data.get("supervisorQualification"),
+    activityDate: data.get("activityDate"),
   };
-  //connect to the database to save data
-  createFertilizerActivities(fertilizerAppActivitiesData);
-  return null;
+  console.log(formData);
+  const response = await axiosbaseURL.post(
+    "/farm/activity/fertilizer-application",
+    formData
+  );
+  console.log("response for fertilizer activity", response);
+
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    console.log(response.data);
+    throw json({ message: "Could not save data." });
+  }
+  toast.success("Fertilizer  data submitted successfully!");
+  return redirect("/app/farms");
 };

@@ -52,16 +52,14 @@ import { loader as farmsLoader } from "./pages/Farms";
 import { loader as farmersLoader } from "./pages/Farmers";
 import { loader as farmerDetails } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
-import { loader as PlantingActivitiesLoader } from "./pages/PlantingActivities";
-import { loader as prePlantingActivitiesLoader } from "./pages/PrePlantingActivities";
-import { loader as fertilizerActivitiesLoader } from "./pages/FertilizerActivities";
-import { loader as WeedControlActivitiesLoader } from "./pages/WeedControlActivities";
-import { loader as PestControlLoader } from "./pages/PestControlActivities";
+
 import { loader as UsersLoader } from "./pages/Users";
-import { loader as ActivitiesLoader } from "./pages/FarmActivity";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
 } from "./pages/ViewPlantingActivities";
+import ViewWeedControlActivities, {
+  loader as weedControlLoader,
+} from "./pages/ViewWeedControlActivities";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as farmerAction } from "./components/Farmers/FarmerForm";
 // import { action as farmerAction } from "./pages/AddFarmer";
@@ -75,6 +73,9 @@ import { action as manipulateWeedControlActivities } from "./components/Activity
 import { action as manipulatePestControlActivities } from "./components/Activity/PestControlForm";
 import { action as preplantingAction } from "./components/Activity/PrePlantingForm";
 import { action as plangtingAction } from "./components/Activity/PlantingForm";
+import { action as weedControlAction } from "./components/Activity/WeedControlForm";
+import { action as fertilizerAction } from "./components/Activity/FertilizerForm";
+import { action as shipmentAction } from "./components/Activity/ShipmentForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -230,10 +231,12 @@ const router = createBrowserRouter([
           {
             path: "weed-control",
             element: <WeedControl />,
+            action: weedControlAction,
           },
           {
             path: "fertilizing",
             element: <Fertilizer />,
+            action: fertilizerAction,
           },
           {
             path: "pest-control",
@@ -254,6 +257,7 @@ const router = createBrowserRouter([
           {
             path: "shipment",
             element: <Shipment />,
+            action: shipmentAction,
           },
         ],
       },
@@ -275,7 +279,8 @@ const router = createBrowserRouter([
           },
           {
             path: "weed-control",
-            element: <h2>Display all weed activities</h2>,
+            element: <ViewWeedControlActivities />,
+            loader: weedControlLoader,
           },
           {
             path: "fertilizing",
@@ -304,57 +309,57 @@ const router = createBrowserRouter([
         ],
       },
       // saved activing
-      {
-        path: "cte",
-        children: [
-          {
-            path: "planting",
-            element: <PlantingActivities />,
-            loader: PlantingActivitiesLoader,
-            action: manipulatePlantingActivities,
-          },
-          {
-            path: "preplanting",
-            element: <PrePlantingActvities />,
-            loader: prePlantingActivitiesLoader,
-            action: manipulatePrePlantingActivities,
-          },
-          {
-            path: "fertilizer",
-            element: <FertilizerActivities />,
-            loader: fertilizerActivitiesLoader,
-            action: manipulateFertilizerActivities,
-          },
-          {
-            path: "weedcontrol",
-            element: <WeedControlActivities />,
-            action: manipulateWeedControlActivities,
-            loader: WeedControlActivitiesLoader,
-          },
-          {
-            path: "harvesting",
-            element: <h2>Harvesting Data</h2>,
-          },
-          {
-            path: "sales",
-            element: "Sales Data",
-          },
-          {
-            path: "storage",
-            element: <h2>Storage</h2>,
-          },
-          {
-            path: "pestcontrol",
-            element: <PestControlActivities />,
-            action: manipulatePestControlActivities,
-            loader: PestControlLoader,
-          },
-          {
-            path: "shipment",
-            element: "Shipment",
-          },
-        ],
-      },
+      // {
+      //   path: "cte",
+      //   children: [
+      //     {
+      //       path: "planting",
+      //       element: <PlantingActivities />,
+      //       loader: PlantingActivitiesLoader,
+      //       action: manipulatePlantingActivities,
+      //     },
+      //     {
+      //       path: "preplanting",
+      //       element: <PrePlantingActvities />,
+      //       loader: prePlantingActivitiesLoader,
+      //       action: manipulatePrePlantingActivities,
+      //     },
+      //     {
+      //       path: "fertilizer",
+      //       element: <FertilizerActivities />,
+      //       loader: fertilizerActivitiesLoader,
+      //       action: manipulateFertilizerActivities,
+      //     },
+      //     {
+      //       path: "weedcontrol",
+      //       element: <WeedControlActivities />,
+      //       action: manipulateWeedControlActivities,
+      //       loader: WeedControlActivitiesLoader,
+      //     },
+      //     {
+      //       path: "harvesting",
+      //       element: <h2>Harvesting Data</h2>,
+      //     },
+      //     {
+      //       path: "sales",
+      //       element: "Sales Data",
+      //     },
+      //     {
+      //       path: "storage",
+      //       element: <h2>Storage</h2>,
+      //     },
+      //     {
+      //       path: "pestcontrol",
+      //       element: <PestControlActivities />,
+      //       action: manipulatePestControlActivities,
+      //       loader: PestControlLoader,
+      //     },
+      //     {
+      //       path: "shipment",
+      //       element: "Shipment",
+      //     },
+      //   ],
+      // },
 
       {
         path: "add-farm",

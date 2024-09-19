@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Button,
   Label,
@@ -6,17 +5,20 @@ import {
   FileInput,
   Datepicker,
 } from "flowbite-react";
-import { ToastContainer, toast } from "react-toastify";
-// import { useActivitiesContext } from "../../context/FarmersProvider";
-import { useParams, Form } from "react-router-dom";
-import { createShipmentActivities } from "../../data/dummyData";
+import { toast } from "react-toastify";
+import { axiosbaseURL } from "../../api/axios";
+import { Form, redirect } from "react-router-dom";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
+import { useState } from "react";
 
 const ShipmentForm = () => {
-  // const { dispatchActivity } = useActivitiesContext();
-  const { farmId } = useParams();
+  const [activityDate, setActivityDate] = useState("");
 
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString();
+    setActivityDate(formattedDate);
+  };
   return (
     <div className="container mx-auto">
       <BackButton />
@@ -30,9 +32,10 @@ const ShipmentForm = () => {
             <Datepicker
               id="exit"
               placeholder="select shipment date"
-              name="date"
+              name="dateOfExit"
               maxDate={new Date()}
-              defaultValue={new Date()}
+              value={activityDate}
+              onSelectedDateChanged={(date) => handleDateChange(date)}
               required
             />
           </div>
@@ -44,7 +47,7 @@ const ShipmentForm = () => {
               id="country"
               type="text"
               placeholder="Enter destination country"
-              name="destination"
+              name="destinationCountry"
               defaultValue=""
               required
             />
@@ -57,7 +60,7 @@ const ShipmentForm = () => {
               id="entry"
               type="text"
               placeholder="Port of entry"
-              name="entry"
+              name="portOfEntry"
               defaultValue=""
               required
             />
@@ -70,7 +73,7 @@ const ShipmentForm = () => {
               id="exit"
               type="text"
               placeholder="Port of exit"
-              name="exit"
+              name="portOfExit"
               defaultValue=""
               required
             />
@@ -87,7 +90,7 @@ const ShipmentForm = () => {
               id="name"
               type="text"
               placeholder="Enter customer name"
-              name="customername"
+              name="customerName"
               defaultValue=""
               required
             />
@@ -100,7 +103,7 @@ const ShipmentForm = () => {
               id="entry"
               type="number"
               placeholder="Enter contact"
-              name="contact"
+              name="customerContact"
               defaultValue=""
               required
             />
@@ -113,7 +116,7 @@ const ShipmentForm = () => {
               id="exit"
               type="text"
               placeholder="Enter address"
-              name="address"
+              name="customerAddress"
               defaultValue=""
               required
             />
@@ -128,7 +131,7 @@ const ShipmentForm = () => {
 
             <FileInput
               id="certificate"
-              name="certificate"
+              name="certificateUrl"
               defaultValue=""
               required
             />
@@ -144,7 +147,7 @@ const ShipmentForm = () => {
               id="mode"
               placeholder="Enter mode of packaging"
               type="text"
-              name="packingMethod"
+              name="modeOfPackaging"
               defaultValue=""
               required
             />
@@ -156,7 +159,7 @@ const ShipmentForm = () => {
             <TextInput
               id="mode"
               placeholder="Enter number of kilos per package"
-              type="text"
+              type="number"
               name="kilosPerPackage"
               defaultValue=""
               required
@@ -168,28 +171,41 @@ const ShipmentForm = () => {
           Save
         </Button>
       </Form>
-      <ToastContainer />
     </div>
   );
 };
 
 export default ShipmentForm;
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
   const data = await request.formData();
 
-  const shipmentActivities = {
-    exitDate: data.get("date"),
-    destination: data.get("destination"),
-    entry: data.get("entry"),
-    exit: data.get("exit"),
-    customername: data.get("customername"),
-    contact: data.get("contact"),
-    address: data.get("address"),
-    certificate: data.get("certificate"),
-    packingMethod: data.get("packingMethod"),
-    kilosPerPackage: data.get("kilosPerPackage"),
+  const formData = {
+    farmId: Number(params.farmId),
+    dateOfExit: data.get("dateOfExit"),
+    destinationCountry: data.get("destinationCountry"),
+    portOfEntry: data.get("portOfEntry"),
+    portOfExit: data.get("portOfExit"),
+    customerName: data.get("customerName"),
+    customerContact: data.get("customerContact"),
+    customerAddress: data.get("customerAddress"),
+    certificateUrl: "https://example.com/certificates/12345",
+    modeOfPackaging: data.get("modeOfPackaging"),
+    kilosPerPackage: Number(data.get("kilosPerPackage")),
   };
-  createShipmentActivities(shipmentActivities);
-  return null;
+  console.log("form", formData);
+  const response = await axiosbaseURL.post("/farm/activity/shipment", formData);
+  console.log("shipment response", response);
+
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    console.log(response.data);
+    throw json({ message: "Could not save data." });
+  }
+  toast.success("Shipment  data submitted successfully!");
+  return redirect("/app/farms");
 };
