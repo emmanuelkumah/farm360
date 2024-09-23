@@ -64,4 +64,5 @@ export { default as WeedControlActivitiesTable } from "./Activity/WeedControlAct
 export { default as ShipmentActivitiesTable } from "./Activity/ShipmentActivitiesTable";
 export { default as SalesActivitiesTable } from "./Activity/SalesActivitiesTable";
 export { default as PestControlActivitiesTable } from "./Activity/PestControlActivitiesTable";
+export { default as HarvestingActivitiesTable } from "./Activity/HarvestingActivitiesTable";
 export { default as ResetPasswordForm } from "./ResetPasswordForm";

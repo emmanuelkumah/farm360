@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "flowbite-react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Link, useSubmit } from "react-router-dom";
+import BackButton from "../BackButton";
 
 const FarmDetails = ({ farmData }) => {
   const submit = useSubmit();
@@ -13,6 +14,7 @@ const FarmDetails = ({ farmData }) => {
   };
   return (
     <>
+      <BackButton />
       <section className="bg-secondary w-full h-full md:w-1/2 md:h-[70%] rounded-lg shadow-md container mx-auto p-10">
         <h2 className="border-l-4 border-main pl-2 mb-4">Farm Details</h2>
         <div className="border border-main rounded-md p-4">

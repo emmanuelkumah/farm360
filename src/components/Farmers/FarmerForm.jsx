@@ -12,7 +12,7 @@ import { Form, useNavigation } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiPhone } from "react-icons/bi";
 // import { groups } from "../../data/dummyData";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { redirect } from "react-router-dom";
 import axios from "axios";
@@ -493,7 +493,6 @@ export default FarmerForm;
 
 export const action = async ({ request }) => {
   const data = await request.formData();
-  // const token = getAuthToken();
 
   let submission = {
     firstName: data.get("firstName"),
@@ -506,35 +505,15 @@ export const action = async ({ request }) => {
     farmerType: data.get("farmerType"),
     cropType: data.get("cropType"),
   };
-  console.log(submission);
 
   const response = await axiosbaseURL.post("/farmer", submission);
-  console.log("server resonse", response);
   if (
     response.status === 401 ||
     response.status === 404 ||
     response.status === 500
   ) {
-    throw json({ message: "Could not fetch farms." });
+    throw json({ message: "Could not create farmer." });
   }
-  return response.data.data;
-
-  // try {
-  //   const response = await axios.post(
-  //     "https://dev.bjlfarmersmarket.net/farmer",
-  //     submission,
-  //     {
-  //       headers: {
-  //         "X-Origin": "WEB",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //   );
-  //   console.log("Response from server:", response.data);
-  //   toast.success("Farmer data submitted successfully!");
-  //   return redirect("/app/farmers");
-  // } catch (error) {
-  //   toast.error("Error submitting data. Please try again.");
-  //   return error;
-  // }
+  toast.success("Farmer created successfully!");
+  return redirect("/app/farmers");
 };

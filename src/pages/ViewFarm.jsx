@@ -16,7 +16,7 @@ export default ViewFarm;
 
 export const loader = ({ params }) => {
   const id = params.farmId;
-  console.log(typeof id);
+
   const farm = farmsData.find((farm) => farm.id === id);
   //handle and throw errors when connecting to backend
   if (farm) {

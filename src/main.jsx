@@ -86,12 +86,16 @@ import { action as weedControlAction } from "./components/Activity/WeedControlFo
 import { action as fertilizerAction } from "./components/Activity/FertilizerForm";
 import { action as shipmentAction } from "./components/Activity/ShipmentForm";
 import { action as salesAction } from "./components/Activity/SalesForm";
+import { action as harvestingAction } from "./components/Activity/HarvestingForm";
 import { action as pestAction } from "./components/Activity/PestControlForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
 import { action as logoutAction } from "./pages/Logout";
 import { action as resetPasswordAction } from "./components/ResetPasswordForm";
+import ViewHarvestingActivities, {
+  loader as harvestingLoader,
+} from "./pages/ViewHarvestingActivities";
 // import { checkAuthLoader } from "./utils/auth";
 
 const router = createBrowserRouter([
@@ -274,6 +278,7 @@ const router = createBrowserRouter([
           {
             path: "harvesting",
             element: <Harvesting />,
+            action: harvestingAction,
           },
           {
             path: "storage",
@@ -323,7 +328,8 @@ const router = createBrowserRouter([
           },
           {
             path: "harvesting",
-            element: <h2>Display all harvesting</h2>,
+            element: <ViewHarvestingActivities />,
+            loader: harvestingLoader,
           },
           {
             path: "storage",

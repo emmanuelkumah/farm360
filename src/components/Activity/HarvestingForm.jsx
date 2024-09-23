@@ -1,28 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { useParams, Form } from "react-router-dom";
+import { redirect, Form } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { createHarvestingActivities, farmsData } from "../../data/dummyData";
 import BackButton from "../BackButton";
+import { axiosbaseURL } from "../../api/axios";
 import ActivityHeading from "../ActivityHeading";
 
 const HarvestingForm = () => {
   const [hasHarvesting, setHasHarvesting] = useState(false);
   const [hasCert, setHasCert] = useState(false);
-  const [farmDetails, setFarmDetails] = useState({});
+  const [activityDate, setActivityDate] = useState("");
 
-  const { farmId } = useParams();
-
-  useEffect(() => {
-    //coonect to farm api and get farm details
-    const farm = getFarmOwner(farmId);
-    // console.log(farm);
-    setFarmDetails(farm);
-  }, []);
-
-  const getFarmOwner = (farmId) => {
-    return farmsData.find((farm) => farm.id === farmId);
-  };
   const handleSelectHarvesting = (e) => {
     if (e.target.value === "Machinery") {
       setHasHarvesting(!hasHarvesting);
@@ -37,7 +25,10 @@ const HarvestingForm = () => {
       setHasCert(false);
     }
   };
-
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString();
+    setActivityDate(formattedDate);
+  };
   return (
     <div className="container mx-auto">
       <BackButton />
@@ -51,8 +42,9 @@ const HarvestingForm = () => {
             id="date"
             placeholder="Select the harvesting date"
             maxDate={new Date()}
-            defaultDate={new Date()}
-            name="harvestDate"
+            value={activityDate}
+            name="dateOfHarvest"
+            onSelectedDateChanged={(date) => handleDateChange(date)}
           />
         </div>
         <div className="my-4">
@@ -61,10 +53,10 @@ const HarvestingForm = () => {
           </Label>
           <TextInput
             id="acres"
-            type="text"
+            type="number"
             required
             placeholder="Enter acres harvested"
-            name="acres"
+            name="acresHarvested"
             defaultValue=""
           />
         </div>
@@ -77,7 +69,7 @@ const HarvestingForm = () => {
             type="number"
             required
             placeholder="Enter number of bags harvested"
-            name="bags"
+            name="bagsHarvested"
             defaultValue=""
           />
         </div>
@@ -90,7 +82,7 @@ const HarvestingForm = () => {
             type="number"
             required
             placeholder="Enter weight per bag harvested"
-            name="weight"
+            name="weightPerBagHarvested"
             defaultValue=""
           />
         </div>
@@ -106,11 +98,11 @@ const HarvestingForm = () => {
             id="modeofHarvesting"
             required
             defaultValue=""
-            name="mode"
+            name="ModePerBagHarvested"
             onChange={handleSelectHarvesting}
           >
             <option>Select the mode of harvesting</option>
-            <option value="Manual">Manual</option>
+            <option value="MANUAL">Manual</option>
             <option value="Machinery">Machinery</option>
           </Select>
         </div>
@@ -140,7 +132,7 @@ const HarvestingForm = () => {
             required
             placeholder="Enter name of supervisor"
             id="contact"
-            name="supervisor"
+            name="supervisorName"
             defaultValue=""
           />
         </div>
@@ -155,7 +147,7 @@ const HarvestingForm = () => {
             required
             placeholder="Enter contact of supervisor"
             id="contact"
-            name="contact"
+            name="supervisorContact"
             defaultValue=""
           />
         </div>
@@ -169,7 +161,7 @@ const HarvestingForm = () => {
           <Select
             id="cert"
             required
-            name="certificate"
+            name="supervisorQualification"
             defaultValue=""
             onChange={handleSelectCert}
           >
@@ -209,21 +201,32 @@ const HarvestingForm = () => {
 
 export default HarvestingForm;
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
   const data = await request.formData();
-  const enteredHarvestingData = {
-    harvestDate: data.get("harvestDate"),
-    acres: data.get("acres"),
-    bags: data.get("bags"),
-    weight: data.get("weight"),
-    mode: data.get("mode"),
-    machine: data.get("machine"),
-    supervisor: data.get("supervisor"),
-    contact: data.get("contact"),
-    certificate: data.get("certificate"),
-    otherCert: data.get("otherCert"),
+  const formData = {
+    farmId: Number(params.farmId),
+    dateOfHarvest: data.get("dateOfHarvest"),
+    acresHarvested: Number(data.get("acresHarvested")),
+    bagsHarvested: Number(data.get("bagsHarvested")),
+    weightPerBagHarvested: Number(data.get("weightPerBagHarvested")),
+    ModePerBagHarvested: data.get("ModePerBagHarvested"),
+    supervisorName: data.get("supervisorName"),
+    supervisorContact: data.get("supervisorContact"),
+    supervisorQualification: data.get("supervisorQualification"),
   };
-  createHarvestingActivities(enteredHarvestingData);
 
-  return null;
+  const response = await axiosbaseURL.post(
+    "/farm/activity/harvesting",
+    formData
+  );
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    throw json({ message: "Could not save data." });
+  }
+  toast.success("Harvesting data submitted successfully!");
+  return redirect("/app/farms");
 };
