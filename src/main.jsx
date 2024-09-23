@@ -7,7 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthProvider from "./context/AuthContext";
 import { ContextProvider } from "./context/ContextProvider";
 
-import { ProtectedRoute } from "./components";
+import { ProtectedRoute, ResetPasswordForm } from "./components";
 import App from "./App";
 import {
   Dashboard,
@@ -91,6 +91,7 @@ import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
 import { action as logoutAction } from "./pages/Logout";
+import { action as resetPasswordAction } from "./components/ResetPasswordForm";
 // import { checkAuthLoader } from "./utils/auth";
 
 const router = createBrowserRouter([
@@ -193,6 +194,11 @@ const router = createBrowserRouter([
               {
                 path: "edit",
                 element: <NewUser />,
+              },
+              {
+                path: "reset-password",
+                element: <ResetPasswordForm />,
+                action: resetPasswordAction,
               },
             ],
           },

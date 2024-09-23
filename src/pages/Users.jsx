@@ -1,5 +1,5 @@
 import { UsersList } from "../components";
-
+import { axiosbaseURL } from "../api/axios";
 import { usersDummyData } from "../data/dummyData";
 const Users = () => {
   return (
@@ -14,6 +14,8 @@ const Users = () => {
 export default Users;
 
 export const loader = async () => {
+  const response = await axiosbaseURL.get("/users");
+  console.log(response);
   return usersDummyData;
 };
 

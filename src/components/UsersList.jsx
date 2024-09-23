@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Table, Pagination, Button } from "flowbite-react";
-import { MdEdit } from "react-icons/md";
+import { MdEdit, MdPassword } from "react-icons/md";
 import { LuEye } from "react-icons/lu";
 import { Link, useLoaderData } from "react-router-dom";
 
@@ -70,12 +70,14 @@ const UsersList = () => {
                   <Table.Cell>{user.password}</Table.Cell>
                   <Table.Cell>
                     <div className="flex justify-end gap-5">
-                      <Link to={`${user.id}`}>
-                        <LuEye className="text-xl hover:text-primary cursor-pointer" />
-                      </Link>
                       <Link to={`${user.id}/edit`}>
                         <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
                       </Link>
+                      <div>
+                        <Link to={`${user.id}/reset-password`}>
+                          <MdPassword className="text-xl hover:text-primary cursor-pointer" />
+                        </Link>
+                      </div>
                     </div>
                   </Table.Cell>
                 </Table.Row>
