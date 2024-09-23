@@ -65,4 +65,5 @@ export { default as ShipmentActivitiesTable } from "./Activity/ShipmentActivitie
 export { default as SalesActivitiesTable } from "./Activity/SalesActivitiesTable";
 export { default as PestControlActivitiesTable } from "./Activity/PestControlActivitiesTable";
 export { default as HarvestingActivitiesTable } from "./Activity/HarvestingActivitiesTable";
+export { default as StorageActivitiesTable } from "./Activity/StorageActivitiesTable";
 export { default as ResetPasswordForm } from "./ResetPasswordForm";

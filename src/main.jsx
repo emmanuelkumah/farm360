@@ -52,6 +52,7 @@ import { loader as farmsLoader } from "./pages/Farms";
 import { loader as farmersLoader } from "./pages/Farmers";
 import { loader as farmerDetails } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
+import { loader as storageLoader } from "./pages/ViewStorageActivities";
 
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
@@ -96,6 +97,7 @@ import { action as resetPasswordAction } from "./components/ResetPasswordForm";
 import ViewHarvestingActivities, {
   loader as harvestingLoader,
 } from "./pages/ViewHarvestingActivities";
+import ViewStorageActivities from "./pages/ViewStorageActivities";
 // import { checkAuthLoader } from "./utils/auth";
 
 const router = createBrowserRouter([
@@ -333,7 +335,8 @@ const router = createBrowserRouter([
           },
           {
             path: "storage",
-            element: <h2>Display all storage</h2>,
+            element: <ViewStorageActivities />,
+            loader: storageLoader,
           },
           {
             path: "sales",
