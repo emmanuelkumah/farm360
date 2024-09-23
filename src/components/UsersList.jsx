@@ -73,7 +73,7 @@ const UsersList = () => {
                       <Link to={`${user.id}`}>
                         <LuEye className="text-xl hover:text-primary cursor-pointer" />
                       </Link>
-                      <Link to={`${user.id}`}>
+                      <Link to={`${user.id}/edit`}>
                         <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
                       </Link>
                     </div>

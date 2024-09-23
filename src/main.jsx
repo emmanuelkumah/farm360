@@ -182,8 +182,19 @@ const router = createBrowserRouter([
             action: manipulateUser,
           },
           {
-            path: "edit",
-            element: <EditUser />,
+            path: ":userId",
+            id: "user-detail",
+            loader: () => new Promise((resolve) => resolve(null)), // to prevent loading when route is not found
+            children: [
+              {
+                index: true,
+                element: <h2>User details</h2>,
+              },
+              {
+                path: "edit",
+                element: <NewUser />,
+              },
+            ],
           },
         ],
       },

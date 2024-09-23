@@ -7,6 +7,9 @@ import { Form } from "react-router-dom";
 
 const UserRegistrationForm = () => {
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    number: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -48,6 +51,13 @@ const UserRegistrationForm = () => {
         } else {
           delete newErrors.confirmPassword;
         }
+      case "number":
+        if (value.length <= 10) {
+          newErrors.number =
+            "Phone number should be 12 characters Eg.233244000111";
+        } else {
+          delete newErrors.number;
+        }
       default:
         break;
     }
@@ -74,6 +84,60 @@ const UserRegistrationForm = () => {
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
       <h2 className="text-2xl font-bold mb-6 text-center">Create an Account</h2>
       <Form className="space-y-4" method="post">
+        <div>
+          <label
+            htmlFor="firstName"
+            className="block text-sm font-medium text-gray-700"
+          >
+            First name
+          </label>
+          <TextInput
+            type="text"
+            id="firstName"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            required
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="firstName"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Last name
+          </label>
+          <TextInput
+            type="text"
+            id="lastName"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            required
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Phone
+          </label>
+          <TextInput
+            type="text"
+            id="phone"
+            name="number"
+            value={formData.number}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            required
+          />
+          {errors.number && (
+            <p className="mt-1 text-sm text-red-600">{errors.number}</p>
+          )}
+        </div>
         <div>
           <label
             htmlFor="email"
