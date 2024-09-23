@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { Table, Pagination, Button } from "flowbite-react";
 import { MdEdit, MdPassword } from "react-icons/md";
-import { LuEye } from "react-icons/lu";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const UsersList = () => {
+const UsersList = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemesPerPage] = useState(10);
   const [search, setSearch] = useState("");
 
-  const users = useLoaderData();
-
-  const totalUsers = users.length;
+  const totalUsers = data.data.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentUsersData = users.slice(firstItemIndex, lastItemIndex);
+  const currentUsersData = data.data.slice(firstItemIndex, lastItemIndex);
 
   const onPageChange = (page) => setCurrentPage(page);
   const handleSearch = (e) => {
@@ -48,7 +45,8 @@ const UsersList = () => {
             <Table.HeadCell>First name</Table.HeadCell>
             <Table.HeadCell>Last name</Table.HeadCell>
             <Table.HeadCell>Email</Table.HeadCell>
-            <Table.HeadCell>Password</Table.HeadCell>
+            <Table.HeadCell>Phone </Table.HeadCell>
+
             <Table.HeadCell>
               <span className="sr-only">Edit</span>
             </Table.HeadCell>
@@ -67,7 +65,8 @@ const UsersList = () => {
                   </Table.Cell>
                   <Table.Cell>{user.lastName}</Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
-                  <Table.Cell>{user.password}</Table.Cell>
+                  <Table.Cell>{user.phone}</Table.Cell>
+
                   <Table.Cell>
                     <div className="flex justify-end gap-5">
                       <Link to={`${user.id}/edit`}>

@@ -1,4 +1,4 @@
-import { TextInput, Alert } from "flowbite-react";
+import { TextInput, Alert, Datepicker } from "flowbite-react";
 import React, { useState } from "react";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { HiInformationCircle } from "react-icons/hi";
@@ -9,13 +9,14 @@ const UserRegistrationForm = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    number: "",
+    phone: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [dateOfBirth, setDateOfBirth] = useState("");
 
   const validateField = (name, value) => {
     let newErrors = { ...errors };
@@ -51,12 +52,12 @@ const UserRegistrationForm = () => {
         } else {
           delete newErrors.confirmPassword;
         }
-      case "number":
+      case "phone":
         if (value.length <= 10) {
-          newErrors.number =
+          newErrors.phone =
             "Phone number should be 12 characters Eg.233244000111";
         } else {
-          delete newErrors.number;
+          delete newErrors.phone;
         }
       default:
         break;
@@ -69,6 +70,12 @@ const UserRegistrationForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value);
   };
+
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString().split("T")[0];
+    setDateOfBirth(formattedDate);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Object.keys(errors).length === 0) {
@@ -120,6 +127,21 @@ const UserRegistrationForm = () => {
         </div>
         <div>
           <label
+            htmlFor="Date of Birh"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Date of Birth
+          </label>
+          <Datepicker
+            id="date"
+            name="dob"
+            maxDate={new Date()}
+            value={dateOfBirth}
+            onSelectedDateChanged={(date) => handleDateChange(date)}
+          />
+        </div>
+        <div>
+          <label
             htmlFor="phone"
             className="block text-sm font-medium text-gray-700"
           >
@@ -128,14 +150,14 @@ const UserRegistrationForm = () => {
           <TextInput
             type="text"
             id="phone"
-            name="number"
-            value={formData.number}
+            name="phone"
+            value={formData.phone}
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             required
           />
-          {errors.number && (
-            <p className="mt-1 text-sm text-red-600">{errors.number}</p>
+          {errors.phone && (
+            <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
           )}
         </div>
         <div>

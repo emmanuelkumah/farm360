@@ -1,7 +1,8 @@
 import React from "react";
 import { BackButton, UserRegistrationForm } from "../components";
-import { redirect } from "react-router-dom";
+import { redirect, json } from "react-router-dom";
 import { toast } from "react-toastify";
+import { axiosbaseURL } from "../api/axios";
 
 const NewUser = () => {
   return (
@@ -23,13 +24,23 @@ export const action = async ({ request }) => {
   const formData = {
     firstName: data.get("firstName"),
     lastName: data.get("lastName"),
-    number: data.get("number"),
+    dob: data.get("dob"),
+    phone: data.get("phone"),
     email: data.get("email"),
     password: data.get("password"),
-    confirmPassword: data.get("confirmPassword"),
+    roles: ["ROLE_ADMIN"],
   };
-  console.log("submitted", formData);
-  toast.success("Account created successfully ");
-  //connect to api and send request
-  return redirect("/app/Users");
+
+  const response = await axiosbaseURL.post("/user", formData);
+
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    throw json({ message: "Could not save data." });
+  }
+  toast.success("User created successfully!");
+  return redirect("/app/users");
 };
