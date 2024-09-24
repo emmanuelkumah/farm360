@@ -69,7 +69,7 @@ const Sidebar = () => {
                       : null}
                   </span>
                 </NavLink>
-                {menu.subMenu && showSubMenu ? (
+                {/* {menu.subMenu && showSubMenu ? (
                   <section>
                     {menu.subMenu.map((item) => (
                       <SubMenus
@@ -79,7 +79,7 @@ const Sidebar = () => {
                       />
                     ))}
                   </section>
-                ) : null}
+                ) : null} */}
               </div>
             ))}
           </div>
