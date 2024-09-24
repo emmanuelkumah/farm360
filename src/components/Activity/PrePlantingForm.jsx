@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Label,
   TextInput,
@@ -8,42 +8,59 @@ import {
   Button,
 } from "flowbite-react";
 
-import { useParams, Form, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { useParams, Form } from "react-router-dom";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { farmsData } from "../../data/dummyData";
 import { axiosbaseURL } from "../../api/axios";
 import BackButton from "../BackButton";
 import ActivityHeading from "../ActivityHeading";
 
 const PrePlantingForm = () => {
-  const [farmDetails, setFarmDetails] = useState({});
   const [hasSource, setSource] = useState(false);
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
   const [activityDate, setActivityDate] = useState("");
+  const [clearingDate, setClearingDate] = useState("");
+  const [ploughingDate, setPloughingDate] = useState("");
+  const [harrowingDate, setHarrowingDate] = useState("");
+  const [manualpreparationDate, setManualPreparationDate] = useState("");
+  const [ridgingDate, setRidingDate] = useState("");
+  const [moundDate, setMoundDate] = useState("");
+  const [chemicalDate, setChemicalDate] = useState("");
 
-  const { farmId } = useParams();
   const defaultValue = new Date();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    //coonect to farm api and get farm details
-    const farm = getFarmOwner(farmId);
-    // console.log(farm);
-    setFarmDetails(farm);
-  }, []);
-
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-  const getFarmOwner = (farmId) => {
-    return farmsData.find((farm) => farm.id === farmId);
-  };
-
-  const handleDateChange = (date) => {
+  const handleActivityDate = (date) => {
     const formattedDate = date.toISOString();
-    console.log(formattedDate);
     setActivityDate(formattedDate);
+  };
+  const handleClearingDate = (date) => {
+    const formattedDate = date.toISOString();
+    setClearingDate(formattedDate);
+    // setActivityDate(formattedDate);
+  };
+  const handlePloughingDate = (date) => {
+    const formattedDate = date.toISOString();
+    setPloughingDate(formattedDate);
+  };
+  const handleHarrowingDate = (date) => {
+    const formattedDate = date.toISOString();
+    setHarrowingDate(formattedDate);
+  };
+  const handleManualPreparationDate = (date) => {
+    const formattedDate = date.toISOString();
+    setManualPreparationDate(formattedDate);
+  };
+  const handleRidingDate = (date) => {
+    const formattedDate = date.toISOString();
+    setRidingDate(formattedDate);
+  };
+  const handleMoundDate = (date) => {
+    const formattedDate = date.toISOString();
+    setMoundDate(formattedDate);
+  };
+  const handleChemicalDate = (date) => {
+    const formattedDate = date.toISOString();
+    setChemicalDate(formattedDate);
   };
 
   const handleSelectSource = (e) => {
@@ -80,7 +97,7 @@ const PrePlantingForm = () => {
                   id="date"
                   placeholder="Select date"
                   value={activityDate}
-                  onSelectedDateChanged={(date) => handleDateChange(date)}
+                  onSelectedDateChanged={(date) => handleActivityDate(date)}
                   maxDate={defaultValue}
                   name="activityDate"
                 />
@@ -110,9 +127,10 @@ const PrePlantingForm = () => {
                   <Datepicker
                     id="Clearing"
                     placeholder="Select clearing date"
-                    defaultValue={defaultValue}
                     maxDate={defaultValue}
                     name="clearingDate"
+                    value={clearingDate}
+                    onSelectedDateChanged={(date) => handleClearingDate(date)}
                   />
                 </div>
 
@@ -129,6 +147,8 @@ const PrePlantingForm = () => {
                     maxDate={defaultValue}
                     placeholder="Select ploughing date"
                     name="ploughingDate"
+                    value={ploughingDate}
+                    onSelectedDateChanged={(date) => handlePloughingDate(date)}
                   />
                 </div>
                 <div className="flex flex-col my-2">
@@ -143,6 +163,8 @@ const PrePlantingForm = () => {
                     defaultValue={defaultValue}
                     maxDate={defaultValue}
                     name="harrowingDate"
+                    value={harrowingDate}
+                    onSelectedDateChanged={(date) => handleHarrowingDate(date)}
                   />
                 </div>
                 <div className="flex flex-col my-2">
@@ -157,6 +179,10 @@ const PrePlantingForm = () => {
                     defaultValue={defaultValue}
                     maxDate={defaultValue}
                     name="manualpreparationDate"
+                    value={manualpreparationDate}
+                    onSelectedDateChanged={(date) =>
+                      handleManualPreparationDate(date)
+                    }
                   />
                 </div>
                 <div className="flex flex-col my-2">
@@ -171,6 +197,8 @@ const PrePlantingForm = () => {
                     defaultValue={defaultValue}
                     maxDate={defaultValue}
                     name="ridgingDate"
+                    value={ridgingDate}
+                    onSelectedDateChanged={(date) => handleRidingDate(date)}
                   />
                 </div>
                 <div className="flex flex-col my-2">
@@ -182,6 +210,8 @@ const PrePlantingForm = () => {
                     defaultValue={defaultValue}
                     maxDate={defaultValue}
                     name="moundDate"
+                    value={moundDate}
+                    onSelectedDateChanged={(date) => handleMoundDate(date)}
                   />
                 </div>
               </section>
@@ -227,6 +257,8 @@ const PrePlantingForm = () => {
                   defaultValue={defaultValue}
                   maxDate={defaultValue}
                   name="dateofchemicalapplication"
+                  value={chemicalDate}
+                  onSelectedDateChanged={(date) => handleChemicalDate(date)}
                 />
               </div>
               <div className="flex flex-col mt-4">
@@ -263,6 +295,7 @@ const PrePlantingForm = () => {
                   name="plantingMaterialSource"
                   required
                   defaultValue=""
+                  onChange={handleSelectSource}
                 >
                   <option>Select Source of planting material</option>
                   <option value="Local inputs dealer">
@@ -338,7 +371,7 @@ const PrePlantingForm = () => {
                     <Radio
                       id="no-treatment"
                       name="plantingMaterialIsTreated"
-                      value="No"
+                      value={false}
                     />
                     <Label htmlFor="no-treatment">No</Label>
                   </div>
@@ -355,6 +388,7 @@ const PrePlantingForm = () => {
                   required
                   name="plantingMaterialTreatmentMethod"
                   defaultValue=""
+                  onSelect={handleSelectTreatment}
                 >
                   <option>Select treatment method</option>
                   <option value="Chemical">Chemical</option>
@@ -373,7 +407,7 @@ const PrePlantingForm = () => {
                       type="text"
                       required
                       defaultValue=""
-                      name="otherTreatmentmethod"
+                      name="plantingMaterialTreatmentMethod"
                       placeholder="Enter the other treatment method or chemical used"
                     />
                   </div>
@@ -435,8 +469,6 @@ const PrePlantingForm = () => {
             </div>
           </div>
         </Form>
-
-        <ToastContainer />
       </div>
     </>
   );
@@ -446,6 +478,22 @@ export default PrePlantingForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
+  const landPreparationData = {
+    farmId: Number(params.farmId),
+    landSize: data.get("landSize"),
+    chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
+    chemicalSprayed: data.get("chemicalSprayed"),
+    clearingDate: data.get("clearingDate"),
+    moundMouldingDate: data.get("moundMouldingDate"),
+    ridgingDate: data.get("ridgingDate"),
+    ploughingDate: data.get("ploughingDate"),
+    harrowingDate: data.get("harrowingDate"),
+    supervisorContact: data.get("supervisorContact"),
+    supervisorQualification: data.get("supervisorQualification"),
+    activityDate: data.get("activityDate"),
+  };
+  console.log(landPreparationData);
+
   const formData = {
     farmId: Number(params.farmId),
     chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
