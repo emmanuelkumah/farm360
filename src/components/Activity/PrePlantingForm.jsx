@@ -84,13 +84,13 @@ const PrePlantingForm = () => {
       <div className="container mx-auto p-4">
         <BackButton />
         <ActivityHeading activityHeading="Key Data Entries For Pre-Planting" />
-        <Form method="post">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="flex max-w-md flex-col gap-4">
+        <Form method="post" className="w-full">
+          <div className="grid grid-cols-1">
+            <div className="flex flex-col gap-4">
               <div className="flex flex-col">
                 <Label
                   htmlFor="date"
-                  value="Select the date land was prepared"
+                  value="Select the date"
                   className="mb-2"
                 />
                 <Datepicker
@@ -101,8 +101,160 @@ const PrePlantingForm = () => {
                   maxDate={defaultValue}
                   name="activityDate"
                 />
+                <div className="my-4">
+                  <div>
+                    <Label
+                      htmlFor="chemical"
+                      value="Chemical sprayed"
+                      className="mb-2"
+                    />
+                    <TextInput
+                      id="chemical"
+                      type="text"
+                      name="ChemicalSprayed"
+                      required
+                      placeholder="Enter chemical name "
+                      defaultValue=""
+                    />
+                  </div>
+                </div>
+                <div className="my-4">
+                  <div className="flex flex-col">
+                    <Label
+                      htmlFor="rate"
+                      value="Rate of chemical application"
+                      className="mb-2"
+                    />
+                    <TextInput
+                      id="rate"
+                      type="number"
+                      name="chemicalApplicationRate"
+                      required
+                      placeholder="Enter rate of chemical application "
+                      defaultValue=""
+                    />
+                  </div>
+                </div>
+
+                <div className="my-4">
+                  <div className="flex flex-col">
+                    <Label
+                      htmlFor="source"
+                      value="Source of planting material"
+                      className="my-2 font-semibold"
+                    />
+
+                    <Select
+                      id="source"
+                      name="plantingMaterialSource"
+                      required
+                      defaultValue=""
+                      onChange={handleSelectSource}
+                    >
+                      <option>Select Source of planting material</option>
+                      <option value="Local inputs dealer">
+                        Local inputs dealer
+                      </option>
+                      <option value="MOFA">MOFA</option>
+                      <option value="BJL">BJL</option>
+                      <option value="Own field">Own field</option>
+                      <option value="Imported">Imported</option>
+                      <option value="Others">Others</option>
+                    </Select>
+                  </div>
+                  {hasSource && (
+                    <div className="flex flex-col">
+                      <Label
+                        htmlFor="seed"
+                        value="Other Source"
+                        className="my-2 font-semibold"
+                      />
+                      <TextInput
+                        id="seed"
+                        type="text"
+                        name="plantingMaterialSource"
+                        defaultValue=""
+                        placeholder="Enter where you got the source from"
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="my-4">
+                  <Label
+                    htmlFor="quantity"
+                    value="Quantity of planting material"
+                    className="my-2 font-semibold"
+                  />
+                  <TextInput
+                    id="quantity"
+                    type="number"
+                    min="1"
+                    name="plantingMaterialQuantity"
+                    defaultValue="1"
+                    placeholder="Enter quantity"
+                  />
+                </div>
+                <div className="my-4">
+                  <Label
+                    htmlFor="yield"
+                    value="Yield of planting material per acre"
+                    className="mb-2 font-semibold"
+                  />
+                  <TextInput
+                    id="yield"
+                    type="number"
+                    min="1"
+                    name="plantingMaterialYield"
+                    placeholder="Enter yield"
+                  />
+                </div>
+                <div className="my-4">
+                  <fieldset className="flex flex-col gap-4">
+                    <legend className="my-2 font-semibold">
+                      Was planting material treated?
+                    </legend>
+                    <div className="flex items-center gap-2">
+                      <Radio
+                        id="yes-treatment"
+                        name="plantingMaterialIsTreated"
+                        value={true}
+                      />
+                      <Label htmlFor="yes-treatment">Yes</Label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Radio
+                        id="no-treatment"
+                        name="plantingMaterialIsTreated"
+                        value={false}
+                      />
+                      <Label htmlFor="no-treatment">No</Label>
+                    </div>
+                  </fieldset>
+                </div>
+                <div className="my-4">
+                  <Label
+                    htmlFor="planting"
+                    value="Select planting material"
+                    className="my-2 font-semibold"
+                  />
+                  <Select
+                    id="planting"
+                    required
+                    name="plantingMaterial"
+                    defaultValue=""
+                  >
+                    <option>Select planting material</option>
+                    <option value="seed">Seed</option>
+                    <option value="sucker">Sucker</option>
+                    <option value="seedlings">Seedlings</option>
+                    <option value="tuber">Tuber</option>
+                    <option value="stem">Stem</option>
+                    <option value="rhizome">Rhizome</option>
+                    <option value="bulbs">Bulbs</option>
+                  </Select>
+                </div>
               </div>
-              <div className="flex flex-col">
+              {/* <div className="flex flex-col">
                 <Label htmlFor="landsize" value="Land size" className="mb-2" />
                 <TextInput
                   id="landsize"
@@ -113,8 +265,8 @@ const PrePlantingForm = () => {
                   placeholder="Enter land size"
                   defaultValue=""
                 />
-              </div>
-              <section>
+              </div> */}
+              {/* <section>
                 <h2 className="text-md font-semibold">Activites</h2>
                 <p>Select the date the following activities were done</p>
                 <div>
@@ -214,169 +366,9 @@ const PrePlantingForm = () => {
                     onSelectedDateChanged={(date) => handleMoundDate(date)}
                   />
                 </div>
-              </section>
+              </section> */}
             </div>
-            <div className="flex max-w-md flex-col gap-4">
-              <h3 className="text-xl">Spraying Activities</h3>
-
-              <div className="flex flex-col">
-                <Label htmlFor="chemical" value="chemical" className="mb-2" />
-                <TextInput
-                  id="landsize"
-                  type="text"
-                  name="ChemicalSprayed"
-                  required
-                  placeholder="Enter chemical name "
-                  defaultValue=""
-                />
-              </div>
-              <div className="flex flex-col">
-                <Label
-                  htmlFor="rate"
-                  value="Rate of chemical application"
-                  className="mb-2"
-                />
-                <TextInput
-                  id="rate"
-                  type="number"
-                  name="chemicalApplicationRate"
-                  required
-                  placeholder="Enter rate of chemical application "
-                  defaultValue=""
-                />
-              </div>
-              <div>
-                <Label
-                  htmlFor="dateOfapplication"
-                  className="text-md font-semibold my-2"
-                >
-                  Date of chemical application
-                </Label>
-                <Datepicker
-                  id="dateOfapplication"
-                  defaultValue={defaultValue}
-                  maxDate={defaultValue}
-                  name="dateofchemicalapplication"
-                  value={chemicalDate}
-                  onSelectedDateChanged={(date) => handleChemicalDate(date)}
-                />
-              </div>
-              <div className="flex flex-col mt-4">
-                <Label
-                  htmlFor="planting"
-                  value="Select planting material"
-                  className="my-2 font-semibold"
-                />
-                <Select
-                  id="planting"
-                  required
-                  name="plantingMaterial"
-                  defaultValue=""
-                >
-                  <option>Select planting material</option>
-                  <option value="seed">Seed</option>
-                  <option value="sucker">Sucker</option>
-                  <option value="seedlings">Seedlings</option>
-                  <option value="tuber">Tuber</option>
-                  <option value="stem">Stem</option>
-                  <option value="rhizome">Rhizome</option>
-                  <option value="bulbs">Bulbs</option>
-                </Select>
-              </div>
-              <div className="flex flex-col">
-                <Label
-                  htmlFor="source"
-                  value="Source of planting material"
-                  className="my-2 font-semibold"
-                />
-
-                <Select
-                  id="source"
-                  name="plantingMaterialSource"
-                  required
-                  defaultValue=""
-                  onChange={handleSelectSource}
-                >
-                  <option>Select Source of planting material</option>
-                  <option value="Local inputs dealer">
-                    Local inputs dealer
-                  </option>
-                  <option value="MOFA">MOFA</option>
-                  <option value="BJL">BJL</option>
-                  <option value="Own field">Own field</option>
-                  <option value="Imported">Imported</option>
-                  <option value="Others">Others</option>
-                </Select>
-              </div>
-              {hasSource && (
-                <div className="flex flex-col">
-                  <Label
-                    htmlFor="seed"
-                    value="Other Source"
-                    className="my-2 font-semibold"
-                  />
-                  <TextInput
-                    id="seed"
-                    type="text"
-                    name="plantingMaterialSource"
-                    defaultValue=""
-                    placeholder="Enter where you got the source from"
-                  />
-                </div>
-              )}
-
-              <div>
-                <Label
-                  htmlFor="quantity"
-                  value="Quantity of planting material"
-                  className="my-2 font-semibold"
-                />
-                <TextInput
-                  id="quantity"
-                  type="number"
-                  min="1"
-                  name="plantingMaterialQuantity"
-                  defaultValue="1"
-                  placeholder="Enter quantity"
-                />
-              </div>
-              <div>
-                <Label
-                  htmlFor="yield"
-                  value="Yield of planting material per acre"
-                  className="mb-2 font-semibold"
-                />
-                <TextInput
-                  id="yield"
-                  type="number"
-                  min="1"
-                  name="plantingMaterialYield"
-                  placeholder="Enter yield"
-                />
-              </div>
-              <div>
-                <fieldset className="flex max-w-md flex-col gap-4">
-                  <legend className="my-2 font-semibold">
-                    Was planting material treated?
-                  </legend>
-                  <div className="flex items-center gap-2">
-                    <Radio
-                      id="yes-treatment"
-                      name="plantingMaterialIsTreated"
-                      value={true}
-                    />
-                    <Label htmlFor="yes-treatment">Yes</Label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Radio
-                      id="no-treatment"
-                      name="plantingMaterialIsTreated"
-                      value={false}
-                    />
-                    <Label htmlFor="no-treatment">No</Label>
-                  </div>
-                </fieldset>
-              </div>
+            <div className="flex flex-col gap-4">
               <div>
                 <Label
                   className="mb-2 font-semibold"
@@ -478,22 +470,15 @@ export default PrePlantingForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
-  const landPreparationData = {
-    farmId: Number(params.farmId),
-    landSize: data.get("landSize"),
-    chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
-    chemicalSprayed: data.get("chemicalSprayed"),
-    clearingDate: data.get("clearingDate"),
-    moundMouldingDate: data.get("moundMouldingDate"),
-    ridgingDate: data.get("ridgingDate"),
-    ploughingDate: data.get("ploughingDate"),
-    harrowingDate: data.get("harrowingDate"),
-    supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: data.get("supervisorQualification"),
-    activityDate: data.get("activityDate"),
-  };
-  console.log(landPreparationData);
 
+  function strToBoolean(str) {
+    const lowercaseStr = str.toLowerCase();
+    if (lowercaseStr === "true") return true;
+    if (lowercaseStr === "false") return false;
+    return null;
+  }
+
+  const treated = strToBoolean(data.get("plantingMaterialIsTreated"));
   const formData = {
     farmId: Number(params.farmId),
     chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
@@ -505,7 +490,8 @@ export const action = async ({ request, params }) => {
     plantingMaterialTreatmentMethod: data.get(
       "plantingMaterialTreatmentMethod"
     ),
-    plantingMaterialIsTreated: true,
+
+    plantingMaterialIsTreated: treated,
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
     supervisorQualification: data.get("supervisorQualification"),
