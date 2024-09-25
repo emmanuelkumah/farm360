@@ -18,6 +18,7 @@ import ActivityHeading from "../ActivityHeading";
 const PrePlantingForm = () => {
   const [hasSource, setSource] = useState(false);
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
+  const [treatmentMethod, setTreatmentMethod] = useState("");
   const [activityDate, setActivityDate] = useState("");
   const [clearingDate, setClearingDate] = useState("");
   const [ploughingDate, setPloughingDate] = useState("");
@@ -28,6 +29,8 @@ const PrePlantingForm = () => {
   const [chemicalDate, setChemicalDate] = useState("");
 
   const defaultValue = new Date();
+
+  console.log("treatment", treatmentMethod);
 
   const handleActivityDate = (date) => {
     const formattedDate = date.toISOString();
@@ -42,26 +45,26 @@ const PrePlantingForm = () => {
     const formattedDate = date.toISOString();
     setPloughingDate(formattedDate);
   };
-  const handleHarrowingDate = (date) => {
-    const formattedDate = date.toISOString();
-    setHarrowingDate(formattedDate);
-  };
-  const handleManualPreparationDate = (date) => {
-    const formattedDate = date.toISOString();
-    setManualPreparationDate(formattedDate);
-  };
-  const handleRidingDate = (date) => {
-    const formattedDate = date.toISOString();
-    setRidingDate(formattedDate);
-  };
-  const handleMoundDate = (date) => {
-    const formattedDate = date.toISOString();
-    setMoundDate(formattedDate);
-  };
-  const handleChemicalDate = (date) => {
-    const formattedDate = date.toISOString();
-    setChemicalDate(formattedDate);
-  };
+  // const handleHarrowingDate = (date) => {
+  //   const formattedDate = date.toISOString();
+  //   setHarrowingDate(formattedDate);
+  // };
+  // const handleManualPreparationDate = (date) => {
+  //   const formattedDate = date.toISOString();
+  //   setManualPreparationDate(formattedDate);
+  // };
+  // const handleRidingDate = (date) => {
+  //   const formattedDate = date.toISOString();
+  //   setRidingDate(formattedDate);
+  // };
+  // const handleMoundDate = (date) => {
+  //   const formattedDate = date.toISOString();
+  //   setMoundDate(formattedDate);
+  // };
+  // const handleChemicalDate = (date) => {
+  //   const formattedDate = date.toISOString();
+  //   setChemicalDate(formattedDate);
+  // };
 
   const handleSelectSource = (e) => {
     if (e.target.value === "Others") {
@@ -72,6 +75,8 @@ const PrePlantingForm = () => {
   };
 
   const handleSelectTreatment = (e) => {
+    setTreatmentMethod(e.target.value);
+
     if (e.target.value === "Other") {
       setHasTreatmentMethod(!hasTreatmentMethod);
     } else {
@@ -379,12 +384,12 @@ const PrePlantingForm = () => {
                   id="method"
                   required
                   name="plantingMaterialTreatmentMethod"
-                  defaultValue=""
-                  onSelect={handleSelectTreatment}
+                  value={treatmentMethod}
+                  onChange={handleSelectTreatment}
                 >
                   <option>Select treatment method</option>
                   <option value="Chemical">Chemical</option>
-                  <option value="hot water">Hot water</option>
+                  <option value="Hot water">Hot water</option>
                   <option value="Other">Other</option>
                 </Select>
                 {hasTreatmentMethod && (
@@ -399,7 +404,7 @@ const PrePlantingForm = () => {
                       type="text"
                       required
                       defaultValue=""
-                      name="plantingMaterialTreatmentMethod"
+                      name="plantingMaterialTreatmentMethodOther"
                       placeholder="Enter the other treatment method or chemical used"
                     />
                   </div>
@@ -423,7 +428,7 @@ const PrePlantingForm = () => {
               <div className="my-2">
                 <Label
                   htmlFor="supervisor"
-                  value="Supervisor"
+                  value="Supervisor Contact"
                   className="my-2 font-semibold"
                 />
                 <TextInput
@@ -479,6 +484,17 @@ export const action = async ({ request, params }) => {
   }
 
   const treated = strToBoolean(data.get("plantingMaterialIsTreated"));
+
+  const treatmentMethod = getOtherTreatmentmethod(
+    data.get("plantingMaterialTreatmentMethod")
+  );
+  function getOtherTreatmentmethod(treatment) {
+    if (treatment === "Other") {
+      return data.get("plantingMaterialTreatmentMethodOther");
+    }
+    return data.get("plantingMaterialTreatmentMethod");
+  }
+
   const formData = {
     farmId: Number(params.farmId),
     chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
@@ -487,9 +503,7 @@ export const action = async ({ request, params }) => {
     plantingMaterialYield: Number(data.get("plantingMaterialYield")),
     plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
     plantingMaterialSource: data.get("plantingMaterialSource"),
-    plantingMaterialTreatmentMethod: data.get(
-      "plantingMaterialTreatmentMethod"
-    ),
+    plantingMaterialTreatmentMethod: treatmentMethod,
 
     plantingMaterialIsTreated: treated,
     supervisorName: data.get("supervisorName"),
