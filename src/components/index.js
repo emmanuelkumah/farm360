@@ -68,4 +68,5 @@ export { default as PestControlActivitiesTable } from "./Activity/PestControlAct
 export { default as HarvestingActivitiesTable } from "./Activity/HarvestingActivitiesTable";
 export { default as StorageActivitiesTable } from "./Activity/StorageActivitiesTable";
 export { default as PrePlantingActivitiesTable } from "./Activity/PrePlantingActivitiesTable";
+export { default as LandPreparationTable } from "./Activity/LandPreparationTable";
 export { default as ResetPasswordForm } from "./ResetPasswordForm";

@@ -75,17 +75,20 @@ import ViewPestControlActivities, {
 import ViewPrePlantingActivities, {
   loader as preplantingLoader,
 } from "./pages/ViewPrePlantingActivities";
+import ViewLandPreparationActivities, {
+  loader as landPreparationLoader,
+} from "./pages/ViewLandPreparationActivities";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as farmerAction } from "./components/Farmers/FarmerForm";
 // import { action as farmerAction } from "./pages/AddFarmer";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
 // import { action as manipulateActivities } from "./pages/FarmActivity";
-import { action as manipulatePlantingActivities } from "./components/Activity/PlantingForm";
-import { action as manipulatePrePlantingActivities } from "./components/Activity/PrePlantingForm";
-import { action as manipulateFertilizerActivities } from "./components/Activity/FertilizerForm";
-import { action as manipulateWeedControlActivities } from "./components/Activity/WeedControlForm";
-import { action as manipulatePestControlActivities } from "./components/Activity/PestControlForm";
+// import { action as manipulatePlantingActivities } from "./components/Activity/PlantingForm";
+// import { action as manipulatePrePlantingActivities } from "./components/Activity/PrePlantingForm";
+// import { action as manipulateFertilizerActivities } from "./components/Activity/FertilizerForm";
+// import { action as manipulateWeedControlActivities } from "./components/Activity/WeedControlForm";
+// import { action as manipulatePestControlActivities } from "./components/Activity/PestControlForm";
 import { action as preplantingAction } from "./components/Activity/PrePlantingForm";
 import { action as plangtingAction } from "./components/Activity/PlantingForm";
 import { action as weedControlAction } from "./components/Activity/WeedControlForm";
@@ -94,6 +97,7 @@ import { action as shipmentAction } from "./components/Activity/ShipmentForm";
 import { action as salesAction } from "./components/Activity/SalesForm";
 import { action as harvestingAction } from "./components/Activity/HarvestingForm";
 import { action as pestAction } from "./components/Activity/PestControlForm";
+import { action as landPrepAction } from "./components/Activity/LandPreparationForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -304,6 +308,7 @@ const router = createBrowserRouter([
           {
             path: "land-preparation",
             element: <LandPreparationActivities />,
+            action: landPrepAction,
           },
         ],
       },
@@ -357,6 +362,11 @@ const router = createBrowserRouter([
             path: "shipment",
             element: <ViewShipmentActivities />,
             loader: shipmentLoader,
+          },
+          {
+            path: "land-preparation",
+            element: <ViewLandPreparationActivities />,
+            loader: landPreparationLoader,
           },
         ],
       },

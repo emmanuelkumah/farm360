@@ -41,3 +41,4 @@ export { default as ViewWeedControlActivities } from "./ViewWeedControlActivitie
 export { default as ViewShipmentActivities } from "./ViewShipmentActivities";
 export { default as ViewSalesActivities } from "./ViewSalesActivities";
 export { default as ViewPrePlantingActivities } from "./ViewPrePlantingActivities";
+export { default as ViewLandPreparationActivities } from "./ViewLandPreparationActivities";
