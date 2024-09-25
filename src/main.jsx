@@ -45,6 +45,7 @@ import {
   PestControl,
   Harvesting,
   ViewActivities,
+  LandPreparationActivities,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -70,6 +71,10 @@ import ViewSalesActivities, {
 import ViewPestControlActivities, {
   loader as pestControlLoader,
 } from "./pages/ViewPestControlActivities";
+
+import ViewPrePlantingActivities, {
+  loader as preplantingLoader,
+} from "./pages/ViewPrePlantingActivities";
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as farmerAction } from "./components/Farmers/FarmerForm";
 // import { action as farmerAction } from "./pages/AddFarmer";
@@ -296,6 +301,10 @@ const router = createBrowserRouter([
             element: <Shipment />,
             action: shipmentAction,
           },
+          {
+            path: "land-preparation",
+            element: <LandPreparationActivities />,
+          },
         ],
       },
       {
@@ -307,7 +316,8 @@ const router = createBrowserRouter([
           },
           {
             path: "pre-planting",
-            element: <h2>Display pre planting activities</h2>,
+            element: <ViewPrePlantingActivities />,
+            loader: preplantingLoader,
           },
           {
             path: "planting",
