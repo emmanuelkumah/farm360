@@ -33,6 +33,7 @@ export { default as SalesForm } from "./Activity/SalesForm";
 export { default as ShipmentForm } from "./Activity/ShipmentForm";
 export { default as PestControl } from "./Activity/PestControlForm";
 export { default as EditFarmerForm } from "./Farmers/EditFarmerForm";
+export { default as TransportationForm } from "./Activity/TransportationForm";
 export { default as PlantingMaterial } from "./Activity/PlantingMaterial";
 export { default as LandPreparationForm } from "./Activity/LandPreparationForm";
 export { default as Hero } from "./Landing/Hero";

@@ -46,6 +46,7 @@ import {
   Harvesting,
   ViewActivities,
   LandPreparationActivities,
+  Transportation,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -92,6 +93,7 @@ import { action as shipmentAction } from "./components/Activity/ShipmentForm";
 import { action as salesAction } from "./components/Activity/SalesForm";
 import { action as harvestingAction } from "./components/Activity/HarvestingForm";
 import { action as pestAction } from "./components/Activity/PestControlForm";
+import { action as transportationAction } from "./components/Activity/TransportationForm";
 import { action as storageAction } from "./components/Activity/StorageForm";
 import { action as landPrepAction } from "./components/Activity/LandPreparationForm";
 import { action as manipulateUserAction } from "./pages/Users";
@@ -306,6 +308,11 @@ const router = createBrowserRouter([
             path: "land-preparation",
             element: <LandPreparationActivities />,
             action: landPrepAction,
+          },
+          {
+            path: "transportation",
+            element: <Transportation />,
+            action: transportationAction,
           },
         ],
       },

@@ -35,6 +35,7 @@ export { default as WeedControl } from "./WeedControl";
 export { default as Fertilizer } from "./Fertilizer";
 export { default as PestControl } from "./PestControl";
 export { default as Harvesting } from "./Harvesting";
+export { default as Transportation } from "./Transportation";
 export { default as ViewActivities } from "./ViewActivities";
 export { default as ViewPlantingActivities } from "./ViewPlantingActivities";
 export { default as ViewWeedControlActivities } from "./ViewWeedControlActivities";

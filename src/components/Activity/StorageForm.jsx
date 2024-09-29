@@ -20,7 +20,6 @@ const StorageForm = () => {
   const [hasCert, setHasCert] = useState(false);
   const [community, setCommunity] = useState([]);
   const [activityDate, setActivityDate] = useState("");
-  console.log(selectedQualityOption);
 
   const storageQuality = [
     {

@@ -156,8 +156,8 @@ export const activities = [
   },
   {
     activityId: 11,
-    name: "Transporation",
+    name: "Transportation",
     icon: "🚚",
-    link: "transporation",
+    link: "transportation",
   },
 ];
