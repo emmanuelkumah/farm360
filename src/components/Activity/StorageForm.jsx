@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Select,
@@ -6,16 +6,57 @@ import {
   TextInput,
   FileInput,
   Datepicker,
+  Checkbox,
 } from "flowbite-react";
-import { Form } from "react-router-dom";
-import { createStorageActivities, farmsData } from "../../data/dummyData";
+import { Form, redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
+import { axiosbaseURL } from "../../api/axios";
 
 const StorageForm = () => {
+  const [selectedQualityOption, setSelectedQualityOption] = useState([]);
   const [hasStorage, setHasStorage] = useState(false);
   const [hasCert, setHasCert] = useState(false);
+  const [community, setCommunity] = useState([]);
+  const [activityDate, setActivityDate] = useState("");
+  console.log(selectedQualityOption);
+
+  const storageQuality = [
+    {
+      id: 1,
+      name: "Dry",
+    },
+    {
+      id: 2,
+      name: "Wet",
+    },
+    {
+      id: 3,
+      name: "Good",
+    },
+    {
+      id: 4,
+      name: "Fairly good",
+    },
+    {
+      id: 5,
+      name: "Bad",
+    },
+  ];
+
+  useEffect(() => {
+    axiosbaseURL
+      .get(`/geo/communities`)
+      .then((response) => {
+        console.log("com", response);
+        setCommunity(response.data.data);
+      })
+      .catch((error) => {
+        toast.error("Failed to fetch community details");
+        console.error(error);
+      });
+  }, []);
 
   const handleSelectMethod = (e) => {
     if (e.target.value === "Others") {
@@ -32,7 +73,18 @@ const StorageForm = () => {
       setHasCert(false);
     }
   };
-
+  const handleActivityDateChange = (date) => {
+    const formattedDate = date.toISOString(); // Formats to "YYYY-MM-DD"
+    setActivityDate(formattedDate);
+  };
+  const handleStorageQualityChange = (e) => {
+    const value = e.target.value;
+    setSelectedQualityOption((prev) =>
+      prev.includes(value)
+        ? prev.filter((option) => option !== value)
+        : [...prev, value]
+    );
+  };
   return (
     <div className="container mx-auto">
       <BackButton />
@@ -45,9 +97,10 @@ const StorageForm = () => {
           <Datepicker
             id="storage"
             placeholder="Select the storage date"
-            name="storage"
+            name="activityDate"
             maxDate={new Date()}
-            defaultValue={new Date()}
+            value={activityDate}
+            onSelectedDateChanged={(date) => handleActivityDateChange(date)}
           />
         </div>
         <div className="my-4">
@@ -74,7 +127,6 @@ const StorageForm = () => {
             id="method"
             required
             name="storageType"
-            defaultValue=""
             onChange={handleSelectMethod}
           >
             <option>Select the type of storage</option>
@@ -105,42 +157,36 @@ const StorageForm = () => {
             value="Community"
             className="my-2 font-semibold"
           />
-          <TextInput
-            type="text"
-            placeholder="Enter the name of community"
-            id="community"
-            name="community"
-            defaultValue=""
-          />
+          <Select name="community">
+            <option>Select community</option>
+            {community.map((com) => (
+              <option key={com.id} value={com.id}>
+                {com.name}
+              </option>
+            ))}
+          </Select>
         </div>
-        <div className="my-4">
-          <Label
-            htmlFor="district"
-            value="District"
-            className="my-2 font-semibold"
-          />
-          <TextInput
-            type="text"
-            placeholder="Enter the district"
-            id="district"
-            name="district"
-            defaultValue=""
-          />
-        </div>
+
         <div className="my-4">
           <Label
             htmlFor="quality"
             value="Quality"
             className="my-2 font-semibold"
           />
-          <Select id="quality" required name="quality" defaultValue="">
-            <option>Select quality</option>
-            <option value="Good">Good</option>
-            <option value="Fairly good">Fairly good</option>
-            <option value="Bad">Bad</option>
-            <option value="Wet">Wet</option>
-            <option value="Dry">Dry</option>
-          </Select>
+          {storageQuality.map((quality) => (
+            <div key={quality.id}>
+              <Checkbox
+                id={`quality-${quality.id}`}
+                value={quality.name}
+                name="quality"
+                onChange={handleStorageQualityChange}
+              />
+              <Label htmlFor={`quality-${quality.id}`} className="ml-2">
+                {quality.name}
+              </Label>
+            </div>
+          ))}
+          <TextInput name="selectedQuality" value={selectedQualityOption} />
         </div>
         <div className="my-4">
           <Label
@@ -182,7 +228,7 @@ const StorageForm = () => {
             required
             placeholder="Enter name of supervisor"
             id="supervisor"
-            name="supervisor"
+            name="supervisorName"
             defaultValue=""
           />
         </div>
@@ -197,7 +243,7 @@ const StorageForm = () => {
             required
             placeholder="Enter name of supervisor"
             id="contact"
-            name="contact"
+            name="supervisorContact"
             defaultValue=""
           />
         </div>
@@ -211,8 +257,7 @@ const StorageForm = () => {
           <Select
             id="cert"
             required
-            name="certificate"
-            defaultValue=""
+            name="supervisorQualification"
             onChange={handleSelectCert}
           >
             <option>Select certificate of supervisor</option>
@@ -234,7 +279,7 @@ const StorageForm = () => {
               required
               placeholder="Enter the certificate of supervisor if not listed above"
               id="certificate"
-              name="otherCert"
+              name="otherQualification"
               defaultValue=""
             />
           </div>
@@ -252,30 +297,60 @@ const StorageForm = () => {
           Submit
         </Button>
       </Form>
-      <ToastContainer />
     </div>
   );
 };
 
 export default StorageForm;
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
   const data = await request.formData();
-  const storageActivitiesData = {
-    storage: data.get("storage"),
-    quantity: data.get("quantity"),
-    storageType: data.get("storageType"),
-    otherType: data.get("otherType"),
-    community: data.get("community"),
-    district: data.get("district"),
-    quality: data.get("quality"),
-    rate: data.get("rate"),
-    supervisor: data.get("supervisor"),
-    contact: data.get("contact"),
-    certificate: data.get("certificate"),
-    otherCert: data.get("otherCert"),
-    receipt: data.get("receipt"),
+  const getStorageType = (storage) => {
+    if (storage === "Others") {
+      return data.get("otherType");
+    }
+    return data.get("storageType");
   };
-  createStorageActivities(storageActivitiesData);
-  return null;
+
+  const getOtherQualification = (qualification) => {
+    if (qualification === "Others") {
+      return data.get("otherQualification");
+    }
+    return data.get("supervisorQualification");
+  };
+
+  const supervisorQualification = getOtherQualification(
+    data.get("supervisorQualification")
+  );
+  //  const listSelectedQuality = data.get('quality')
+  const storageData = getStorageType(data.get("storageType"));
+  const formData = {
+    farmId: Number(params.farmId),
+    activityDate: data.get("activityDate"),
+    quantity: data.get("quantity"),
+    storageType: storageData,
+    community: data.get("community"),
+    quality: data.get("selectedQuality").split(","),
+
+    chemical: data.get("chemical"),
+    rate: data.get("rate"),
+    receipt: data.get("receipt"),
+    supervisorName: data.get("supervisorName"),
+    supervisorContact: data.get("supervisorContact"),
+    supervisorQualification: supervisorQualification,
+  };
+  console.log(formData);
+
+  const response = await axiosbaseURL.post("/farm/activity/storage", formData);
+  console.log("storage response", response);
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    throw json({ message: "Could not save data." });
+  }
+  toast.success("Storage  data submitted successfully!");
+  return redirect("/app/farms");
 };

@@ -312,6 +312,7 @@ export const action = async ({ request, params }) => {
     manualPreparationDate: data.get("manualDate"),
     ploughingDate: data.get("ploughingDate"),
     harrowingDate: data.get("harrowingDate"),
+    sprayingDate: data.get("sprayingDate"),
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
     supervisorQualification: data.get("supervisorQualification"),

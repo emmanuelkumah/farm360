@@ -83,12 +83,7 @@ import { action as farmerAction } from "./components/Farmers/FarmerForm";
 // import { action as farmerAction } from "./pages/AddFarmer";
 import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
-// import { action as manipulateActivities } from "./pages/FarmActivity";
-// import { action as manipulatePlantingActivities } from "./components/Activity/PlantingForm";
-// import { action as manipulatePrePlantingActivities } from "./components/Activity/PrePlantingForm";
-// import { action as manipulateFertilizerActivities } from "./components/Activity/FertilizerForm";
-// import { action as manipulateWeedControlActivities } from "./components/Activity/WeedControlForm";
-// import { action as manipulatePestControlActivities } from "./components/Activity/PestControlForm";
+
 import { action as preplantingAction } from "./components/Activity/PrePlantingForm";
 import { action as plangtingAction } from "./components/Activity/PlantingForm";
 import { action as weedControlAction } from "./components/Activity/WeedControlForm";
@@ -97,6 +92,7 @@ import { action as shipmentAction } from "./components/Activity/ShipmentForm";
 import { action as salesAction } from "./components/Activity/SalesForm";
 import { action as harvestingAction } from "./components/Activity/HarvestingForm";
 import { action as pestAction } from "./components/Activity/PestControlForm";
+import { action as storageAction } from "./components/Activity/StorageForm";
 import { action as landPrepAction } from "./components/Activity/LandPreparationForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
@@ -294,6 +290,7 @@ const router = createBrowserRouter([
           {
             path: "storage",
             element: <Storage />,
+            action: storageAction,
           },
           {
             path: "sales",
