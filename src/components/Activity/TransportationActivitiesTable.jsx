@@ -46,9 +46,12 @@ const TransportationActivitiesTable = ({ data }) => {
             <Table.HeadCell>Farm name</Table.HeadCell>
             <Table.HeadCell>Activity date</Table.HeadCell>
             <Table.HeadCell>Transport mode</Table.HeadCell>
+            <Table.HeadCell>Quantity transported</Table.HeadCell>
+
             <Table.HeadCell>Driver's name</Table.HeadCell>
             <Table.HeadCell>Driver's license</Table.HeadCell>
             <Table.HeadCell>Driver's registration number</Table.HeadCell>
+            <Table.HeadCell>Bags per trip</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {currentPlantingData
@@ -66,12 +69,12 @@ const TransportationActivitiesTable = ({ data }) => {
                     {item.farm}
                   </Table.Cell>
                   <Table.Cell>{item.activityDate}</Table.Cell>
-                  <Table.Cell>{item.weedControlMethod}</Table.Cell>
-                  <Table.Cell>{item.chemicalName}</Table.Cell>
-                  <Table.Cell>{item.chemicalApplicationRate}</Table.Cell>
-                  <Table.Cell>{item.supervisorName}</Table.Cell>
-                  <Table.Cell>{item.supervisorContact}</Table.Cell>
-                  <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                  <Table.Cell>{item.transportationMethod}</Table.Cell>
+                  <Table.Cell>{item.quantityTransported}</Table.Cell>
+                  <Table.Cell>{item.driversName}</Table.Cell>
+                  <Table.Cell>{item.driversLicenseNumber}</Table.Cell>
+                  <Table.Cell>{item.vehicleRegistrationNumber}</Table.Cell>
+                  <Table.Cell>{item.numberOfBagsPerTrip}</Table.Cell>
                 </Table.Row>
               ))}
           </Table.Body>

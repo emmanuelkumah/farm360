@@ -57,7 +57,7 @@ const TransportationForm = () => {
               id="quantity"
               type="text"
               placeholder="Enter quantity "
-              name="quantity"
+              name="quantityTransported"
               defaultValue=""
               required
             />
@@ -70,7 +70,10 @@ const TransportationForm = () => {
             <Label htmlFor="name" className="font-semibold my-2">
               Name
             </Label>
-            <Select onChange={handleSelectTransportation} name="transportation">
+            <Select
+              onChange={handleSelectTransportation}
+              name="transportationMethod"
+            >
               <option>Select mode of transportation</option>
               <option value="Manual">Manual</option>
               <option value="Mechanical">Mechanical</option>
@@ -86,7 +89,7 @@ const TransportationForm = () => {
                   id="driver"
                   type="text"
                   placeholder="Enter driver name"
-                  name="driver"
+                  name="driversName"
                   defaultValue=""
                 />
               </div>
@@ -98,7 +101,7 @@ const TransportationForm = () => {
                   id="license"
                   type="text"
                   placeholder="Enter driver license number"
-                  name="license"
+                  name="driversLicenseNumber"
                   defaultValue=""
                 />
               </div>
@@ -110,7 +113,7 @@ const TransportationForm = () => {
                   id="registration"
                   type="text"
                   placeholder="Enter vehicle registration  number"
-                  name="registration"
+                  name="vehicleRegistrationNumber"
                   defaultValue=""
                 />
               </div>
@@ -122,7 +125,7 @@ const TransportationForm = () => {
                   id="trips"
                   type="number"
                   placeholder="Enter number of trips"
-                  name="trips"
+                  name="numberOfBagsPerTrip"
                   defaultValue=""
                 />
               </div>
@@ -145,27 +148,29 @@ export const action = async ({ request, params }) => {
   const formData = {
     farmId: Number(params.farmId),
     activityDate: data.get("activityDate"),
-    transportation: data.get("transportation"),
-    driver: data.get("driver"),
-    license: data.get("license"),
-    registration: data.get("registration"),
-    trips: data.get("trips"),
+
+    quantityTransported: Number(data.get("quantityTransported")),
+    transportationMethod: data.get("transportationMethod").toUpperCase(),
+    driversName: data.get("driversName").toUpperCase(),
+    driversLicenseNumber: data.get("driversLicenseNumber"),
+    vehicleRegistrationNumber: data.get("vehicleRegistrationNumber"),
+    numberOfBagsPerTrip: Number(data.get("numberOfBagsPerTrip")),
   };
   console.log(formData);
 
-  // const response = await axiosbaseURL.post(
-  //   "/farm/activity/transportation",
-  //   formData
-  // );
-  // console.log("storage response", response);
-  // if (
-  //   response.status === 401 ||
-  //   response.status === 404 ||
-  //   response.status === 500 ||
-  //   response.status === 400
-  // ) {
-  //   throw json({ message: "Could not save data." });
-  // }
+  const response = await axiosbaseURL.post(
+    "/farm/activity/transportation",
+    formData
+  );
+  console.log("transportation response", response);
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 500 ||
+    response.status === 400
+  ) {
+    throw json({ message: "Could not save data." });
+  }
   toast.success("Transportation  data submitted successfully!");
   return redirect("/app/farms");
 };
