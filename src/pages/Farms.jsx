@@ -16,8 +16,8 @@ const Farms = () => {
 export default Farms;
 
 export const loader = async () => {
-  const response = await axiosbaseURL.get("farms");
-  console.log("server resonse", response);
+  const response = await axiosbaseURL.get(`farms`);
+  console.log("server response", response);
   if (
     response.status === 401 ||
     response.status === 404 ||
