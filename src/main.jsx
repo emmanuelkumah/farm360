@@ -80,12 +80,15 @@ import ViewPrePlantingActivities, {
 import ViewLandPreparationActivities, {
   loader as landPreparationLoader,
 } from "./pages/ViewLandPreparationActivities";
+import ViewFertilizingActivities, {
+  loader as fertilizerLoader,
+} from "./pages/ViewFertilizingActivities";
+
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as farmerAction } from "./components/Farmers/FarmerForm";
-// import { action as farmerAction } from "./pages/AddFarmer";
-import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
+// import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
-
+import { action as addFarmAction } from "./pages/AddFarm";
 import { action as preplantingAction } from "./components/Activity/PrePlantingForm";
 import { action as plangtingAction } from "./components/Activity/PlantingForm";
 import { action as weedControlAction } from "./components/Activity/WeedControlForm";
@@ -242,14 +245,14 @@ const router = createBrowserRouter([
               {
                 path: "edit",
                 element: <EditFarm />,
-                action: manipulateFarmAction,
+                action: addFarmAction,
               },
             ],
           },
           {
             path: "new",
             element: <AddFarm />,
-            action: manipulateFarmAction,
+            action: addFarmAction,
           },
         ],
       },
@@ -341,7 +344,8 @@ const router = createBrowserRouter([
           },
           {
             path: "fertilizing",
-            element: <h2>Display all fertilizing activities</h2>,
+            element: <ViewFertilizingActivities />,
+            loader: fertilizerLoader,
           },
           {
             path: "pest-control",

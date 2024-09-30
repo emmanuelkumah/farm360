@@ -67,4 +67,5 @@ export { default as StorageActivitiesTable } from "./Activity/StorageActivitiesT
 export { default as PrePlantingActivitiesTable } from "./Activity/PrePlantingActivitiesTable";
 export { default as LandPreparationTable } from "./Activity/LandPreparationTable";
 export { default as TransportationActivitiesTable } from "./Activity/TransportationActivitiesTable";
+export { default as FertilizingActivitiesTable } from "./Activity/FertilizingActivitiesTable";
 export { default as ResetPasswordForm } from "./ResetPasswordForm";

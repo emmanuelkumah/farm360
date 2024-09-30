@@ -5,13 +5,13 @@ const Error = () => {
   const error = useRouteError();
   console.log(
     "server error",
-    error,
-    error.response.status,
-    error.response.data.message
+    error
+
+    // error.response?.status,
+    // error.response.data.message
   );
   let title = "An error occurred!";
   let message;
-  // let message = error.response.data.message;
 
   if (error.response.status === 500) {
     message = error.response.data.message;

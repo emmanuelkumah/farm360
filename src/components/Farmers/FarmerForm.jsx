@@ -62,11 +62,8 @@ const FarmerForm = ({ farmer }) => {
   }, [communityId]);
 
   const handleDateChange = (date) => {
-    console.log(date);
     const formattedDate = date.toISOString().split("T")[0]; // Formats to "YYYY-MM-DD"
-    console.log(formattedDate);
     setDateOfBirth(formattedDate);
-    //setBirthDate({ ...birthDate, dateOfBirth: date });
   };
 
   const getRegions = async () => {
@@ -270,24 +267,7 @@ const FarmerForm = ({ farmer }) => {
                       required
                     />
                   </div>
-                  {/* <div>
-                    <div className="my-2 block">
-                      <Label
-                        htmlFor="GPS"
-                        value="GPS Address"
-                        className="font-semibold"
-                      />
-                    </div>
-                    <TextInput
-                      id="GPS"
-                      type="text"
-                      icon={BiMap}
-                      placeholder="Enter GPS"
-                      name="gps"
-                      defaultValue={farmer ? farmer.gps : ""}
-                      required
-                    />
-                  </div> */}
+
                   <div>
                     <div className="my-2 block">
                       <Label
@@ -460,7 +440,7 @@ const FarmerForm = ({ farmer }) => {
                       value="Select farmer group"
                     />
                   </div>
-                  {/* <Select
+                  <Select
                     id="group"
                     required
                     className="w-full"
@@ -473,7 +453,7 @@ const FarmerForm = ({ farmer }) => {
                         {group.name}
                       </option>
                     ))}
-                  </Select> */}
+                  </Select>
                 </div>
                 <Button type="submit" className="mt-4 w-[100%] bg-main">
                   {navigation.state === "submitting"
@@ -504,8 +484,10 @@ export const action = async ({ request }) => {
     communityId: data.get("communityId"),
     farmerType: data.get("farmerType"),
     cropType: data.get("cropType"),
+    groupId: Number(data.get("groupId")),
   };
 
+  console.log(submission);
   const response = await axiosbaseURL.post("/farmer", submission);
   if (
     response.status === 401 ||

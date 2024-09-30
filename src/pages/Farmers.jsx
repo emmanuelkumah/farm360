@@ -13,10 +13,9 @@ const Farmers = () => {
 
 export default Farmers;
 
-//should be async await if connect to api
 export const loader = async () => {
   const response = await axiosbaseURL.get("farmers");
-  console.log("server resonse", response);
+
   if (
     response.status === 401 ||
     response.status === 404 ||

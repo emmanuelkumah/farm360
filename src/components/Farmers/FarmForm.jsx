@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Button, Label, TextInput, Select, Radio } from "flowbite-react";
-import { updateFarmDetails } from "../../data/dummyData";
-import { Form, redirect, useNavigation, json } from "react-router-dom";
+import { Button, Label, TextInput, Select, Radio, Alert } from "flowbite-react";
+import { Form, useNavigation } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiMap } from "react-icons/bi";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getAuthToken } from "../../utils/auth";
 import axios from "axios";
-import { axiosbaseURL } from "../../api/axios";
+import { HiInformationCircle } from "react-icons/hi";
 
-const FarmForm = ({ farm, method }) => {
+const FarmForm = ({ farm, method, response }) => {
   const [token, setToken] = useState(getAuthToken());
   const [farmers, setFarmers] = useState([]);
   const [communities, setCommunities] = useState([]);
 
   const navigation = useNavigation();
 
+  const message = response?.data;
   useEffect(() => {
     fetchFarmersCommunities();
   }, []);
@@ -56,6 +56,16 @@ const FarmForm = ({ farm, method }) => {
         </div>
 
         <section className="flex flex-col justify-center items-center">
+          {message ? (
+            <Alert
+              color="failure"
+              icon={HiInformationCircle}
+              className="max-w-2xl"
+            >
+              <span className="font-medium">Info alert!</span>
+              <p>{`${message.code} - ${message.message}`}</p>
+            </Alert>
+          ) : null}
           <Form className="w-[80vw] md:w-[80%] my-4 " method={method}>
             <div className="grid grid-cols-1 gap-4 md:gap-10">
               <section>
@@ -128,16 +138,11 @@ const FarmForm = ({ farm, method }) => {
                     <fieldset className="flex max-w-md flex-col gap-4">
                       <legend className="mb-4">Select crop type</legend>
                       <div className="flex items-center gap-2">
-                        <Radio
-                          id="soy"
-                          name="cropType"
-                          value="SOYA"
-                          defaultChecked
-                        />
+                        <Radio id="soya" name="cropType" value="SOYA" />
                         <Label htmlFor="soya">Soya</Label>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Radio id="shea" name="shea" value="Shea" disabled />
+                        <Radio id="shea" name="cropType" value="Shea" />
                         <Label htmlFor="shea">Shea</Label>
                       </div>
                     </fieldset>
@@ -201,27 +206,29 @@ const FarmForm = ({ farm, method }) => {
 
 export default FarmForm;
 
-export const action = async ({ request, params }) => {
-  const method = request.method;
-  const data = await request.formData();
-  if (method === "POST") {
-    const farmDetails = {
-      name: data.get("name"),
-      communityId: data.get("communityId"),
-      cropType: data.get("cropType"),
-      gpsAddress: data.get("gpsAddress"),
-      landSize: Number(data.get("landSize")),
-      farmerId: Number(data.get("farmerId")),
-    };
-    const response = await axiosbaseURL.post("/farm", farmDetails);
-    if (
-      response.status === 401 ||
-      response.status === 404 ||
-      response.status === 500
-    ) {
-      throw json({ message: "Could not save farms." });
-    }
-    toast.success("Farm data submitted successfully!");
-    return redirect("/app/farms");
-  }
-};
+// export const action = async ({ request, params }) => {
+//   const method = request.method;
+//   const data = await request.formData();
+//   if (method === "POST") {
+//     const farmDetails = {
+//       name: data.get("name"),
+//       communityId: data.get("communityId"),
+//       cropType: data.get("cropType"),
+//       gpsAddress: data.get("gpsAddress"),
+//       landSize: Number(data.get("landSize")),
+//       farmerId: Number(data.get("farmerId")),
+//     };
+//     const response = await axiosbaseURL.post("/farm", farmDetails);
+//     console.log("response", response);
+//     if (
+//       response.status === 401 ||
+//       response.status === 400 ||
+//       response.status === 404 ||
+//       response.status === 500
+//     ) {
+//       throw json({ message: "Could not save farms." });
+//     }
+//     toast.success("Farm data submitted successfully!");
+//     return redirect("/app/farms");
+//   }
+// };

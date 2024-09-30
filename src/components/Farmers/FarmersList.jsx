@@ -7,7 +7,7 @@ import { Link, useLoaderData } from "react-router-dom";
 
 const FarmersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemesPerPage] = useState(10);
+  const [itemsPerPage, setItemesPerPage] = useState(20);
   const [editFarmer, setEditFarmer] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [search, setSearch] = useState("");
@@ -98,9 +98,7 @@ const FarmersList = () => {
 
                   <Table.Cell>{farmer.community.district}</Table.Cell>
                   <Table.Cell>{farmer.community.name}</Table.Cell>
-                  <Table.Cell>{`${
-                    farmer.group ? farmer.group : "displayGroup"
-                  }`}</Table.Cell>
+                  <Table.Cell>{farmer.group}</Table.Cell>
 
                   <Table.Cell>
                     <div className="flex gap-5">

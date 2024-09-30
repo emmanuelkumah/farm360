@@ -42,3 +42,4 @@ export { default as ViewShipmentActivities } from "./ViewShipmentActivities";
 export { default as ViewSalesActivities } from "./ViewSalesActivities";
 export { default as ViewPrePlantingActivities } from "./ViewPrePlantingActivities";
 export { default as ViewLandPreparationActivities } from "./ViewLandPreparationActivities";
+export { default as ViewFertilizingActivities } from "./ViewFertilizingActivities";
