@@ -1,13 +1,11 @@
 export { default as Button } from "./AddButton";
 export { default as Footer } from "./Footer";
 export { default as Header } from "./Header";
-// export { default as Navbar } from "./Navbar";
 export { default as Navbar } from "./Navbar";
 export { default as Sidebar } from "./Sidebar";
 export { default as Notification } from "./Notification";
 export { default as UserProfile } from "./UserProfile";
 export { default as DashboardCard } from "./DashboardCard";
-export { default as LineCharts } from "./LineCharts";
 export { default as RecentActs } from "./RecentActs";
 export { default as CustomToast } from "./CustomToast";
 export { default as EditUserModal } from "./EditUserModal";
@@ -19,9 +17,7 @@ export { default as AddButton } from "./AddButton";
 export { default as AddFarm } from "./Farmers/AddFarmForm";
 export { default as FarmsList } from "./Farmers/FarmsList";
 export { default as AddUserModal } from "./AddUserModal";
-export { default as AddTraceabilityFlow } from "./AddTraceabilityFlow";
-export { default as TraceabilityFlowTable } from "./TraceabilityFlowTable";
-export { default as TraceabilityActivities } from "./TraceabilityActivities";
+
 export { default as Activities } from "./Activity/Activities";
 export { default as PrePlantingForm } from "./Activity/PrePlantingForm";
 export { default as LandPreparation } from "./Activity/LandPreparationForm";

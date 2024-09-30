@@ -18,7 +18,6 @@ import {
   Reports,
   PlantingActivities,
   PrePlantingActvities,
-  Traceability,
   FarmActivity,
   FarmActivities,
   Landing,
@@ -442,11 +441,6 @@ const router = createBrowserRouter([
       {
         path: "reports",
         element: <Reports />,
-      },
-
-      {
-        path: "traceability",
-        element: <Traceability />,
       },
     ],
   },
