@@ -72,7 +72,9 @@ import ViewSalesActivities, {
 import ViewPestControlActivities, {
   loader as pestControlLoader,
 } from "./pages/ViewPestControlActivities";
-
+import ViewTransportationActivities, {
+  loader as transportationLoader,
+} from "./pages/ViewTransportationActivities";
 import ViewPrePlantingActivities, {
   loader as preplantingLoader,
 } from "./pages/ViewPrePlantingActivities";
@@ -371,6 +373,11 @@ const router = createBrowserRouter([
             path: "land-preparation",
             element: <ViewLandPreparationActivities />,
             loader: landPreparationLoader,
+          },
+          {
+            path: "transportation",
+            element: <ViewTransportationActivities />,
+            loader: transportationLoader,
           },
         ],
       },
