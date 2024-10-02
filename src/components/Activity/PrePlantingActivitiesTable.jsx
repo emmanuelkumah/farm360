@@ -8,14 +8,14 @@ import { toast } from "react-toastify";
 
 const PrePlantingActivitiesTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemesPerPage] = useState(10);
+  const [itemsPerPage, setItemesPerPage] = useState(20);
   const [search, setSearch] = useState("");
   const [activities, setActivities] = useState(data);
 
   const totalActivities = activities.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentData = activities.slice(firstItemIndex, lastItemIndex);
+  const currentActivities = activities.slice(firstItemIndex, lastItemIndex);
 
   const navigation = useNavigation();
 
@@ -25,7 +25,6 @@ const PrePlantingActivitiesTable = ({ data }) => {
   const onPageChange = (page) => setCurrentPage(page);
 
   const handleDeleteActivity = async (id) => {
-    console.log("delete", id);
     try {
       await axiosbaseURL.delete(`farm/activity/pre-planting/${id}`);
       setActivities(activities.filter((activity) => activity.id !== id));
@@ -79,11 +78,11 @@ const PrePlantingActivitiesTable = ({ data }) => {
               <Table.HeadCell>Actions</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              {currentData
+              {currentActivities
                 .filter((item) => {
                   return search.toLowerCase() === ""
                     ? item
-                    : item.farm.toLowerCase().includes(search);
+                    : item.farmName.toLowerCase().includes(search);
                 })
                 .map((item) => (
                   <Table.Row
