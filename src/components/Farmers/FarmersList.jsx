@@ -18,11 +18,6 @@ const FarmersList = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [search, setSearch] = useState("");
 
-  // const totalFarmers = farmersData.length;
-  // const lastItemIndex = currentPage * itemsPerPage;
-  // const firstItemIndex = lastItemIndex - itemsPerPage;
-  // const currentFarmersData = farmersData.slice(firstItemIndex, lastItemIndex);
-
   useEffect(() => {
     fetchFarmers(currentPage);
   }, [currentPage]);
@@ -157,23 +152,11 @@ const FarmersList = () => {
             Next
           </Button>
         </div>
-        <p>
+        <p className="text-sm text-center mt-4">
           Showing page {currentPage} of {totalPages} (Total: {totalElements}{" "}
           farmers)
         </p>
       </div>
-
-      {/* <div className="flex overflow-x-auto mt-10 sm:justify-center">
-        <Pagination
-          layout="pagination"
-          currentPage={currentPage}
-          totalPages={totalFarmers}
-          onPageChange={onPageChange}
-          previousLabel="Go back"
-          nextLabel="Go forward"
-          showIcons
-        />
-      </div> */}
     </div>
   );
 };
