@@ -7,19 +7,16 @@ import {
   FileInput,
   Select,
   Datepicker,
+  Alert,
 } from "flowbite-react";
 import { Form, useNavigation } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiPhone } from "react-icons/bi";
-// import { groups } from "../../data/dummyData";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { redirect } from "react-router-dom";
+import { HiInformationCircle } from "react-icons/hi";
 import axios from "axios";
 import { getAuthToken } from "../../utils/auth";
-import { axiosbaseURL } from "../../api/axios";
 
-const FarmerForm = ({ farmer }) => {
+const FarmerForm = ({ farmer, errors }) => {
   const [token, setToken] = useState(getAuthToken());
   const [regionId, setRegionId] = useState(null);
   const [regions, setRegions] = useState([]);
@@ -36,6 +33,8 @@ const FarmerForm = ({ farmer }) => {
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
   const navigation = useNavigation();
+
+  const errorMessage = errors?.data;
 
   useEffect(() => {
     if (token) {
@@ -166,6 +165,16 @@ const FarmerForm = ({ farmer }) => {
         </div>
 
         <section className="flex flex-col justify-center items-center">
+          {errors ? (
+            <Alert
+              color="failure"
+              icon={HiInformationCircle}
+              className="max-w-2xl"
+            >
+              <span className="font-medium">Info alert!</span>
+              <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+            </Alert>
+          ) : null}
           <Form className="w-[80vw] md:w-[80%] my-4 " method="post">
             <div className="grid grid-cols-1 gap-4 md:gap-10">
               <section>
@@ -419,6 +428,7 @@ const FarmerForm = ({ farmer }) => {
                       name="cropType"
                       defaultValue="SOYA"
                       required
+                      disabled
                     />
                     <Label htmlFor="farmer">Soya</Label>
                   </div>
@@ -470,32 +480,3 @@ const FarmerForm = ({ farmer }) => {
 };
 
 export default FarmerForm;
-
-export const action = async ({ request }) => {
-  const data = await request.formData();
-
-  let submission = {
-    firstName: data.get("firstName"),
-    lastName: data.get("lastName"),
-    gender: data.get("gender"),
-    homeAddress: data.get("homeAddress"),
-    phone: data.get("phone"),
-    dateOfBirth: data.get("dateOfBirth"),
-    communityId: data.get("communityId"),
-    farmerType: data.get("farmerType"),
-    cropType: data.get("cropType"),
-    groupId: Number(data.get("groupId")),
-  };
-
-  console.log(submission);
-  const response = await axiosbaseURL.post("/farmer", submission);
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500
-  ) {
-    throw json({ message: "Could not create farmer." });
-  }
-  toast.success("Farmer created successfully!");
-  return redirect("/app/farmers");
-};

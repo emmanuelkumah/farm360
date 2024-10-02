@@ -85,7 +85,7 @@ import ViewFertilizingActivities, {
 } from "./pages/ViewFertilizingActivities";
 
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
-import { action as farmerAction } from "./components/Farmers/FarmerForm";
+import { action as farmerAction } from "./pages/AddFarmer";
 // import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
 import { action as addFarmAction } from "./pages/AddFarm";
