@@ -16,8 +16,11 @@ import BackButton from "../BackButton";
 import ActivityHeading from "../ActivityHeading";
 
 const PrePlantingForm = () => {
-  const [hasSource, setSource] = useState(false);
+  const [materialSource, setMaterialSource] = useState("");
+  const [hasMaterialSource, setHasMaterialSource] = useState(false);
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
+  const [hasOtherQualification, setHasOtherQualification] = useState(false);
+  const [qualification, setQualification] = useState("");
   const [treatmentMethod, setTreatmentMethod] = useState("");
   const [activityDate, setActivityDate] = useState("");
   const defaultValue = new Date();
@@ -28,10 +31,11 @@ const PrePlantingForm = () => {
   };
 
   const handleSelectSource = (e) => {
+    setMaterialSource(e.target.value);
     if (e.target.value === "Others") {
-      setSource(!hasSource);
+      setHasMaterialSource(!hasMaterialSource);
     } else {
-      setSource(false);
+      setHasMaterialSource(false);
     }
   };
 
@@ -41,7 +45,15 @@ const PrePlantingForm = () => {
     if (e.target.value === "Other") {
       setHasTreatmentMethod(!hasTreatmentMethod);
     } else {
-      setSource(false);
+      setHasTreatmentMethod(false);
+    }
+  };
+
+  const handleSupervisorQualification = (e) => {
+    console.log(e.target.value);
+    setQualification(e.target.value);
+    if (e.target.value === "Others") {
+      setHasOtherQualification(!hasOtherQualification);
     }
   };
 
@@ -114,7 +126,7 @@ const PrePlantingForm = () => {
                       id="source"
                       name="plantingMaterialSource"
                       required
-                      defaultValue=""
+                      value={materialSource}
                       onChange={handleSelectSource}
                     >
                       <option>Select Source of planting material</option>
@@ -128,7 +140,7 @@ const PrePlantingForm = () => {
                       <option value="Others">Others</option>
                     </Select>
                   </div>
-                  {hasSource && (
+                  {hasMaterialSource && (
                     <div className="flex flex-col">
                       <Label
                         htmlFor="seed"
@@ -138,7 +150,7 @@ const PrePlantingForm = () => {
                       <TextInput
                         id="seed"
                         type="text"
-                        name="plantingMaterialSource"
+                        name="otherPlantingMaterialSource"
                         defaultValue=""
                         placeholder="Enter where you got the source from"
                       />
@@ -299,7 +311,8 @@ const PrePlantingForm = () => {
                   id="cert"
                   required
                   name="supervisorQualification"
-                  defaultValue=""
+                  value={qualification}
+                  onChange={handleSupervisorQualification}
                 >
                   <option>Select certificate of supervisor</option>
                   <option value="MOFA">MOFA</option>
@@ -307,6 +320,18 @@ const PrePlantingForm = () => {
                   <option value="PPRSD/NPPO">PPRSD/NPPO</option>
                   <option value="Others">Others</option>
                 </Select>
+                {hasOtherQualification && (
+                  <div className="my-4">
+                    <TextInput
+                      type="text"
+                      required
+                      placeholder="Enter other qualification of supervisor"
+                      id="supervisor"
+                      name="OtherSupervisorQualification"
+                      defaultValue=""
+                    />
+                  </div>
+                )}
               </div>
               <Button className="bg-main" type="submit">
                 Save PrePlanting Activity
@@ -343,6 +368,24 @@ export const action = async ({ request, params }) => {
     return data.get("plantingMaterialTreatmentMethod");
   }
 
+  function getOtherPlantingmaterialSource(plantingMaterial) {
+    if (plantingMaterial === "Others") {
+      return data.get("otherPlantingMaterialSource");
+    }
+    return data.get("plantingMaterialSource");
+  }
+  const plantingSource = getOtherPlantingmaterialSource(
+    data.get("plantingMaterialSource")
+  );
+  function getSupervisorQualification(qualification) {
+    if (qualification === "Others") {
+      return data.get("OtherSupervisorQualification");
+    }
+    return data.get("supervisorQualification");
+  }
+  const supervisorQualification = getSupervisorQualification(
+    data.get("supervisorQualification")
+  );
   const formData = {
     farmId: Number(params.farmId),
     chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
@@ -350,13 +393,13 @@ export const action = async ({ request, params }) => {
     plantingMaterial: data.get("plantingMaterial"),
     plantingMaterialYield: Number(data.get("plantingMaterialYield")),
     plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
-    plantingMaterialSource: data.get("plantingMaterialSource"),
+    plantingMaterialSource: plantingSource,
     plantingMaterialTreatmentMethod: treatmentMethod,
 
     plantingMaterialIsTreated: treated,
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: data.get("supervisorQualification"),
+    supervisorQualification: supervisorQualification,
     activityDate: data.get("activityDate"),
   };
 
