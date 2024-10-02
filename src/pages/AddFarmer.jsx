@@ -20,6 +20,9 @@ export default AddFarmer;
 export const action = async ({ request }) => {
   const data = await request.formData();
 
+  const farmerImage = data.get("picture");
+  console.log(farmerImage);
+
   let farmerData = {
     firstName: data.get("firstName"),
     lastName: data.get("lastName"),
@@ -43,17 +46,4 @@ export const action = async ({ request }) => {
   } catch (error) {
     return error.response;
   }
-
-  // console.log(submission);
-  // const response = await axiosbaseURL.post("/farmer", submission);
-  // console.log("response for farmer", response);
-  // if (
-  //   response.status === 401 ||
-  //   response.status === 404 ||
-  //   response.status === 500
-  // ) {
-  //   throw json({ message: "Could not create farmer." });
-  // }
-  // toast.success("Farmer created successfully!");
-  // return redirect("/app/farmers");
 };

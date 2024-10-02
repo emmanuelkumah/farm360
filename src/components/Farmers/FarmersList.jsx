@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button, Pagination } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { LuEye } from "react-icons/lu";
 import { FaUser } from "react-icons/fa6";
 import { Link, useLoaderData } from "react-router-dom";
+import { axiosbaseURL } from "../../api/axios";
 
 const FarmersList = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [farmers, setFarmers] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+
   const [itemsPerPage, setItemesPerPage] = useState(20);
   const [editFarmer, setEditFarmer] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -14,11 +20,33 @@ const FarmersList = () => {
 
   const farmersData = useLoaderData();
 
+  console.log("loaded farmers", farmers);
   const totalFarmers = farmersData.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
   const currentFarmersData = farmersData.slice(firstItemIndex, lastItemIndex);
 
+  useEffect(() => {
+    fetchFarmers(currentPage);
+  }, [currentPage]);
+
+  const fetchFarmers = async (page) => {
+    try {
+      const response = await axiosbaseURL.get(
+        `/farmers-paged?page=${page}&size=${20}&sort=dateCreated,desc`
+      );
+      console.log("response", response);
+      setFarmers(response.data.data);
+      setTotalPages(response.data.totalPages);
+      setTotalElements(response.data.totalElements);
+    } catch (error) {
+      console.error("error fetching farmer", error.response);
+    }
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -68,54 +96,61 @@ const FarmersList = () => {
             <Table.HeadCell>Actions</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {currentFarmersData
-              .filter((item) => {
-                return search.toLowerCase() === ""
-                  ? item
-                  : item.firstName.toLowerCase().includes(search);
-              })
-              .map((farmer) => (
-                <Table.Row
-                  key={farmer.id}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                >
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {farmer.imageUrl === null ? (
-                      <FaUser />
-                    ) : (
-                      <img
-                        src={farmer.imageUrl}
-                        alt="farmer picture"
-                        className="rounded-full w-10 h-10"
-                      />
-                    )}
-                  </Table.Cell>
-                  <Table.Cell>{farmer.firstName}</Table.Cell>
-                  <Table.Cell>{farmer.lastName}</Table.Cell>
-                  <Table.Cell>{farmer.age}</Table.Cell>
-                  <Table.Cell>{farmer.phone}</Table.Cell>
-                  <Table.Cell>{farmer.community.region}</Table.Cell>
+            {farmers.map((farmer) => (
+              <Table.Row
+                key={farmer.id}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {farmer.imageUrl === null ? (
+                    <FaUser />
+                  ) : (
+                    <img
+                      src={farmer.imageUrl}
+                      alt="farmer picture"
+                      className="rounded-full w-10 h-10"
+                    />
+                  )}
+                </Table.Cell>
+                <Table.Cell>{farmer.firstName}</Table.Cell>
+                <Table.Cell>{farmer.lastName}</Table.Cell>
+                <Table.Cell>{farmer.age}</Table.Cell>
+                <Table.Cell>{farmer.phone}</Table.Cell>
+                <Table.Cell>{farmer.community.region}</Table.Cell>
 
-                  <Table.Cell>{farmer.community.district}</Table.Cell>
-                  <Table.Cell>{farmer.community.name}</Table.Cell>
-                  <Table.Cell>{farmer.group}</Table.Cell>
+                <Table.Cell>{farmer.community.district}</Table.Cell>
+                <Table.Cell>{farmer.community.name}</Table.Cell>
+                <Table.Cell>{farmer.group?.name}</Table.Cell>
 
-                  <Table.Cell>
-                    <div className="flex gap-5">
-                      <Link to={`${farmer.id}`}>
-                        <LuEye className="text-xl hover:text-primary cursor-pointer" />
-                      </Link>
-                      <Link to={`${farmer.id}/edit`}>
-                        <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
-                      </Link>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+                <Table.Cell>
+                  <div className="flex gap-5">
+                    <Link to={`${farmer.id}`}>
+                      <LuEye className="text-xl hover:text-primary cursor-pointer" />
+                    </Link>
+                    <Link to={`${farmer.id}/edit`}>
+                      <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
+                    </Link>
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </div>
-      <div className="flex overflow-x-auto mt-10 sm:justify-center">
+      <div>
+        <p>
+          Showing page {currentPage} of {totalPages} (Total: {totalElements}{" "}
+          farmers)
+        </p>
+      </div>
+      <Button
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 0}
+      >
+        Previous
+      </Button>
+      <Button onClick={() => handlePageChange(currentPage + 1)}>Next</Button>
+      {/* <div className="flex overflow-x-auto mt-10 sm:justify-center">
         <Pagination
           layout="pagination"
           currentPage={currentPage}
@@ -125,7 +160,7 @@ const FarmersList = () => {
           nextLabel="Go forward"
           showIcons
         />
-      </div>
+      </div> */}
     </div>
   );
 };
