@@ -1,17 +1,21 @@
 import React, { useState } from "react";
-import { useNavigation } from "react-router-dom";
+import { redirect, useNavigation } from "react-router-dom";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
+import { MdDelete } from "react-icons/md";
+import { axiosbaseURL } from "../../api/axios";
+import { toast } from "react-toastify";
 
 const PrePlantingActivitiesTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemesPerPage] = useState(10);
   const [search, setSearch] = useState("");
+  const [activities, setActivities] = useState(data);
 
-  const totalActivities = data.length;
+  const totalActivities = activities.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentData = data.slice(firstItemIndex, lastItemIndex);
+  const currentData = activities.slice(firstItemIndex, lastItemIndex);
 
   const navigation = useNavigation();
 
@@ -19,12 +23,28 @@ const PrePlantingActivitiesTable = ({ data }) => {
     setSearch(e.target.value);
   };
   const onPageChange = (page) => setCurrentPage(page);
+
+  const handleDeleteActivity = async (id) => {
+    console.log("delete", id);
+    try {
+      await axiosbaseURL.delete(`farm/activity/pre-planting/${id}`);
+      setActivities(activities.filter((activity) => activity.id !== id));
+      toast.success("Activity deleted successfully");
+    } catch (error) {
+      console.error("Error deleting planting activity:", error);
+    }
+  };
   return (
     <div className="container mx-auto">
       <div className="overflow-x-auto">
         <div className="my-4">
           <BackButton />
           <div>
+            {activities.length === 0 && (
+              <p className="text-xl text-main flex justify-center">
+                No pre-planting activities found
+              </p>
+            )}
             <input
               className="w-full rounded-lg my-10"
               type="text"
@@ -56,6 +76,7 @@ const PrePlantingActivitiesTable = ({ data }) => {
               <Table.HeadCell>Supervisor</Table.HeadCell>
               <Table.HeadCell>Supervisor contact</Table.HeadCell>
               <Table.HeadCell>Supervisor qualification</Table.HeadCell>
+              <Table.HeadCell>Actions</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
               {currentData
@@ -86,6 +107,17 @@ const PrePlantingActivitiesTable = ({ data }) => {
                     <Table.Cell>{item.supervisorName}</Table.Cell>
                     <Table.Cell>{item.supervisorContact}</Table.Cell>
                     <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                    <Table.Cell>
+                      <div
+                        className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
+                        onClick={() => handleDeleteActivity(item.id)}
+                      >
+                        <span className="text-white">
+                          <MdDelete />
+                        </span>
+                        <p className="text-white">Delete</p>
+                      </div>
+                    </Table.Cell>
                   </Table.Row>
                 ))}
             </Table.Body>
