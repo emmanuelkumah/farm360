@@ -14,7 +14,6 @@ export { default as DashboardBarChart } from "./DashboardBarChart";
 export { default as FarmersList } from "./Farmers/FarmersList";
 export { default as Search } from "./Search";
 export { default as AddButton } from "./AddButton";
-export { default as AddFarm } from "./Farmers/AddFarmForm";
 export { default as FarmsList } from "./Farmers/FarmsList";
 export { default as AddUserModal } from "./AddUserModal";
 

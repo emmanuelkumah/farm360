@@ -1,32 +1,53 @@
-import React, { useState } from "react";
-import { Button, Table, Pagination, Spinner } from "flowbite-react";
-import { Link, useNavigation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Button, Table, Spinner } from "flowbite-react";
+import { Link } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { LuEye } from "react-icons/lu";
+import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 
-const FarmsList = ({ listFarms }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemesPerPage] = useState(10);
+import BackButton from "../BackButton";
+import { axiosbaseURL } from "../../api/axios";
+
+const FarmsList = () => {
+  const [farms, setFarms] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const navigation = useNavigation();
 
-  const totalFarms = listFarms.length;
-  const lastItemIndex = currentPage * itemsPerPage;
-  const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentFarmsData = listFarms.slice(firstItemIndex, lastItemIndex);
+  useEffect(() => {
+    fetchFarms(currentPage);
+  }, [currentPage]);
+
+  const fetchFarms = async (page) => {
+    setIsLoading(true);
+    try {
+      const response = await axiosbaseURL.get(
+        `/farms?&page=${page}&size=${20}&sort=dateCreated,desc`
+      );
+      setFarms(response.data.data);
+      setTotalPages(response.data.totalPages);
+      setTotalElements(response.data.totalElements);
+    } catch (error) {
+      console.error("error fetching farmer", error.response);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
 
-  const onPageChange = (page) => setCurrentPage(page);
-
   return (
     <>
       <div className="my-10">
-        <Button className="bg-secondary text-primary hover:text-slate-100 hover:bg-primary">
-          <Link to="new">Add new farm</Link>
-        </Button>
+        <BackButton />
 
         <div>
           <input
@@ -41,7 +62,7 @@ const FarmsList = ({ listFarms }) => {
           />
         </div>
       </div>
-      {navigation.state === "loading" ? (
+      {isLoading ? (
         <div className="text-center">
           <Spinner aria-label="Center-aligned spinner example" size="xl" />
         </div>
@@ -58,11 +79,11 @@ const FarmsList = ({ listFarms }) => {
               <Table.HeadCell></Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              {currentFarmsData
-                .filter((item) => {
+              {farms
+                .filter((farm) => {
                   return search.toLowerCase() === ""
-                    ? item
-                    : item.name.toLowerCase().includes(search);
+                    ? farm
+                    : farm.name.toLowerCase().includes(search);
                 })
                 .map((farm) => (
                   <Table.Row
@@ -107,19 +128,27 @@ const FarmsList = ({ listFarms }) => {
                 ))}
             </Table.Body>
           </Table>
-          <div className="flex overflow-x-auto mt-10 sm:justify-center">
-            <Pagination
-              layout="pagination"
-              currentPage={currentPage}
-              totalPages={totalFarms}
-              onPageChange={onPageChange}
-              previousLabel="Go back"
-              nextLabel="Go forward"
-              showIcons
-            />
-          </div>
         </div>
       )}
+      <div>
+        <div className="flex justify-center gap-4">
+          <Button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 0}
+          >
+            <BiChevronLeft />
+            Previous
+          </Button>
+          <Button onClick={() => handlePageChange(currentPage + 1)}>
+            Next
+            <BiChevronRight />
+          </Button>
+        </div>
+        <p className="text-sm text-center mt-4">
+          Showing page {currentPage} of {totalPages} (Total: {totalElements}{" "}
+          farmers)
+        </p>
+      </div>
     </>
   );
 };

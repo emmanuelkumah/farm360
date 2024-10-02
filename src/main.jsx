@@ -49,7 +49,7 @@ import {
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
-import { loader as farmsLoader } from "./pages/Farms";
+// import { loader as farmsLoader } from "./pages/Farms";
 import { loader as farmersLoader } from "./pages/Farmers";
 import { loader as farmerDetails } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
@@ -230,7 +230,7 @@ const router = createBrowserRouter([
             index: true,
             element: <Farms />,
 
-            loader: farmsLoader,
+            // loader: farmsLoader,
           },
           {
             path: ":farmId",
