@@ -428,7 +428,6 @@ const FarmerForm = ({ farmer, errors }) => {
                       name="cropType"
                       defaultValue="SOYA"
                       required
-                      disabled
                     />
                     <Label htmlFor="farmer">Soya</Label>
                   </div>
@@ -437,6 +436,7 @@ const FarmerForm = ({ farmer, errors }) => {
                       id="cropType"
                       name="cropType"
                       defaultValue="SHEA"
+                      disabled
                       required
                     />
                     <Label htmlFor="shea">Shea </Label>
