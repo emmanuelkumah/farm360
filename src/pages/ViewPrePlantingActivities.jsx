@@ -5,9 +5,8 @@ import { useLoaderData } from "react-router-dom";
 
 const ViewPrePlantingActivities = () => {
   const { data } = useLoaderData();
-  console.log("preplanting", data);
   return (
-    <div>
+    <div className="m-10">
       <PrePlantingActivitiesTable data={data} />
     </div>
   );

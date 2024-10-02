@@ -6,7 +6,7 @@ import { axiosbaseURL } from "../api/axios";
 const ViewLandPreparationActivities = () => {
   const { data } = useLoaderData();
   return (
-    <div className="container mx-auto">
+    <div className="m-10">
       <LandPreparationTable data={data} />
     </div>
   );

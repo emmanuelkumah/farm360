@@ -35,7 +35,7 @@ const PrePlantingActivitiesTable = ({ data }) => {
   };
   return (
     <div className="container mx-auto">
-      <div className="overflow-x-auto">
+      <div>
         <div className="my-4">
           <BackButton />
           <div>
@@ -61,66 +61,68 @@ const PrePlantingActivitiesTable = ({ data }) => {
             <Spinner aria-label="Center-aligned spinner example" size="xl" />
           </div>
         ) : (
-          <Table striped>
-            <Table.Head>
-              <Table.HeadCell>Farm name</Table.HeadCell>
-              <Table.HeadCell>Date</Table.HeadCell>
-              <Table.HeadCell>Chemical sprayed</Table.HeadCell>
-              <Table.HeadCell>Rate of application</Table.HeadCell>
-              <Table.HeadCell>Material</Table.HeadCell>
-              <Table.HeadCell>Yield</Table.HeadCell>
-              <Table.HeadCell>Quantity</Table.HeadCell>
-              <Table.HeadCell>Source</Table.HeadCell>
-              <Table.HeadCell>Treatment method</Table.HeadCell>
-              <Table.HeadCell>Supervisor</Table.HeadCell>
-              <Table.HeadCell>Supervisor contact</Table.HeadCell>
-              <Table.HeadCell>Supervisor qualification</Table.HeadCell>
-              <Table.HeadCell>Actions</Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="divide-y">
-              {currentActivities
-                .filter((item) => {
-                  return search.toLowerCase() === ""
-                    ? item
-                    : item.farmName.toLowerCase().includes(search);
-                })
-                .map((item) => (
-                  <Table.Row
-                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                    key={item.id}
-                  >
-                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                      {item.farmName}
-                    </Table.Cell>
-                    <Table.Cell>{item.activityDate}</Table.Cell>
-                    <Table.Cell>{item.chemicalSprayed}</Table.Cell>
-                    <Table.Cell>{item.chemicalApplicationRate}</Table.Cell>
-                    <Table.Cell>{item.plantingMaterial}</Table.Cell>
-                    <Table.Cell>{item.plantingMaterialYield}</Table.Cell>
+          <div className="overflow-x-auto">
+            <Table striped>
+              <Table.Head>
+                <Table.HeadCell>Farm name</Table.HeadCell>
+                <Table.HeadCell>Date</Table.HeadCell>
+                <Table.HeadCell>Chemical sprayed</Table.HeadCell>
+                <Table.HeadCell>Rate of application</Table.HeadCell>
+                <Table.HeadCell>Material</Table.HeadCell>
+                <Table.HeadCell>Yield</Table.HeadCell>
+                <Table.HeadCell>Quantity</Table.HeadCell>
+                <Table.HeadCell>Source</Table.HeadCell>
+                <Table.HeadCell>Treatment method</Table.HeadCell>
+                <Table.HeadCell>Supervisor</Table.HeadCell>
+                <Table.HeadCell>Supervisor contact</Table.HeadCell>
+                <Table.HeadCell>Supervisor qualification</Table.HeadCell>
+                <Table.HeadCell>Actions</Table.HeadCell>
+              </Table.Head>
+              <Table.Body className="divide-y">
+                {currentActivities
+                  .filter((item) => {
+                    return search.toLowerCase() === ""
+                      ? item
+                      : item.farmName.toLowerCase().includes(search);
+                  })
+                  .map((item) => (
+                    <Table.Row
+                      className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                      key={item.id}
+                    >
+                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                        {item.farmName}
+                      </Table.Cell>
+                      <Table.Cell>{item.activityDate}</Table.Cell>
+                      <Table.Cell>{item.chemicalSprayed}</Table.Cell>
+                      <Table.Cell>{item.chemicalApplicationRate}</Table.Cell>
+                      <Table.Cell>{item.plantingMaterial}</Table.Cell>
+                      <Table.Cell>{item.plantingMaterialYield}</Table.Cell>
 
-                    <Table.Cell>{item.plantingMaterialQuantity}</Table.Cell>
-                    <Table.Cell>{item.plantingMaterialSource}</Table.Cell>
-                    <Table.Cell>
-                      {item.plantingMaterialTreatmentMethod}
-                    </Table.Cell>
-                    <Table.Cell>{item.supervisorName}</Table.Cell>
-                    <Table.Cell>{item.supervisorContact}</Table.Cell>
-                    <Table.Cell>{item.supervisorQualification}</Table.Cell>
-                    <Table.Cell>
-                      <div
-                        className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
-                        onClick={() => handleDeleteActivity(item.id)}
-                      >
-                        <span className="text-white">
-                          <MdDelete />
-                        </span>
-                        <p className="text-white">Delete</p>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-            </Table.Body>
-          </Table>
+                      <Table.Cell>{item.plantingMaterialQuantity}</Table.Cell>
+                      <Table.Cell>{item.plantingMaterialSource}</Table.Cell>
+                      <Table.Cell>
+                        {item.plantingMaterialTreatmentMethod}
+                      </Table.Cell>
+                      <Table.Cell>{item.supervisorName}</Table.Cell>
+                      <Table.Cell>{item.supervisorContact}</Table.Cell>
+                      <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                      <Table.Cell>
+                        <div
+                          className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
+                          onClick={() => handleDeleteActivity(item.id)}
+                        >
+                          <span className="text-white">
+                            <MdDelete />
+                          </span>
+                          <p className="text-white">Delete</p>
+                        </div>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+              </Table.Body>
+            </Table>
+          </div>
         )}
 
         <div className="flex overflow-x-auto mt-10 sm:justify-center">

@@ -13,17 +13,16 @@ const FarmActivitiesGrid = () => {
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {activities.map((activity) => (
-          <Link to={activity.link}>
-            <div
-              key={activity.id}
-              className="bg-main p-4 rounded-lg shadow-md flex flex-col items-center justify-center transition-transform hover:scale-105"
-            >
-              <span className="text-4xl mb-2">{activity.icon}</span>
-              <span className="text-lg text-white font-semibold text-center">
-                {activity.name}
-              </span>
-            </div>
-          </Link>
+          <div key={activity.activityId}>
+            <Link to={activity.link}>
+              <div className="bg-main p-4 rounded-lg shadow-md flex flex-col items-center justify-center transition-transform hover:scale-105">
+                <span className="text-4xl mb-2">{activity.icon}</span>
+                <span className="text-lg text-white font-semibold text-center">
+                  {activity.name}
+                </span>
+              </div>
+            </Link>
+          </div>
         ))}
       </div>
     </div>
