@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { redirect, useNavigation } from "react-router-dom";
+import { useNavigation } from "react-router-dom";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
 import { MdDelete } from "react-icons/md";
