@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Spinner } from "flowbite-react";
-import { MdDelete, MdEdit } from "react-icons/md";
-import { LuEye } from "react-icons/lu";
+import { MdEdit } from "react-icons/md";
 import { FaUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { axiosbaseURL } from "../../api/axios";
+import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 
 const FarmersList = () => {
   const [farmers, setFarmers] = useState([]);
@@ -125,10 +125,7 @@ const FarmersList = () => {
                     <Table.Cell>{farmer.group?.name}</Table.Cell>
 
                     <Table.Cell>
-                      <div className="flex gap-5">
-                        <Link to={`${farmer.id}`}>
-                          <LuEye className="text-xl hover:text-primary cursor-pointer" />
-                        </Link>
+                      <div className="flex">
                         <Link to={`${farmer.id}/edit`}>
                           <MdEdit className="text-xl hover:text-teal-500 cursor-pointer" />
                         </Link>
@@ -146,10 +143,12 @@ const FarmersList = () => {
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 0}
           >
+            <BiChevronLeft />
             Previous
           </Button>
           <Button onClick={() => handlePageChange(currentPage + 1)}>
             Next
+            <BiChevronRight />
           </Button>
         </div>
         <p className="text-sm text-center mt-4">

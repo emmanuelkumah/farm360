@@ -13,8 +13,9 @@ import { Form, useNavigation } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiHome, BiPhone } from "react-icons/bi";
 import { HiInformationCircle } from "react-icons/hi";
-import axios from "axios";
 import { getAuthToken } from "../../utils/auth";
+import { axiosbaseURL } from "../../api/axios";
+import BackButton from "../BackButton";
 
 const FarmerForm = ({ farmer, errors }) => {
   const [token, setToken] = useState(getAuthToken());
@@ -29,9 +30,6 @@ const FarmerForm = ({ farmer, errors }) => {
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [birthDate, setBirthDate] = useState(farmer);
 
-  const date = new Date("2010-01-30");
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  const formattedDate = date.toLocaleDateString("en-US", options);
   const navigation = useNavigation();
 
   const errorMessage = errors?.data;
@@ -67,15 +65,7 @@ const FarmerForm = ({ farmer, errors }) => {
 
   const getRegions = async () => {
     try {
-      const response = await axios.get(
-        "https://dev.bjlfarmersmarket.net/geo/regions",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "X-Origin": "WEB",
-          },
-        }
-      );
+      const response = await axiosbaseURL.get("geo/regions");
       setRegions(response.data);
     } catch (error) {
       console.log(error.message);
@@ -84,15 +74,7 @@ const FarmerForm = ({ farmer, errors }) => {
 
   const fetchDistricts = async (regionId) => {
     try {
-      const response = await axios.get(
-        `https://dev.bjlfarmersmarket.net/geo/${regionId}/districts`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "X-Origin": "WEB",
-          },
-        }
-      );
+      const response = await axiosbaseURL.get(`geo/${regionId}/districts`);
       setDistricts(response.data);
     } catch (error) {
       console.log(error.message);
@@ -101,33 +83,15 @@ const FarmerForm = ({ farmer, errors }) => {
 
   const fetchCommunities = async (districtId) => {
     try {
-      const response = await axios.get(
-        `https://dev.bjlfarmersmarket.net/geo/${districtId}/communities`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "X-Origin": "WEB",
-          },
-        }
-      );
+      const response = await axiosbaseURL.get(`geo/${districtId}/communities`);
       setCommunities(response.data);
-      //console.log(response.data);
     } catch (error) {
       console.log(error.message);
     }
   };
   const fetchGroup = async () => {
     try {
-      const response = await axios.get(
-        "https://dev.bjlfarmersmarket.net/farmer/groups",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "X-Origin": "WEB",
-          },
-        }
-      );
-      console.log("group", response.data);
+      const response = await axiosbaseURL.get("farmer/groups");
       setGroup(response.data);
     } catch (error) {
       console.log(error.message);
@@ -136,7 +100,6 @@ const FarmerForm = ({ farmer, errors }) => {
 
   const handleRegionChange = (e) => {
     const id = e.target.value;
-    console.log(id);
     setRegionId(id);
   };
   const handleDistrictChange = (e) => {
@@ -146,22 +109,13 @@ const FarmerForm = ({ farmer, errors }) => {
   const handleCommunityChange = (e) => {
     const id = e.target.value;
     setCommunityId(id);
-    console.log("comm", id);
-  };
-  const handleGoBack = () => {
-    navigate("/app/farmers");
   };
 
   return (
     <>
       <div className="bg-secondary w-full md:w-1/2 h-[100%] rounded-lg shadow-md container mx-auto">
         <div className="mx-14 py-4">
-          <Button
-            className="bg-main mt-10  text-secondary hover:text-slate-100 hover:bg-main"
-            onClick={handleGoBack}
-          >
-            Go Back
-          </Button>
+          <BackButton />
         </div>
 
         <section className="flex flex-col justify-center items-center">
