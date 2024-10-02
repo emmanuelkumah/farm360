@@ -2,18 +2,32 @@ import React, { useState } from "react";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
 import { useNavigation } from "react-router-dom";
+import { axiosbaseURL } from "../../api/axios";
+import { MdDelete } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const LandPreparationTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemesPerPage] = useState(10);
   const [search, setSearch] = useState("");
+  const [activities, setActivities] = useState(data);
 
-  const totalActivities = data.length;
+  const totalActivities = activities.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentData = data.slice(firstItemIndex, lastItemIndex);
+  const currentActivities = activities.slice(firstItemIndex, lastItemIndex);
 
   const navigation = useNavigation();
+
+  const handleDeleteActivity = async (id) => {
+    try {
+      await axiosbaseURL.delete(`farm/activity/land-preparation/${id}`);
+      setActivities(activities.filter((activity) => activity.id !== id));
+      toast.success("Activity deleted successfully");
+    } catch (error) {
+      console.error("Error deleting planting activity:", error);
+    }
+  };
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -24,6 +38,12 @@ const LandPreparationTable = ({ data }) => {
       <div className="my-4">
         <BackButton />
         <div>
+          {" "}
+          {activities.length === 0 && (
+            <p className="text-xl text-main flex justify-center">
+              No pre-planting activities found
+            </p>
+          )}
           <input
             className="w-full rounded-lg my-10"
             type="text"
@@ -61,11 +81,11 @@ const LandPreparationTable = ({ data }) => {
             <Table.HeadCell>Supervisor qualification</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {currentData
+            {currentActivities
               .filter((item) => {
                 return search.toLowerCase() === ""
                   ? item
-                  : item.farm.toLowerCase().includes(search);
+                  : item.farmName.toLowerCase().includes(search);
               })
               .map((item) => (
                 <Table.Row
@@ -89,6 +109,17 @@ const LandPreparationTable = ({ data }) => {
                   <Table.Cell>{item.supervisorName}</Table.Cell>
                   <Table.Cell>{item.supervisorContact}</Table.Cell>
                   <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                  <Table.Cell>
+                    <div
+                      className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
+                      onClick={() => handleDeleteActivity(item.id)}
+                    >
+                      <span className="text-white">
+                        <MdDelete />
+                      </span>
+                      <p className="text-white">Delete</p>
+                    </div>
+                  </Table.Cell>
                 </Table.Row>
               ))}
           </Table.Body>

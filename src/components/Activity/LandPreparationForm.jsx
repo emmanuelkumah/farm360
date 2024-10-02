@@ -1,6 +1,15 @@
 import React, { useState } from "react";
-import { Button, Label, TextInput, Select, Datepicker } from "flowbite-react";
-import { Form, redirect } from "react-router-dom";
+import {
+  Button,
+  Label,
+  TextInput,
+  Select,
+  Datepicker,
+  Alert,
+} from "flowbite-react";
+import { HiInformationCircle } from "react-icons/hi";
+
+import { Form, redirect, useActionData } from "react-router-dom";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
 import { axiosbaseURL } from "../../api/axios";
@@ -14,8 +23,12 @@ const LandPreparationForm = () => {
   const [ridgingDate, setRidingDate] = useState("");
   const [moundDate, setMoundDate] = useState("");
   const [sprayingDate, setSprayingDate] = useState("");
-  const [hasCert, setHasCert] = useState(false);
+  const [hasOtherQualification, setHasOtherQualification] = useState(false);
+  const [qualification, setQualification] = useState("");
   const [activityDate, setActivityDate] = useState("");
+
+  const errors = useActionData();
+  const errorMessage = errors?.data;
 
   const defaultValue = new Date();
 
@@ -49,21 +62,28 @@ const LandPreparationForm = () => {
     setSprayingDate(formattedDate);
   };
 
-  const handleSelectCert = (e) => {
-    if (e.target.value === "Others") {
-      setHasCert(!hasCert);
-    } else {
-      setHasCert(false);
-    }
-  };
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString();
     setActivityDate(formattedDate);
+  };
+  const handleSupervisorQualification = (e) => {
+    setQualification(e.target.value);
+    if (e.target.value === "Others") {
+      setHasOtherQualification(!hasOtherQualification);
+    } else {
+      setHasOtherQualification(false);
+    }
   };
   return (
     <div className="container mx-auto">
       <BackButton />
       <ActivityHeading activityHeading="Key Data Entry" />
+      {errors ? (
+        <Alert color="failure" icon={HiInformationCircle} className="max-w-2xl">
+          <span className="font-medium">Info alert!</span>
+          <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+        </Alert>
+      ) : null}
       <Form className="container mx-auto w-full" method="post">
         <div className="flex flex-col">
           <div>
@@ -79,7 +99,9 @@ const LandPreparationForm = () => {
               onSelectedDateChanged={(date) => handleDateChange(date)}
             />
           </div>
-          <Label htmlFor="landsize" value="Land size" className="my-2" />
+          <Label htmlFor="landsize" className="my-2">
+            Land size (acres)
+          </Label>
           <TextInput
             id="landsize"
             type="number"
@@ -102,6 +124,7 @@ const LandPreparationForm = () => {
               placeholder="Select clearing date"
               maxDate={defaultValue}
               name="clearingDate"
+              required
               value={clearingDate}
               onSelectedDateChanged={(date) => handleClearingDate(date)}
             />
@@ -118,6 +141,7 @@ const LandPreparationForm = () => {
               name="ploughingDate"
               value={ploughingDate}
               onSelectedDateChanged={(date) => handlePloughingDate(date)}
+              required
             />
           </div>
           <div className="flex flex-col my-2">
@@ -130,6 +154,7 @@ const LandPreparationForm = () => {
               name="harrowingDate"
               value={harrowingDate}
               onSelectedDateChanged={(date) => handleHarrowingDate(date)}
+              required
             />
           </div>
           <div className="flex flex-col my-2">
@@ -147,6 +172,7 @@ const LandPreparationForm = () => {
               onSelectedDateChanged={(date) =>
                 handleManualPreparationDate(date)
               }
+              required
             />
           </div>
           <div className="flex flex-col my-2">
@@ -159,6 +185,7 @@ const LandPreparationForm = () => {
               name="ridgingDate"
               value={ridgingDate}
               onSelectedDateChanged={(date) => handleRidingDate(date)}
+              required
             />
           </div>
           <div className="flex flex-col my-2">
@@ -171,6 +198,7 @@ const LandPreparationForm = () => {
               name="moundDate"
               value={moundDate}
               onSelectedDateChanged={(date) => handleMoundDate(date)}
+              required
             />
           </div>
           <div className="flex flex-col my-2">
@@ -183,6 +211,7 @@ const LandPreparationForm = () => {
               name="sprayingDate"
               value={sprayingDate}
               onSelectedDateChanged={(date) => handleSprayingDate(date)}
+              required
             />
           </div>
           {sprayingDate && (
@@ -260,8 +289,8 @@ const LandPreparationForm = () => {
               id="cert"
               required
               name="supervisorQualification"
-              defaultValue=""
-              onChange={handleSelectCert}
+              value={qualification}
+              onChange={handleSupervisorQualification}
             >
               <option>Select certificate of supervisor</option>
               <option value="MOFA">MOFA</option>
@@ -270,19 +299,14 @@ const LandPreparationForm = () => {
               <option value="Others">Others</option>
             </Select>
           </div>
-          {hasCert && (
-            <div>
-              <Label
-                htmlFor="certificate"
-                value="Other Certificate"
-                className="my-2 font-semibold"
-              />
+          {hasOtherQualification && (
+            <div className="my-4">
               <TextInput
                 type="text"
                 required
-                placeholder="Enter the certificate of supervisor if not listed above"
-                id="certificate"
-                name="otherCert"
+                placeholder="Enter other qualification of supervisor"
+                id="supervisor"
+                name="OtherSupervisorQualification"
                 defaultValue=""
               />
             </div>
@@ -301,6 +325,15 @@ export default LandPreparationForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
+  function getSupervisorQualification(qualification) {
+    if (qualification === "Others") {
+      return data.get("OtherSupervisorQualification");
+    }
+    return data.get("supervisorQualification");
+  }
+  const supervisorQualification = getSupervisorQualification(
+    data.get("supervisorQualification")
+  );
   const formData = {
     farmId: Number(params.farmId),
     landSize: Number(data.get("landSize")),
@@ -315,23 +348,21 @@ export const action = async ({ request, params }) => {
     sprayingDate: data.get("sprayingDate"),
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: data.get("supervisorQualification"),
+    supervisorQualification: supervisorQualification,
     activityDate: data.get("activityDate"),
   };
 
-  const response = await axiosbaseURL.post(
-    "/farm/activity/land-preparation",
-    formData
-  );
-  console.log("land response", response);
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    throw json({ message: "Could not save data." });
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/land-preparation",
+      formData
+    );
+    if (response.status === 201) {
+      console.log("success", response);
+      toast.success("Land Preparation data submitted successfully!");
+      return redirect("/app/farmers");
+    }
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Land Preparation data submitted successfully!");
-  return redirect("/app/farms");
 };
