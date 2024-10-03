@@ -16,9 +16,6 @@ import {
   AuthPage,
   Farms,
   Reports,
-  PlantingActivities,
-  PrePlantingActvities,
-  FarmActivity,
   FarmActivities,
   Landing,
   AddFarmer,
@@ -49,8 +46,7 @@ import {
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
-// import { loader as farmsLoader } from "./pages/Farms";
-import { loader as farmersLoader } from "./pages/Farmers";
+
 import { loader as farmerDetails } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
 import { loader as storageLoader } from "./pages/ViewStorageActivities";
@@ -86,7 +82,6 @@ import ViewFertilizingActivities, {
 
 import { action as deleteFarmerAction } from "./pages/ViewFarmer";
 import { action as farmerAction } from "./pages/AddFarmer";
-// import { action as manipulateFarmAction } from "./components/Farmers/FarmForm";
 import { action as deleteFarmAction } from "./pages/ViewFarm";
 import { action as addFarmAction } from "./pages/AddFarm";
 import { action as preplantingAction } from "./components/Activity/PrePlantingForm";
@@ -109,7 +104,6 @@ import ViewHarvestingActivities, {
   loader as harvestingLoader,
 } from "./pages/ViewHarvestingActivities";
 import ViewStorageActivities from "./pages/ViewStorageActivities";
-// import { checkAuthLoader } from "./utils/auth";
 
 const router = createBrowserRouter([
   {
@@ -134,7 +128,6 @@ const router = createBrowserRouter([
   },
   {
     path: "/app",
-    // loader: checkAuthLoader,
     element: (
       <ProtectedRoute>
         <App />
@@ -153,8 +146,6 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Farmers />,
-
-            loader: farmersLoader,
           },
           {
             path: ":farmerId",
@@ -229,8 +220,6 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Farms />,
-
-            // loader: farmsLoader,
           },
           {
             path: ":farmId",

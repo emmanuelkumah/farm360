@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { getAuthToken } from "../../utils/auth";
 import axios from "axios";
 import { HiInformationCircle } from "react-icons/hi";
+import BackButton from "../BackButton";
 
 const FarmForm = ({ farm, method, response }) => {
   const [token, setToken] = useState(getAuthToken());
@@ -47,12 +48,7 @@ const FarmForm = ({ farm, method, response }) => {
     <div>
       <div className="bg-secondary w-full md:w-1/2 h-[100%] rounded-lg shadow-md container mx-auto">
         <div className="mx-14 py-4">
-          <Button
-            className="bg-main mt-10  text-secondary hover:text-slate-100 hover:bg-main"
-            // onClick={handleGoBack}
-          >
-            Go Back
-          </Button>
+          <BackButton />
         </div>
 
         <section className="flex flex-col justify-center items-center">

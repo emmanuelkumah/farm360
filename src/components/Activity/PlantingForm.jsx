@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { Form, useParams, redirect, json } from "react-router-dom";
+import {
+  Button,
+  Select,
+  Label,
+  TextInput,
+  Datepicker,
+  Alert,
+} from "flowbite-react";
+import { Form, useParams, redirect, useActionData } from "react-router-dom";
+import { HiInformationCircle } from "react-icons/hi";
+
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { farmsData } from "../../data/dummyData";
@@ -10,9 +19,13 @@ import ActivityHeading from "../ActivityHeading";
 
 const PlantingForm = () => {
   const defaultValue = new Date();
-  const [hasOtherCert, setHasOtherCert] = useState(false);
+  const [hasOtherQualification, setHasOtherQualification] = useState(false);
+  const [qualification, setQualification] = useState("");
   const [farmDetails, setFarmDetails] = useState({});
   const [activityDate, setActivityDate] = useState("");
+
+  const errors = useActionData();
+  const errorMessage = errors?.data;
   // let farmOwner;
   let { farmId } = useParams();
   useEffect(() => {
@@ -27,11 +40,12 @@ const PlantingForm = () => {
     console.log(formattedDate);
     setActivityDate(formattedDate);
   };
-  const handleCertificateChange = (e) => {
-    if (e.target.value === "others") {
-      setHasOtherCert(!hasOtherCert);
+  const handleSupervisorQualification = (e) => {
+    setQualification(e.target.value);
+    if (e.target.value === "Others") {
+      setHasOtherQualification(!hasOtherQualification);
     } else {
-      setHasOtherCert(false);
+      setHasOtherQualification(false);
     }
   };
 
@@ -43,6 +57,12 @@ const PlantingForm = () => {
     <div className="container mx-auto p-4">
       <BackButton />
       <ActivityHeading activityHeading="Key Data Entries for Planting" />
+      {errors ? (
+        <Alert color="failure" icon={HiInformationCircle} className="max-w-2xl">
+          <span className="font-medium">Info alert!</span>
+          <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+        </Alert>
+      ) : null}
       <Form className="w-full" method="post">
         <div className="my-4">
           <Label htmlFor="planting" className="font-semibold my-4">
@@ -55,6 +75,7 @@ const PlantingForm = () => {
             maxDate={defaultValue}
             value={activityDate}
             onSelectedDateChanged={(date) => handleDateChange(date)}
+            required
           />
         </div>
 
@@ -144,35 +165,30 @@ const PlantingForm = () => {
             id="cert"
             required
             name="supervisorQualification"
-            defaultValue=""
-            onChange={handleCertificateChange}
+            value={qualification}
+            onChange={handleSupervisorQualification}
           >
             <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
             <option value="EPA">EPA</option>
             <option value="PPRSD/NPPO">PPRSD/NPPO</option>
-            <option value="others">Others</option>
+            <option value="Others">Others</option>
           </Select>
         </div>
-        {hasOtherCert && (
+        {hasOtherQualification && (
           <div className="my-4">
-            <Label
-              htmlFor="certificate"
-              value="Other Certificate"
-              className="my-2 font-semibold"
-            />
             <TextInput
               type="text"
               required
-              placeholder="Enter the certificate of supervisor if not listed above"
-              id="certificate"
-              name="otherCertificate"
+              placeholder="Enter other qualification of supervisor"
+              id="supervisor"
+              name="OtherSupervisorQualification"
               defaultValue=""
             />
           </div>
         )}
 
-        <Button type="submit" className="my-4 w-full md:w-[50%] bg-main">
+        <Button type="submit" className="my-4 w-full  bg-main">
           Submit planting activities
         </Button>
       </Form>
@@ -184,6 +200,16 @@ export default PlantingForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
+
+  function getSupervisorQualification(qualification) {
+    if (qualification === "Others") {
+      return data.get("OtherSupervisorQualification");
+    }
+    return data.get("supervisorQualification");
+  }
+  const supervisorQualification = getSupervisorQualification(
+    data.get("supervisorQualification")
+  );
   const formData = {
     farmId: Number(params.farmId),
     cropName: data.get("cropName"),
@@ -191,24 +217,19 @@ export const action = async ({ request, params }) => {
     landSizeCovered: Number(data.get("landSizeCovered")),
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: data.get("supervisorQualification"),
+    supervisorQualification: supervisorQualification,
     activityDate: data.get("activityDate"),
   };
 
   console.log("Form data:", formData);
-
-  const response = await axiosbaseURL.post("/farm/activity/planting", formData);
-  console.log("response for planting", response);
-
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    console.log(response.data);
-    throw json({ message: "Could not save data." });
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/planting",
+      formData
+    );
+    toast.success("Planting  data submitted successfully!");
+    return redirect("/app/farms");
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Planting  data submitted successfully!");
-  return redirect("/app/farms");
 };

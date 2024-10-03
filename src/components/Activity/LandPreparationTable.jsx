@@ -80,6 +80,7 @@ const LandPreparationTable = ({ data }) => {
               <Table.HeadCell>Supervisor</Table.HeadCell>
               <Table.HeadCell>Supervisor contact</Table.HeadCell>
               <Table.HeadCell>Supervisor qualification</Table.HeadCell>
+              <Table.HeadCell></Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
               {currentActivities
