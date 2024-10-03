@@ -1,44 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { useParams, Form, redirect, json } from "react-router-dom";
+import {
+  Button,
+  Select,
+  Label,
+  TextInput,
+  Datepicker,
+  Alert,
+} from "flowbite-react";
+import { HiInformationCircle } from "react-icons/hi";
+
+import { useParams, Form, redirect, useActionData } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { farmsData } from "../../data/dummyData";
 import { axiosbaseURL } from "../../api/axios";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
 
-const WeedControlForm = ({ id }) => {
+const WeedControlForm = () => {
   const [activityDate, setActivityDate] = useState("");
-  const [hasWeedControl, setHasWeedControl] = useState(false);
-  const [hasCert, setHasCert] = useState(false);
-  const [farmDetails, setFarmDetails] = useState({});
+  const [isChemical, setIsChemical] = useState(false);
+  const [hasOtherQualification, setHasOtherQualification] = useState(false);
+  const [qualification, setQualification] = useState("");
+  const [weedControl, setWeedControl] = useState("");
 
-  const { farmId } = useParams();
-
-  useEffect(() => {
-    //coonect to farm api and get farm details
-    const farm = getFarmOwner(farmId);
-    // console.log(farm);
-    setFarmDetails(farm);
-  }, []);
-
-  const getFarmOwner = (farmId) => {
-    return farmsData.find((farm) => farm.id === farmId);
-  };
+  const errors = useActionData();
+  const errorMessage = errors?.data;
 
   const handleSelectWeedControl = (e) => {
-    if (e.target.value === "Chemical") {
-      setHasWeedControl(true);
+    setWeedControl(e.target.value);
+    if (e.target.value === "CHEMICAL") {
+      setIsChemical(!isChemical);
     } else {
-      setHasWeedControl(false);
-    }
-  };
-
-  const handleSelectCert = (e) => {
-    if (e.target.value === "Others") {
-      setHasCert(!hasCert);
-    } else {
-      setHasCert(false);
+      setIsChemical(false);
     }
   };
 
@@ -46,11 +38,30 @@ const WeedControlForm = ({ id }) => {
     const formattedDate = date.toISOString(); // Formats to "YYYY-MM-DD"
     setActivityDate(formattedDate);
   };
+  const handleSupervisorQualification = (e) => {
+    setQualification(e.target.value);
+    if (e.target.value === "Others") {
+      setHasOtherQualification(!hasOtherQualification);
+    } else {
+      setHasOtherQualification(false);
+    }
+  };
+
   return (
     <div>
       <div className="container mx-auto">
         <BackButton />
         <ActivityHeading activityHeading="Key Data Entries For Weed Control" />
+        {errors ? (
+          <Alert
+            color="failure"
+            icon={HiInformationCircle}
+            className="max-w-2xl"
+          >
+            <span className="font-medium">Info alert!</span>
+            <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+          </Alert>
+        ) : null}
         <Form className="container mx-auto w-full md:w-[70%]" method="post">
           <div className="my-4">
             <Label htmlFor="weed" className="font-semibold my-2">
@@ -61,7 +72,7 @@ const WeedControlForm = ({ id }) => {
               name="activityDate"
               placeholder="Select date of weed control"
               maxDate={new Date()}
-              dateFormat="yyyy-MM-dd"
+              required
               value={activityDate}
               onSelectedDateChanged={(date) => handleDateChange(date)}
             />
@@ -79,14 +90,14 @@ const WeedControlForm = ({ id }) => {
               required
               name="weedControlMethod"
               onChange={handleSelectWeedControl}
-              defaultValue=""
+              value={weedControl}
             >
               <option>Select method of weed control</option>
               <option value="MANUAL">Manual</option>
-              <option value="Chemical">Chemical</option>
+              <option value="CHEMICAL">Chemical</option>
             </Select>
           </div>
-          {hasWeedControl && (
+          {isChemical && (
             <div className="my-4">
               <Label
                 htmlFor="chemical"
@@ -165,8 +176,8 @@ const WeedControlForm = ({ id }) => {
               id="cert"
               required
               name="supervisorQualification"
-              defaultValue=""
-              onChange={handleSelectCert}
+              value={qualification}
+              onChange={handleSupervisorQualification}
             >
               <option>Select certificate of supervisor</option>
               <option value="MOFA">MOFA</option>
@@ -175,25 +186,20 @@ const WeedControlForm = ({ id }) => {
               <option value="Others">Others</option>
             </Select>
           </div>
-          {hasCert && (
+          {hasOtherQualification && (
             <div className="my-4">
-              <Label
-                htmlFor="certificate"
-                value="Other Certificate"
-                className="my-2 font-semibold"
-              />
               <TextInput
                 type="text"
                 required
-                placeholder="Enter the certificate of supervisor if not listed above"
-                id="certificate"
-                name="otherCert"
+                placeholder="Enter other qualification of supervisor"
+                id="supervisor"
+                name="OtherSupervisorQualification"
                 defaultValue=""
               />
             </div>
           )}
 
-          <Button className="w-full md:w-1/2" type="submit">
+          <Button className="w-full" type="submit">
             Submit
           </Button>
         </Form>
@@ -207,32 +213,62 @@ export default WeedControlForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
+  function getChemicalUsed(control) {
+    if (control === "CHEMICAL") {
+      return data.get("chemicalName");
+    }
+    return data.get("weedControlMethod");
+  }
+  const chemicalUsed = getChemicalUsed(data.get("weedControlMethod"));
+
+  function getSupervisorQualification(qualification) {
+    if (qualification === "Others") {
+      return data.get("OtherSupervisorQualification");
+    }
+    return data.get("supervisorQualification");
+  }
+  const supervisorQualification = getSupervisorQualification(
+    data.get("supervisorQualification")
+  );
+
   const formData = {
     farmId: Number(params.farmId),
     weedControlMethod: data.get("weedControlMethod"),
     chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
-    chemicalName: "Pesticides",
+    chemicalName: chemicalUsed,
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: data.get("supervisorQualification"),
+    supervisorQualification: supervisorQualification,
     activityDate: data.get("activityDate"),
   };
 
-  const response = await axiosbaseURL.post(
-    "/farm/activity/weed-control",
-    formData
-  );
-  console.log("weed response", response);
-
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    console.log(response.data);
-    throw json({ message: "Could not save data." });
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/weed-control",
+      formData
+    );
+    console.log(response);
+    toast.success("Weed control  data submitted successfully!");
+    return redirect("/app/farms");
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Weedcontrol  data submitted successfully!");
-  return redirect("/app/farms");
+
+  // const response = await axiosbaseURL.post(
+  //   "/farm/activity/weed-control",
+  //   formData
+  // );
+  // console.log("weed response", response);
+
+  // if (
+  //   response.status === 401 ||
+  //   response.status === 404 ||
+  //   response.status === 500 ||
+  //   response.status === 400
+  // ) {
+  //   console.log(response.data);
+  //   throw json({ message: "Could not save data." });
+  // }
+  // toast.success("Weedcontrol  data submitted successfully!");
+  // return redirect("/app/farms");
 };
