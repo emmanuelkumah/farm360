@@ -25,7 +25,7 @@ const LandPreparationTable = ({ data }) => {
       setActivities(activities.filter((activity) => activity.id !== id));
       toast.success("Activity deleted successfully");
     } catch (error) {
-      console.error("Error deleting planting activity:", error);
+      console.error("error deleting planting activity:", error);
     }
   };
 
