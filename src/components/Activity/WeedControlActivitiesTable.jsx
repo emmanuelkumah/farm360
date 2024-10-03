@@ -2,21 +2,35 @@ import React, { useState } from "react";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
 import { useNavigation } from "react-router-dom";
+import { MdDelete } from "react-icons/md";
+import { axiosbaseURL } from "../../api/axios";
+import { toast } from "react-toastify";
 
 const WeedControlActivitiesTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemesPerPage] = useState(10);
   const [search, setSearch] = useState("");
+  const [activities, setActivities] = useState(data);
 
-  const totalActivities = data.length;
+  const totalActivities = activities.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentPlantingData = data.slice(firstItemIndex, lastItemIndex);
+  const currentPlantingData = activities.slice(firstItemIndex, lastItemIndex);
 
   const navigation = useNavigation();
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
+  };
+  const handleDeleteActivity = async (id) => {
+    console.log(id);
+    try {
+      await axiosbaseURL.delete(`farm/activity/weed-control/${id}`);
+      setActivities(activities.filter((activity) => activity.id !== id));
+      toast.success("Activity deleted successfully");
+    } catch (error) {
+      console.error("Error deleting planting activity:", error);
+    }
   };
   const onPageChange = (page) => setCurrentPage(page);
 
@@ -53,6 +67,7 @@ const WeedControlActivitiesTable = ({ data }) => {
             <Table.HeadCell>Contact</Table.HeadCell>
 
             <Table.HeadCell>Certificate</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {currentPlantingData
@@ -76,6 +91,17 @@ const WeedControlActivitiesTable = ({ data }) => {
                   <Table.Cell>{item.supervisorName}</Table.Cell>
                   <Table.Cell>{item.supervisorContact}</Table.Cell>
                   <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                  <Table.Cell>
+                    <div
+                      className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
+                      onClick={() => handleDeleteActivity(item.id)}
+                    >
+                      <span className="text-white">
+                        <MdDelete />
+                      </span>
+                      <p className="text-white">Delete</p>
+                    </div>
+                  </Table.Cell>
                 </Table.Row>
               ))}
           </Table.Body>

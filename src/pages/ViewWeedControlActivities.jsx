@@ -17,6 +17,7 @@ export default ViewWeedControlActivities;
 
 export const loader = ({ params }) => {
   const { farmId } = params;
+  console.log(farmId);
   const response = axiosbaseURL.get(`/farm/${farmId}/activities/weed-control`);
 
   if (
