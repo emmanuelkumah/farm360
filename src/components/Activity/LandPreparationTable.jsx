@@ -66,8 +66,8 @@ const LandPreparationTable = ({ data }) => {
             <Table.Head>
               <Table.HeadCell>Farm name</Table.HeadCell>
               <Table.HeadCell>Land size</Table.HeadCell>
-              <Table.HeadCell>Clearing date</Table.HeadCell>
-              <Table.HeadCell>Mound moulding date</Table.HeadCell>
+              <Table.HeadCell>Activity</Table.HeadCell>
+              <Table.HeadCell>Activity Date</Table.HeadCell>
               <Table.HeadCell>Ridging date</Table.HeadCell>
               <Table.HeadCell>Ploughing date</Table.HeadCell>
               <Table.HeadCell>Harrowing date</Table.HeadCell>
