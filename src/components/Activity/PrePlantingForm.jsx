@@ -6,9 +6,11 @@ import {
   Select,
   Radio,
   Button,
+  Alert,
 } from "flowbite-react";
+import { HiInformationCircle } from "react-icons/hi";
 
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { axiosbaseURL } from "../../api/axios";
@@ -24,6 +26,9 @@ const PrePlantingForm = () => {
   const [treatmentMethod, setTreatmentMethod] = useState("");
   const [activityDate, setActivityDate] = useState("");
   const defaultValue = new Date();
+
+  const errors = useActionData();
+  const errorMessage = errors?.data;
 
   const handleActivityDate = (date) => {
     const formattedDate = date.toISOString();
@@ -50,7 +55,6 @@ const PrePlantingForm = () => {
   };
 
   const handleSupervisorQualification = (e) => {
-    console.log(e.target.value);
     setQualification(e.target.value);
     if (e.target.value === "Others") {
       setHasOtherQualification(!hasOtherQualification);
@@ -62,6 +66,16 @@ const PrePlantingForm = () => {
       <div className="container mx-auto p-4">
         <BackButton />
         <ActivityHeading activityHeading="Key Data Entries For Pre-Planting" />
+        {errors ? (
+          <Alert
+            color="failure"
+            icon={HiInformationCircle}
+            className="max-w-2xl"
+          >
+            <span className="font-medium">Info alert!</span>
+            <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+          </Alert>
+        ) : null}
         <Form method="post" className="w-full">
           <div className="grid grid-cols-1">
             <div className="flex flex-col gap-4">
@@ -183,7 +197,7 @@ const PrePlantingForm = () => {
                       <Radio
                         id="yes-treatment"
                         name="plantingMaterialIsTreated"
-                        value={true}
+                        defaultValue="true"
                       />
                       <Label htmlFor="yes-treatment">Yes</Label>
                     </div>
@@ -191,7 +205,7 @@ const PrePlantingForm = () => {
                       <Radio
                         id="no-treatment"
                         name="plantingMaterialIsTreated"
-                        value={false}
+                        defaultValue="false"
                       />
                       <Label htmlFor="no-treatment">No</Label>
                     </div>
@@ -349,11 +363,11 @@ export default PrePlantingForm;
 export const action = async ({ request, params }) => {
   const data = await request.formData();
 
-  function strToBoolean(str) {
-    const lowercaseStr = str.toLowerCase();
-    if (lowercaseStr === "true") return true;
-    if (lowercaseStr === "false") return false;
-    return null;
+  function strToBoolean(isTreated) {
+    if (isTreated === "false") {
+      return false;
+    }
+    return true;
   }
 
   const treated = strToBoolean(data.get("plantingMaterialIsTreated"));
@@ -403,21 +417,14 @@ export const action = async ({ request, params }) => {
     activityDate: data.get("activityDate"),
   };
 
-  const response = await axiosbaseURL.post(
-    "/farm/activity/pre-planting",
-    formData
-  );
-  console.log("response for preplanting", response);
-
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    console.log(response.data);
-    throw json({ message: "Could not save data." });
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/pre-planting",
+      formData
+    );
+    toast.success("Pre planting  data submitted successfully!");
+    return redirect("/app/farms");
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Pre-planting  data submitted successfully!");
-  return redirect("/app/farms");
 };

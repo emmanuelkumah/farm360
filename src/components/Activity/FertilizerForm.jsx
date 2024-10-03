@@ -287,7 +287,6 @@ export const action = async ({ request, params }) => {
       "/farm/activity/fertilizer-application",
       formData
     );
-    console.log(response);
     toast.success("Fertilizing  data submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
