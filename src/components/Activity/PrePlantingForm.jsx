@@ -79,40 +79,6 @@ const PrePlantingForm = () => {
                   maxDate={defaultValue}
                   name="activityDate"
                 />
-                <div className="my-4">
-                  <div>
-                    <Label
-                      htmlFor="chemical"
-                      value="Chemical sprayed"
-                      className="mb-2"
-                    />
-                    <TextInput
-                      id="chemical"
-                      type="text"
-                      name="ChemicalSprayed"
-                      required
-                      placeholder="Enter chemical name "
-                      defaultValue=""
-                    />
-                  </div>
-                </div>
-                <div className="my-4">
-                  <div className="flex flex-col">
-                    <Label
-                      htmlFor="rate"
-                      value="Rate of chemical application"
-                      className="mb-2"
-                    />
-                    <TextInput
-                      id="rate"
-                      type="number"
-                      name="chemicalApplicationRate"
-                      required
-                      placeholder="Enter rate of chemical application "
-                      defaultValue=""
-                    />
-                  </div>
-                </div>
 
                 <div className="my-4">
                   <div className="flex flex-col">
@@ -156,6 +122,28 @@ const PrePlantingForm = () => {
                       />
                     </div>
                   )}
+                </div>
+                <div className="my-4">
+                  <Label
+                    htmlFor="planting"
+                    value="Select planting material"
+                    className="my-2 font-semibold"
+                  />
+                  <Select
+                    id="planting"
+                    required
+                    name="plantingMaterial"
+                    defaultValue=""
+                  >
+                    <option>Select planting material</option>
+                    <option value="seed">Seed</option>
+                    <option value="sucker">Sucker</option>
+                    <option value="seedlings">Seedlings</option>
+                    <option value="tuber">Tuber</option>
+                    <option value="stem">Stem</option>
+                    <option value="rhizome">Rhizome</option>
+                    <option value="bulbs">Bulbs</option>
+                  </Select>
                 </div>
                 <div className="my-4">
                   <Label
@@ -209,28 +197,6 @@ const PrePlantingForm = () => {
                     </div>
                   </fieldset>
                 </div>
-                <div className="my-4">
-                  <Label
-                    htmlFor="planting"
-                    value="Select planting material"
-                    className="my-2 font-semibold"
-                  />
-                  <Select
-                    id="planting"
-                    required
-                    name="plantingMaterial"
-                    defaultValue=""
-                  >
-                    <option>Select planting material</option>
-                    <option value="seed">Seed</option>
-                    <option value="sucker">Sucker</option>
-                    <option value="seedlings">Seedlings</option>
-                    <option value="tuber">Tuber</option>
-                    <option value="stem">Stem</option>
-                    <option value="rhizome">Rhizome</option>
-                    <option value="bulbs">Bulbs</option>
-                  </Select>
-                </div>
               </div>
             </div>
             <div className="flex flex-col gap-4">
@@ -269,6 +235,40 @@ const PrePlantingForm = () => {
                     />
                   </div>
                 )}
+              </div>
+              <div className="my-4">
+                <div>
+                  <Label
+                    htmlFor="chemical"
+                    value="Name of chemical"
+                    className="mb-2"
+                  />
+                  <TextInput
+                    id="chemical"
+                    type="text"
+                    name="ChemicalSprayed"
+                    required
+                    placeholder="Enter chemical name "
+                    defaultValue=""
+                  />
+                </div>
+              </div>
+              <div className="my-4">
+                <div className="flex flex-col">
+                  <Label
+                    htmlFor="rate"
+                    value="Rate of chemical application(ml)"
+                    className="mb-2"
+                  />
+                  <TextInput
+                    id="rate"
+                    type="number"
+                    name="chemicalApplicationRate"
+                    required
+                    placeholder="Enter rate of chemical application "
+                    defaultValue=""
+                  />
+                </div>
               </div>
               <div className="my-2">
                 <Label
