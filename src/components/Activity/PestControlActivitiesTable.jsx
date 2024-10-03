@@ -2,22 +2,36 @@ import React, { useState } from "react";
 import { useNavigation } from "react-router-dom";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
+import { axiosbaseURL } from "../../api/axios";
+import { toast } from "react-toastify";
+import { MdDelete } from "react-icons/md";
 
 const PestControlActivitiesTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemesPerPage] = useState(10);
   const [search, setSearch] = useState("");
+  const [activities, setActivities] = useState(data);
 
-  const totalActivities = data.length;
+  const totalActivities = activities.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentData = data.slice(firstItemIndex, lastItemIndex);
+  const currentActivities = activities.slice(firstItemIndex, lastItemIndex);
 
   const navigation = useNavigation();
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
+  const handleDeleteActivity = async (id) => {
+    try {
+      await axiosbaseURL.delete(`farm/activity/pest-control/${id}`);
+      setActivities(activities.filter((activity) => activity.id !== id));
+      toast.success("Activity deleted successfully");
+    } catch (error) {
+      console.error("error deleting planting activity:", error);
+    }
+  };
+
   const onPageChange = (page) => setCurrentPage(page);
 
   return (
@@ -25,6 +39,11 @@ const PestControlActivitiesTable = ({ data }) => {
       <div className="my-4">
         <BackButton />
         <div>
+          {activities.length === 0 && (
+            <p className="text-xl text-main flex justify-center">
+              No pest control activities found
+            </p>
+          )}
           <input
             className="w-full rounded-lg my-10"
             type="text"
@@ -48,14 +67,14 @@ const PestControlActivitiesTable = ({ data }) => {
             <Table.HeadCell>Crop stage</Table.HeadCell>
             <Table.HeadCell>Date</Table.HeadCell>
             <Table.HeadCell>Chemical</Table.HeadCell>
-            <Table.HeadCell>Rate of application</Table.HeadCell>
+            <Table.HeadCell>Rate of application(ml)</Table.HeadCell>
             <Table.HeadCell>Supervisor</Table.HeadCell>
             <Table.HeadCell>Supervisor contact</Table.HeadCell>
 
             <Table.HeadCell>Supervisor qualification</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {currentData
+            {currentActivities
               .filter((item) => {
                 return search.toLowerCase() === ""
                   ? item
@@ -72,11 +91,22 @@ const PestControlActivitiesTable = ({ data }) => {
                   <Table.Cell>{item.cropStage}</Table.Cell>
                   <Table.Cell>{item.activityDate}</Table.Cell>
                   <Table.Cell>{item.chemicalName}</Table.Cell>
-                  <Table.Cell>{item.applicationRate}</Table.Cell>
+                  <Table.Cell>{item.chemicalApplicationRate}</Table.Cell>
                   <Table.Cell>{item.supervisorName}</Table.Cell>
 
                   <Table.Cell>{item.supervisorContact}</Table.Cell>
                   <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                  <Table.Cell>
+                    <div
+                      className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
+                      onClick={() => handleDeleteActivity(item.id)}
+                    >
+                      <span className="text-white">
+                        <MdDelete />
+                      </span>
+                      <p className="text-white">Delete</p>
+                    </div>
+                  </Table.Cell>
                 </Table.Row>
               ))}
           </Table.Body>

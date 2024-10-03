@@ -1,16 +1,27 @@
 import React, { useState } from "react";
-import { Button, Label, TextInput, Select, Datepicker } from "flowbite-react";
-import { Form, redirect } from "react-router-dom";
+import {
+  Button,
+  Label,
+  TextInput,
+  Select,
+  Datepicker,
+  Alert,
+} from "flowbite-react";
+import { Form, redirect, useActionData } from "react-router-dom";
 import { toast } from "react-toastify";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
+import { HiInformationCircle } from "react-icons/hi";
 import { axiosbaseURL } from "../../api/axios";
 
 const PestControlForm = () => {
   const [cropStage, setCropStage] = useState("");
-  const [cert, setCert] = useState("");
-  const [showOtherCert, setShowOtherCert] = useState(false);
+  const [qualification, setQualification] = useState("");
+  const [hasOtherQualification, setHasOtherQualification] = useState(false);
   const [activityDate, setActivityDate] = useState("");
+
+  const errors = useActionData();
+  const errorMessage = errors?.data;
 
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString();
@@ -20,13 +31,13 @@ const PestControlForm = () => {
   const handleSelectCropStage = (e) => {
     setCropStage(e.target.value);
   };
-  const handleSelectCert = (e) => {
-    const value = e.target.value;
-    setCert(value);
-    if (value === "Others") {
-      setShowOtherCert(!showOtherCert);
+
+  const handleSupervisorQualification = (e) => {
+    setQualification(e.target.value);
+    if (e.target.value === "Others") {
+      setHasOtherQualification(!hasOtherQualification);
     } else {
-      setShowOtherCert(false);
+      setHasOtherQualification(false);
     }
   };
 
@@ -34,6 +45,12 @@ const PestControlForm = () => {
     <div className="container mx-auto">
       <BackButton />
       <ActivityHeading activityHeading="Key Data Entry" />
+      {errors ? (
+        <Alert color="failure" icon={HiInformationCircle} className="max-w-2xl">
+          <span className="font-medium">Info alert!</span>
+          <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+        </Alert>
+      ) : null}
       <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <div>
           <Label
@@ -59,7 +76,7 @@ const PestControlForm = () => {
           <section>
             <div className="my-2">
               <Label htmlFor="date" className="font-semibold my-2">
-                Date
+                Date of activity
               </Label>
               <Datepicker
                 id="date"
@@ -77,19 +94,19 @@ const PestControlForm = () => {
                 id="chemical"
                 type="text"
                 placeholder="Enter the name of chemical"
-                name="chemical"
+                name="chemicalName"
                 defaultValue=""
               />
             </div>
             <div className="my-2">
-              <Label htmlFor="entry" className="font-semibold my-2">
+              <Label htmlFor="rate" className="font-semibold my-2">
                 Rate of application
               </Label>
               <TextInput
-                id="entry"
+                id="rate"
                 type="text"
                 placeholder="Enter the rate of application"
-                name="rate"
+                name="chemicalApplicationRate"
                 defaultValue=""
               />
             </div>
@@ -130,16 +147,16 @@ const PestControlForm = () => {
           <div>
             <Label
               htmlFor="cert"
-              value="supervisorQualification"
+              value="supervisor qualification"
               className="my-2 font-semibold"
             />
 
             <Select
               id="supervisorQualification"
               required
-              onChange={handleSelectCert}
+              onChange={handleSupervisorQualification}
               name="supervisorQualification"
-              value={cert}
+              value={qualification}
             >
               <option>Select certificate of supervisor</option>
               <option value="MOFA">MOFA</option>
@@ -148,19 +165,14 @@ const PestControlForm = () => {
               <option value="Others">Others</option>
             </Select>
           </div>
-          {showOtherCert && (
+          {hasOtherQualification && (
             <div className="my-4">
-              <Label
-                htmlFor="certificate"
-                value="Other Certificate"
-                className="my-2 font-semibold"
-              />
               <TextInput
                 type="text"
                 required
-                placeholder="Enter the certificate of supervisor if not listed above"
-                id="certificate"
-                name="otherCert"
+                placeholder="Enter other qualification of supervisor"
+                id="supervisor"
+                name="OtherSupervisorQualification"
                 defaultValue=""
               />
             </div>
@@ -180,27 +192,37 @@ export default PestControlForm;
 export const action = async ({ request, params }) => {
   const data = await request.formData();
 
+  function getSupervisorQualification(qualification) {
+    if (qualification === "Others") {
+      return data.get("OtherSupervisorQualification");
+    }
+    return data.get("supervisorQualification");
+  }
+  const supervisorQualification = getSupervisorQualification(
+    data.get("supervisorQualification")
+  );
+
   const formData = {
     farmId: Number(params.farmId),
     cropStage: data.get("cropStage"),
+    chemicalApplicationRate: data.get("chemicalApplicationRate"),
+
+    chemicalName: data.get("chemicalName"),
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: data.get("supervisorQualification"),
+    supervisorQualification: supervisorQualification,
     activityDate: data.get("activityDate"),
   };
-  const response = await axiosbaseURL.post(
-    "/farm/activity/pest-control",
-    formData
-  );
+  console.log(formData);
 
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    throw json({ message: "Could not save data." });
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/pest-control",
+      formData
+    );
+    toast.success("Pest control  data submitted successfully!");
+    return redirect("/app/farms");
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Pest control  data submitted successfully!");
-  return redirect("/app/farms");
 };

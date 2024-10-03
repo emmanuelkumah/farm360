@@ -2,22 +2,33 @@ import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
 import { useNavigation } from "react-router-dom";
 import { useState } from "react";
+import { MdDelete } from "react-icons/md";
+import { axiosbaseURL } from "../../api/axios";
 
 const HarvestingActivitiesTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemesPerPage] = useState(10);
+  const [itemsPerPage, setItemesPerPage] = useState(20);
   const [search, setSearch] = useState("");
+  const [activities, setActivities] = useState(data);
 
-  console.log("harvesting", data);
-  const totalActivities = data.length;
+  const totalActivities = activities.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentData = data.slice(firstItemIndex, lastItemIndex);
+  const currentActivities = activities.slice(firstItemIndex, lastItemIndex);
 
   const navigation = useNavigation();
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
+  };
+  const handleDeleteActivity = async (id) => {
+    try {
+      await axiosbaseURL.delete(`farm/activity/harvesting/${id}`);
+      setActivities(activities.filter((activity) => activity.id !== id));
+      toast.success("Activity deleted successfully");
+    } catch (error) {
+      console.error("error deleting planting activity:", error);
+    }
   };
   const onPageChange = (page) => setCurrentPage(page);
   return (
@@ -52,9 +63,10 @@ const HarvestingActivitiesTable = ({ data }) => {
             <Table.HeadCell>Supervisor name</Table.HeadCell>
             <Table.HeadCell>Supervisor contact</Table.HeadCell>
             <Table.HeadCell>Supervisor qualification</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {currentData
+            {currentActivities
               .filter((item) => {
                 return search.toLowerCase() === ""
                   ? item
@@ -75,6 +87,17 @@ const HarvestingActivitiesTable = ({ data }) => {
                   <Table.Cell>{item.supervisorName}</Table.Cell>
                   <Table.Cell>{item.supervisorContact}</Table.Cell>
                   <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                  <Table.Cell>
+                    <div
+                      className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
+                      onClick={() => handleDeleteActivity(item.id)}
+                    >
+                      <span className="text-white">
+                        <MdDelete />
+                      </span>
+                      <p className="text-white">Delete</p>
+                    </div>
+                  </Table.Cell>
                 </Table.Row>
               ))}
           </Table.Body>

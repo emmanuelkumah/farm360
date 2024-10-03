@@ -1,28 +1,42 @@
 import React, { useState } from "react";
-import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { redirect, Form } from "react-router-dom";
+import {
+  Button,
+  Select,
+  Label,
+  TextInput,
+  Datepicker,
+  Alert,
+} from "flowbite-react";
+import { redirect, Form, useActionData } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import BackButton from "../BackButton";
 import { axiosbaseURL } from "../../api/axios";
 import ActivityHeading from "../ActivityHeading";
+import { HiInformationCircle } from "react-icons/hi";
 
 const HarvestingForm = () => {
   const [hasHarvesting, setHasHarvesting] = useState(false);
-  const [hasCert, setHasCert] = useState(false);
+  const [qualification, setQualification] = useState("");
+
+  const [hasOtherQualification, setHasOtherQualification] = useState(false);
   const [activityDate, setActivityDate] = useState("");
 
+  const errors = useActionData();
+  const errorMessage = errors?.data;
+
   const handleSelectHarvesting = (e) => {
-    if (e.target.value === "Machinery") {
+    if (e.target.value === "MACHINERY") {
       setHasHarvesting(!hasHarvesting);
     } else {
       setHasHarvesting(false);
     }
   };
-  const handleSelectCert = (e) => {
+  const handleSupervisorQualification = (e) => {
+    setQualification(e.target.value);
     if (e.target.value === "Others") {
-      setHasCert(!hasCert);
+      setHasOtherQualification(!hasOtherQualification);
     } else {
-      setHasCert(false);
+      setHasOtherQualification(false);
     }
   };
   const handleDateChange = (date) => {
@@ -33,6 +47,12 @@ const HarvestingForm = () => {
     <div className="container mx-auto">
       <BackButton />
       <ActivityHeading activityHeading="Key Data Entry For Harvesting" />
+      {errors ? (
+        <Alert color="failure" icon={HiInformationCircle} className="max-w-2xl">
+          <span className="font-medium">Info alert!</span>
+          <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+        </Alert>
+      ) : null}
       <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <div className="my-4">
           <Label htmlFor="date" className="font-semibold my-2">
@@ -75,7 +95,7 @@ const HarvestingForm = () => {
         </div>
         <div className="my-4">
           <Label htmlFor="weight" className="font-semibold my-2">
-            Weight per bag harvested
+            Weight per bag harvested (kg)
           </Label>
           <TextInput
             id="weight"
@@ -98,12 +118,12 @@ const HarvestingForm = () => {
             id="modeofHarvesting"
             required
             defaultValue=""
-            name="ModePerBagHarvested"
+            name="modeOfHarvesting"
             onChange={handleSelectHarvesting}
           >
             <option>Select the mode of harvesting</option>
             <option value="MANUAL">Manual</option>
-            <option value="Machinery">Machinery</option>
+            <option value="MACHINERY">Machinery</option>
           </Select>
         </div>
         {hasHarvesting && (
@@ -162,8 +182,8 @@ const HarvestingForm = () => {
             id="cert"
             required
             name="supervisorQualification"
-            defaultValue=""
-            onChange={handleSelectCert}
+            value={qualification}
+            onChange={handleSupervisorQualification}
           >
             <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
@@ -172,19 +192,14 @@ const HarvestingForm = () => {
             <option value="Others">Others</option>
           </Select>
         </div>
-        {hasCert && (
-          <div>
-            <Label
-              htmlFor="certificate"
-              value="Other Certificate"
-              className="my-2 font-semibold"
-            />
+        {hasOtherQualification && (
+          <div className="my-4">
             <TextInput
               type="text"
               required
-              placeholder="Enter the certificate of supervisor if not listed above"
-              id="certificate"
-              name="otherCert"
+              placeholder="Enter other qualification of supervisor"
+              id="supervisor"
+              name="OtherSupervisorQualification"
               defaultValue=""
             />
           </div>
@@ -203,30 +218,35 @@ export default HarvestingForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
+  function getSupervisorQualification(qualification) {
+    if (qualification === "Others") {
+      return data.get("OtherSupervisorQualification");
+    }
+    return data.get("supervisorQualification");
+  }
+  const supervisorQualification = getSupervisorQualification(
+    data.get("supervisorQualification")
+  );
   const formData = {
     farmId: Number(params.farmId),
     dateOfHarvest: data.get("dateOfHarvest"),
     acresHarvested: Number(data.get("acresHarvested")),
     bagsHarvested: Number(data.get("bagsHarvested")),
     weightPerBagHarvested: Number(data.get("weightPerBagHarvested")),
-    ModePerBagHarvested: data.get("ModePerBagHarvested"),
+    modeOfHarvesting: data.get("modeOfHarvesting"),
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: data.get("supervisorQualification"),
+    supervisorQualification: supervisorQualification,
   };
 
-  const response = await axiosbaseURL.post(
-    "/farm/activity/harvesting",
-    formData
-  );
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    throw json({ message: "Could not save data." });
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/harvesting",
+      formData
+    );
+    toast.success("Harvesting  data submitted successfully!");
+    return redirect("/app/farms");
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Harvesting data submitted successfully!");
-  return redirect("/app/farms");
 };
