@@ -3,22 +3,34 @@ import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
 import { useNavigation } from "react-router-dom";
 import { useState } from "react";
+import { MdDelete } from "react-icons/md";
+import { axiosbaseURL } from "../../api/axios";
+import { toast } from "react-toastify";
 
 const FertilizingActivitiesTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemesPerPage] = useState(10);
+  const [itemsPerPage, setItemesPerPage] = useState(20);
   const [search, setSearch] = useState("");
+  const [activities, setActivities] = useState(data);
 
-  console.log("fertilizing", data);
-  const totalActivities = data.length;
+  const totalActivities = activities.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentData = data.slice(firstItemIndex, lastItemIndex);
-
+  const currentActivities = activities.slice(firstItemIndex, lastItemIndex);
   const navigation = useNavigation();
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
+  };
+
+  const handleDeleteActivity = async (id) => {
+    try {
+      await axiosbaseURL.delete(`farm/activity/fertilizer-application/${id}`);
+      setActivities(activities.filter((activity) => activity.id !== id));
+      toast.success("Activity deleted successfully");
+    } catch (error) {
+      console.error("Error deleting fertilizer activity:", error);
+    }
   };
   const onPageChange = (page) => setCurrentPage(page);
 
@@ -27,6 +39,11 @@ const FertilizingActivitiesTable = ({ data }) => {
       <div className="my-4">
         <BackButton />
         <div>
+          {activities.length === 0 && (
+            <p className="text-xl text-main flex justify-center">
+              No fertilizer activities found
+            </p>
+          )}
           <input
             className="w-full rounded-lg my-10"
             type="text"
@@ -46,17 +63,19 @@ const FertilizingActivitiesTable = ({ data }) => {
       ) : (
         <Table striped>
           <Table.Head>
-            <Table.HeadCell>Date of harvest</Table.HeadCell>
-            <Table.HeadCell>Acres harvested</Table.HeadCell>
-            <Table.HeadCell>Bags harvested</Table.HeadCell>
-            <Table.HeadCell>Weight per bag harvested</Table.HeadCell>
-            <Table.HeadCell>Mode of harvesting</Table.HeadCell>
+            <Table.HeadCell>Date of activity</Table.HeadCell>
+            <Table.HeadCell>Fertilizer name</Table.HeadCell>
+            <Table.HeadCell>Fertilizer type</Table.HeadCell>
+            <Table.HeadCell>Application method</Table.HeadCell>
+            <Table.HeadCell>Application rate (ml per acre)</Table.HeadCell>
+            <Table.HeadCell>Application rate (bags per acre)</Table.HeadCell>
             <Table.HeadCell>Supervisor name</Table.HeadCell>
             <Table.HeadCell>Supervisor contact</Table.HeadCell>
             <Table.HeadCell>Supervisor qualification</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {currentData
+            {currentActivities
               .filter((item) => {
                 return search.toLowerCase() === ""
                   ? item
@@ -68,15 +87,28 @@ const FertilizingActivitiesTable = ({ data }) => {
                   key={item.id}
                 >
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {item.dateOfHarvest}
+                    {item.activityDate}
                   </Table.Cell>
-                  <Table.Cell>{item.acresHarvested}</Table.Cell>
-                  <Table.Cell>{item.bagsHarvested}</Table.Cell>
-                  <Table.Cell>{item.weightPerBagHarvested}</Table.Cell>
-                  <Table.Cell>{item.modeOfHarvesting}</Table.Cell>
+                  <Table.Cell>{item.fertilizerName}</Table.Cell>
+                  <Table.Cell>{item.fertilizerType}</Table.Cell>
+                  <Table.Cell>{item.applicationMethod}</Table.Cell>
+                  <Table.Cell>{item.applicationRateMlPerAcre}</Table.Cell>
+                  <Table.Cell>{item.applicationRateBagPerAcre}</Table.Cell>
                   <Table.Cell>{item.supervisorName}</Table.Cell>
+
                   <Table.Cell>{item.supervisorContact}</Table.Cell>
                   <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                  <Table.Cell>
+                    <div
+                      className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
+                      onClick={() => handleDeleteActivity(item.id)}
+                    >
+                      <span className="text-white">
+                        <MdDelete />
+                      </span>
+                      <p className="text-white">Delete</p>
+                    </div>
+                  </Table.Cell>
                 </Table.Row>
               ))}
           </Table.Body>

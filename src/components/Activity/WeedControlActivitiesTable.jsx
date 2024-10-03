@@ -23,7 +23,6 @@ const WeedControlActivitiesTable = ({ data }) => {
     setSearch(e.target.value);
   };
   const handleDeleteActivity = async (id) => {
-    console.log(id);
     try {
       await axiosbaseURL.delete(`farm/activity/weed-control/${id}`);
       setActivities(activities.filter((activity) => activity.id !== id));
@@ -39,6 +38,11 @@ const WeedControlActivitiesTable = ({ data }) => {
       <div className="my-4">
         <BackButton />
         <div>
+          {activities.length === 0 && (
+            <p className="text-xl text-main flex justify-center">
+              No weed control activities found
+            </p>
+          )}
           <input
             className="w-full rounded-lg my-10"
             type="text"

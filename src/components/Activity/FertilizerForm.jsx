@@ -1,6 +1,15 @@
 import React, { useState } from "react";
-import { Button, Select, Label, TextInput, Datepicker } from "flowbite-react";
-import { Form, redirect, json } from "react-router-dom";
+import {
+  Button,
+  Select,
+  Label,
+  TextInput,
+  Datepicker,
+  Alert,
+} from "flowbite-react";
+import { HiInformationCircle } from "react-icons/hi";
+
+import { Form, redirect, useActionData } from "react-router-dom";
 import { toast } from "react-toastify";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
@@ -9,24 +18,28 @@ import { axiosbaseURL } from "../../api/axios";
 const FertilizerForm = () => {
   const [hasFertMethod, setHasFertMethod] = useState(false);
   const [activityDate, setActivityDate] = useState("");
+  const [qualification, setQualification] = useState("");
+  const [hasOtherQualification, setHasOtherQualification] = useState(false);
 
-  const [hasCert, setHasCert] = useState(false);
   const defaultValue = new Date();
 
+  const errors = useActionData();
+  const errorMessage = errors?.data;
+
   const handleFertMethod = (e) => {
-    console.log(e.target.value);
-    if (e.target.value === "Others") {
+    if (e.target.value === "Other") {
       setHasFertMethod(!hasFertMethod);
     } else {
       setHasFertMethod(false);
     }
   };
 
-  const handleSelectCert = (e) => {
+  const handleSupervisorQualification = (e) => {
+    setQualification(e.target.value);
     if (e.target.value === "Others") {
-      setHasCert(!hasCert);
+      setHasOtherQualification(!hasOtherQualification);
     } else {
-      setHasCert(false);
+      setHasOtherQualification(false);
     }
   };
 
@@ -39,6 +52,12 @@ const FertilizerForm = () => {
     <div className="container mx-auto">
       <BackButton />
       <ActivityHeading activityHeading="Key Data Entry" />
+      {errors ? (
+        <Alert color="failure" icon={HiInformationCircle} className="max-w-2xl">
+          <span className="font-medium">Info alert!</span>
+          <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+        </Alert>
+      ) : null}
       <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <div className="my-4">
           <Label htmlFor="date" className="font-semibold my-2">
@@ -56,16 +75,21 @@ const FertilizerForm = () => {
 
         <div className="my-4">
           <Label
-            htmlFor="method"
-            value="Type of application"
+            htmlFor="fertilizer"
+            value="Type of fertilizer"
             className="my-2 font-semibold"
           />
 
-          <Select id="method" required name="applicationType" defaultValue="">
-            <option>Select the type of application</option>
-            <option value="liquid">Liquid</option>
-            <option value="organic">Organic</option>
-            <option value="inorganic">Inorganic</option>
+          <Select
+            id="fertilizer"
+            required
+            name="fertilizerType"
+            defaultValue=""
+          >
+            <option>Select the type of fertilizer</option>
+            <option value="LIQUID">Liquid</option>
+            <option value="ORGANIC">Organic</option>
+            <option value="INORGANIC">Inorganic</option>
           </Select>
         </div>
         <div className="my-4">
@@ -87,25 +111,39 @@ const FertilizerForm = () => {
             <option value="NPK">NPK</option>
             <option value="Urea">Urea</option>
             <option value="SOA">SOA</option>
-            <option value="Others">Others</option>
+            <option value="Other">Other</option>
           </Select>
         </div>
         {hasFertMethod && (
           <div className="my-4">
             <Label
               htmlFor="others"
-              value="Others(Specify)"
+              value="Other fertilizer used"
               className="my-2 font-semibold"
             />
             <TextInput
               type="text"
-              placeholder="Enter name of fertilizer"
+              placeholder="Enter name of the other fertilizer"
               id="others"
-              name="otherFert"
+              name="otherFertilizerName"
               defaultValue=""
             />
           </div>
         )}
+        <div className="my-4">
+          <Label
+            htmlFor="method"
+            value="Fertilizer application method"
+            className="my-2 font-semibold"
+          />
+          <TextInput
+            type="text"
+            placeholder="Enter the application method"
+            id="rate-apply"
+            name="applicationMethod"
+            defaultValue=""
+          />
+        </div>
 
         <div className="my-4">
           <Label
@@ -176,8 +214,8 @@ const FertilizerForm = () => {
             id="cert"
             required
             name="supervisorQualification"
-            defaultValue=""
-            onChange={handleSelectCert}
+            value={qualification}
+            onChange={handleSupervisorQualification}
           >
             <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
@@ -186,26 +224,21 @@ const FertilizerForm = () => {
             <option value="Others">Others</option>
           </Select>
         </div>
-        {hasCert && (
+        {hasOtherQualification && (
           <div className="my-4">
-            <Label
-              htmlFor="certificate"
-              value="Other Certificate"
-              className="my-2 font-semibold"
-            />
             <TextInput
               type="text"
               required
-              placeholder="Enter the certificate of supervisor if not listed above"
-              id="certificate"
-              name="otherCert"
+              placeholder="Enter other qualification of supervisor"
+              id="supervisor"
+              name="OtherSupervisorQualification"
               defaultValue=""
             />
           </div>
         )}
 
-        <Button className="w-full md:w-1/2 mt-4" type="submit">
-          Submit
+        <Button className="w-full  mt-4" type="submit">
+          Submit activity
         </Button>
       </Form>
     </div>
@@ -216,34 +249,48 @@ export default FertilizerForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
+
+  function getFertilizerName(fertilizerName) {
+    if (fertilizerName === "Other") {
+      return data.get("otherFertilizerName");
+    }
+    return data.get("fertilizerName");
+  }
+  const fertName = getFertilizerName(data.get("fertilizerName"));
+
+  function getSupervisorQualification(qualification) {
+    if (qualification === "Others") {
+      return data.get("OtherSupervisorQualification");
+    }
+    return data.get("supervisorQualification");
+  }
+  const supervisorQualification = getSupervisorQualification(
+    data.get("supervisorQualification")
+  );
+
   const formData = {
     farmId: Number(params.farmId),
-    fertilizerName: data.get("fertilizerName"),
-    applicationType: data.get("applicationType"),
+    fertilizerName: fertName,
+    fertilizerType: data.get("fertilizerType"),
+    applicationMethod: data.get("applicationMethod"),
     applicationRateMlPerAcre: Number(data.get("applicationRateMlPerAcre")),
     applicationRateBagPerAcre: Number(data.get("applicationRateBagPerAcre")),
     supervisorName: data.get("supervisorName"),
 
     supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: data.get("supervisorQualification"),
+    supervisorQualification: supervisorQualification,
     activityDate: data.get("activityDate"),
   };
-  console.log(formData);
-  const response = await axiosbaseURL.post(
-    "/farm/activity/fertilizer-application",
-    formData
-  );
-  console.log("response for fertilizer activity", response);
 
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    console.log(response.data);
-    throw json({ message: "Could not save data." });
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/fertilizer-application",
+      formData
+    );
+    console.log(response);
+    toast.success("Fertilizing  data submitted successfully!");
+    return redirect("/app/farms");
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Fertilizer  data submitted successfully!");
-  return redirect("/app/farms");
 };

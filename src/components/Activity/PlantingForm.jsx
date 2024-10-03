@@ -7,12 +7,11 @@ import {
   Datepicker,
   Alert,
 } from "flowbite-react";
-import { Form, useParams, redirect, useActionData } from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import { HiInformationCircle } from "react-icons/hi";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { farmsData } from "../../data/dummyData";
 import { axiosbaseURL } from "../../api/axios";
 import BackButton from "../BackButton";
 import ActivityHeading from "../ActivityHeading";
@@ -21,19 +20,10 @@ const PlantingForm = () => {
   const defaultValue = new Date();
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
   const [qualification, setQualification] = useState("");
-  const [farmDetails, setFarmDetails] = useState({});
   const [activityDate, setActivityDate] = useState("");
 
   const errors = useActionData();
   const errorMessage = errors?.data;
-  // let farmOwner;
-  let { farmId } = useParams();
-  useEffect(() => {
-    //coonect to farm api and get farm details
-    const farm = getFarmOwner(farmId);
-    // console.log(farm);
-    setFarmDetails(farm);
-  }, []);
 
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString();
@@ -47,10 +37,6 @@ const PlantingForm = () => {
     } else {
       setHasOtherQualification(false);
     }
-  };
-
-  const getFarmOwner = (farmId) => {
-    return farmsData.find((farm) => farm.id === farmId);
   };
 
   return (
