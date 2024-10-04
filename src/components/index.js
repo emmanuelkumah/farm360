@@ -26,7 +26,7 @@ export { default as FertilizerForm } from "./Activity/FertilizerForm";
 export { default as StorageForm } from "./Activity/StorageForm";
 export { default as SalesForm } from "./Activity/SalesForm";
 export { default as ShipmentForm } from "./Activity/ShipmentForm";
-export { default as PestControl } from "./Activity/PestControlForm";
+export { default as PestControlForm } from "./Activity/PestControlForm";
 export { default as EditFarmerForm } from "./Farmers/EditFarmerForm";
 export { default as TransportationForm } from "./Activity/TransportationForm";
 export { default as PlantingMaterial } from "./Activity/PlantingMaterial";

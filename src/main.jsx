@@ -91,7 +91,8 @@ import { action as fertilizerAction } from "./components/Activity/FertilizerForm
 import { action as shipmentAction } from "./components/Activity/ShipmentForm";
 import { action as salesAction } from "./components/Activity/SalesForm";
 import { action as harvestingAction } from "./components/Activity/HarvestingForm";
-import { action as pestAction } from "./components/Activity/PestControlForm";
+import { action as pestControlAction } from "./components/Activity/PestControlForm";
+// import { action as pestAction } from "./components/Activity/PestControlForm";
 import { action as transportationAction } from "./components/Activity/TransportationForm";
 import { action as storageAction } from "./components/Activity/StorageForm";
 import { action as landPrepAction } from "./components/Activity/LandPreparationForm";
@@ -275,7 +276,7 @@ const router = createBrowserRouter([
           {
             path: "pest-control",
             element: <PestControl />,
-            action: pestAction,
+            action: pestControlAction,
           },
           {
             path: "harvesting",

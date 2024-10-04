@@ -1,5 +1,5 @@
 import React from "react";
-import PestControlForm from "../components/Activity/PestControlForm";
+import { PestControlForm } from "../components";
 
 const PestControl = () => {
   return (
