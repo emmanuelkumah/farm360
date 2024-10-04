@@ -7,8 +7,10 @@ import {
   FileInput,
   Datepicker,
   Checkbox,
+  Alert,
 } from "flowbite-react";
-import { Form, redirect } from "react-router-dom";
+import { HiInformationCircle } from "react-icons/hi";
+import { Form, redirect, useActionData } from "react-router-dom";
 import { toast } from "react-toastify";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
@@ -17,9 +19,13 @@ import { axiosbaseURL } from "../../api/axios";
 const StorageForm = () => {
   const [selectedQualityOption, setSelectedQualityOption] = useState([]);
   const [hasStorage, setHasStorage] = useState(false);
-  const [hasCert, setHasCert] = useState(false);
+  const [qualification, setQualification] = useState("");
+  const [hasOtherQualification, setHasOtherQualification] = useState(false);
   const [community, setCommunity] = useState([]);
   const [activityDate, setActivityDate] = useState("");
+
+  const errors = useActionData();
+  const errorMessage = errors?.data;
 
   const storageQuality = [
     {
@@ -58,18 +64,19 @@ const StorageForm = () => {
   }, []);
 
   const handleSelectMethod = (e) => {
-    if (e.target.value === "Others") {
+    if (e.target.value === "OTHER ") {
       setHasStorage(!hasStorage);
     } else {
       setHasStorage(false);
     }
   };
 
-  const handleSelectCert = (e) => {
+  const handleSupervisorQualification = (e) => {
+    setQualification(e.target.value);
     if (e.target.value === "Others") {
-      setHasCert(!hasCert);
+      setHasOtherQualification(!hasOtherQualification);
     } else {
-      setHasCert(false);
+      setHasOtherQualification(false);
     }
   };
   const handleActivityDateChange = (date) => {
@@ -88,6 +95,12 @@ const StorageForm = () => {
     <div className="container mx-auto">
       <BackButton />
       <ActivityHeading activityHeading="Key Data Entry For Harvesting" />
+      {errors ? (
+        <Alert color="failure" icon={HiInformationCircle} className="max-w-2xl">
+          <span className="font-medium">Info alert!</span>
+          <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+        </Alert>
+      ) : null}
       <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <div>
           <Label htmlFor="storage" className="font-semibold my-2">
@@ -129,21 +142,21 @@ const StorageForm = () => {
             onChange={handleSelectMethod}
           >
             <option>Select the type of storage</option>
-            <option value="Own storage">Own storage</option>
-            <option value="commercial storage">Commercial Storage</option>
-            <option value="BJL storage">BJL storage</option>
-            <option value="Others">Others</option>
+            <option value="OWN">Own storage</option>
+            <option value="COMMERCIAL">Commercial Storage</option>
+            <option value="BJL">BJL storage</option>
+            <option value="OTHER">Others</option>
           </Select>
         </div>
         {hasStorage && (
           <div className="my-4">
             <Label htmlFor="other-storage" className="font-semibold my-2">
-              Others(specify)
+              Other storage name
             </Label>
             <TextInput
               id="other-storage"
               type="text"
-              name="otherType"
+              name="otherStorageName"
               placeholder="Specify the other storage"
               defaultValue=""
             />
@@ -215,7 +228,36 @@ const StorageForm = () => {
             defaultValue=""
           />
         </div>
-
+        <div className="my-4">
+          <Label
+            htmlFor="contact"
+            value="Storage manager "
+            className="my-2 font-semibold"
+          />
+          <TextInput
+            type="text"
+            required
+            placeholder="Enter name of storage manager"
+            id="contact"
+            name="storageManagerName"
+            defaultValue=""
+          />
+        </div>
+        <div className="my-4">
+          <Label
+            htmlFor="storageManagerNumber"
+            value="Storage manager contact "
+            className="my-2 font-semibold"
+          />
+          <TextInput
+            type="number"
+            required
+            placeholder="Enter contact of storage manager  begin with (233)"
+            id="storageManagerNumber"
+            name="storageManagerContact"
+            defaultValue=""
+          />
+        </div>
         <div className="my-4">
           <Label
             htmlFor="supervisor"
@@ -257,7 +299,8 @@ const StorageForm = () => {
             id="cert"
             required
             name="supervisorQualification"
-            onChange={handleSelectCert}
+            value={qualification}
+            onChange={handleSupervisorQualification}
           >
             <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
@@ -266,7 +309,7 @@ const StorageForm = () => {
             <option value="Others">Others</option>
           </Select>
         </div>
-        {hasCert && (
+        {hasOtherQualification && (
           <div>
             <Label
               htmlFor="certificate"
@@ -325,31 +368,31 @@ export const action = async ({ request, params }) => {
   const storageData = getStorageType(data.get("storageType"));
   const formData = {
     farmId: Number(params.farmId),
-    activityDate: data.get("activityDate"),
-    quantity: data.get("quantity"),
-    storageType: storageData,
-    community: data.get("community"),
+    storageDate: data.get("activityDate"),
+    quantity: Number(data.get("quantity")),
+    storageType: data.get("storageType"),
+    communityId: data.get("community"),
     quality: data.get("selectedQuality").split(","),
 
-    chemical: data.get("chemical"),
-    rate: data.get("rate"),
-    receipt: data.get("receipt"),
+    storageChemicalName: data.get("chemical"),
+    storageChemicalApplicationRate: Number(data.get("rate")),
+    storageManagerContact: data.get("storageManagerContact"),
+    storageManagerName: data.get("storageManagerName"),
+    otherStorageName: data.get("otherStorageName"),
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
     supervisorQualification: supervisorQualification,
   };
   console.log(formData);
 
-  const response = await axiosbaseURL.post("/farm/activity/storage", formData);
-  console.log("storage response", response);
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    throw json({ message: "Could not save data." });
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/storage",
+      formData
+    );
+    toast.success("Storage  data submitted successfully!");
+    return redirect("/app/farms");
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Storage  data submitted successfully!");
-  return redirect("/app/farms");
 };
