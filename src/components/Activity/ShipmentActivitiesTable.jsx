@@ -2,26 +2,44 @@ import React, { useState } from "react";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
 import { useNavigation } from "react-router-dom";
+import { axiosbaseURL } from "../../api/axios";
+import { MdDelete } from "react-icons/md";
 
 const ShipmentActivitiesTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemesPerPage] = useState(10);
   const [search, setSearch] = useState("");
+  const [activities, setActivities] = useState(data);
 
-  const totalActivities = data.length;
+  const totalActivities = activities.length;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentData = data.slice(firstItemIndex, lastItemIndex);
+  const currentData = activities.slice(firstItemIndex, lastItemIndex);
 
   const navigation = useNavigation();
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
+
+  const handleDeleteActivity = async (id) => {
+    try {
+      await axiosbaseURL.delete(`farm/activity/shipment/${id}`);
+      setActivities(activities.filter((activity) => activity.id !== id));
+      toast.success("Activity deleted successfully");
+    } catch (error) {
+      console.error("Error deleting planting activity:", error);
+    }
+  };
   const onPageChange = (page) => setCurrentPage(page);
   return (
     <div className="overflow-x-auto">
       <div className="my-4">
+        {activities.length === 0 && (
+          <p className="text-xl text-main flex justify-center">
+            No shipment activities found
+          </p>
+        )}
         <BackButton />
         <div>
           <input
@@ -56,6 +74,7 @@ const ShipmentActivitiesTable = ({ data }) => {
             <Table.HeadCell>Mode of Packaging</Table.HeadCell>
 
             <Table.HeadCell>Kilos Per Package</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {currentData
@@ -79,9 +98,22 @@ const ShipmentActivitiesTable = ({ data }) => {
                   <Table.Cell>{item.customerName}</Table.Cell>
                   <Table.Cell>{item.customerContact}</Table.Cell>
                   <Table.Cell>{item.customerAddress}</Table.Cell>
-                  <Table.Cell>{item.certificateUrl}</Table.Cell>
+                  <Table.Cell>
+                    <a href={item.certificateUrl}>{item.certificateUrl}</a>
+                  </Table.Cell>
                   <Table.Cell>{item.modeOfPackaging}</Table.Cell>
                   <Table.Cell>{item.kilosPerPackage}</Table.Cell>
+                  <Table.Cell>
+                    <div
+                      className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
+                      onClick={() => handleDeleteActivity(item.id)}
+                    >
+                      <span className="text-white">
+                        <MdDelete />
+                      </span>
+                      <p className="text-white">Delete</p>
+                    </div>
+                  </Table.Cell>
                 </Table.Row>
               ))}
           </Table.Body>

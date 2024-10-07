@@ -4,16 +4,21 @@ import {
   TextInput,
   FileInput,
   Datepicker,
+  Alert,
 } from "flowbite-react";
 import { toast } from "react-toastify";
 import { axiosbaseURL } from "../../api/axios";
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
 import { useState } from "react";
+import { HiInformationCircle } from "react-icons/hi";
 
 const ShipmentForm = () => {
   const [activityDate, setActivityDate] = useState("");
+
+  const errors = useActionData();
+  const errorMessage = errors?.data;
 
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString();
@@ -23,6 +28,12 @@ const ShipmentForm = () => {
     <div className="container mx-auto">
       <BackButton />
       <ActivityHeading activityHeading="Key Data Entry For Shipment" />
+      {errors ? (
+        <Alert color="failure" icon={HiInformationCircle} className="max-w-2xl">
+          <span className="font-medium">Info alert!</span>
+          <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+        </Alert>
+      ) : null}
       <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <section>
           <div className="my-2">
@@ -126,12 +137,14 @@ const ShipmentForm = () => {
           <h4>Certification</h4>
           <div className="my-2">
             <Label htmlFor="certificate" className="font-semibold my-2">
-              Upload copy of certificate
+              Shipment Certificate
             </Label>
 
-            <FileInput
+            <TextInput
               id="certificate"
+              type="url"
               name="certificateUrl"
+              placeholder="Enter the url to the certificate"
               defaultValue=""
               required
             />
@@ -193,16 +206,14 @@ export const action = async ({ request, params }) => {
     modeOfPackaging: data.get("modeOfPackaging"),
     kilosPerPackage: Number(data.get("kilosPerPackage")),
   };
-  const response = await axiosbaseURL.post("/farm/activity/shipment", formData);
-
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    throw json({ message: "Could not save data." });
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/shipment",
+      formData
+    );
+    toast.success("Sales  data submitted successfully!");
+    return redirect("/app/farms");
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Shipment  data submitted successfully!");
-  return redirect("/app/farms");
 };

@@ -251,13 +251,11 @@ export const action = async ({ request, params }) => {
     vehicleRegistrationNo: data.get("vehicleRegistrationNo"),
     driversLicenseNo: data.get("driversLicenseNo"),
   };
-  console.log(formData);
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/crop-sales",
       formData
     );
-    console.log(response);
     toast.success("Sales  data submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
