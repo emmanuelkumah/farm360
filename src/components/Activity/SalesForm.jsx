@@ -6,16 +6,21 @@ import {
   TextInput,
   FileInput,
   Datepicker,
+  Alert,
 } from "flowbite-react";
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import BackButton from "../BackButton";
 import ActivityHeading from "../ActivityHeading";
 import { axiosbaseURL } from "../../api/axios";
 import { toast } from "react-toastify";
+import { HiInformationCircle } from "react-icons/hi";
 
 const SalesForm = () => {
   const [activityDate, setActivityDate] = useState("");
   const [buyerType, setBuyerType] = useState("");
+
+  const errors = useActionData();
+  const errorMessage = errors?.data;
 
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString();
@@ -29,6 +34,12 @@ const SalesForm = () => {
     <div className="container mx-auto">
       <BackButton />
       <ActivityHeading activityHeading="Key Data Entry For Sales" />
+      {errors ? (
+        <Alert color="failure" icon={HiInformationCircle} className="max-w-2xl">
+          <span className="font-medium">Info alert!</span>
+          <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+        </Alert>
+      ) : null}
       <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <section>
           <h4>Authorizer of relese of products for sale</h4>
@@ -39,7 +50,6 @@ const SalesForm = () => {
             <Datepicker
               id="release"
               name="releaseDate"
-              defaultValue={new Date()}
               maxDate={new Date()}
               value={activityDate}
               onSelectedDateChanged={(date) => handleDateChange(date)}
@@ -72,7 +82,7 @@ const SalesForm = () => {
           </div>
           <div className="my-2">
             <Label htmlFor="quantity" className="font-semibold my-2">
-              Quantity
+              Quantity sold
             </Label>
             <TextInput
               id="quantity"
@@ -88,9 +98,10 @@ const SalesForm = () => {
           <Label htmlFor="sale" className="font-semibold my-2">
             Evidence of sale
           </Label>
-          <FileInput
+          <TextInput
             id="sale"
-            accept="image/*"
+            type="url"
+            placeholder="Enter the url of the sales document"
             name="saleEvidenceUrl"
             defaultValue=""
           />
@@ -112,7 +123,7 @@ const SalesForm = () => {
             >
               <option>Select buyer type</option>
               <option value="INDIVIDUAL">Individual</option>
-              <option value="Company">Company</option>
+              <option value="COMPANY">Company</option>
             </Select>
           </div>
           <h4> Buyer Details</h4>
@@ -129,7 +140,7 @@ const SalesForm = () => {
           <div className="my-2">
             <Label
               htmlFor="quantity"
-              value="Quantity"
+              value="Quantity purchased"
               className="my-2 font-semibold"
             />
             <TextInput
@@ -165,7 +176,7 @@ const SalesForm = () => {
           <Select id="transport" required name="transportMeans" defaultValue="">
             <option>Select transport</option>
             <option value="MANUAL">Manual</option>
-            <option value="Tractor">Tractor</option>
+            <option value="TRACTOR">Tractor</option>
           </Select>
         </div>
         <div className="my-4">
@@ -240,20 +251,16 @@ export const action = async ({ request, params }) => {
     vehicleRegistrationNo: data.get("vehicleRegistrationNo"),
     driversLicenseNo: data.get("driversLicenseNo"),
   };
-
-  const response = await axiosbaseURL.post(
-    "/farm/activity/crop-sales",
-    formData
-  );
-
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    throw json({ message: "Could not save data." });
+  console.log(formData);
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/crop-sales",
+      formData
+    );
+    console.log(response);
+    toast.success("Sales  data submitted successfully!");
+    return redirect("/app/farms");
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Sales  data submitted successfully!");
-  return redirect("/app/farms");
 };
