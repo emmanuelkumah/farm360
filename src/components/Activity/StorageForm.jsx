@@ -383,7 +383,6 @@ export const action = async ({ request, params }) => {
     supervisorContact: data.get("supervisorContact"),
     supervisorQualification: supervisorQualification,
   };
-  console.log(formData);
 
   try {
     const response = await axiosbaseURL.post(

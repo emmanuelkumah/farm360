@@ -6,6 +6,7 @@ import {
   Select,
   Datepicker,
   Alert,
+  Checkbox,
 } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
 
@@ -17,10 +18,20 @@ import { toast } from "react-toastify";
 
 const LandPreparationForm = () => {
   const [activityDate, setActivityDate] = useState("");
-  const [activity, setActivity] = useState("");
+  const [selectedActivities, setSelectedActivities] = useState([]);
   const [isSprayingActivity, setIsSprayingActivity] = useState(false);
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
   const [qualification, setQualification] = useState("");
+
+  const landactivities = [
+    { id: 1, name: "Clearing" },
+    { id: 2, name: "Mound_moulding" },
+    { id: 3, name: "Ridging" },
+    { id: 4, name: "Manual_Preparation" },
+    { id: 5, name: "Ploughing" },
+    { id: 6, name: "Harrowing" },
+    { id: 7, name: "Spraying" },
+  ];
 
   const errors = useActionData();
   const errorMessage = errors?.data;
@@ -36,6 +47,14 @@ const LandPreparationForm = () => {
     }
   };
 
+  const handleLandActivityChange = (e) => {
+    const value = e.target.value;
+    setSelectedActivities((prev) =>
+      prev.includes(value)
+        ? prev.filter((option) => option !== value)
+        : [...prev, value]
+    );
+  };
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString();
     setActivityDate(formattedDate);
@@ -65,60 +84,37 @@ const LandPreparationForm = () => {
             <Label
               htmlFor="activity"
               value="Select land preparation activity"
-              className="my-2 font-semibold"
+              className="my-2 font-semibold text-xl"
             />
 
-            <Select
-              id="activity"
-              required
-              name="activity"
-              value={activity}
-              onChange={handleActivityChange}
-            >
-              <option>Select activity</option>
-              <option value="Clearing">Clearing</option>
-              <option value="Mound molding">Mound molding</option>
-              <option value="Ridging">Ridging</option>
-              <option value="Manual Preparation">Manual preparation</option>
-              <option value="Ploughing">Ploughing </option>
-              <option value="Harrowing">Harrowing </option>
-              <option value="Spraying"> Spraying </option>
-            </Select>
+            {landactivities.map((activity) => (
+              <div className="flex items-center gap-2" key={activity.id}>
+                <Checkbox
+                  id={`land-activity-${activity.name}`}
+                  value={activity.name.toUpperCase()}
+                  name="landActivity"
+                  onChange={handleLandActivityChange}
+                />
+                <Label htmlFor={`land-activity-${activity.name}`}>
+                  {activity.name}
+                </Label>
+              </div>
+            ))}
+            <TextInput
+              name="selectedActivities"
+              value={selectedActivities}
+              readOnly
+              className="my-2"
+            />
           </div>
-          {isSprayingActivity && (
-            <section className="my-2">
-              <div>
-                <Label htmlFor="chemical" className="my-2">
-                  Chemical sprayed
-                </Label>
-                <TextInput
-                  type="text"
-                  required
-                  placeholder="Enter chemical sprayed"
-                  id="chemical"
-                />
-              </div>
-              <div>
-                <Label htmlFor="entry" className="my-2">
-                  Rate of application (ml)
-                </Label>
-                <TextInput
-                  type="number"
-                  required
-                  placeholder="Enter rate of application"
-                  id="entry"
-                  name="chemicalApplicationRate"
-                />
-              </div>
-            </section>
-          )}
+
           <div className="my-2">
             <Label htmlFor="activity" className="text-md font-semibold my-2">
               Select date of activity
             </Label>
             <Datepicker
               id="activity"
-              placeholder="Select clearing date"
+              placeholder="Select activity date"
               maxDate={defaultValue}
               name="activityDate"
               value={activityDate}
@@ -138,6 +134,32 @@ const LandPreparationForm = () => {
             defaultValue=""
           />
         </div>
+        <section className="my-2">
+          <div>
+            <Label htmlFor="chemical" className="my-2">
+              Chemical sprayed(optional)
+            </Label>
+            <TextInput
+              type="text"
+              name="chemicalSprayed"
+              required
+              placeholder="Enter chemical sprayed"
+              id="chemical"
+            />
+          </div>
+          <div>
+            <Label htmlFor="entry" className="my-2">
+              Rate of application (ml) (optional)
+            </Label>
+            <TextInput
+              type="number"
+              required
+              placeholder="Enter rate of application"
+              id="entry"
+              name="chemicalApplicationRate"
+            />
+          </div>
+        </section>
         <section>
           <div className="my-4">
             <Label
@@ -216,6 +238,16 @@ export default LandPreparationForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
+
+  function getChemicalSprayed(chemicalSprayed) {
+    console.log("sprayed", chemicalSprayed);
+    if (chemicalSprayed === null) {
+      return "none";
+    }
+    return chemicalSprayed;
+  }
+  const chemicalSprayed = getChemicalSprayed(data.get("chemicalSprayed"));
+
   function getSupervisorQualification(qualification) {
     if (qualification === "Others") {
       return data.get("OtherSupervisorQualification");
@@ -229,25 +261,21 @@ export const action = async ({ request, params }) => {
     farmId: Number(params.farmId),
     landSize: Number(data.get("landSize")),
     chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
-    chemicalSprayed: data.get("chemicalSprayed"),
-    activity: data.get("activity"),
-    sprayingDate: data.get("sprayingDate"),
+    chemicalSprayed: chemicalSprayed,
+    activities: data.get("selectedActivities").split(","),
     supervisorName: data.get("supervisorName"),
     supervisorContact: data.get("supervisorContact"),
     supervisorQualification: supervisorQualification,
     activityDate: data.get("activityDate"),
   };
-
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/land-preparation",
       formData
     );
-    if (response.status === 201) {
-      console.log("success", response);
-      toast.success("Land Preparation data submitted successfully!");
-      return redirect("/app/farmers");
-    }
+
+    toast.success("Land Preparation data submitted successfully!");
+    return redirect("/app/farms");
   } catch (error) {
     return error.response;
   }

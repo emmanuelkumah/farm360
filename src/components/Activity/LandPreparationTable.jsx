@@ -65,14 +65,11 @@ const LandPreparationTable = ({ data }) => {
           <Table striped>
             <Table.Head>
               <Table.HeadCell>Farm name</Table.HeadCell>
-              <Table.HeadCell>Land size</Table.HeadCell>
               <Table.HeadCell>Activity</Table.HeadCell>
               <Table.HeadCell>Activity Date</Table.HeadCell>
-              <Table.HeadCell>Ridging date</Table.HeadCell>
-              <Table.HeadCell>Ploughing date</Table.HeadCell>
-              <Table.HeadCell>Harrowing date</Table.HeadCell>
 
-              <Table.HeadCell>Manual preparation date</Table.HeadCell>
+              <Table.HeadCell>Land size</Table.HeadCell>
+
               <Table.HeadCell>Spraying date</Table.HeadCell>
               <Table.HeadCell>Chemical sprayed</Table.HeadCell>
 
@@ -97,14 +94,11 @@ const LandPreparationTable = ({ data }) => {
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       {item.farmName}
                     </Table.Cell>
-                    <Table.Cell>{item.landSize}</Table.Cell>
-                    <Table.Cell>{item.clearingDate}</Table.Cell>
-                    <Table.Cell>{item.moundMouldingDate}</Table.Cell>
-                    <Table.Cell>{item.ridgingDate}</Table.Cell>
-                    <Table.Cell>{item.ploughingDate}</Table.Cell>
-                    <Table.Cell>{item.harrowingDate}</Table.Cell>
-                    <Table.Cell>{item.manualPreparationDate}</Table.Cell>
+                    <Table.Cell>{item.activities.toString()}</Table.Cell>
 
+                    <Table.Cell>{item.activityDate}</Table.Cell>
+
+                    <Table.Cell>{item.landSize}</Table.Cell>
                     <Table.Cell>{item.sprayingDate}</Table.Cell>
                     <Table.Cell>{item.chemicalSprayed}</Table.Cell>
                     <Table.Cell>{item.chemicalApplicationRate}</Table.Cell>

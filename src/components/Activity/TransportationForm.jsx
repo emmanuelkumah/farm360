@@ -5,10 +5,13 @@ import {
   FileInput,
   Datepicker,
   Select,
+  Alert,
 } from "flowbite-react";
 import { toast } from "react-toastify";
+import { HiInformationCircle } from "react-icons/hi";
+
 import { axiosbaseURL } from "../../api/axios";
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
 import { useState } from "react";
@@ -17,13 +20,15 @@ const TransportationForm = () => {
   const [activityDate, setActivityDate] = useState("");
   const [hasMechanicalType, setHasMechanicalType] = useState(false);
 
+  const errors = useActionData();
+  const errorMessage = errors?.data;
+
   const handleActivityDateChange = (date) => {
     const formattedDate = date.toISOString(); // Formats to "YYYY-MM-DD"
     setActivityDate(formattedDate);
   };
   const handleSelectTransportation = (e) => {
-    console.log(e.target.value);
-    if (e.target.value === "Mechanical") {
+    if (e.target.value === "MECHANICAL") {
       setHasMechanicalType(!hasMechanicalType);
     } else {
       setHasMechanicalType(false);
@@ -33,6 +38,12 @@ const TransportationForm = () => {
     <div className="container mx-auto">
       <BackButton />
       <ActivityHeading activityHeading="Key Data Entry For Transportation" />
+      {errors ? (
+        <Alert color="failure" icon={HiInformationCircle} className="max-w-2xl">
+          <span className="font-medium">Info alert!</span>
+          <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+        </Alert>
+      ) : null}
       <Form className="container mx-auto w-full md:w-[70%]" method="post">
         <section>
           <div className="my-2">
@@ -51,12 +62,12 @@ const TransportationForm = () => {
           </div>
           <div className="my-2">
             <Label htmlFor="quantity" className="font-semibold my-2">
-              Quantity
+              Quantity transported
             </Label>
             <TextInput
               id="quantity"
               type="text"
-              placeholder="Enter quantity "
+              placeholder="Enter quantity transported "
               name="quantityTransported"
               defaultValue=""
               required
@@ -75,8 +86,8 @@ const TransportationForm = () => {
               name="transportationMethod"
             >
               <option>Select mode of transportation</option>
-              <option value="Manual">Manual</option>
-              <option value="Mechanical">Mechanical</option>
+              <option value="MANUAL">Manual</option>
+              <option value="MECHANICAL">Mechanical</option>
             </Select>
           </div>
           {hasMechanicalType && (
@@ -150,27 +161,20 @@ export const action = async ({ request, params }) => {
     activityDate: data.get("activityDate"),
 
     quantityTransported: Number(data.get("quantityTransported")),
-    transportationMethod: data.get("transportationMethod").toUpperCase(),
-    driversName: data.get("driversName").toUpperCase(),
+    transportationMethod: data.get("transportationMethod"),
+    driversName: data.get("driversName"),
     driversLicenseNumber: data.get("driversLicenseNumber"),
     vehicleRegistrationNumber: data.get("vehicleRegistrationNumber"),
     numberOfBagsPerTrip: Number(data.get("numberOfBagsPerTrip")),
   };
-  console.log(formData);
-
-  const response = await axiosbaseURL.post(
-    "/farm/activity/transportation",
-    formData
-  );
-  console.log("transportation response", response);
-  if (
-    response.status === 401 ||
-    response.status === 404 ||
-    response.status === 500 ||
-    response.status === 400
-  ) {
-    throw json({ message: "Could not save data." });
+  try {
+    const response = await axiosbaseURL.post(
+      "/farm/activity/transportation",
+      formData
+    );
+    toast.success("Transportation  data submitted successfully!");
+    return redirect("/app/farms");
+  } catch (error) {
+    return error.response;
   }
-  toast.success("Transportation  data submitted successfully!");
-  return redirect("/app/farms");
 };
