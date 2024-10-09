@@ -34,7 +34,6 @@ import {
   Error,
   NewUser,
   EditUser,
-  PrePlanting,
   Planting,
   WeedControl,
   Fertilizer,
@@ -43,6 +42,8 @@ import {
   ViewActivities,
   LandPreparationActivities,
   Transportation,
+  EditPreplantingActivity,
+  AddPrePlantingActivity,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -50,7 +51,7 @@ import HomeLayout from "./routes/HomeLayout";
 import { loader as farmerDetails } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
 import { loader as storageLoader } from "./pages/ViewStorageActivities";
-import { loader as loadPreplantingData } from "./pages/PrePlanting";
+import { loader as loadPreplantingData } from "./pages/EditPreplantingActivity";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -255,7 +256,7 @@ const router = createBrowserRouter([
           },
           {
             path: "pre-planting",
-            element: <PrePlanting />,
+            element: <AddPrePlantingActivity />,
             action: preplantingAction,
           },
           {
@@ -328,7 +329,7 @@ const router = createBrowserRouter([
               },
               {
                 path: "edit/:activityId",
-                element: <PrePlanting />,
+                element: <EditPreplantingActivity />,
                 loader: loadPreplantingData,
               },
             ],

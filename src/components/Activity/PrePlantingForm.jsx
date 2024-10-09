@@ -17,7 +17,7 @@ import { axiosbaseURL } from "../../api/axios";
 import BackButton from "../BackButton";
 import ActivityHeading from "../ActivityHeading";
 
-const PrePlantingForm = ({ data }) => {
+const PrePlantingForm = ({ data, method }) => {
   const [materialSource, setMaterialSource] = useState("");
   const [hasMaterialSource, setHasMaterialSource] = useState(false);
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
@@ -28,10 +28,7 @@ const PrePlantingForm = ({ data }) => {
   const defaultValue = new Date();
 
   console.log("the data", data);
-  // const getPreplantingData = (data) => {
-  //   data.find((item) => item.id === defaultValue);
-  //   console.log("pre planting data", data);
-  // };
+
   const errors = useActionData();
   const errorMessage = errors?.data;
 
@@ -81,7 +78,7 @@ const PrePlantingForm = ({ data }) => {
             <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
           </Alert>
         ) : null}
-        <Form method="post" className="w-full">
+        <Form method={method} className="w-full">
           <div className="grid grid-cols-1">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col">
@@ -205,6 +202,9 @@ const PrePlantingForm = ({ data }) => {
                       <Radio
                         id="yes-treatment"
                         name="plantingMaterialIsTreated"
+                        // checked={
+                        //   data && data.plantingMaterialIsTreated === true
+                        // }
                         defaultValue="true"
                       />
                       <Label htmlFor="yes-treatment">Yes</Label>
@@ -213,6 +213,9 @@ const PrePlantingForm = ({ data }) => {
                       <Radio
                         id="no-treatment"
                         name="plantingMaterialIsTreated"
+                        // checked={
+                        //   data & (data.plantingMaterialIsTreated === false)
+                        // }
                         defaultValue="false"
                       />
                       <Label htmlFor="no-treatment">No</Label>
@@ -234,7 +237,7 @@ const PrePlantingForm = ({ data }) => {
                   name="plantingMaterialTreatmentMethod"
                   value={
                     data
-                      ? data.plantingMaterialTreatmentMethod.toLowerCase()
+                      ? data.plantingMaterialTreatmentMethod
                       : treatmentMethod
                   }
                   onChange={handleSelectTreatment}
@@ -374,6 +377,41 @@ export default PrePlantingForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
+  const method = request.method;
+  const activityId = params.activityId;
+
+  console.log("method", method);
+
+  const formData = {
+    farmId: Number(params.farmId),
+    chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
+    ChemicalSprayed: data.get("ChemicalSprayed"),
+    plantingMaterial: data.get("plantingMaterial"),
+    plantingMaterialYield: Number(data.get("plantingMaterialYield")),
+    plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
+    plantingMaterialSource: plantingSource,
+    plantingMaterialTreatmentMethod: treatmentMethod,
+
+    plantingMaterialIsTreated: treated,
+    supervisorName: data.get("supervisorName"),
+    supervisorContact: data.get("supervisorContact"),
+    supervisorQualification: supervisorQualification,
+    activityDate: data.get("activityDate"),
+  };
+
+  if (method === "put") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/pre-planting/${activityId}`,
+        formData
+      );
+      console.log(response);
+      toast.success("Pre planting  data submitted successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
 
   function strToBoolean(isTreated) {
     if (isTreated === "false") {
@@ -412,22 +450,6 @@ export const action = async ({ request, params }) => {
   const supervisorQualification = getSupervisorQualification(
     data.get("supervisorQualification")
   );
-  const formData = {
-    farmId: Number(params.farmId),
-    chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
-    ChemicalSprayed: data.get("ChemicalSprayed"),
-    plantingMaterial: data.get("plantingMaterial"),
-    plantingMaterialYield: Number(data.get("plantingMaterialYield")),
-    plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
-    plantingMaterialSource: plantingSource,
-    plantingMaterialTreatmentMethod: treatmentMethod,
-
-    plantingMaterialIsTreated: treated,
-    supervisorName: data.get("supervisorName"),
-    supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: supervisorQualification,
-    activityDate: data.get("activityDate"),
-  };
 
   try {
     const response = await axiosbaseURL.post(

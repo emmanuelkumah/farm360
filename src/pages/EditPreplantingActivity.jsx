@@ -3,16 +3,12 @@ import { PrePlantingForm } from "../components";
 import { axiosbaseURL } from "../api/axios";
 import { useLoaderData } from "react-router-dom";
 
-const PrePlanting = () => {
+const EditPreplantingActivity = () => {
   const data = useLoaderData();
-  return (
-    <div>
-      <PrePlantingForm data={data} />
-    </div>
-  );
+  return <PrePlantingForm data={data} method="put" />;
 };
 
-export default PrePlanting;
+export default EditPreplantingActivity;
 
 export const loader = async ({ params }) => {
   const getActivity = (response) => {
