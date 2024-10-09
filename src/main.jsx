@@ -50,7 +50,7 @@ import HomeLayout from "./routes/HomeLayout";
 import { loader as farmerDetails } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
 import { loader as storageLoader } from "./pages/ViewStorageActivities";
-
+import { loader as preplanting } from "./pages/PrePlanting";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -311,6 +311,22 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: "farms/:farmId/activities/:activityId/edit",
+        children: [
+          {
+            index: true,
+            element: <FarmActivities />,
+          },
+          {
+            path: "pre-planting",
+            element: <PrePlanting />,
+            loader: preplanting,
+            // loader: preplantingLoader,
+            // action: preplantingAction,
+          },
+        ],
+      },
+      {
         path: "farms/:farmId/viewActivities",
         children: [
           {
@@ -374,6 +390,7 @@ const router = createBrowserRouter([
           },
         ],
       },
+
       // saved activing
       // {
       //   path: "cte",

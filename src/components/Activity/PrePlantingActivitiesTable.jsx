@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigation } from "react-router-dom";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
 import { axiosbaseURL } from "../../api/axios";
 import { toast } from "react-toastify";
 
@@ -32,6 +32,10 @@ const PrePlantingActivitiesTable = ({ data }) => {
     } catch (error) {
       console.error("Error deleting planting activity:", error);
     }
+  };
+  const handleEditActivity = (id) => {
+    console.log(id);
+    // navigation.navigate(`/edit-pre-planting-activity/${id}`);
   };
   return (
     <div className="container mx-auto">
@@ -107,6 +111,17 @@ const PrePlantingActivitiesTable = ({ data }) => {
                       <Table.Cell>{item.supervisorName}</Table.Cell>
                       <Table.Cell>{item.supervisorContact}</Table.Cell>
                       <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                      <Table.Cell>
+                        <div
+                          className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
+                          onClick={() => handleEditActivity(item.id)}
+                        >
+                          <span className="text-white">
+                            <MdEdit />
+                          </span>
+                          <p className="text-white">Edit</p>
+                        </div>
+                      </Table.Cell>
                       <Table.Cell>
                         <div
                           className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"

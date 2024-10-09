@@ -17,7 +17,7 @@ import { axiosbaseURL } from "../../api/axios";
 import BackButton from "../BackButton";
 import ActivityHeading from "../ActivityHeading";
 
-const PrePlantingForm = () => {
+const PrePlantingForm = ({ data }) => {
   const [materialSource, setMaterialSource] = useState("");
   const [hasMaterialSource, setHasMaterialSource] = useState(false);
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
@@ -27,6 +27,7 @@ const PrePlantingForm = () => {
   const [activityDate, setActivityDate] = useState("");
   const defaultValue = new Date();
 
+  console.log("the data", data);
   const errors = useActionData();
   const errorMessage = errors?.data;
 
