@@ -50,7 +50,7 @@ import HomeLayout from "./routes/HomeLayout";
 import { loader as farmerDetails } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
 import { loader as storageLoader } from "./pages/ViewStorageActivities";
-import { loader as preplanting } from "./pages/PrePlanting";
+import { loader as loadPreplantingData } from "./pages/PrePlanting";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -310,22 +310,7 @@ const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: "farms/:farmId/activities/:activityId/edit",
-        children: [
-          {
-            index: true,
-            element: <FarmActivities />,
-          },
-          {
-            path: "pre-planting",
-            element: <PrePlanting />,
-            loader: preplanting,
-            // loader: preplantingLoader,
-            // action: preplantingAction,
-          },
-        ],
-      },
+
       {
         path: "farms/:farmId/viewActivities",
         children: [
@@ -335,8 +320,18 @@ const router = createBrowserRouter([
           },
           {
             path: "pre-planting",
-            element: <ViewPrePlantingActivities />,
-            loader: preplantingLoader,
+            children: [
+              {
+                index: true,
+                element: <ViewPrePlantingActivities />,
+                loader: preplantingLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: <PrePlanting />,
+                loader: loadPreplantingData,
+              },
+            ],
           },
           {
             path: "planting",
@@ -391,59 +386,22 @@ const router = createBrowserRouter([
         ],
       },
 
-      // saved activing
       // {
-      //   path: "cte",
+      //   path: "farms/:activityId/edit",
       //   children: [
       //     {
-      //       path: "planting",
-      //       element: <PlantingActivities />,
-      //       loader: PlantingActivitiesLoader,
-      //       action: manipulatePlantingActivities,
+      //       index: true,
+      //       element: <FarmActivities />,
       //     },
       //     {
-      //       path: "preplanting",
-      //       element: <PrePlantingActvities />,
-      //       loader: prePlantingActivitiesLoader,
-      //       action: manipulatePrePlantingActivities,
-      //     },
-      //     {
-      //       path: "fertilizer",
-      //       element: <FertilizerActivities />,
-      //       loader: fertilizerActivitiesLoader,
-      //       action: manipulateFertilizerActivities,
-      //     },
-      //     {
-      //       path: "weedcontrol",
-      //       element: <WeedControlActivities />,
-      //       action: manipulateWeedControlActivities,
-      //       loader: WeedControlActivitiesLoader,
-      //     },
-      //     {
-      //       path: "harvesting",
-      //       element: <h2>Harvesting Data</h2>,
-      //     },
-      //     {
-      //       path: "sales",
-      //       element: "Sales Data",
-      //     },
-      //     {
-      //       path: "storage",
-      //       element: <h2>Storage</h2>,
-      //     },
-      //     {
-      //       path: "pestcontrol",
-      //       element: <PestControlActivities />,
-      //       action: manipulatePestControlActivities,
-      //       loader: PestControlLoader,
-      //     },
-      //     {
-      //       path: "shipment",
-      //       element: "Shipment",
+      //       path: "pre-planting",
+      //       element: <PrePlanting />,
+      //       loader: preplanting,
+      //       // loader: preplantingLoader,
+      //       // action: preplantingAction,
       //     },
       //   ],
       // },
-
       {
         path: "add-farm",
         element: <AddFarm />,

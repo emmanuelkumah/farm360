@@ -28,6 +28,10 @@ const PrePlantingForm = ({ data }) => {
   const defaultValue = new Date();
 
   console.log("the data", data);
+  // const getPreplantingData = (data) => {
+  //   data.find((item) => item.id === defaultValue);
+  //   console.log("pre planting data", data);
+  // };
   const errors = useActionData();
   const errorMessage = errors?.data;
 
@@ -89,7 +93,7 @@ const PrePlantingForm = ({ data }) => {
                 <Datepicker
                   id="date"
                   placeholder="Select date"
-                  value={activityDate}
+                  value={data ? data.activityDate : activityDate}
                   onSelectedDateChanged={(date) => handleActivityDate(date)}
                   maxDate={defaultValue}
                   name="activityDate"
@@ -107,7 +111,9 @@ const PrePlantingForm = ({ data }) => {
                       id="source"
                       name="plantingMaterialSource"
                       required
-                      value={materialSource}
+                      value={
+                        data ? data.plantingMaterialSource : materialSource
+                      }
                       onChange={handleSelectSource}
                     >
                       <option>Select Source of planting material</option>
@@ -148,7 +154,7 @@ const PrePlantingForm = ({ data }) => {
                     id="planting"
                     required
                     name="plantingMaterial"
-                    defaultValue=""
+                    defaultValue={data ? data.plantingMaterial : ""}
                   >
                     <option>Select planting material</option>
                     <option value="seed">Seed</option>
@@ -171,7 +177,7 @@ const PrePlantingForm = ({ data }) => {
                     type="number"
                     min="1"
                     name="plantingMaterialQuantity"
-                    defaultValue="1"
+                    defaultValue={data ? data.plantingMaterialQuantity : "1"}
                     placeholder="Enter quantity"
                   />
                 </div>
@@ -187,6 +193,7 @@ const PrePlantingForm = ({ data }) => {
                     min="1"
                     name="plantingMaterialYield"
                     placeholder="Enter yield"
+                    defaultValue={data ? data.plantingMaterialYield : ""}
                   />
                 </div>
                 <div className="my-4">
@@ -225,7 +232,11 @@ const PrePlantingForm = ({ data }) => {
                   id="method"
                   required
                   name="plantingMaterialTreatmentMethod"
-                  value={treatmentMethod}
+                  value={
+                    data
+                      ? data.plantingMaterialTreatmentMethod.toLowerCase()
+                      : treatmentMethod
+                  }
                   onChange={handleSelectTreatment}
                 >
                   <option>Select treatment method</option>
@@ -264,7 +275,7 @@ const PrePlantingForm = ({ data }) => {
                     name="ChemicalSprayed"
                     required
                     placeholder="Enter chemical name "
-                    defaultValue=""
+                    defaultValue={data ? data.chemicalSprayed : ""}
                   />
                 </div>
               </div>
@@ -281,7 +292,7 @@ const PrePlantingForm = ({ data }) => {
                     name="chemicalApplicationRate"
                     required
                     placeholder="Enter rate of chemical application "
-                    defaultValue=""
+                    defaultValue={data ? data.chemicalApplicationRate : 0}
                   />
                 </div>
               </div>
@@ -297,7 +308,7 @@ const PrePlantingForm = ({ data }) => {
                   placeholder="Enter name of supervisor"
                   id="supervisor"
                   name="supervisorName"
-                  defaultValue=""
+                  defaultValue={data ? data.supervisorName : ""}
                 />
               </div>
               <div className="my-2">
@@ -312,7 +323,7 @@ const PrePlantingForm = ({ data }) => {
                   placeholder="Enter contact of supervisor"
                   id="supervisor"
                   name="supervisorContact"
-                  defaultValue=""
+                  defaultValue={data ? data.supervisorContact : ""}
                 />
               </div>
               <div className="my-2">
@@ -326,7 +337,7 @@ const PrePlantingForm = ({ data }) => {
                   id="cert"
                   required
                   name="supervisorQualification"
-                  value={qualification}
+                  value={data ? data.supervisorQualification : qualification}
                   onChange={handleSupervisorQualification}
                 >
                   <option>Select certificate of supervisor</option>

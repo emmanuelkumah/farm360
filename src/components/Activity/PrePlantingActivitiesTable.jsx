@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigation } from "react-router-dom";
+import { useNavigation, Link } from "react-router-dom";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
 import { MdDelete, MdEdit } from "react-icons/md";
@@ -84,48 +84,56 @@ const PrePlantingActivitiesTable = ({ data }) => {
               </Table.Head>
               <Table.Body className="divide-y">
                 {currentActivities
-                  .filter((item) => {
+                  .filter((activity) => {
                     return search.toLowerCase() === ""
-                      ? item
-                      : item.farmName.toLowerCase().includes(search);
+                      ? activity
+                      : activity.farmName.toLowerCase().includes(search);
                   })
-                  .map((item) => (
+                  .map((activity) => (
                     <Table.Row
                       className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                      key={item.id}
+                      key={activity.id}
                     >
                       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        {item.farmName}
+                        {activity.farmName}
                       </Table.Cell>
-                      <Table.Cell>{item.activityDate}</Table.Cell>
-                      <Table.Cell>{item.chemicalSprayed}</Table.Cell>
-                      <Table.Cell>{item.chemicalApplicationRate}</Table.Cell>
-                      <Table.Cell>{item.plantingMaterial}</Table.Cell>
-                      <Table.Cell>{item.plantingMaterialYield}</Table.Cell>
+                      <Table.Cell>{activity.activityDate}</Table.Cell>
+                      <Table.Cell>{activity.chemicalSprayed}</Table.Cell>
+                      <Table.Cell>
+                        {activity.chemicalApplicationRate}
+                      </Table.Cell>
+                      <Table.Cell>{activity.plantingMaterial}</Table.Cell>
+                      <Table.Cell>{activity.plantingMaterialYield}</Table.Cell>
 
-                      <Table.Cell>{item.plantingMaterialQuantity}</Table.Cell>
-                      <Table.Cell>{item.plantingMaterialSource}</Table.Cell>
                       <Table.Cell>
-                        {item.plantingMaterialTreatmentMethod}
+                        {activity.plantingMaterialQuantity}
                       </Table.Cell>
-                      <Table.Cell>{item.supervisorName}</Table.Cell>
-                      <Table.Cell>{item.supervisorContact}</Table.Cell>
-                      <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                      <Table.Cell>{activity.plantingMaterialSource}</Table.Cell>
+                      <Table.Cell>
+                        {activity.plantingMaterialTreatmentMethod}
+                      </Table.Cell>
+                      <Table.Cell>{activity.supervisorName}</Table.Cell>
+                      <Table.Cell>{activity.supervisorContact}</Table.Cell>
+                      <Table.Cell>
+                        {activity.supervisorQualification}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Link to={`edit/${activity.id}`}>
+                          <div
+                            className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
+                            onClick={() => handleEditActivity(activity.id)}
+                          >
+                            <span className="text-white">
+                              <MdEdit />
+                            </span>
+                            <p className="text-white">Edit</p>
+                          </div>
+                        </Link>
+                      </Table.Cell>
                       <Table.Cell>
                         <div
                           className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
-                          onClick={() => handleEditActivity(item.id)}
-                        >
-                          <span className="text-white">
-                            <MdEdit />
-                          </span>
-                          <p className="text-white">Edit</p>
-                        </div>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <div
-                          className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
-                          onClick={() => handleDeleteActivity(item.id)}
+                          onClick={() => handleDeleteActivity(activity.id)}
                         >
                           <span className="text-white">
                             <MdDelete />

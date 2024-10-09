@@ -15,13 +15,17 @@ const PrePlanting = () => {
 export default PrePlanting;
 
 export const loader = async ({ params }) => {
+  const getActivity = (response) => {
+    return response.find(
+      (activity) => activity.id === Number(params.activityId)
+    );
+  };
   const { farmId } = params;
   try {
-    const response = axiosbaseURL.get(
+    const response = await axiosbaseURL.get(
       `/farm/${farmId}/activities/pre-planting`
     );
-    console.log(response);
-    return response;
+    return getActivity(response.data);
   } catch (error) {
     console.log(error);
   }
