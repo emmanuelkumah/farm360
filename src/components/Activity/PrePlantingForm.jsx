@@ -27,8 +27,6 @@ const PrePlantingForm = ({ data, method }) => {
   const [activityDate, setActivityDate] = useState("");
   const defaultValue = new Date();
 
-  console.log("the data", data);
-
   const errors = useActionData();
   const errorMessage = errors?.data;
 
@@ -380,39 +378,6 @@ export const action = async ({ request, params }) => {
   const method = request.method;
   const activityId = params.activityId;
 
-  console.log("method", method);
-
-  const formData = {
-    farmId: Number(params.farmId),
-    chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
-    ChemicalSprayed: data.get("ChemicalSprayed"),
-    plantingMaterial: data.get("plantingMaterial"),
-    plantingMaterialYield: Number(data.get("plantingMaterialYield")),
-    plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
-    plantingMaterialSource: plantingSource,
-    plantingMaterialTreatmentMethod: treatmentMethod,
-
-    plantingMaterialIsTreated: treated,
-    supervisorName: data.get("supervisorName"),
-    supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: supervisorQualification,
-    activityDate: data.get("activityDate"),
-  };
-
-  if (method === "put") {
-    try {
-      const response = await axiosbaseURL.put(
-        `/farm/activity/pre-planting/${activityId}`,
-        formData
-      );
-      console.log(response);
-      toast.success("Pre planting  data submitted successfully!");
-      return redirect("/app/farms");
-    } catch (error) {
-      console.log(error.response);
-    }
-  }
-
   function strToBoolean(isTreated) {
     if (isTreated === "false") {
       return false;
@@ -450,6 +415,39 @@ export const action = async ({ request, params }) => {
   const supervisorQualification = getSupervisorQualification(
     data.get("supervisorQualification")
   );
+
+  const formData = {
+    farmId: Number(params.farmId),
+    chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
+    ChemicalSprayed: data.get("ChemicalSprayed"),
+    plantingMaterial: data.get("plantingMaterial"),
+    plantingMaterialYield: Number(data.get("plantingMaterialYield")),
+    plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
+    plantingMaterialSource: plantingSource,
+    plantingMaterialTreatmentMethod: treatmentMethod,
+
+    plantingMaterialIsTreated: treated,
+    supervisorName: data.get("supervisorName"),
+    supervisorContact: data.get("supervisorContact"),
+    supervisorQualification: supervisorQualification,
+    activityDate: data.get("activityDate"),
+  };
+
+  console.log("method", method, "data", formData);
+
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/pre-planting/${activityId}`,
+        formData
+      );
+      console.log(response);
+      toast.success("Pre planting  data updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
 
   try {
     const response = await axiosbaseURL.post(
