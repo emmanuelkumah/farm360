@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Label,
   TextInput,
@@ -18,7 +18,9 @@ import BackButton from "../BackButton";
 import ActivityHeading from "../ActivityHeading";
 
 const PrePlantingForm = ({ data, method }) => {
-  const [materialSource, setMaterialSource] = useState("");
+  const [defaultMaterialSource, setDefaultMaterialSource] = useState("BJL");
+  const [updatePlantingMaterialSource, setUpdatePlantingMaterialSource] =
+    useState("");
   const [hasMaterialSource, setHasMaterialSource] = useState(false);
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
@@ -30,16 +32,28 @@ const PrePlantingForm = ({ data, method }) => {
   const errors = useActionData();
   const errorMessage = errors?.data;
 
+  useEffect(() => {
+    if (data) {
+      setUpdatePlantingMaterialSource(data.plantingMaterialSource);
+    }
+  }, []);
+
   const handleActivityDate = (date) => {
     const formattedDate = date.toISOString();
     setActivityDate(formattedDate);
   };
 
   const handleSelectSource = (e) => {
-    setMaterialSource(e.target.value);
+    console.log(e.target.value);
+    if (data) {
+      setUpdatePlantingMaterialSource(e.target.value);
+    }
     if (e.target.value === "Others") {
+      setDefaultMaterialSource(e.target.value);
+
       setHasMaterialSource(!hasMaterialSource);
     } else {
+      setDefaultMaterialSource(e.target.value);
       setHasMaterialSource(false);
     }
   };
@@ -107,11 +121,12 @@ const PrePlantingForm = ({ data, method }) => {
                       name="plantingMaterialSource"
                       required
                       value={
-                        data ? data.plantingMaterialSource : materialSource
+                        updatePlantingMaterialSource
+                          ? updatePlantingMaterialSource
+                          : defaultMaterialSource
                       }
                       onChange={handleSelectSource}
                     >
-                      <option>Select Source of planting material</option>
                       <option value="Local inputs dealer">
                         Local inputs dealer
                       </option>
@@ -122,6 +137,7 @@ const PrePlantingForm = ({ data, method }) => {
                       <option value="Others">Others</option>
                     </Select>
                   </div>
+
                   {hasMaterialSource && (
                     <div className="flex flex-col">
                       <Label
