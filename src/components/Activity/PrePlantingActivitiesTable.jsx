@@ -80,7 +80,8 @@ const PrePlantingActivitiesTable = ({ data }) => {
                 <Table.HeadCell>Supervisor</Table.HeadCell>
                 <Table.HeadCell>Supervisor contact</Table.HeadCell>
                 <Table.HeadCell>Supervisor qualification</Table.HeadCell>
-                <Table.HeadCell>Actions</Table.HeadCell>
+                <Table.HeadCell></Table.HeadCell>{" "}
+                <Table.HeadCell></Table.HeadCell>
               </Table.Head>
               <Table.Body className="divide-y">
                 {currentActivities
@@ -98,9 +99,17 @@ const PrePlantingActivitiesTable = ({ data }) => {
                         {activity.farmName}
                       </Table.Cell>
                       <Table.Cell>{activity.activityDate}</Table.Cell>
-                      <Table.Cell>{activity.chemicalSprayed}</Table.Cell>
+                      <Table.Cell>{`${
+                        activity.chemicalSprayed
+                          ? activity.chemicalSprayed
+                          : "none"
+                      }`}</Table.Cell>
                       <Table.Cell>
-                        {activity.chemicalApplicationRate}
+                        {`${
+                          activity.chemicalApplicationRate
+                            ? activity.chemicalApplicationRate
+                            : "none"
+                        }`}
                       </Table.Cell>
                       <Table.Cell>{activity.plantingMaterial}</Table.Cell>
                       <Table.Cell>{activity.plantingMaterialYield}</Table.Cell>
@@ -110,12 +119,28 @@ const PrePlantingActivitiesTable = ({ data }) => {
                       </Table.Cell>
                       <Table.Cell>{activity.plantingMaterialSource}</Table.Cell>
                       <Table.Cell>
-                        {activity.plantingMaterialTreatmentMethod}
+                        {`${
+                          activity.plantingMaterialTreatmentMethod
+                            ? activity.plantingMaterialTreatmentMethod
+                            : "none"
+                        }`}
                       </Table.Cell>
-                      <Table.Cell>{activity.supervisorName}</Table.Cell>
-                      <Table.Cell>{activity.supervisorContact}</Table.Cell>
+                      <Table.Cell>{`${
+                        activity.supervisorName
+                          ? activity.supervisorName
+                          : "none"
+                      }`}</Table.Cell>
+                      <Table.Cell>{`${
+                        activity.supervisorContact
+                          ? activity.supervisorContact
+                          : "none"
+                      }`}</Table.Cell>
                       <Table.Cell>
-                        {activity.supervisorQualification}
+                        {`${
+                          activity.supervisorQualification
+                            ? activity.supervisorQualification
+                            : "none"
+                        }`}
                       </Table.Cell>
                       <Table.Cell>
                         <Link to={`edit/${activity.id}`}>

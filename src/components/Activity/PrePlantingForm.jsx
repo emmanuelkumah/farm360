@@ -22,6 +22,7 @@ const PrePlantingForm = ({ data, method }) => {
   const [updatePlantingMaterialSource, setUpdatePlantingMaterialSource] =
     useState("");
   const [hasMaterialSource, setHasMaterialSource] = useState(false);
+  const [isTreated, setIsTreated] = useState("yes");
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
   const [qualification, setQualification] = useState("");
@@ -87,7 +88,7 @@ const PrePlantingForm = ({ data, method }) => {
             className="max-w-2xl"
           >
             <span className="font-medium">Info alert!</span>
-            <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
+            <p>{` ${errorMessage.message}`}</p>
           </Alert>
         ) : null}
         <Form method={method} className="w-full">
@@ -96,7 +97,7 @@ const PrePlantingForm = ({ data, method }) => {
               <div className="flex flex-col">
                 <Label
                   htmlFor="date"
-                  value="Select the date"
+                  value="Select the activity date"
                   className="mb-2"
                 />
                 <Datepicker
@@ -106,6 +107,7 @@ const PrePlantingForm = ({ data, method }) => {
                   onSelectedDateChanged={(date) => handleActivityDate(date)}
                   maxDate={defaultValue}
                   name="activityDate"
+                  required={true}
                 />
 
                 <div className="my-4">
@@ -167,7 +169,7 @@ const PrePlantingForm = ({ data, method }) => {
                     name="plantingMaterial"
                     defaultValue={data ? data.plantingMaterial : ""}
                   >
-                    <option>Select planting material</option>
+                    <option>Select the planting material</option>
                     <option value="seed">Seed</option>
                     <option value="sucker">Sucker</option>
                     <option value="seedlings">Seedlings</option>
@@ -216,10 +218,9 @@ const PrePlantingForm = ({ data, method }) => {
                       <Radio
                         id="yes-treatment"
                         name="plantingMaterialIsTreated"
-                        // checked={
-                        //   data && data.plantingMaterialIsTreated === true
-                        // }
-                        defaultValue="true"
+                        value="yes"
+                        checked={isTreated === "yes"}
+                        onChange={() => setIsTreated("yes")}
                       />
                       <Label htmlFor="yes-treatment">Yes</Label>
                     </div>
@@ -227,10 +228,9 @@ const PrePlantingForm = ({ data, method }) => {
                       <Radio
                         id="no-treatment"
                         name="plantingMaterialIsTreated"
-                        // checked={
-                        //   data & (data.plantingMaterialIsTreated === false)
-                        // }
-                        defaultValue="false"
+                        value="no"
+                        checked={isTreated === "no"}
+                        onChange={() => setIsTreated("no")}
                       />
                       <Label htmlFor="no-treatment">No</Label>
                     </div>
@@ -238,148 +238,150 @@ const PrePlantingForm = ({ data, method }) => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-4">
-              <div>
-                <Label
-                  className="mb-2 font-semibold"
-                  htmlFor="method"
-                  value="Treatment method"
-                />
-                <Select
-                  id="method"
-                  required
-                  name="plantingMaterialTreatmentMethod"
-                  value={
-                    data
-                      ? data.plantingMaterialTreatmentMethod
-                      : treatmentMethod
-                  }
-                  onChange={handleSelectTreatment}
-                >
-                  <option>Select treatment method</option>
-                  <option value="Chemical">Chemical</option>
-                  <option value="Hot water">Hot water</option>
-                  <option value="Other">Other</option>
-                </Select>
-                {hasTreatmentMethod && (
-                  <div className="my-4">
-                    <Label
-                      className="mb-2 font-semibold"
-                      htmlFor="other"
-                      value="Other treatment method or chemical used"
-                    />
-                    <TextInput
-                      id="other"
-                      type="text"
-                      required
-                      defaultValue=""
-                      name="plantingMaterialTreatmentMethodOther"
-                      placeholder="Enter the other treatment method or chemical used"
-                    />
-                  </div>
-                )}
-              </div>
-              <div className="my-4">
+            {isTreated === "yes" && (
+              <div className="flex flex-col gap-4">
                 <div>
                   <Label
-                    htmlFor="chemical"
-                    value="Name of chemical"
-                    className="mb-2"
+                    className="mb-2 font-semibold"
+                    htmlFor="method"
+                    value="Treatment method"
                   />
-                  <TextInput
-                    id="chemical"
-                    type="text"
-                    name="ChemicalSprayed"
+                  <Select
+                    id="method"
                     required
-                    placeholder="Enter chemical name "
-                    defaultValue={data ? data.chemicalSprayed : ""}
-                  />
+                    name="plantingMaterialTreatmentMethod"
+                    value={
+                      data
+                        ? data.plantingMaterialTreatmentMethod
+                        : treatmentMethod
+                    }
+                    onChange={handleSelectTreatment}
+                  >
+                    <option>Select treatment method</option>
+                    <option value="Chemical">Chemical</option>
+                    <option value="Hot water">Hot water</option>
+                    <option value="Other">Other</option>
+                  </Select>
+                  {hasTreatmentMethod && (
+                    <div className="my-4">
+                      <Label
+                        className="mb-2 font-semibold"
+                        htmlFor="other"
+                        value="Other treatment method or chemical used"
+                      />
+                      <TextInput
+                        id="other"
+                        type="text"
+                        required
+                        defaultValue=""
+                        name="plantingMaterialTreatmentMethodOther"
+                        placeholder="Enter the other treatment method or chemical used"
+                      />
+                    </div>
+                  )}
                 </div>
-              </div>
-              <div className="my-4">
-                <div className="flex flex-col">
-                  <Label
-                    htmlFor="rate"
-                    value="Rate of chemical application(ml)"
-                    className="mb-2"
-                  />
-                  <TextInput
-                    id="rate"
-                    type="number"
-                    name="chemicalApplicationRate"
-                    required
-                    placeholder="Enter rate of chemical application "
-                    defaultValue={data ? data.chemicalApplicationRate : 0}
-                  />
-                </div>
-              </div>
-              <div className="my-2">
-                <Label
-                  htmlFor="supervisor"
-                  value="Supervisor"
-                  className="my-2 font-semibold"
-                />
-                <TextInput
-                  type="text"
-                  required
-                  placeholder="Enter name of supervisor"
-                  id="supervisor"
-                  name="supervisorName"
-                  defaultValue={data ? data.supervisorName : ""}
-                />
-              </div>
-              <div className="my-2">
-                <Label
-                  htmlFor="supervisor"
-                  value="Supervisor Contact"
-                  className="my-2 font-semibold"
-                />
-                <TextInput
-                  type="text"
-                  required
-                  placeholder="Enter contact of supervisor"
-                  id="supervisor"
-                  name="supervisorContact"
-                  defaultValue={data ? data.supervisorContact : ""}
-                />
-              </div>
-              <div className="my-2">
-                <Label
-                  htmlFor="cert"
-                  value="Certificate"
-                  className="my-2 font-semibold"
-                />
-
-                <Select
-                  id="cert"
-                  required
-                  name="supervisorQualification"
-                  value={data ? data.supervisorQualification : qualification}
-                  onChange={handleSupervisorQualification}
-                >
-                  <option>Select certificate of supervisor</option>
-                  <option value="MOFA">MOFA</option>
-                  <option value="EPA">EPA</option>
-                  <option value="PPRSD/NPPO">PPRSD/NPPO</option>
-                  <option value="Others">Others</option>
-                </Select>
-                {hasOtherQualification && (
-                  <div className="my-4">
+                <div className="my-4">
+                  <div>
+                    <Label
+                      htmlFor="chemical"
+                      value="Name of chemical"
+                      className="mb-2"
+                    />
                     <TextInput
+                      id="chemical"
                       type="text"
+                      name="ChemicalSprayed"
                       required
-                      placeholder="Enter other qualification of supervisor"
-                      id="supervisor"
-                      name="OtherSupervisorQualification"
-                      defaultValue=""
+                      placeholder="Enter chemical name "
+                      defaultValue={data ? data.chemicalSprayed : ""}
                     />
                   </div>
-                )}
+                </div>
+                <div className="my-4">
+                  <div className="flex flex-col">
+                    <Label
+                      htmlFor="rate"
+                      value="Rate of chemical application(ml)"
+                      className="mb-2"
+                    />
+                    <TextInput
+                      id="rate"
+                      type="number"
+                      name="chemicalApplicationRate"
+                      required
+                      placeholder="Enter rate of chemical application "
+                      defaultValue={data ? data.chemicalApplicationRate : 0}
+                    />
+                  </div>
+                </div>
+                <div className="my-2">
+                  <Label
+                    htmlFor="supervisor"
+                    value="Supervisor"
+                    className="my-2 font-semibold"
+                  />
+                  <TextInput
+                    type="text"
+                    required
+                    placeholder="Enter name of supervisor"
+                    id="supervisor"
+                    name="supervisorName"
+                    defaultValue={data ? data.supervisorName : ""}
+                  />
+                </div>
+                <div className="my-2">
+                  <Label
+                    htmlFor="supervisor"
+                    value="Supervisor Contact"
+                    className="my-2 font-semibold"
+                  />
+                  <TextInput
+                    type="text"
+                    required
+                    placeholder="Enter contact of supervisor"
+                    id="supervisor"
+                    name="supervisorContact"
+                    defaultValue={data ? data.supervisorContact : ""}
+                  />
+                </div>
+                <div className="my-2">
+                  <Label
+                    htmlFor="cert"
+                    value="Certificate"
+                    className="my-2 font-semibold"
+                  />
+
+                  <Select
+                    id="cert"
+                    required
+                    name="supervisorQualification"
+                    value={data ? data.supervisorQualification : qualification}
+                    onChange={handleSupervisorQualification}
+                  >
+                    <option>Select certificate of supervisor</option>
+                    <option value="MOFA">MOFA</option>
+                    <option value="EPA">EPA</option>
+                    <option value="PPRSD/NPPO">PPRSD/NPPO</option>
+                    <option value="Others">Others</option>
+                  </Select>
+                  {hasOtherQualification && (
+                    <div className="my-4">
+                      <TextInput
+                        type="text"
+                        required
+                        placeholder="Enter other qualification of supervisor"
+                        id="supervisor"
+                        name="OtherSupervisorQualification"
+                        defaultValue=""
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
-              <Button className="bg-main" type="submit">
-                Save PrePlanting Activity
-              </Button>
-            </div>
+            )}
+            <Button className="bg-main" type="submit">
+              Save PrePlanting Activity
+            </Button>
           </div>
         </Form>
       </div>
@@ -391,65 +393,82 @@ export default PrePlantingForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
-  const method = request.method;
-  const activityId = params.activityId;
 
-  function strToBoolean(isTreated) {
-    if (isTreated === "false") {
-      return false;
-    }
-    return true;
-  }
-
-  const treated = strToBoolean(data.get("plantingMaterialIsTreated"));
-
-  const treatmentMethod = getOtherTreatmentmethod(
-    data.get("plantingMaterialTreatmentMethod")
-  );
-  function getOtherTreatmentmethod(treatment) {
-    if (treatment === "Other") {
-      return data.get("plantingMaterialTreatmentMethodOther");
-    }
-    return data.get("plantingMaterialTreatmentMethod");
-  }
-
-  function getOtherPlantingmaterialSource(plantingMaterial) {
+  function fetchPlantingmaterialSource(plantingMaterial) {
     if (plantingMaterial === "Others") {
       return data.get("otherPlantingMaterialSource");
     }
     return data.get("plantingMaterialSource");
   }
-  const plantingSource = getOtherPlantingmaterialSource(
-    data.get("plantingMaterialSource")
-  );
+
+  function convertToBoolean(data) {
+    if (data === "no") {
+      return false;
+    }
+    return true;
+  }
+
+  const formData = verifyFormFields(data, params);
+
+  function verifyFormFields(data) {
+    const source = fetchPlantingmaterialSource(
+      data.get("plantingMaterialSource")
+    );
+    const treated = convertToBoolean(data.get("plantingMaterialIsTreated"));
+    const treatmentMethod = getOtherTreatmentmethod(
+      data.get("plantingMaterialTreatmentMethod")
+    );
+    const supervisorQualification = getSupervisorQualification(
+      data.get("supervisorQualification")
+    );
+    if (data.get("plantingMaterialIsTreated") === "no") {
+      return {
+        farmId: Number(params.farmId),
+        activityDate: data.get("activityDate"),
+        plantingMaterial: data.get("plantingMaterial"),
+        plantingMaterialYield: Number(data.get("plantingMaterialYield")),
+        plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
+        plantingMaterialSource: source,
+        plantingMaterialIsTreated: treated,
+      };
+    }
+    return {
+      farmId: Number(params.farmId),
+      chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
+      ChemicalSprayed: data.get("ChemicalSprayed"),
+      plantingMaterial: data.get("plantingMaterial"),
+      plantingMaterialYield: Number(data.get("plantingMaterialYield")),
+      plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
+      plantingMaterialSource: source,
+      plantingMaterialIsTreated: treated,
+      plantingMaterialTreatmentMethod: treatmentMethod,
+
+      supervisorName: data.get("supervisorName"),
+      supervisorContact: data.get("supervisorContact"),
+      supervisorQualification: supervisorQualification,
+      activityDate: data.get("activityDate"),
+    };
+  }
+
+  const method = request.method;
+  const activityId = params.activityId;
+
+  function getOtherTreatmentmethod(treatment) {
+    if (treatment === "Other") {
+      return data.get("plantingMaterialTreatmentMethodOther");
+    }
+    if (treatment === null) {
+      return "";
+    }
+    return data.get("plantingMaterialTreatmentMethod");
+  }
+
   function getSupervisorQualification(qualification) {
     if (qualification === "Others") {
       return data.get("OtherSupervisorQualification");
     }
     return data.get("supervisorQualification");
   }
-  const supervisorQualification = getSupervisorQualification(
-    data.get("supervisorQualification")
-  );
-
-  const formData = {
-    farmId: Number(params.farmId),
-    chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
-    ChemicalSprayed: data.get("ChemicalSprayed"),
-    plantingMaterial: data.get("plantingMaterial"),
-    plantingMaterialYield: Number(data.get("plantingMaterialYield")),
-    plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
-    plantingMaterialSource: plantingSource,
-    plantingMaterialTreatmentMethod: treatmentMethod,
-
-    plantingMaterialIsTreated: treated,
-    supervisorName: data.get("supervisorName"),
-    supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: supervisorQualification,
-    activityDate: data.get("activityDate"),
-  };
-
-  console.log("method", method, "data", formData);
 
   if (method === "PUT") {
     try {
@@ -457,7 +476,7 @@ export const action = async ({ request, params }) => {
         `/farm/activity/pre-planting/${activityId}`,
         formData
       );
-      console.log(response);
+
       toast.success("Pre planting  data updated successfully!");
       return redirect("/app/farms");
     } catch (error) {
@@ -470,6 +489,7 @@ export const action = async ({ request, params }) => {
       "/farm/activity/pre-planting",
       formData
     );
+
     toast.success("Pre planting  data submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
