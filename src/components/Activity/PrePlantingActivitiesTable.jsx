@@ -121,7 +121,7 @@ const PrePlantingActivitiesTable = ({ data }) => {
                       <Table.Cell>
                         {`${
                           activity.plantingMaterialTreatmentMethod
-                            ? activity.plantingMaterialTreatmentMethod
+                            ? activity.plantingMaterialTreatmentMethod.toLowerCase()
                             : "none"
                         }`}
                       </Table.Cell>

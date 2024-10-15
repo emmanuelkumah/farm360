@@ -21,21 +21,34 @@ const PrePlantingForm = ({ data, method }) => {
   const [defaultMaterialSource, setDefaultMaterialSource] = useState("BJL");
   const [updatePlantingMaterialSource, setUpdatePlantingMaterialSource] =
     useState("");
+  const [defualtTreatmentMethod, setDefaultTreatmentMethod] =
+    useState("Chemical");
+  const [updateTreatmentMethod, setUpdateTreatmentMethod] = useState("");
   const [hasMaterialSource, setHasMaterialSource] = useState(false);
   const [isTreated, setIsTreated] = useState("yes");
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
   const [qualification, setQualification] = useState("");
-  const [treatmentMethod, setTreatmentMethod] = useState("");
   const [activityDate, setActivityDate] = useState("");
+  const [defaultSupervisorQualification, setDefaultSupervisorQualification] =
+    useState("MOFA");
+  const [updateSupervisorQualification, setUpdateSupervisorQualification] =
+    useState("");
+
   const defaultValue = new Date();
 
   const errors = useActionData();
   const errorMessage = errors?.data;
+  console.log(data);
 
   useEffect(() => {
     if (data) {
       setUpdatePlantingMaterialSource(data.plantingMaterialSource);
+      const converted = treatmentMethodToSentenceCase(
+        data.plantingMaterialTreatmentMethod
+      );
+      setUpdateTreatmentMethod(converted);
+      setUpdateSupervisorQualification(data.supervisorQualification);
     }
   }, []);
 
@@ -44,6 +57,9 @@ const PrePlantingForm = ({ data, method }) => {
     setActivityDate(formattedDate);
   };
 
+  const treatmentMethodToSentenceCase = (str) => {
+    return str?.charAt(0).toUpperCase() + str?.slice(1).toLowerCase();
+  };
   const handleSelectSource = (e) => {
     console.log(e.target.value);
     if (data) {
@@ -59,20 +75,29 @@ const PrePlantingForm = ({ data, method }) => {
     }
   };
 
-  const handleSelectTreatment = (e) => {
-    setTreatmentMethod(e.target.value);
-
+  const handleSelectTreatmentMethod = (e) => {
+    if (data) {
+      setUpdateTreatmentMethod(e.target.value);
+    }
     if (e.target.value === "Other") {
+      setDefaultTreatmentMethod(e.target.value);
       setHasTreatmentMethod(!hasTreatmentMethod);
     } else {
-      setHasTreatmentMethod(false);
+      setDefaultTreatmentMethod(e.target.value);
+      setHasTreatmentMethod(hasTreatmentMethod);
     }
   };
 
   const handleSupervisorQualification = (e) => {
-    setQualification(e.target.value);
+    if (data) {
+      setUpdateSupervisorQualification(e.target.value);
+    }
     if (e.target.value === "Others") {
+      setDefaultSupervisorQualification(e.target.value);
       setHasOtherQualification(!hasOtherQualification);
+    } else {
+      setDefaultSupervisorQualification(e.target.value);
+      setHasOtherQualification(hasOtherQualification);
     }
   };
 
@@ -251,18 +276,17 @@ const PrePlantingForm = ({ data, method }) => {
                     required
                     name="plantingMaterialTreatmentMethod"
                     value={
-                      data
-                        ? data.plantingMaterialTreatmentMethod
-                        : treatmentMethod
+                      updateTreatmentMethod
+                        ? updateTreatmentMethod
+                        : defualtTreatmentMethod
                     }
-                    onChange={handleSelectTreatment}
+                    onChange={handleSelectTreatmentMethod}
                   >
-                    <option>Select treatment method</option>
                     <option value="Chemical">Chemical</option>
                     <option value="Hot water">Hot water</option>
                     <option value="Other">Other</option>
                   </Select>
-                  {hasTreatmentMethod && (
+                  {defualtTreatmentMethod === "Other" && (
                     <div className="my-4">
                       <Label
                         className="mb-2 font-semibold"
@@ -280,40 +304,45 @@ const PrePlantingForm = ({ data, method }) => {
                     </div>
                   )}
                 </div>
-                <div className="my-4">
-                  <div>
-                    <Label
-                      htmlFor="chemical"
-                      value="Name of chemical"
-                      className="mb-2"
-                    />
-                    <TextInput
-                      id="chemical"
-                      type="text"
-                      name="ChemicalSprayed"
-                      required
-                      placeholder="Enter chemical name "
-                      defaultValue={data ? data.chemicalSprayed : ""}
-                    />
-                  </div>
-                </div>
-                <div className="my-4">
-                  <div className="flex flex-col">
-                    <Label
-                      htmlFor="rate"
-                      value="Rate of chemical application(ml)"
-                      className="mb-2"
-                    />
-                    <TextInput
-                      id="rate"
-                      type="number"
-                      name="chemicalApplicationRate"
-                      required
-                      placeholder="Enter rate of chemical application "
-                      defaultValue={data ? data.chemicalApplicationRate : 0}
-                    />
-                  </div>
-                </div>
+                {defualtTreatmentMethod === "Chemical" && (
+                  <section>
+                    <div className="my-4">
+                      <div>
+                        <Label
+                          htmlFor="chemical"
+                          value="Name of chemical"
+                          className="mb-2"
+                        />
+                        <TextInput
+                          id="chemical"
+                          type="text"
+                          name="ChemicalSprayed"
+                          required
+                          placeholder="Enter chemical name "
+                          defaultValue={data ? data.chemicalSprayed : ""}
+                        />
+                      </div>
+                    </div>
+                    <div className="my-4">
+                      <div className="flex flex-col">
+                        <Label
+                          htmlFor="rate"
+                          value="Rate of chemical application(ml)"
+                          className="mb-2"
+                        />
+                        <TextInput
+                          id="rate"
+                          type="number"
+                          name="chemicalApplicationRate"
+                          required
+                          placeholder="Enter rate of chemical application "
+                          defaultValue={data ? data.chemicalApplicationRate : 0}
+                        />
+                      </div>
+                    </div>
+                  </section>
+                )}
+
                 <div className="my-2">
                   <Label
                     htmlFor="supervisor"
@@ -355,16 +384,19 @@ const PrePlantingForm = ({ data, method }) => {
                     id="cert"
                     required
                     name="supervisorQualification"
-                    value={data ? data.supervisorQualification : qualification}
+                    value={
+                      updateSupervisorQualification
+                        ? updateSupervisorQualification
+                        : defaultSupervisorQualification
+                    }
                     onChange={handleSupervisorQualification}
                   >
-                    <option>Select certificate of supervisor</option>
                     <option value="MOFA">MOFA</option>
                     <option value="EPA">EPA</option>
                     <option value="PPRSD/NPPO">PPRSD/NPPO</option>
                     <option value="Others">Others</option>
                   </Select>
-                  {hasOtherQualification && (
+                  {defaultSupervisorQualification === "Others" && (
                     <div className="my-4">
                       <TextInput
                         type="text"
@@ -409,15 +441,15 @@ export const action = async ({ request, params }) => {
   }
 
   const formData = verifyFormFields(data, params);
-
+  console.log("submitted", formData);
   function verifyFormFields(data) {
     const source = fetchPlantingmaterialSource(
       data.get("plantingMaterialSource")
     );
     const treated = convertToBoolean(data.get("plantingMaterialIsTreated"));
-    const treatmentMethod = getOtherTreatmentmethod(
-      data.get("plantingMaterialTreatmentMethod")
-    );
+
+    console.log(data.get("plantingMaterialTreatmentMethod"));
+
     const supervisorQualification = getSupervisorQualification(
       data.get("supervisorQualification")
     );
@@ -430,8 +462,26 @@ export const action = async ({ request, params }) => {
         plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
         plantingMaterialSource: source,
         plantingMaterialIsTreated: treated,
+        chemicalApplicationRate: 0,
       };
     }
+    //data to submit is treatment method is hot water
+    if (data.get("plantingMaterialTreatmentMethod") === "Hot water") {
+      return {
+        farmId: Number(params.farmId),
+        activityDate: data.get("activityDate"),
+        plantingMaterial: data.get("plantingMaterial"),
+        plantingMaterialYield: Number(data.get("plantingMaterialYield")),
+        plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
+        plantingMaterialSource: source,
+        plantingMaterialIsTreated: treated,
+        plantingMaterialTreatmentMethod: data.get(
+          "plantingMaterialTreatmentMethod"
+        ),
+        chemicalApplicationRate: 0,
+      };
+    }
+
     return {
       farmId: Number(params.farmId),
       chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
@@ -441,7 +491,9 @@ export const action = async ({ request, params }) => {
       plantingMaterialQuantity: Number(data.get("plantingMaterialQuantity")),
       plantingMaterialSource: source,
       plantingMaterialIsTreated: treated,
-      plantingMaterialTreatmentMethod: treatmentMethod,
+      plantingMaterialTreatmentMethod: data.get(
+        "plantingMaterialTreatmentMethod"
+      ),
 
       supervisorName: data.get("supervisorName"),
       supervisorContact: data.get("supervisorContact"),
@@ -452,16 +504,6 @@ export const action = async ({ request, params }) => {
 
   const method = request.method;
   const activityId = params.activityId;
-
-  function getOtherTreatmentmethod(treatment) {
-    if (treatment === "Other") {
-      return data.get("plantingMaterialTreatmentMethodOther");
-    }
-    if (treatment === null) {
-      return "";
-    }
-    return data.get("plantingMaterialTreatmentMethod");
-  }
 
   function getSupervisorQualification(qualification) {
     if (qualification === "Others") {
@@ -476,7 +518,7 @@ export const action = async ({ request, params }) => {
         `/farm/activity/pre-planting/${activityId}`,
         formData
       );
-
+      console.log("updated", response);
       toast.success("Pre planting  data updated successfully!");
       return redirect("/app/farms");
     } catch (error) {
