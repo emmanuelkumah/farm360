@@ -40,11 +40,11 @@ import {
   PestControl,
   Harvesting,
   ViewActivities,
-  LandPreparationActivities,
   Transportation,
   EditPreplantingActivity,
   EditWeedControlActivity,
   AddPrePlantingActivity,
+  AddLandPreparationActivity,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -304,7 +304,7 @@ const router = createBrowserRouter([
           },
           {
             path: "land-preparation",
-            element: <LandPreparationActivities />,
+            element: <AddLandPreparationActivity />,
             action: landPrepAction,
           },
           {

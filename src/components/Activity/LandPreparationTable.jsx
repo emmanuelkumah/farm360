@@ -81,34 +81,52 @@ const LandPreparationTable = ({ data }) => {
             </Table.Head>
             <Table.Body className="divide-y">
               {currentActivities
-                .filter((item) => {
+                .filter((activity) => {
                   return search.toLowerCase() === ""
-                    ? item
-                    : item.farmName.toLowerCase().includes(search);
+                    ? activity
+                    : activity.farmName.toLowerCase().includes(search);
                 })
-                .map((item) => (
+                .map((activity) => (
                   <Table.Row
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                    key={item.id}
+                    key={activity.id}
                   >
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                      {item.farmName}
+                      {activity.farmName}
                     </Table.Cell>
-                    <Table.Cell>{item.activities.toString()}</Table.Cell>
+                    <Table.Cell>{activity.activities.toString()}</Table.Cell>
 
-                    <Table.Cell>{item.activityDate}</Table.Cell>
+                    <Table.Cell>{activity.activityDate}</Table.Cell>
 
-                    <Table.Cell>{item.landSize}</Table.Cell>
-                    <Table.Cell>{item.sprayingDate}</Table.Cell>
-                    <Table.Cell>{item.chemicalSprayed}</Table.Cell>
-                    <Table.Cell>{item.chemicalApplicationRate}</Table.Cell>
-                    <Table.Cell>{item.supervisorName}</Table.Cell>
-                    <Table.Cell>{item.supervisorContact}</Table.Cell>
-                    <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                    <Table.Cell>{activity.landSize}</Table.Cell>
+                    <Table.Cell>{activity.sprayingDate}</Table.Cell>
+                    <Table.Cell>{`${
+                      activity.chemicalSprayed
+                        ? activity.chemicalSprayed
+                        : "none"
+                    }`}</Table.Cell>
+                    <Table.Cell>{`${
+                      activity.chemicalApplicationRate
+                        ? activity.chemicalApplicationRate
+                        : "none"
+                    }`}</Table.Cell>
+                    <Table.Cell>{`${
+                      activity.supervisorContact
+                        ? activity.supervisorContact
+                        : "none"
+                    }`}</Table.Cell>
+                    <Table.Cell>{`${
+                      activity.supervisorName ? activity.supervisorName : "none"
+                    }`}</Table.Cell>
+                    <Table.Cell>{`${
+                      activity.supervisorQualification
+                        ? activity.supervisorQualification
+                        : "none"
+                    }`}</Table.Cell>
                     <Table.Cell>
                       <div
                         className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
-                        onClick={() => handleDeleteActivity(item.id)}
+                        onClick={() => handleDeleteActivity(activity.id)}
                       >
                         <span className="text-white">
                           <MdDelete />

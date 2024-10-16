@@ -1,7 +1,7 @@
 import React from "react";
 import { LandPreparationForm } from "../components";
 
-const LandPreparationActivities = () => {
+const AddLandPreparationActivity = () => {
   return (
     <div>
       <LandPreparationForm />
@@ -9,4 +9,4 @@ const LandPreparationActivities = () => {
   );
 };
 
-export default LandPreparationActivities;
+export default AddLandPreparationActivity;

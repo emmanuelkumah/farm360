@@ -86,7 +86,7 @@ const LandPreparationForm = () => {
           <div className="my-4">
             <Label
               htmlFor="activity"
-              value="Select land preparation activity"
+              value="Select the land preparation activity"
               className="my-2 font-semibold text-xl"
             />
 
@@ -110,11 +110,36 @@ const LandPreparationForm = () => {
               className="my-2"
             />
           </div>
+          <div className="my-2">
+            <Label htmlFor="activity" className="text-md font-semibold my-2">
+              Activity date
+            </Label>
+            <Datepicker
+              id="activity"
+              placeholder="Select activity date"
+              maxDate={defaultValue}
+              name="activityDate"
+              value={activityDate}
+              onSelectedDateChanged={(date) => handleDateChange(date)}
+            />
+          </div>
+          <Label htmlFor="landsize" className="my-2 text-md">
+            Land size (acres)
+          </Label>
+          <TextInput
+            id="landsize"
+            type="number"
+            name="landSize"
+            min={1}
+            required
+            placeholder="Enter land size"
+            defaultValue=""
+          />
           {isSprayingActivity && (
             <div>
               <section className="my-2">
                 <div>
-                  <Label htmlFor="chemical" className="my-2">
+                  <Label htmlFor="chemical" className="my-4">
                     Chemical sprayed
                   </Label>
                   <TextInput
@@ -126,8 +151,8 @@ const LandPreparationForm = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="entry" className="my-2">
-                    Rate of application (ml) (optional)
+                  <Label htmlFor="entry" className="my-4">
+                    Rate of application (ml)
                   </Label>
                   <TextInput
                     type="number"
@@ -205,32 +230,6 @@ const LandPreparationForm = () => {
               </section>
             </div>
           )}
-
-          <div className="my-2">
-            <Label htmlFor="activity" className="text-md font-semibold my-2">
-              Select date of activity
-            </Label>
-            <Datepicker
-              id="activity"
-              placeholder="Select activity date"
-              maxDate={defaultValue}
-              name="activityDate"
-              value={activityDate}
-              onSelectedDateChanged={(date) => handleDateChange(date)}
-            />
-          </div>
-          <Label htmlFor="landsize" className="my-2 text-md">
-            Land size (acres)
-          </Label>
-          <TextInput
-            id="landsize"
-            type="number"
-            name="landSize"
-            min={1}
-            required
-            placeholder="Enter land size"
-            defaultValue=""
-          />
         </div>
 
         <Button className="w-full mt-10" type="submit">

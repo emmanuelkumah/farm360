@@ -18,7 +18,7 @@ export { default as PlantingActivities } from "./PlantingActivities";
 export { default as PrePlantingActvities } from "./PrePlantingActivities";
 export { default as FertilizerActivities } from "./FertilizerActivities";
 export { default as WeedControlActivities } from "./ViewWeedControlActivities";
-export { default as LandPreparationActivities } from "./LandPreparationActivities";
+export { default as AddLandPreparationActivity } from "./AddLandPreparationActivity";
 export { default as Sales } from "./Sales";
 export { default as Storage } from "./Storage";
 export { default as PestControlActivities } from "./PestControlActivities";
