@@ -23,11 +23,6 @@ const WeedControlActivitiesTable = ({ data }) => {
     setSearch(e.target.value);
   };
 
-  const handleEditActivity = (id) => {
-    console.log(id);
-    // navigation.navigate(`/edit-pre-planting-activity/${id}`);
-  };
-
   const handleDeleteActivity = async (id) => {
     try {
       await axiosbaseURL.delete(`farm/activity/weed-control/${id}`);
@@ -127,10 +122,7 @@ const WeedControlActivitiesTable = ({ data }) => {
                   </Table.Cell>
                   <Table.Cell>
                     <Link to={`edit/${activity.id}`}>
-                      <div
-                        className="text-md flex  p-2 cursor-pointer  hover:bg-secondary hover:text-white hover:rounded-lg focus: bg-main"
-                        onClick={() => handleEditActivity(activity.id)}
-                      >
+                      <div className="text-md flex  p-2 cursor-pointer  hover:bg-secondary hover:text-white hover:rounded-lg focus: bg-main">
                         <span className="text-white">
                           <MdEdit />
                         </span>

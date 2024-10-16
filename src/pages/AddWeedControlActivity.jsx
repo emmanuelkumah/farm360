@@ -1,11 +1,11 @@
 import React from "react";
 import { WeedControlForm } from "../components";
-const WeedControl = () => {
+const AddWeedControlActivity = () => {
   return (
     <div>
-      <WeedControlForm />
+      <WeedControlForm method="post" />
     </div>
   );
 };
 
-export default WeedControl;
+export default AddWeedControlActivity;

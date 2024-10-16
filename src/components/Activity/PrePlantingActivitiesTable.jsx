@@ -33,10 +33,7 @@ const PrePlantingActivitiesTable = ({ data }) => {
       console.error("Error deleting planting activity:", error);
     }
   };
-  const handleEditActivity = (id) => {
-    console.log(id);
-    // navigation.navigate(`/edit-pre-planting-activity/${id}`);
-  };
+
   return (
     <div className="container mx-auto">
       <div>
@@ -144,10 +141,7 @@ const PrePlantingActivitiesTable = ({ data }) => {
                       </Table.Cell>
                       <Table.Cell>
                         <Link to={`edit/${activity.id}`}>
-                          <div
-                            className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
-                            onClick={() => handleEditActivity(activity.id)}
-                          >
+                          <div className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary">
                             <span className="text-white">
                               <MdEdit />
                             </span>

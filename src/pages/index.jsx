@@ -30,7 +30,7 @@ export { default as EditUser } from "./EditUser";
 export { default as FarmActivities } from "./FarmActivities";
 export { default as AddPrePlantingActivity } from "./AddPrePlantingActivity";
 export { default as Planting } from "./Planting";
-export { default as WeedControl } from "./WeedControl";
+export { default as AddWeedControlActivity } from "./AddWeedControlActivity";
 export { default as Fertilizer } from "./Fertilizer";
 export { default as PestControl } from "./PestControl";
 export { default as Harvesting } from "./Harvesting";

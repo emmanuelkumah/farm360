@@ -5,7 +5,6 @@ import { useLoaderData } from "react-router-dom";
 
 const ViewWeedControlActivities = () => {
   const { data } = useLoaderData();
-  console.log("weed control data", data);
   return (
     <div className="container mx-auto">
       <WeedControlActivitiesTable data={data} />
@@ -17,7 +16,6 @@ export default ViewWeedControlActivities;
 
 export const loader = ({ params }) => {
   const { farmId } = params;
-  console.log(farmId);
   const response = axiosbaseURL.get(`/farm/${farmId}/activities/weed-control`);
 
   if (

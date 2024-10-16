@@ -35,7 +35,7 @@ import {
   NewUser,
   EditUser,
   Planting,
-  WeedControl,
+  AddWeedControlActivity,
   Fertilizer,
   PestControl,
   Harvesting,
@@ -269,7 +269,7 @@ const router = createBrowserRouter([
           },
           {
             path: "weed-control",
-            element: <WeedControl />,
+            element: <AddWeedControlActivity />,
             action: weedControlAction,
           },
           {

@@ -512,7 +512,6 @@ export const action = async ({ request, params }) => {
         `/farm/activity/pre-planting/${activityId}`,
         formData
       );
-      console.log("updated", response);
       toast.success("Pre planting  data updated successfully!");
       return redirect("/app/farms");
     } catch (error) {
