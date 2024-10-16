@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import {
   Button,
   Label,
@@ -16,12 +16,17 @@ import BackButton from "../BackButton";
 import { axiosbaseURL } from "../../api/axios";
 import { toast } from "react-toastify";
 
-const LandPreparationForm = () => {
-  const [activityDate, setActivityDate] = useState("");
+const LandPreparationForm = ({ data, method }) => {
+  const [actDate, setActDate] = useState("");
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [isSprayingActivity, setIsSprayingActivity] = useState(false);
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
-  const [qualification, setQualification] = useState("");
+  const [defaultSupervisorQualification, setDefaultSupervisorQualification] =
+    useState("MOFA");
+  const [updateSupervisorQualification, setUpdateSupervisorQualification] =
+    useState("");
+  const [isCheckedItem, setIsCheckedItem] = useState(false);
+  console.log(actDate);
 
   const landactivities = [
     { id: 1, name: "Clearing" },
@@ -38,18 +43,9 @@ const LandPreparationForm = () => {
 
   const defaultValue = new Date();
 
-  const handleActivityChange = (e) => {
-    setActivity(e.target.value);
-    if (e.target.value === "Spraying") {
-      setIsSprayingActivity(!isSprayingActivity);
-    } else {
-      setIsSprayingActivity(false);
-    }
-  };
-
   const handleLandActivityChange = (e) => {
     const value = e.target.value;
-    if (value === "SPRAYING") {
+    if (value === "Spraying") {
       setIsSprayingActivity(!isSprayingActivity);
     }
     setSelectedActivities((prev) =>
@@ -58,16 +54,20 @@ const LandPreparationForm = () => {
         : [...prev, value]
     );
   };
-  const handleDateChange = (date) => {
+  const handleActivityDate = (date) => {
     const formattedDate = date.toISOString();
-    setActivityDate(formattedDate);
+    setActDate(formattedDate);
   };
   const handleSupervisorQualification = (e) => {
-    setQualification(e.target.value);
+    if (data) {
+      setUpdateSupervisorQualification(e.target.value);
+    }
     if (e.target.value === "Others") {
+      setDefaultSupervisorQualification(e.target.value);
       setHasOtherQualification(!hasOtherQualification);
     } else {
-      setHasOtherQualification(false);
+      setDefaultSupervisorQualification(e.target.value);
+      setHasOtherQualification(hasOtherQualification);
     }
   };
 
@@ -81,7 +81,7 @@ const LandPreparationForm = () => {
           <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
         </Alert>
       ) : null}
-      <Form className="container mx-auto w-full" method="post">
+      <Form className="container mx-auto w-full" method={method}>
         <div className="flex flex-col">
           <div className="my-4">
             <Label
@@ -90,19 +90,22 @@ const LandPreparationForm = () => {
               className="my-2 font-semibold text-xl"
             />
 
-            {landactivities.map((activity) => (
-              <div className="flex items-center gap-2" key={activity.id}>
-                <Checkbox
-                  id={`land-activity-${activity.name}`}
-                  value={activity.name.toUpperCase()}
-                  name="landActivity"
-                  onChange={handleLandActivityChange}
-                />
-                <Label htmlFor={`land-activity-${activity.name}`}>
-                  {activity.name}
-                </Label>
-              </div>
-            ))}
+            {landactivities.map((activity) => {
+              return (
+                <div className="flex items-center gap-2" key={activity.id}>
+                  <Checkbox
+                    id={`land-activity-${activity.name}`}
+                    value={activity.name}
+                    name="landActivity"
+                    onChange={handleLandActivityChange}
+                  />
+
+                  <Label htmlFor={`land-activity-${activity.name}`}>
+                    {activity.name}
+                  </Label>
+                </div>
+              );
+            })}
             <TextInput
               name="selectedActivities"
               value={selectedActivities}
@@ -116,11 +119,11 @@ const LandPreparationForm = () => {
             </Label>
             <Datepicker
               id="activity"
-              placeholder="Select activity date"
+              placeholder="Select date"
+              value={data ? data.activityDate : actDate}
+              onSelectedDateChanged={(date) => handleActivityDate(date)}
               maxDate={defaultValue}
               name="activityDate"
-              value={activityDate}
-              onSelectedDateChanged={(date) => handleDateChange(date)}
             />
           </div>
           <Label htmlFor="landsize" className="my-2 text-md">
@@ -133,7 +136,7 @@ const LandPreparationForm = () => {
             min={1}
             required
             placeholder="Enter land size"
-            defaultValue=""
+            defaultValue={data ? data.landSize : ""}
           />
           {isSprayingActivity && (
             <div>
@@ -148,6 +151,7 @@ const LandPreparationForm = () => {
                     required
                     placeholder="Enter chemical sprayed"
                     id="chemical"
+                    defaultValue={data ? data.chemicalSprayed : ""}
                   />
                 </div>
                 <div>
@@ -160,6 +164,7 @@ const LandPreparationForm = () => {
                     placeholder="Enter rate of application"
                     id="entry"
                     name="chemicalApplicationRate"
+                    defaultValue={data ? data.chemicalApplicationRate : ""}
                   />
                 </div>
               </section>
@@ -176,7 +181,7 @@ const LandPreparationForm = () => {
                     placeholder="Enter name of supervisor"
                     id="contact"
                     name="supervisorName"
-                    defaultValue=""
+                    defaultValue={data ? data.supervisorName : ""}
                   />
                 </div>
                 <div>
@@ -191,7 +196,7 @@ const LandPreparationForm = () => {
                     placeholder="Enter contact of supervisor"
                     id="contact"
                     name="supervisorContact"
-                    defaultValue=""
+                    defaultValue={data ? data.supervisorContact : ""}
                   />
                 </div>
                 <div className="my-4">
@@ -205,7 +210,11 @@ const LandPreparationForm = () => {
                     id="cert"
                     required
                     name="supervisorQualification"
-                    value={qualification}
+                    value={
+                      updateSupervisorQualification
+                        ? updateSupervisorQualification
+                        : defaultSupervisorQualification
+                    }
                     onChange={handleSupervisorQualification}
                   >
                     <option>Select certificate of supervisor</option>
@@ -246,17 +255,20 @@ export const action = async ({ request, params }) => {
   const data = await request.formData();
 
   function verifyFormFields(data) {
-    const activites = data.get("selectedActivities");
+    const activities = data.get("selectedActivities");
+
+    const convertActivitiesToUpperCase = activities.toUpperCase().split(",");
+    // console.log("activities", activities.toUpperCase().split(","));
     const supervisorQualification = getSupervisorQualification(
       data.get("supervisorQualification")
     );
-    if (activites.includes("SPRAYING")) {
+    if (activities.includes("Spraying")) {
       return {
         farmId: Number(params.farmId),
         landSize: Number(data.get("landSize")),
         chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
         chemicalSprayed: data.get("chemicalSprayed"),
-        activities: data.get("selectedActivities").split(","),
+        activities: convertActivitiesToUpperCase,
         supervisorName: data.get("supervisorName"),
         supervisorContact: data.get("supervisorContact"),
         supervisorQualification: supervisorQualification,
@@ -266,21 +278,11 @@ export const action = async ({ request, params }) => {
     return {
       farmId: Number(params.farmId),
       landSize: Number(data.get("landSize")),
-      activities: data.get("selectedActivities").split(","),
+      activities: convertActivitiesToUpperCase,
       activityDate: data.get("activityDate"),
     };
   }
   const formData = verifyFormFields(data);
-  console.log(formData);
-
-  // function getChemicalSprayed(chemicalSprayed) {
-  //   console.log("sprayed", chemicalSprayed);
-  //   if (chemicalSprayed === null) {
-  //     return "none";
-  //   }
-  //   return chemicalSprayed;
-  // }
-  // const chemicalSprayed = getChemicalSprayed(data.get("chemicalSprayed"));
 
   function getSupervisorQualification(qualification) {
     if (qualification === "Others") {
@@ -289,25 +291,29 @@ export const action = async ({ request, params }) => {
     return qualification;
   }
 
-  // const formData = {
-  //   farmId: Number(params.farmId),
-  //   landSize: Number(data.get("landSize")),
-  //   chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
-  //   chemicalSprayed: chemicalSprayed,
-  //   activities: data.get("selectedActivities").split(","),
-  //   supervisorName: data.get("supervisorName"),
-  //   supervisorContact: data.get("supervisorContact"),
-  //   supervisorQualification: supervisorQualification,
-  //   activityDate: data.get("activityDate"),
-  // };
+  const method = request.method;
+  const activityId = params.activityId;
+
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/land-preparation/${activityId}`,
+        formData
+      );
+
+      toast.success("Land preparation data updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/land-preparation",
       formData
     );
-    console.log(response);
-
-    toast.success("Land Preparation data submitted successfully!");
+    toast.success("Land preparation data submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
     return error.response;

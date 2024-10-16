@@ -45,6 +45,7 @@ import {
   EditWeedControlActivity,
   AddPrePlantingActivity,
   AddLandPreparationActivity,
+  EditLandPreparationActivity,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -54,6 +55,7 @@ import { loader as farmDetailsLoader } from "./pages/ViewFarm";
 import { loader as storageLoader } from "./pages/ViewStorageActivities";
 import { loader as loadPreplantingData } from "./pages/EditPreplantingActivity";
 import { loader as loadWeedControlData } from "./pages/EditWeedControlActivity";
+import { loader as loadLandPreparationData } from "./pages/EditLandPreparationActivity";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -100,6 +102,7 @@ import { action as editPreplantingAction } from "./components/Activity/PrePlanti
 import { action as transportationAction } from "./components/Activity/TransportationForm";
 import { action as storageAction } from "./components/Activity/StorageForm";
 import { action as landPrepAction } from "./components/Activity/LandPreparationForm";
+import { action as editLandPreparationAction } from "./components/Activity/LandPreparationForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -369,6 +372,22 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "land-preparation",
+            children: [
+              {
+                index: true,
+                element: <ViewLandPreparationActivities />,
+                loader: landPreparationLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: <EditLandPreparationActivity />,
+                loader: loadLandPreparationData,
+                action: editLandPreparationAction,
+              },
+            ],
+          },
+          {
             path: "fertilizing",
             element: <ViewFertilizingActivities />,
             loader: fertilizerLoader,
@@ -398,11 +417,7 @@ const router = createBrowserRouter([
             element: <ViewShipmentActivities />,
             loader: shipmentLoader,
           },
-          {
-            path: "land-preparation",
-            element: <ViewLandPreparationActivities />,
-            loader: landPreparationLoader,
-          },
+
           {
             path: "transportation",
             element: <ViewTransportationActivities />,

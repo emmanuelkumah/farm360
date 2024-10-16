@@ -45,3 +45,4 @@ export { default as ViewLandPreparationActivities } from "./ViewLandPreparationA
 export { default as ViewFertilizingActivities } from "./ViewFertilizingActivities";
 export { default as EditPreplantingActivity } from "./EditPreplantingActivity";
 export { default as EditWeedControlActivity } from "./EditWeedControlActivity";
+export { default as EditLandPreparationActivity } from "./EditLandPreparationActivity";

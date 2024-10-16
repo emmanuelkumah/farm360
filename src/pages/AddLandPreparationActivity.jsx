@@ -4,7 +4,7 @@ import { LandPreparationForm } from "../components";
 const AddLandPreparationActivity = () => {
   return (
     <div>
-      <LandPreparationForm />
+      <LandPreparationForm method="post" />
     </div>
   );
 };

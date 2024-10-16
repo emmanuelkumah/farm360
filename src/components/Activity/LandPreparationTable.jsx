@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
-import { useNavigation } from "react-router-dom";
+import { useNavigation, Link } from "react-router-dom";
 import { axiosbaseURL } from "../../api/axios";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
 import { toast } from "react-toastify";
 
 const LandPreparationTable = ({ data }) => {
@@ -78,6 +78,7 @@ const LandPreparationTable = ({ data }) => {
               <Table.HeadCell>Supervisor contact</Table.HeadCell>
               <Table.HeadCell>Supervisor qualification</Table.HeadCell>
               <Table.HeadCell></Table.HeadCell>
+              <Table.HeadCell></Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
               {currentActivities
@@ -123,6 +124,16 @@ const LandPreparationTable = ({ data }) => {
                         ? activity.supervisorQualification
                         : "none"
                     }`}</Table.Cell>
+                    <Table.Cell>
+                      <Link to={`edit/${activity.id}`}>
+                        <div className="text-md flex  p-2 cursor-pointer  hover:bg-secondary hover:text-white hover:rounded-lg focus: bg-main">
+                          <span className="text-white">
+                            <MdEdit />
+                          </span>
+                          <p className="text-white">Edit</p>
+                        </div>
+                      </Link>
+                    </Table.Cell>
                     <Table.Cell>
                       <div
                         className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
