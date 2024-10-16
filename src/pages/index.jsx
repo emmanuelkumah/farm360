@@ -29,7 +29,7 @@ export { default as NewUser } from "./NewUser";
 export { default as EditUser } from "./EditUser";
 export { default as FarmActivities } from "./FarmActivities";
 export { default as AddPrePlantingActivity } from "./AddPrePlantingActivity";
-export { default as Planting } from "./Planting";
+export { default as AddPlantingActivity } from "./AddPlantingActivity";
 export { default as AddWeedControlActivity } from "./AddWeedControlActivity";
 export { default as Fertilizer } from "./Fertilizer";
 export { default as PestControl } from "./PestControl";
@@ -46,3 +46,4 @@ export { default as ViewFertilizingActivities } from "./ViewFertilizingActivitie
 export { default as EditPreplantingActivity } from "./EditPreplantingActivity";
 export { default as EditWeedControlActivity } from "./EditWeedControlActivity";
 export { default as EditLandPreparationActivity } from "./EditLandPreparationActivity";
+export { default as EditPlantingActivity } from "./EditPlantingActivity";

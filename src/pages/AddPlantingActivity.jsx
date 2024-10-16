@@ -1,12 +1,12 @@
 import React from "react";
 import PlantingForm from "../components/Activity/PlantingForm";
 
-const Planting = () => {
+const AddPlantingActivity = () => {
   return (
     <div>
-      <PlantingForm />
+      <PlantingForm method="post" />
     </div>
   );
 };
 
-export default Planting;
+export default AddPlantingActivity;

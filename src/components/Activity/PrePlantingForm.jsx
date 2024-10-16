@@ -28,7 +28,6 @@ const PrePlantingForm = ({ data, method }) => {
   const [isTreated, setIsTreated] = useState("yes");
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
-  const [qualification, setQualification] = useState("");
   const [activityDate, setActivityDate] = useState("");
   const [defaultSupervisorQualification, setDefaultSupervisorQualification] =
     useState("MOFA");

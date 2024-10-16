@@ -34,7 +34,6 @@ import {
   Error,
   NewUser,
   EditUser,
-  Planting,
   AddWeedControlActivity,
   Fertilizer,
   PestControl,
@@ -46,6 +45,8 @@ import {
   AddPrePlantingActivity,
   AddLandPreparationActivity,
   EditLandPreparationActivity,
+  EditPlantingActivity,
+  AddPlantingActivity,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -56,6 +57,7 @@ import { loader as storageLoader } from "./pages/ViewStorageActivities";
 import { loader as loadPreplantingData } from "./pages/EditPreplantingActivity";
 import { loader as loadWeedControlData } from "./pages/EditWeedControlActivity";
 import { loader as loadLandPreparationData } from "./pages/EditLandPreparationActivity";
+import { loader as loadPlantingData } from "./pages/EditPlantingActivity";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -103,6 +105,7 @@ import { action as transportationAction } from "./components/Activity/Transporta
 import { action as storageAction } from "./components/Activity/StorageForm";
 import { action as landPrepAction } from "./components/Activity/LandPreparationForm";
 import { action as editLandPreparationAction } from "./components/Activity/LandPreparationForm";
+import { action as editPlantingAction } from "./components/Activity/PlantingForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -267,7 +270,7 @@ const router = createBrowserRouter([
           },
           {
             path: "planting",
-            element: <Planting />,
+            element: <AddPlantingActivity />,
             action: plangtingAction,
           },
           {
@@ -351,7 +354,9 @@ const router = createBrowserRouter([
               },
               {
                 path: "edit/:activityId",
-                element: "Edit planting activity",
+                element: <EditPlantingActivity />,
+                loader: loadPlantingData,
+                action: editPlantingAction,
               },
             ],
           },

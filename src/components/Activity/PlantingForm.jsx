@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Select,
@@ -16,27 +16,47 @@ import { axiosbaseURL } from "../../api/axios";
 import BackButton from "../BackButton";
 import ActivityHeading from "../ActivityHeading";
 
-const PlantingForm = () => {
+const PlantingForm = ({ data, method }) => {
   const defaultValue = new Date();
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
-  const [qualification, setQualification] = useState("");
+  const [defaultCrop, setDefaultCrop] = useState("Soya");
+  const [updateCrop, setUpdateCrop] = useState("");
   const [activityDate, setActivityDate] = useState("");
+  const [defaultSupervisorQualification, setDefaultSupervisorQualification] =
+    useState("MOFA");
+  const [updateSupervisorQualification, setUpdateSupervisorQualification] =
+    useState("");
 
   const errors = useActionData();
   const errorMessage = errors?.data;
+
+  useEffect(() => {
+    if (data) {
+      setUpdateCrop(data.cropName);
+    }
+  }, []);
 
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString();
     console.log(formattedDate);
     setActivityDate(formattedDate);
   };
+
   const handleSupervisorQualification = (e) => {
-    setQualification(e.target.value);
+    if (data) {
+      setUpdateSupervisorQualification(e.target.value);
+    }
     if (e.target.value === "Others") {
+      setDefaultSupervisorQualification(e.target.value);
       setHasOtherQualification(!hasOtherQualification);
     } else {
-      setHasOtherQualification(false);
+      setDefaultSupervisorQualification(e.target.value);
+      setHasOtherQualification(hasOtherQualification);
     }
+  };
+
+  const handleCropUpdate = (e) => {
+    setUpdateCrop(e.target.value);
   };
 
   return (
@@ -49,7 +69,7 @@ const PlantingForm = () => {
           <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
         </Alert>
       ) : null}
-      <Form className="w-full" method="post">
+      <Form className="w-full" method={method}>
         <div className="my-4">
           <Label htmlFor="planting" className="font-semibold my-4">
             Date of planting
@@ -59,7 +79,7 @@ const PlantingForm = () => {
             name="activityDate"
             placeholder="Select planting date"
             maxDate={defaultValue}
-            value={activityDate}
+            value={data ? data.activityDate : activityDate}
             onSelectedDateChanged={(date) => handleDateChange(date)}
             required
           />
@@ -72,11 +92,15 @@ const PlantingForm = () => {
             className="my-2 font-semibold"
           />
 
-          <Select id="crop" required name="cropName" defaultValue="">
+          <Select
+            id="crop"
+            required
+            name="cropName"
+            value={updateCrop ? updateCrop : defaultCrop}
+            onChange={handleCropUpdate}
+          >
             <option>Select name of crop</option>
             <option value="soya">Soya</option>
-            <option value="cowpea">Cowpea</option>
-            <option value="groundnut">Groundnut</option>
           </Select>
         </div>
         <div className="my-4">
@@ -91,7 +115,7 @@ const PlantingForm = () => {
             placeholder="Kilo of seeds planted"
             name="kilosPlanted"
             id="kilo"
-            defaultValue=""
+            defaultValue={data ? data.kilosPlanted : ""}
           />
         </div>
         <div className="my-4">
@@ -106,7 +130,7 @@ const PlantingForm = () => {
             placeholder="Enter land size covered"
             id="size"
             name="landSizeCovered"
-            defaultValue=""
+            defaultValue={data ? data.landSizeCovered : ""}
           />
         </div>
         <div className="my-4">
@@ -121,7 +145,7 @@ const PlantingForm = () => {
             placeholder="Enter name of supervisor"
             id="supervisor"
             name="supervisorName"
-            defaultValue=""
+            defaultValue={data ? data.supervisorName : ""}
           />
         </div>
         <div className="my-4">
@@ -137,7 +161,7 @@ const PlantingForm = () => {
             id="contact"
             name="supervisorContact"
             maxLength={10}
-            defaultValue=""
+            defaultValue={data ? data.supervisorContact : ""}
           />
         </div>
         <div className="my-4">
@@ -151,7 +175,11 @@ const PlantingForm = () => {
             id="cert"
             required
             name="supervisorQualification"
-            value={qualification}
+            value={
+              updateSupervisorQualification
+                ? updateSupervisorQualification
+                : defaultSupervisorQualification
+            }
             onChange={handleSupervisorQualification}
           >
             <option>Select certificate of supervisor</option>
@@ -208,12 +236,40 @@ export const action = async ({ request, params }) => {
   };
 
   console.log("Form data:", formData);
+  // try {
+  //   const response = await axiosbaseURL.post(
+  //     "/farm/activity/planting",
+  //     formData
+  //   );
+  //   toast.success("Planting  data submitted successfully!");
+  //   return redirect("/app/farms");
+  // } catch (error) {
+  //   return error.response;
+  // }
+
+  const method = request.method;
+  const activityId = params.activityId;
+
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/planting/${activityId}`,
+        formData
+      );
+
+      toast.success("Planting data updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/planting",
       formData
     );
-    toast.success("Planting  data submitted successfully!");
+    toast.success("Planting activity  submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
     return error.response;
