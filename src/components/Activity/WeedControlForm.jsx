@@ -15,22 +15,43 @@ import { axiosbaseURL } from "../../api/axios";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
 
-const WeedControlForm = () => {
+const WeedControlForm = ({ data, method }) => {
   const [activityDate, setActivityDate] = useState("");
+  const [defaultWeedControlMethod, setDefaultWeedControlMethod] =
+    useState("CHEMICAL");
+  const [updateWeedControlMethod, setUpdateWeedControlMethod] = useState("");
   const [isChemical, setIsChemical] = useState(false);
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
-  const [qualification, setQualification] = useState("");
+  const [defaultSupervisorQualification, setDefaultSupervisorQualification] =
+    useState("MOFA");
+  const [updateSupervisorQualification, setUpdateSupervisorQualification] =
+    useState("");
   const [weedControl, setWeedControl] = useState("");
 
   const errors = useActionData();
   const errorMessage = errors?.data;
 
+  useEffect(() => {
+    if (data) {
+      setUpdateWeedControlMethod(data.weedControlMethod);
+      displayOtherFields(data);
+    }
+  }, []);
+
+  const displayOtherFields = (data) => {
+    if (data.weedControlMethod === "CHEMICAL") {
+      setIsChemical(true);
+    }
+  };
+
   const handleSelectWeedControl = (e) => {
-    setWeedControl(e.target.value);
-    if (e.target.value === "CHEMICAL") {
-      setIsChemical(!isChemical);
-    } else {
+    if (e.target.value === "MANUAL") {
       setIsChemical(false);
+      setUpdateWeedControlMethod(e.target.value);
+    }
+    if (e.target.value === "CHEMICAL") {
+      setIsChemical(true);
+      setUpdateWeedControlMethod(e.target.value);
     }
   };
 
@@ -62,7 +83,7 @@ const WeedControlForm = () => {
             <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
           </Alert>
         ) : null}
-        <Form className="container mx-auto w-full md:w-[70%]" method="post">
+        <Form className="container mx-auto w-full md:w-[70%]" method={method}>
           <div className="my-4">
             <Label htmlFor="weed" className="font-semibold my-2">
               Date of weed control
@@ -73,7 +94,7 @@ const WeedControlForm = () => {
               placeholder="Select date of weed control"
               maxDate={new Date()}
               required
-              value={activityDate}
+              value={data ? data.activityDate : activityDate}
               onSelectedDateChanged={(date) => handleDateChange(date)}
             />
           </div>
@@ -90,7 +111,11 @@ const WeedControlForm = () => {
               required
               name="weedControlMethod"
               onChange={handleSelectWeedControl}
-              value={weedControl}
+              value={
+                updateWeedControlMethod
+                  ? updateWeedControlMethod
+                  : defaultWeedControlMethod
+              }
             >
               <option>Select method of weed control</option>
               <option value="MANUAL">Manual</option>
@@ -98,104 +123,104 @@ const WeedControlForm = () => {
             </Select>
           </div>
           {isChemical && (
-            <div className="my-4">
-              <Label
-                htmlFor="chemical"
-                value="Name of chemical"
-                className="my-2 font-semibold"
-              />
-              <TextInput
-                type="text"
-                required
-                placeholder="Enter name of chemical"
-                id="chemical"
-                name="chemicalName"
-                defaultValue=""
-              />
-            </div>
-          )}
+            <div>
+              <div className="my-4">
+                <Label
+                  htmlFor="chemical"
+                  value="Name of chemical"
+                  className="my-2 font-semibold"
+                />
+                <TextInput
+                  type="text"
+                  required
+                  placeholder="Enter name of chemical"
+                  id="chemical"
+                  name="chemicalName"
+                  defaultValue={data ? data.chemicalName : ""}
+                />
+              </div>
+              <div className="my-4">
+                <Label
+                  htmlFor="rate"
+                  value="Rate of chemical application"
+                  className="my-2 font-semibold"
+                />
+                <TextInput
+                  type="text"
+                  required
+                  placeholder="Enter rate of application"
+                  id="rate"
+                  name="chemicalApplicationRate"
+                  defaultValue={data ? data.chemicalApplicationRate : ""}
+                />
+              </div>
+              <div className="my-4">
+                <Label
+                  htmlFor="supervisor"
+                  value="Supervisor"
+                  className="my-2 font-semibold"
+                />
+                <TextInput
+                  type="text"
+                  required
+                  placeholder="Enter name of supervisor"
+                  id="supervisor"
+                  name="supervisorName"
+                  defaultValue={data ? data.supervisorName : ""}
+                />
+              </div>
+              <div className="my-4">
+                <Label
+                  htmlFor="contact"
+                  value="Contact of the supervisor"
+                  className="my-2 font-semibold"
+                />
+                <TextInput
+                  type="text"
+                  required
+                  placeholder="Enter contact of supervisor"
+                  id="contact"
+                  name="supervisorContact"
+                  defaultValue={data ? data.supervisorContact : ""}
+                />
+              </div>
+              <div className="my-4">
+                <Label
+                  htmlFor="cert"
+                  value="Certificate"
+                  className="my-2 font-semibold"
+                />
 
-          <div className="my-4">
-            <Label
-              htmlFor="rate"
-              value="Rate of chemical application"
-              className="my-2 font-semibold"
-            />
-            <TextInput
-              type="text"
-              required
-              placeholder="Enter rate of application"
-              id="rate"
-              name="chemicalApplicationRate"
-              defaultValue=""
-            />
-          </div>
-          <div className="my-4">
-            <Label
-              htmlFor="supervisor"
-              value="Supervisor"
-              className="my-2 font-semibold"
-            />
-            <TextInput
-              type="text"
-              required
-              placeholder="Enter name of supervisor"
-              id="supervisor"
-              name="supervisorName"
-              defaultValue=""
-            />
-          </div>
-          <div className="my-4">
-            <Label
-              htmlFor="contact"
-              value="Contact of the supervisor"
-              className="my-2 font-semibold"
-            />
-            <TextInput
-              type="text"
-              required
-              placeholder="Enter name of supervisor"
-              id="contact"
-              name="supervisorContact"
-              defaultValue=""
-              helperText={
-                <>
-                  <p>Prefix phone number with 233 Eg.233244555333</p>
-                </>
-              }
-            />
-          </div>
-          <div className="my-4">
-            <Label
-              htmlFor="cert"
-              value="Certificate"
-              className="my-2 font-semibold"
-            />
-
-            <Select
-              id="cert"
-              required
-              name="supervisorQualification"
-              value={qualification}
-              onChange={handleSupervisorQualification}
-            >
-              <option>Select certificate of supervisor</option>
-              <option value="MOFA">MOFA</option>
-              <option value="EPA">EPA</option>
-              <option value="PPRSD/NPPO">PPRSD/NPPO</option>
-              <option value="Others">Others</option>
-            </Select>
-          </div>
-          {hasOtherQualification && (
-            <div className="my-4">
-              <TextInput
-                type="text"
-                required
-                placeholder="Enter other qualification of supervisor"
-                id="supervisor"
-                name="OtherSupervisorQualification"
-                defaultValue=""
-              />
+                <Select
+                  id="cert"
+                  required
+                  name="supervisorQualification"
+                  value={
+                    updateSupervisorQualification
+                      ? updateSupervisorQualification
+                      : defaultSupervisorQualification
+                  }
+                  onChange={handleSupervisorQualification}
+                >
+                  <option>Select certificate of supervisor</option>
+                  <option value="MOFA">MOFA</option>
+                  <option value="EPA">EPA</option>
+                  <option value="PPRSD/NPPO">PPRSD/NPPO</option>
+                  <option value="Others">Others</option>
+                </Select>
+              </div>
+              {hasOtherQualification && (
+                <div className="my-4">
+                  <TextInput
+                    type="text"
+                    required
+                    placeholder="Enter other qualification of supervisor"
+                    id="supervisor"
+                    name="OtherSupervisorQualification"
+                    defaultValue=""
+                  />
+                </div>
+              )}
             </div>
           )}
 
@@ -213,13 +238,41 @@ export default WeedControlForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
+
+  const formData = verifyFormFields(data);
+  console.log("data", formData);
+
+  function verifyFormFields(data) {
+    const supervisorQualification = getSupervisorQualification(
+      data.get("supervisorQualification")
+    );
+    const chemicalUsed = getChemicalUsed(data.get("weedControlMethod"));
+
+    if (data.get("weedControlMethod") === "MANUAL") {
+      return {
+        farmId: Number(params.farmId),
+        weedControlMethod: data.get("weedControlMethod"),
+        activityDate: data.get("activityDate"),
+      };
+    }
+    return {
+      farmId: Number(params.farmId),
+      weedControlMethod: data.get("weedControlMethod"),
+      chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
+      chemicalName: chemicalUsed,
+      supervisorName: data.get("supervisorName"),
+      supervisorContact: data.get("supervisorContact"),
+      supervisorQualification: supervisorQualification,
+      activityDate: data.get("activityDate"),
+    };
+  }
   function getChemicalUsed(control) {
     if (control === "CHEMICAL") {
       return data.get("chemicalName");
     }
     return data.get("weedControlMethod");
   }
-  const chemicalUsed = getChemicalUsed(data.get("weedControlMethod"));
+  // const chemicalUsed = getChemicalUsed(data.get("weedControlMethod"));
 
   function getSupervisorQualification(qualification) {
     if (qualification === "Others") {
@@ -227,20 +280,6 @@ export const action = async ({ request, params }) => {
     }
     return data.get("supervisorQualification");
   }
-  const supervisorQualification = getSupervisorQualification(
-    data.get("supervisorQualification")
-  );
-
-  const formData = {
-    farmId: Number(params.farmId),
-    weedControlMethod: data.get("weedControlMethod"),
-    chemicalApplicationRate: Number(data.get("chemicalApplicationRate")),
-    chemicalName: chemicalUsed,
-    supervisorName: data.get("supervisorName"),
-    supervisorContact: data.get("supervisorContact"),
-    supervisorQualification: supervisorQualification,
-    activityDate: data.get("activityDate"),
-  };
 
   try {
     const response = await axiosbaseURL.post(
@@ -253,22 +292,4 @@ export const action = async ({ request, params }) => {
   } catch (error) {
     return error.response;
   }
-
-  // const response = await axiosbaseURL.post(
-  //   "/farm/activity/weed-control",
-  //   formData
-  // );
-  // console.log("weed response", response);
-
-  // if (
-  //   response.status === 401 ||
-  //   response.status === 404 ||
-  //   response.status === 500 ||
-  //   response.status === 400
-  // ) {
-  //   console.log(response.data);
-  //   throw json({ message: "Could not save data." });
-  // }
-  // toast.success("Weedcontrol  data submitted successfully!");
-  // return redirect("/app/farms");
 };

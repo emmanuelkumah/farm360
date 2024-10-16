@@ -44,3 +44,4 @@ export { default as ViewPrePlantingActivities } from "./ViewPrePlantingActivitie
 export { default as ViewLandPreparationActivities } from "./ViewLandPreparationActivities";
 export { default as ViewFertilizingActivities } from "./ViewFertilizingActivities";
 export { default as EditPreplantingActivity } from "./EditPreplantingActivity";
+export { default as EditWeedControlActivity } from "./EditWeedControlActivity";

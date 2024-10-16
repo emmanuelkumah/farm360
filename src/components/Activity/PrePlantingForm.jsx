@@ -39,7 +39,6 @@ const PrePlantingForm = ({ data, method }) => {
 
   const errors = useActionData();
   const errorMessage = errors?.data;
-  console.log(data);
 
   useEffect(() => {
     if (data) {
@@ -441,14 +440,11 @@ export const action = async ({ request, params }) => {
   }
 
   const formData = verifyFormFields(data, params);
-  console.log("submitted", formData);
   function verifyFormFields(data) {
     const source = fetchPlantingmaterialSource(
       data.get("plantingMaterialSource")
     );
     const treated = convertToBoolean(data.get("plantingMaterialIsTreated"));
-
-    console.log(data.get("plantingMaterialTreatmentMethod"));
 
     const supervisorQualification = getSupervisorQualification(
       data.get("supervisorQualification")

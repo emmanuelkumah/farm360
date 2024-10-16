@@ -43,6 +43,7 @@ import {
   LandPreparationActivities,
   Transportation,
   EditPreplantingActivity,
+  EditWeedControlActivity,
   AddPrePlantingActivity,
 } from "./pages";
 
@@ -52,6 +53,7 @@ import { loader as farmerDetails } from "./pages/ViewFarmer";
 import { loader as farmDetailsLoader } from "./pages/ViewFarm";
 import { loader as storageLoader } from "./pages/ViewStorageActivities";
 import { loader as loadPreplantingData } from "./pages/EditPreplantingActivity";
+import { loader as loadWeedControlData } from "./pages/EditWeedControlActivity";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -337,13 +339,33 @@ const router = createBrowserRouter([
           },
           {
             path: "planting",
-            element: <ViewPlantingActivities />,
-            loader: PlantingLoader,
+            children: [
+              {
+                index: true,
+                element: <ViewPlantingActivities />,
+                loader: PlantingLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: "Edit planting activity",
+              },
+            ],
           },
           {
             path: "weed-control",
-            element: <ViewWeedControlActivities />,
-            loader: weedControlLoader,
+            children: [
+              {
+                index: true,
+                element: <ViewWeedControlActivities />,
+                loader: weedControlLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: <EditWeedControlActivity />,
+                loader: loadWeedControlData,
+                // action: editWeedControlAction,
+              },
+            ],
           },
           {
             path: "fertilizing",
