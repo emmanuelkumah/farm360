@@ -497,16 +497,14 @@ export const action = async ({ request, params }) => {
       activityDate: data.get("activityDate"),
     };
   }
-
-  const method = request.method;
-  const activityId = params.activityId;
-
   function getSupervisorQualification(qualification) {
     if (qualification === "Others") {
       return data.get("OtherSupervisorQualification");
     }
     return data.get("supervisorQualification");
   }
+  const method = request.method;
+  const activityId = params.activityId;
 
   if (method === "PUT") {
     try {

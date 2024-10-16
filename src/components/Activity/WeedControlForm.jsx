@@ -60,11 +60,15 @@ const WeedControlForm = ({ data, method }) => {
     setActivityDate(formattedDate);
   };
   const handleSupervisorQualification = (e) => {
-    setQualification(e.target.value);
+    if (data) {
+      setUpdateSupervisorQualification(e.target.value);
+    }
     if (e.target.value === "Others") {
+      setDefaultSupervisorQualification(e.target.value);
       setHasOtherQualification(!hasOtherQualification);
     } else {
-      setHasOtherQualification(false);
+      setDefaultSupervisorQualification(e.target.value);
+      setHasOtherQualification(hasOtherQualification);
     }
   };
 
@@ -202,14 +206,13 @@ const WeedControlForm = ({ data, method }) => {
                   }
                   onChange={handleSupervisorQualification}
                 >
-                  <option>Select certificate of supervisor</option>
                   <option value="MOFA">MOFA</option>
                   <option value="EPA">EPA</option>
                   <option value="PPRSD/NPPO">PPRSD/NPPO</option>
                   <option value="Others">Others</option>
                 </Select>
               </div>
-              {hasOtherQualification && (
+              {defaultSupervisorQualification === "Others" && (
                 <div className="my-4">
                   <TextInput
                     type="text"
@@ -280,7 +283,22 @@ export const action = async ({ request, params }) => {
     }
     return data.get("supervisorQualification");
   }
+  const method = request.method;
+  const activityId = params.activityId;
 
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/weed-control/${activityId}`,
+        formData
+      );
+      console.log("updated", response);
+      toast.success("Weed control updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/weed-control",

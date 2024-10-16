@@ -97,11 +97,34 @@ const WeedControlActivitiesTable = ({ data }) => {
                   </Table.Cell>
                   <Table.Cell>{activity.activityDate}</Table.Cell>
                   <Table.Cell>{activity.weedControlMethod}</Table.Cell>
-                  <Table.Cell>{activity.chemicalName}</Table.Cell>
-                  <Table.Cell>{activity.chemicalApplicationRate}</Table.Cell>
-                  <Table.Cell>{activity.supervisorName}</Table.Cell>
-                  <Table.Cell>{activity.supervisorContact}</Table.Cell>
-                  <Table.Cell>{activity.supervisorQualification}</Table.Cell>
+                  <Table.Cell>
+                    {`${
+                      activity.chemicalName ? activity.chemicalName : "none"
+                    }`}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {`${
+                      activity.chemicalApplicationRate
+                        ? activity.chemicalApplicationRate
+                        : "none"
+                    }`}
+                  </Table.Cell>
+                  <Table.Cell>{`${
+                    activity.supervisorName ? activity.supervisorName : "none"
+                  }`}</Table.Cell>
+                  <Table.Cell>{`${
+                    activity.supervisorContact
+                      ? activity.supervisorContact
+                      : "none"
+                  }`}</Table.Cell>
+                  <Table.Cell>
+                    {" "}
+                    {`${
+                      activity.supervisorQualification
+                        ? activity.supervisorQualification
+                        : "none"
+                    }`}
+                  </Table.Cell>
                   <Table.Cell>
                     <Link to={`edit/${activity.id}`}>
                       <div

@@ -90,6 +90,7 @@ import { action as addFarmAction } from "./pages/AddFarm";
 import { action as preplantingAction } from "./components/Activity/PrePlantingForm";
 import { action as plangtingAction } from "./components/Activity/PlantingForm";
 import { action as weedControlAction } from "./components/Activity/WeedControlForm";
+import { action as editWeedControlAction } from "./components/Activity/WeedControlForm";
 import { action as fertilizerAction } from "./components/Activity/FertilizerForm";
 import { action as shipmentAction } from "./components/Activity/ShipmentForm";
 import { action as salesAction } from "./components/Activity/SalesForm";
@@ -363,7 +364,7 @@ const router = createBrowserRouter([
                 path: "edit/:activityId",
                 element: <EditWeedControlActivity />,
                 loader: loadWeedControlData,
-                // action: editWeedControlAction,
+                action: editWeedControlAction,
               },
             ],
           },
