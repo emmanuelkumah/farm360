@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Select,
@@ -15,18 +15,32 @@ import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
 import { axiosbaseURL } from "../../api/axios";
 
-const FertilizerForm = () => {
+const FertilizerForm = ({ data, method }) => {
   const [hasFertMethod, setHasFertMethod] = useState(false);
   const [activityDate, setActivityDate] = useState("");
-  const [qualification, setQualification] = useState("");
-  const [hasOtherQualification, setHasOtherQualification] = useState(false);
+  const [fertilizerType, setFertilizerType] = useState("");
+  const [fertilizerName, setFertilizerName] = useState("");
+  const [defaultSupervisorQualification, setDefaultSupervisorQualification] =
+    useState("MOFA");
+  const [updateSupervisorQualification, setUpdateSupervisorQualification] =
+    useState("");
 
+  console.log(data);
   const defaultValue = new Date();
 
   const errors = useActionData();
   const errorMessage = errors?.data;
 
+  useEffect(() => {
+    if (data) {
+      setFertilizerType(data.fertilizerType);
+      setActivityDate(data.activityDate);
+      setFertilizerName(data.fertilizerName);
+    }
+  }, []);
+
   const handleFertMethod = (e) => {
+    setFertilizerName(e.target.value);
     if (e.target.value === "Other") {
       setHasFertMethod(!hasFertMethod);
     } else {
@@ -35,17 +49,25 @@ const FertilizerForm = () => {
   };
 
   const handleSupervisorQualification = (e) => {
-    setQualification(e.target.value);
+    if (data) {
+      setUpdateSupervisorQualification(e.target.value);
+    }
     if (e.target.value === "Others") {
+      setDefaultSupervisorQualification(e.target.value);
       setHasOtherQualification(!hasOtherQualification);
     } else {
-      setHasOtherQualification(false);
+      setDefaultSupervisorQualification(e.target.value);
+      setHasOtherQualification(hasOtherQualification);
     }
   };
 
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString(); // Formats to "YYYY-MM-DD"
     setActivityDate(formattedDate);
+  };
+
+  const handleFertilzerTypeChange = (e) => {
+    setFertilizerType(e.target.value);
   };
 
   return (
@@ -58,7 +80,7 @@ const FertilizerForm = () => {
           <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
         </Alert>
       ) : null}
-      <Form className="container mx-auto w-full md:w-[70%]" method="post">
+      <Form className="container mx-auto w-full md:w-[70%]" method={method}>
         <div className="my-4">
           <Label htmlFor="date" className="font-semibold my-2">
             Date of application
@@ -84,7 +106,8 @@ const FertilizerForm = () => {
             id="fertilizer"
             required
             name="fertilizerType"
-            defaultValue=""
+            value={fertilizerType}
+            onChange={handleFertilzerTypeChange}
           >
             <option>Select the type of fertilizer</option>
             <option value="LIQUID">Liquid</option>
@@ -102,7 +125,7 @@ const FertilizerForm = () => {
             id="method"
             required
             name="fertilizerName"
-            defaultValue=""
+            value={fertilizerName}
             onChange={handleFertMethod}
           >
             <option>Select fertilizer</option>
@@ -141,7 +164,7 @@ const FertilizerForm = () => {
             placeholder="Enter the application method"
             id="rate-apply"
             name="applicationMethod"
-            defaultValue=""
+            defaultValue={data ? data.applicationMethod : ""}
           />
         </div>
 
@@ -156,7 +179,7 @@ const FertilizerForm = () => {
             placeholder="Enter the rate of application"
             id="rate-apply"
             name="applicationRateMlPerAcre"
-            defaultValue=""
+            defaultValue={data ? data.applicationRateMlPerAcre : ""}
           />
         </div>
         <div className="my-4">
@@ -170,7 +193,7 @@ const FertilizerForm = () => {
             placeholder="Enter the rate of application"
             id="rate-apply2"
             name="applicationRateBagPerAcre"
-            defaultValue=""
+            defaultValue={data ? data.applicationRateBagPerAcre : ""}
           />
         </div>
         <div className="my-4">
@@ -185,7 +208,7 @@ const FertilizerForm = () => {
             placeholder="Enter name of supervisor"
             id="supervisor"
             name="supervisorName"
-            defaultValue=""
+            defaultValue={data ? data.supervisorName : ""}
           />
         </div>
         <div className="my-4">
@@ -200,7 +223,7 @@ const FertilizerForm = () => {
             placeholder="Enter contact of supervisor"
             id="contact"
             name="supervisorContact"
-            defaultValue=""
+            defaultValue={data ? data.supervisorContact : ""}
           />
         </div>
         <div className="my-4">
@@ -214,7 +237,7 @@ const FertilizerForm = () => {
             id="cert"
             required
             name="supervisorQualification"
-            value={qualification}
+            value={defaultSupervisorQualification}
             onChange={handleSupervisorQualification}
           >
             <option>Select certificate of supervisor</option>
@@ -223,19 +246,19 @@ const FertilizerForm = () => {
             <option value="PPRSD/NPPO">PPRSD/NPPO</option>
             <option value="Others">Others</option>
           </Select>
+          {defaultSupervisorQualification === "Others" && (
+            <div className="my-4">
+              <TextInput
+                type="text"
+                required
+                placeholder="Enter other qualification of supervisor"
+                id="supervisor"
+                name="OtherSupervisorQualification"
+                defaultValue=""
+              />
+            </div>
+          )}
         </div>
-        {hasOtherQualification && (
-          <div className="my-4">
-            <TextInput
-              type="text"
-              required
-              placeholder="Enter other qualification of supervisor"
-              id="supervisor"
-              name="OtherSupervisorQualification"
-              defaultValue=""
-            />
-          </div>
-        )}
 
         <Button className="w-full  mt-4" type="submit">
           Submit activity
@@ -282,12 +305,29 @@ export const action = async ({ request, params }) => {
     activityDate: data.get("activityDate"),
   };
 
+  const method = request.method;
+  const activityId = params.activityId;
+
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/fertilizer-application/${activityId}`,
+        formData
+      );
+
+      toast.success("Fertilizer activity data updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/fertilizer-application",
       formData
     );
-    toast.success("Fertilizing  data submitted successfully!");
+    toast.success("Fertilizer data submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
     return error.response;

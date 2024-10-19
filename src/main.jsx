@@ -35,7 +35,7 @@ import {
   NewUser,
   EditUser,
   AddWeedControlActivity,
-  Fertilizer,
+  AddFertilizerActivity,
   PestControl,
   Harvesting,
   ViewActivities,
@@ -47,6 +47,7 @@ import {
   EditLandPreparationActivity,
   EditPlantingActivity,
   AddPlantingActivity,
+  EditFertilizerActivity,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -58,6 +59,7 @@ import { loader as loadPreplantingData } from "./pages/EditPreplantingActivity";
 import { loader as loadWeedControlData } from "./pages/EditWeedControlActivity";
 import { loader as loadLandPreparationData } from "./pages/EditLandPreparationActivity";
 import { loader as loadPlantingData } from "./pages/EditPlantingActivity";
+import { loader as loadFertilizerData } from "./pages/EditFertilizerActivity";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -280,7 +282,7 @@ const router = createBrowserRouter([
           },
           {
             path: "fertilizing",
-            element: <Fertilizer />,
+            element: <AddFertilizerActivity />,
             action: fertilizerAction,
           },
           {
@@ -394,8 +396,18 @@ const router = createBrowserRouter([
           },
           {
             path: "fertilizing",
-            element: <ViewFertilizingActivities />,
-            loader: fertilizerLoader,
+            children: [
+              {
+                index: true,
+                element: <ViewFertilizingActivities />,
+                loader: fertilizerLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: <EditFertilizerActivity />,
+                loader: loadFertilizerData,
+              },
+            ],
           },
           {
             path: "pest-control",

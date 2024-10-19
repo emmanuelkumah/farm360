@@ -1,9 +1,9 @@
 import React from "react";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
-import { useNavigation } from "react-router-dom";
+import { useNavigation, Link } from "react-router-dom";
 import { useState } from "react";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
 import { axiosbaseURL } from "../../api/axios";
 import { toast } from "react-toastify";
 
@@ -76,28 +76,38 @@ const FertilizingActivitiesTable = ({ data }) => {
           </Table.Head>
           <Table.Body className="divide-y">
             {currentActivities
-              .filter((item) => {
+              .filter((activity) => {
                 return search.toLowerCase() === ""
-                  ? item
-                  : item.farm.toLowerCase().includes(search);
+                  ? activity
+                  : activity.farm.toLowerCase().includes(search);
               })
-              .map((item) => (
+              .map((activity) => (
                 <Table.Row
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  key={item.id}
+                  key={activity.id}
                 >
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {item.activityDate}
+                    {activity.activityDate}
                   </Table.Cell>
-                  <Table.Cell>{item.fertilizerName}</Table.Cell>
-                  <Table.Cell>{item.fertilizerType}</Table.Cell>
-                  <Table.Cell>{item.applicationMethod}</Table.Cell>
-                  <Table.Cell>{item.applicationRateMlPerAcre}</Table.Cell>
-                  <Table.Cell>{item.applicationRateBagPerAcre}</Table.Cell>
-                  <Table.Cell>{item.supervisorName}</Table.Cell>
+                  <Table.Cell>{activity.fertilizerName}</Table.Cell>
+                  <Table.Cell>{activity.fertilizerType}</Table.Cell>
+                  <Table.Cell>{activity.applicationMethod}</Table.Cell>
+                  <Table.Cell>{activity.applicationRateMlPerAcre}</Table.Cell>
+                  <Table.Cell>{activity.applicationRateBagPerAcre}</Table.Cell>
+                  <Table.Cell>{activity.supervisorName}</Table.Cell>
 
-                  <Table.Cell>{item.supervisorContact}</Table.Cell>
-                  <Table.Cell>{item.supervisorQualification}</Table.Cell>
+                  <Table.Cell>{activity.supervisorContact}</Table.Cell>
+                  <Table.Cell>{activity.supervisorQualification}</Table.Cell>
+                  <Table.Cell>
+                    <Link to={`edit/${activity.id}`}>
+                      <div className="text-md flex  p-2 cursor-pointer  hover:bg-secondary hover:text-white hover:rounded-lg focus: bg-main">
+                        <span className="text-white">
+                          <MdEdit />
+                        </span>
+                        <p className="text-white">Edit</p>
+                      </div>
+                    </Link>
+                  </Table.Cell>
                   <Table.Cell>
                     <div
                       className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"

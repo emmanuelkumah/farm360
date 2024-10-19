@@ -1,12 +1,12 @@
 import React from "react";
 import { FertilizerForm } from "../components";
 
-const Fertilizer = () => {
+const AddFertilizerActivity = () => {
   return (
     <div>
-      <FertilizerForm />
+      <FertilizerForm method="post" />
     </div>
   );
 };
 
-export default Fertilizer;
+export default AddFertilizerActivity;
