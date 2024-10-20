@@ -36,7 +36,7 @@ import {
   EditUser,
   AddWeedControlActivity,
   AddFertilizerActivity,
-  PestControl,
+  AddPestControlActivity,
   Harvesting,
   ViewActivities,
   Transportation,
@@ -45,6 +45,7 @@ import {
   AddPrePlantingActivity,
   AddLandPreparationActivity,
   EditLandPreparationActivity,
+  EditPestControlActivity,
   EditPlantingActivity,
   AddPlantingActivity,
   EditFertilizerActivity,
@@ -60,6 +61,7 @@ import { loader as loadWeedControlData } from "./pages/EditWeedControlActivity";
 import { loader as loadLandPreparationData } from "./pages/EditLandPreparationActivity";
 import { loader as loadPlantingData } from "./pages/EditPlantingActivity";
 import { loader as loadFertilizerData } from "./pages/EditFertilizerActivity";
+import { loader as loadPestControlData } from "./pages/EditPestControlActivity";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -108,6 +110,8 @@ import { action as storageAction } from "./components/Activity/StorageForm";
 import { action as landPrepAction } from "./components/Activity/LandPreparationForm";
 import { action as editLandPreparationAction } from "./components/Activity/LandPreparationForm";
 import { action as editPlantingAction } from "./components/Activity/PlantingForm";
+import { action as editFertilizerActivity } from "./components/Activity/FertilizerForm";
+import { action as editPestControlAction } from "./components/Activity/PestControlForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -287,7 +291,7 @@ const router = createBrowserRouter([
           },
           {
             path: "pest-control",
-            element: <PestControl />,
+            element: <AddPestControlActivity />,
             action: pestControlAction,
           },
           {
@@ -406,13 +410,25 @@ const router = createBrowserRouter([
                 path: "edit/:activityId",
                 element: <EditFertilizerActivity />,
                 loader: loadFertilizerData,
+                action: editFertilizerActivity,
               },
             ],
           },
           {
             path: "pest-control",
-            element: <ViewPestControlActivities />,
-            loader: pestControlLoader,
+            children: [
+              {
+                index: true,
+                element: <ViewPestControlActivities />,
+                loader: pestControlLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: <EditPestControlActivity />,
+                loader: loadPestControlData,
+                action: editPestControlAction,
+              },
+            ],
           },
           {
             path: "harvesting",

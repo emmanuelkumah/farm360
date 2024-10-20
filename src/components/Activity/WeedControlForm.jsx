@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Select,
@@ -29,6 +29,12 @@ const WeedControlForm = ({ data, method }) => {
 
   const errors = useActionData();
   const errorMessage = errors?.data;
+
+  useEffect(() => {
+    if (data) {
+      setActivityDate(data.activityDate);
+    }
+  }, []);
 
   const handleSelectWeedControl = (e) => {
     if (e.target.value === "MANUAL") {
@@ -83,8 +89,7 @@ const WeedControlForm = ({ data, method }) => {
               name="activityDate"
               placeholder="Select date of weed control"
               maxDate={new Date()}
-              required
-              value={data ? data.activityDate : activityDate}
+              value={activityDate}
               onSelectedDateChanged={(date) => handleDateChange(date)}
             />
           </div>

@@ -1,4 +1,4 @@
-import React, { act, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Label,
@@ -17,7 +17,7 @@ import { axiosbaseURL } from "../../api/axios";
 import { toast } from "react-toastify";
 
 const LandPreparationForm = ({ data, method }) => {
-  const [actDate, setActDate] = useState("");
+  const [activityDate, setActivityDate] = useState("");
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [isSprayingActivity, setIsSprayingActivity] = useState(false);
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
@@ -26,7 +26,12 @@ const LandPreparationForm = ({ data, method }) => {
   const [updateSupervisorQualification, setUpdateSupervisorQualification] =
     useState("");
   const [isCheckedItem, setIsCheckedItem] = useState(false);
-  console.log(actDate);
+
+  useEffect(() => {
+    if (data) {
+      setActivityDate(data.activityDate);
+    }
+  }, []);
 
   const landactivities = [
     { id: 1, name: "Clearing" },
@@ -56,7 +61,7 @@ const LandPreparationForm = ({ data, method }) => {
   };
   const handleActivityDate = (date) => {
     const formattedDate = date.toISOString();
-    setActDate(formattedDate);
+    setActivityDate(formattedDate);
   };
   const handleSupervisorQualification = (e) => {
     if (data) {
@@ -120,7 +125,7 @@ const LandPreparationForm = ({ data, method }) => {
             <Datepicker
               id="activity"
               placeholder="Select date"
-              value={data ? data.activityDate : actDate}
+              value={activityDate}
               onSelectedDateChanged={(date) => handleActivityDate(date)}
               maxDate={defaultValue}
               name="activityDate"

@@ -1,12 +1,12 @@
 import React from "react";
 import { PestControlForm } from "../components";
 
-const PestControl = () => {
+const AddPestControlActivity = () => {
   return (
     <div>
-      <PestControlForm />
+      <PestControlForm method="post" />
     </div>
   );
 };
 
-export default PestControl;
+export default AddPestControlActivity;

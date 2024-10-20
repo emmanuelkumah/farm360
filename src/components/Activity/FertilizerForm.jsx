@@ -20,10 +20,8 @@ const FertilizerForm = ({ data, method }) => {
   const [activityDate, setActivityDate] = useState("");
   const [fertilizerType, setFertilizerType] = useState("");
   const [fertilizerName, setFertilizerName] = useState("");
-  const [defaultSupervisorQualification, setDefaultSupervisorQualification] =
+  const [supervisorQualification, setSupervisorQualification] =
     useState("MOFA");
-  const [updateSupervisorQualification, setUpdateSupervisorQualification] =
-    useState("");
 
   console.log(data);
   const defaultValue = new Date();
@@ -49,15 +47,11 @@ const FertilizerForm = ({ data, method }) => {
   };
 
   const handleSupervisorQualification = (e) => {
-    if (data) {
-      setUpdateSupervisorQualification(e.target.value);
-    }
-    if (e.target.value === "Others") {
-      setDefaultSupervisorQualification(e.target.value);
+    const value = e.target.value;
+    setSupervisorQualification(value);
+    if (value === "Others") {
+      setSupervisorQualification(value);
       setHasOtherQualification(!hasOtherQualification);
-    } else {
-      setDefaultSupervisorQualification(e.target.value);
-      setHasOtherQualification(hasOtherQualification);
     }
   };
 
@@ -237,7 +231,7 @@ const FertilizerForm = ({ data, method }) => {
             id="cert"
             required
             name="supervisorQualification"
-            value={defaultSupervisorQualification}
+            value={supervisorQualification}
             onChange={handleSupervisorQualification}
           >
             <option>Select certificate of supervisor</option>
@@ -246,7 +240,7 @@ const FertilizerForm = ({ data, method }) => {
             <option value="PPRSD/NPPO">PPRSD/NPPO</option>
             <option value="Others">Others</option>
           </Select>
-          {defaultSupervisorQualification === "Others" && (
+          {supervisorQualification === "Others" && (
             <div className="my-4">
               <TextInput
                 type="text"
@@ -299,12 +293,11 @@ export const action = async ({ request, params }) => {
     applicationRateMlPerAcre: Number(data.get("applicationRateMlPerAcre")),
     applicationRateBagPerAcre: Number(data.get("applicationRateBagPerAcre")),
     supervisorName: data.get("supervisorName"),
-
     supervisorContact: data.get("supervisorContact"),
     supervisorQualification: supervisorQualification,
     activityDate: data.get("activityDate"),
   };
-
+  console.log("form", formData);
   const method = request.method;
   const activityId = params.activityId;
 
@@ -314,6 +307,7 @@ export const action = async ({ request, params }) => {
         `/farm/activity/fertilizer-application/${activityId}`,
         formData
       );
+      console.log("update", response);
 
       toast.success("Fertilizer activity data updated successfully!");
       return redirect("/app/farms");

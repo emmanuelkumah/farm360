@@ -33,6 +33,7 @@ const PlantingForm = ({ data, method }) => {
   useEffect(() => {
     if (data) {
       setUpdateCrop(data.cropName);
+      setActivityDate(data.activityDate);
     }
   }, []);
 
@@ -79,9 +80,8 @@ const PlantingForm = ({ data, method }) => {
             name="activityDate"
             placeholder="Select planting date"
             maxDate={defaultValue}
-            value={data ? data.activityDate : activityDate}
+            value={activityDate}
             onSelectedDateChanged={(date) => handleDateChange(date)}
-            required
           />
         </div>
 

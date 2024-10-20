@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Label,
@@ -14,14 +14,23 @@ import BackButton from "../BackButton";
 import { HiInformationCircle } from "react-icons/hi";
 import { axiosbaseURL } from "../../api/axios";
 
-const PestControlForm = () => {
+const PestControlForm = ({ method, data }) => {
   const [cropStage, setCropStage] = useState("");
-  const [qualification, setQualification] = useState("");
+  const [supervisorQualification, setSupervisorQualification] =
+    useState("MOFA");
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
   const [activityDate, setActivityDate] = useState("");
 
   const errors = useActionData();
   const errorMessage = errors?.data;
+
+  useEffect(() => {
+    if (data) {
+      setCropStage(data.cropStage);
+      setSupervisorQualification(data.supervisorQualification);
+      setActivityDate(data.activityDate);
+    }
+  }, []);
 
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString();
@@ -33,11 +42,11 @@ const PestControlForm = () => {
   };
 
   const handleSupervisorQualification = (e) => {
-    setQualification(e.target.value);
-    if (e.target.value === "Others") {
+    const value = e.target.value;
+    setSupervisorQualification(value);
+    if (value === "Others") {
+      setSupervisorQualification(value);
       setHasOtherQualification(!hasOtherQualification);
-    } else {
-      setHasOtherQualification(false);
     }
   };
 
@@ -51,7 +60,7 @@ const PestControlForm = () => {
           <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
         </Alert>
       ) : null}
-      <Form className="container mx-auto w-full md:w-[70%]" method="post">
+      <Form className="container mx-auto w-full md:w-[70%]" method={method}>
         <div>
           <Label
             htmlFor="stage"
@@ -66,7 +75,6 @@ const PestControlForm = () => {
             name="cropStage"
             value={cropStage}
           >
-            <option>Select stage of crop</option>
             <option value="EARLY_STAGE">Early stage</option>
             <option value="GROWING_STAGE">Growing stage</option>
             <option value="PRE_HARVESTING_STAGE">Preharvesting stage</option>
@@ -95,7 +103,7 @@ const PestControlForm = () => {
                 type="text"
                 placeholder="Enter the name of chemical"
                 name="chemicalName"
-                defaultValue=""
+                defaultValue={data ? data.chemicalName : ""}
               />
             </div>
             <div className="my-2">
@@ -107,7 +115,7 @@ const PestControlForm = () => {
                 type="text"
                 placeholder="Enter the rate of application"
                 name="chemicalApplicationRate"
-                defaultValue=""
+                defaultValue={data ? data.chemicalApplicationRate : ""}
               />
             </div>
           </section>
@@ -126,7 +134,7 @@ const PestControlForm = () => {
               placeholder="Enter name of supervisor"
               id="supervisor"
               name="supervisorName"
-              defaultValue=""
+              defaultValue={data ? data.supervisorName : ""}
             />
           </div>
           <div className="my-4">
@@ -141,7 +149,7 @@ const PestControlForm = () => {
               placeholder="Enter name of supervisor"
               id="contact"
               name="supervisorContact"
-              defaultValue=""
+              defaultValue={data ? data.supervisorContact : ""}
             />
           </div>
           <div>
@@ -154,11 +162,10 @@ const PestControlForm = () => {
             <Select
               id="supervisorQualification"
               required
-              onChange={handleSupervisorQualification}
               name="supervisorQualification"
-              value={qualification}
+              value={supervisorQualification}
+              onChange={handleSupervisorQualification}
             >
-              <option>Select certificate of supervisor</option>
               <option value="MOFA">MOFA</option>
               <option value="EPA">EPA</option>
               <option value="PPRSD/NPPO">PPRSD/NPPO</option>
@@ -213,14 +220,28 @@ export const action = async ({ request, params }) => {
     supervisorQualification: supervisorQualification,
     activityDate: data.get("activityDate"),
   };
-  console.log(formData);
+  const method = request.method;
+  const activityId = params.activityId;
+
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/pest-control/${activityId}`,
+        formData
+      );
+      toast.success("Pest control activity updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
 
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/pest-control",
       formData
     );
-    toast.success("Pest control  data submitted successfully!");
+    toast.success("Pest control activity  submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
     return error.response;

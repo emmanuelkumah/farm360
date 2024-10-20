@@ -45,6 +45,7 @@ const PrePlantingForm = ({ data, method }) => {
       const converted = treatmentMethodToSentenceCase(
         data.plantingMaterialTreatmentMethod
       );
+      setActivityDate(data.activityDate);
       setUpdateTreatmentMethod(converted);
       setUpdateSupervisorQualification(data.supervisorQualification);
     }
@@ -126,7 +127,7 @@ const PrePlantingForm = ({ data, method }) => {
                 <Datepicker
                   id="date"
                   placeholder="Select date"
-                  value={data ? data.activityDate : activityDate}
+                  value={activityDate}
                   onSelectedDateChanged={(date) => handleActivityDate(date)}
                   maxDate={defaultValue}
                   name="activityDate"
