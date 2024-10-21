@@ -30,7 +30,7 @@ const StorageForm = ({ method, data }) => {
 
   const errors = useActionData();
   const errorMessage = errors?.data;
-
+  console.log(data);
   const storageQuality = [
     {
       id: 1,
@@ -54,13 +54,10 @@ const StorageForm = ({ method, data }) => {
     },
   ];
 
-  console.log("data", data);
-  console.log("quality", selectedQualityOption);
   useEffect(() => {
     axiosbaseURL
       .get(`/geo/communities`)
       .then((response) => {
-        console.log("com", response);
         setCommunity(response.data.data);
       })
       .catch((error) => {
@@ -214,7 +211,6 @@ const StorageForm = ({ method, data }) => {
             value={selectedCommunity}
             onChange={(e) => setSelectedCommunity(e.target.value)}
           >
-            <option>Select community</option>
             {community.map((com) => (
               <option key={com.id} value={com.id}>
                 {com.name}
