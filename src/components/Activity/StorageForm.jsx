@@ -16,13 +16,17 @@ import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
 import { axiosbaseURL } from "../../api/axios";
 
-const StorageForm = () => {
+const StorageForm = ({ method, data }) => {
   const [selectedQualityOption, setSelectedQualityOption] = useState([]);
-  const [hasStorage, setHasStorage] = useState(false);
-  const [qualification, setQualification] = useState("");
+  const [storageType, setStorageType] = useState("");
+  const [hasOtherStorage, setHasOtherStorage] = useState(false);
+  const [otherStorageType, setOtherStorageType] = useState("");
+  const [supervisorQualification, setSupervisorQualification] = useState("");
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
+  const [otherQualification, setOtherQualification] = useState("");
   const [community, setCommunity] = useState([]);
   const [activityDate, setActivityDate] = useState("");
+  const [selectedCommunity, setSelectedCommunity] = useState("");
 
   const errors = useActionData();
   const errorMessage = errors?.data;
@@ -50,6 +54,8 @@ const StorageForm = () => {
     },
   ];
 
+  console.log("data", data);
+  console.log("quality", selectedQualityOption);
   useEffect(() => {
     axiosbaseURL
       .get(`/geo/communities`)
@@ -63,45 +69,78 @@ const StorageForm = () => {
       });
   }, []);
 
-  const handleSelectMethod = (e) => {
-    if (e.target.value === "OTHER ") {
-      setHasStorage(!hasStorage);
+  useEffect(() => {
+    if (data) {
+      setActivityDate(data.storageDate);
+      displayStorageType(data.storageType);
+      displayQualification(data.supervisorQualification);
+      setSelectedCommunity(data.community.name);
+      setSelectedQualityOption(data.quality);
+    }
+  }, []);
+
+  const displayStorageType = (value) => {
+    if (value !== "OWN" && value !== "COMMERCIAL" && value !== "BJL") {
+      setStorageType("OTHER");
+      setHasOtherStorage(true);
+      setOtherStorageType(value);
     } else {
-      setHasStorage(false);
+      setStorageType(value);
+    }
+  };
+  const displayQualification = (value) => {
+    if (value !== "MOFA" && value !== "EPA" && value !== "PPRSD/NPPO") {
+      setSupervisorQualification("Others");
+      setHasOtherQualification(true);
+      setOtherQualification(value);
+    } else {
+      setSupervisorQualification(value);
+    }
+  };
+
+  const handleSelectStorage = (e) => {
+    console.log(e.target.value);
+    if (e.target.value === "OTHER") {
+      setHasOtherStorage(!hasOtherStorage);
+      setStorageType(e.target.value);
+    } else {
+      setStorageType(e.target.value);
+      setHasOtherStorage(false);
     }
   };
 
   const handleSupervisorQualification = (e) => {
-    setQualification(e.target.value);
-    if (e.target.value === "Others") {
-      setHasOtherQualification(!hasOtherQualification);
-    } else {
-      setHasOtherQualification(false);
+    const value = e.target.value;
+    setSupervisorQualification(value);
+    setHasOtherQualification(false);
+    if (value === "Others") {
+      setSupervisorQualification(value);
+      setHasOtherQualification(true);
     }
   };
+
   const handleActivityDateChange = (date) => {
-    const formattedDate = date.toISOString(); // Formats to "YYYY-MM-DD"
+    const formattedDate = date.toISOString();
     setActivityDate(formattedDate);
   };
-  const handleStorageQualityChange = (e) => {
-    const value = e.target.value;
-    setSelectedQualityOption((prev) =>
-      prev.includes(value)
-        ? prev.filter((option) => option !== value)
-        : [...prev, value]
+  const handleStorageQualityChange = (quality) => {
+    setSelectedQualityOption((prevQuality) =>
+      prevQuality.includes(quality)
+        ? prevQuality.filter((option) => option !== quality)
+        : [...prevQuality, quality]
     );
   };
   return (
     <div className="container mx-auto">
       <BackButton />
-      <ActivityHeading activityHeading="Key Data Entry For Harvesting" />
+      <ActivityHeading activityHeading="Key Data Entry For Storage" />
       {errors ? (
         <Alert color="failure" icon={HiInformationCircle} className="max-w-2xl">
           <span className="font-medium">Info alert!</span>
           <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
         </Alert>
       ) : null}
-      <Form className="container mx-auto w-full md:w-[70%]" method="post">
+      <Form className="container mx-auto w-full md:w-[70%]" method={method}>
         <div>
           <Label htmlFor="storage" className="font-semibold my-2">
             Date of storage
@@ -117,14 +156,14 @@ const StorageForm = () => {
         </div>
         <div className="my-4">
           <Label htmlFor="quantity" className="font-semibold my-2">
-            Quantity
+            Quantity stored
           </Label>
           <TextInput
             id="quantity"
             type="text"
             placeholder="Quantity"
             name="quantity"
-            defaultValue=""
+            defaultValue={data ? data.quantity : ""}
           />
         </div>
 
@@ -139,16 +178,16 @@ const StorageForm = () => {
             id="method"
             required
             name="storageType"
-            onChange={handleSelectMethod}
+            value={storageType}
+            onChange={handleSelectStorage}
           >
-            <option>Select the type of storage</option>
             <option value="OWN">Own storage</option>
             <option value="COMMERCIAL">Commercial Storage</option>
             <option value="BJL">BJL storage</option>
-            <option value="OTHER">Others</option>
+            <option value="OTHER">Other</option>
           </Select>
         </div>
-        {hasStorage && (
+        {hasOtherStorage && (
           <div className="my-4">
             <Label htmlFor="other-storage" className="font-semibold my-2">
               Other storage name
@@ -158,7 +197,8 @@ const StorageForm = () => {
               type="text"
               name="otherStorageName"
               placeholder="Specify the other storage"
-              defaultValue=""
+              value={otherStorageType}
+              onChange={(e) => setOtherStorageType(e.target.value)}
             />
           </div>
         )}
@@ -166,10 +206,14 @@ const StorageForm = () => {
         <div className="my-4">
           <Label
             htmlFor="community"
-            value="Community"
+            value="Community stored"
             className="my-2 font-semibold"
           />
-          <Select name="community">
+          <Select
+            name="community"
+            value={selectedCommunity}
+            onChange={(e) => setSelectedCommunity(e.target.value)}
+          >
             <option>Select community</option>
             {community.map((com) => (
               <option key={com.id} value={com.id}>
@@ -182,7 +226,7 @@ const StorageForm = () => {
         <div className="my-4">
           <Label
             htmlFor="quality"
-            value="Quality"
+            value="Storage quality"
             className="my-2 font-semibold"
           />
           {storageQuality.map((quality) => (
@@ -190,8 +234,9 @@ const StorageForm = () => {
               <Checkbox
                 id={`quality-${quality.id}`}
                 value={quality.name}
+                checked={selectedQualityOption?.includes(quality.name)}
                 name="quality"
-                onChange={handleStorageQualityChange}
+                onChange={() => handleStorageQualityChange(quality.name)}
               />
               <Label htmlFor={`quality-${quality.id}`} className="ml-2">
                 {quality.name}
@@ -203,7 +248,7 @@ const StorageForm = () => {
         <div className="my-4">
           <Label
             htmlFor="chemical"
-            value="Chemical name"
+            value="Storage chemical name"
             className="my-2 font-semibold"
           />
           <TextInput
@@ -211,13 +256,13 @@ const StorageForm = () => {
             placeholder="Enter chemical name"
             id="chemical"
             name="chemical"
-            defaultValue=""
+            defaultValue={data ? data.storageChemicalName : ""}
           />
         </div>
         <div className="my-4">
           <Label
             htmlFor="rate-apply"
-            value="Rate of application(ml per acre)"
+            value="Chemical application rate(ml per acre)"
             className="my-2 font-semibold"
           />
           <TextInput
@@ -225,7 +270,7 @@ const StorageForm = () => {
             placeholder="Enter the rate of application"
             id="rate-apply"
             name="rate"
-            defaultValue=""
+            defaultValue={data ? data.storageChemicalApplicationRate : ""}
           />
         </div>
         <div className="my-4">
@@ -240,7 +285,7 @@ const StorageForm = () => {
             placeholder="Enter name of storage manager"
             id="contact"
             name="storageManagerName"
-            defaultValue=""
+            defaultValue={data ? data.storageManagerName : ""}
           />
         </div>
         <div className="my-4">
@@ -255,7 +300,7 @@ const StorageForm = () => {
             placeholder="Enter contact of storage manager  begin with (233)"
             id="storageManagerNumber"
             name="storageManagerContact"
-            defaultValue=""
+            defaultValue={data ? data.storageManagerContact : ""}
           />
         </div>
         <div className="my-4">
@@ -270,7 +315,7 @@ const StorageForm = () => {
             placeholder="Enter name of supervisor"
             id="supervisor"
             name="supervisorName"
-            defaultValue=""
+            defaultValue={data ? data.supervisorName : ""}
           />
         </div>
         <div className="my-4">
@@ -278,6 +323,7 @@ const StorageForm = () => {
             htmlFor="contact"
             value="Contact of the supervisor"
             className="my-2 font-semibold"
+            placeholder="Supervisor contact begin with (233)"
           />
           <TextInput
             type="number"
@@ -285,7 +331,7 @@ const StorageForm = () => {
             placeholder="Enter name of supervisor"
             id="contact"
             name="supervisorContact"
-            defaultValue=""
+            defaultValue={data ? data.supervisorContact : ""}
           />
         </div>
         <div className="my-4">
@@ -299,10 +345,9 @@ const StorageForm = () => {
             id="cert"
             required
             name="supervisorQualification"
-            value={qualification}
+            value={supervisorQualification}
             onChange={handleSupervisorQualification}
           >
-            <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
             <option value="EPA">EPA</option>
             <option value="PPRSD/NPPO">PPRSD/NPPO</option>
@@ -322,7 +367,8 @@ const StorageForm = () => {
               placeholder="Enter the certificate of supervisor if not listed above"
               id="certificate"
               name="otherQualification"
-              defaultValue=""
+              value={otherQualification}
+              onChange={(e) => setOtherQualification(e.target.value)}
             />
           </div>
         )}
@@ -333,7 +379,12 @@ const StorageForm = () => {
             value="Upload scanned receipt"
             className="my-2 font-semibold"
           />
-          <FileInput id="file" accept="image/*" name="receipt" />
+          <TextInput
+            id="file"
+            type="url"
+            name="receipt"
+            defaultValue={data ? data.receiptUrl : ""}
+          />
         </div>
         <Button className="w-full md:w-full mt-10" type="submit">
           Submit
@@ -373,7 +424,7 @@ export const action = async ({ request, params }) => {
     storageType: data.get("storageType"),
     communityId: data.get("community"),
     quality: data.get("selectedQuality").split(","),
-
+    receiptUrl: data.get("receipt"),
     storageChemicalName: data.get("chemical"),
     storageChemicalApplicationRate: Number(data.get("rate")),
     storageManagerContact: data.get("storageManagerContact"),
@@ -384,12 +435,28 @@ export const action = async ({ request, params }) => {
     supervisorQualification: supervisorQualification,
   };
 
+  const method = request.method;
+  const activityId = params.activityId;
+
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/storage/${activityId}`,
+        formData
+      );
+      toast.success("Storage activity updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/storage",
       formData
     );
-    toast.success("Storage  data submitted successfully!");
+    toast.success("Storage activity  submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
     return error.response;

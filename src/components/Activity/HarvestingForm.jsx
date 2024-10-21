@@ -53,7 +53,6 @@ const HarvestingForm = ({ data, method }) => {
   };
   const handleSupervisorQualification = (e) => {
     const value = e.target.value;
-    console.log(value);
     setSupervisorQualification(value);
     setHasOtherQualification(false);
     if (value === "Others") {

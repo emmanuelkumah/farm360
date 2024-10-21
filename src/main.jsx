@@ -27,7 +27,6 @@ import {
   FertilizerActivities,
   WeedControlActivities,
   Sales,
-  Storage,
   PestControlActivities,
   Shipment,
   Login,
@@ -37,11 +36,13 @@ import {
   AddWeedControlActivity,
   AddFertilizerActivity,
   AddPestControlActivity,
+  AddStorageActivity,
   ViewActivities,
   Transportation,
   EditPreplantingActivity,
   EditWeedControlActivity,
   AddPrePlantingActivity,
+  AddHarvestingActivity,
   AddLandPreparationActivity,
   EditLandPreparationActivity,
   EditPestControlActivity,
@@ -49,7 +50,7 @@ import {
   EditHarvestingActivity,
   AddPlantingActivity,
   EditFertilizerActivity,
-  AddHarvestingActivity,
+  EditStorageActivity,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -64,6 +65,7 @@ import { loader as loadPlantingData } from "./pages/EditPlantingActivity";
 import { loader as loadFertilizerData } from "./pages/EditFertilizerActivity";
 import { loader as loadPestControlData } from "./pages/EditPestControlActivity";
 import { loader as loadHarvestingData } from "./pages/EditHarvestingActivity";
+import { loader as loadStorageData } from "./pages/EditStorageActivity";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -114,6 +116,7 @@ import { action as editLandPreparationAction } from "./components/Activity/LandP
 import { action as editPlantingAction } from "./components/Activity/PlantingForm";
 import { action as editFertilizerActivity } from "./components/Activity/FertilizerForm";
 import { action as editPestControlAction } from "./components/Activity/PestControlForm";
+import { action as editStorageAction } from "./components/Activity/StorageForm";
 import { action as editHarvestingAction } from "./components/Activity/HarvestingForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
@@ -304,7 +307,7 @@ const router = createBrowserRouter([
           },
           {
             path: "storage",
-            element: <Storage />,
+            element: <AddStorageActivity />,
             action: storageAction,
           },
           {
@@ -451,8 +454,19 @@ const router = createBrowserRouter([
           },
           {
             path: "storage",
-            element: <ViewStorageActivities />,
-            loader: storageLoader,
+            children: [
+              {
+                index: true,
+                element: <ViewStorageActivities />,
+                loader: storageLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: <EditStorageActivity />,
+                loader: loadStorageData,
+                action: editStorageAction,
+              },
+            ],
           },
           {
             path: "sales",

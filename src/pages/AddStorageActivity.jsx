@@ -1,12 +1,12 @@
 import React from "react";
 import { StorageForm } from "../components";
 
-const Storage = () => {
+const AddStorageActivity = () => {
   return (
     <>
-      <StorageForm />
+      <StorageForm method="post" />
     </>
   );
 };
 
-export default Storage;
+export default AddStorageActivity;
