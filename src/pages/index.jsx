@@ -33,7 +33,7 @@ export { default as AddPlantingActivity } from "./AddPlantingActivity";
 export { default as AddWeedControlActivity } from "./AddWeedControlActivity";
 export { default as AddFertilizerActivity } from "./AddFertilizerActivity";
 export { default as AddPestControlActivity } from "./AddPestControlActivity";
-export { default as Harvesting } from "./Harvesting";
+export { default as AddHarvestingActivity } from "./AddHarvestingActivity";
 export { default as Transportation } from "./Transportation";
 export { default as ViewActivities } from "./ViewActivities";
 export { default as ViewPlantingActivities } from "./ViewPlantingActivities";
@@ -49,3 +49,4 @@ export { default as EditLandPreparationActivity } from "./EditLandPreparationAct
 export { default as EditPlantingActivity } from "./EditPlantingActivity";
 export { default as EditFertilizerActivity } from "./EditFertilizerActivity";
 export { default as EditPestControlActivity } from "./EditPestControlActivity";
+export { default as EditHarvestingActivity } from "./EditHarvestingActivity";

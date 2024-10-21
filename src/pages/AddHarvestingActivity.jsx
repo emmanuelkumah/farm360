@@ -1,12 +1,12 @@
 import React from "react";
 import { HarvestingForm } from "../components";
 
-const Harvesting = () => {
+const AddHarvestingActivity = () => {
   return (
     <>
-      <HarvestingForm />
+      <HarvestingForm method="post" />
     </>
   );
 };
 
-export default Harvesting;
+export default AddHarvestingActivity;

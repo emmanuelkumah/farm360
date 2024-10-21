@@ -37,7 +37,6 @@ import {
   AddWeedControlActivity,
   AddFertilizerActivity,
   AddPestControlActivity,
-  Harvesting,
   ViewActivities,
   Transportation,
   EditPreplantingActivity,
@@ -47,8 +46,10 @@ import {
   EditLandPreparationActivity,
   EditPestControlActivity,
   EditPlantingActivity,
+  EditHarvestingActivity,
   AddPlantingActivity,
   EditFertilizerActivity,
+  AddHarvestingActivity,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -62,6 +63,7 @@ import { loader as loadLandPreparationData } from "./pages/EditLandPreparationAc
 import { loader as loadPlantingData } from "./pages/EditPlantingActivity";
 import { loader as loadFertilizerData } from "./pages/EditFertilizerActivity";
 import { loader as loadPestControlData } from "./pages/EditPestControlActivity";
+import { loader as loadHarvestingData } from "./pages/EditHarvestingActivity";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -112,6 +114,7 @@ import { action as editLandPreparationAction } from "./components/Activity/LandP
 import { action as editPlantingAction } from "./components/Activity/PlantingForm";
 import { action as editFertilizerActivity } from "./components/Activity/FertilizerForm";
 import { action as editPestControlAction } from "./components/Activity/PestControlForm";
+import { action as editHarvestingAction } from "./components/Activity/HarvestingForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -296,7 +299,7 @@ const router = createBrowserRouter([
           },
           {
             path: "harvesting",
-            element: <Harvesting />,
+            element: <AddHarvestingActivity />,
             action: harvestingAction,
           },
           {
@@ -432,8 +435,19 @@ const router = createBrowserRouter([
           },
           {
             path: "harvesting",
-            element: <ViewHarvestingActivities />,
-            loader: harvestingLoader,
+            children: [
+              {
+                index: true,
+                element: <ViewHarvestingActivities />,
+                loader: harvestingLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: <EditHarvestingActivity />,
+                loader: loadHarvestingData,
+                action: editHarvestingAction,
+              },
+            ],
           },
           {
             path: "storage",

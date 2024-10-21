@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Select,
@@ -14,17 +14,37 @@ import { axiosbaseURL } from "../../api/axios";
 import ActivityHeading from "../ActivityHeading";
 import { HiInformationCircle } from "react-icons/hi";
 
-const HarvestingForm = () => {
+const HarvestingForm = ({ data, method }) => {
+  const [modeOfHarvesting, setModeOfHarvesting] = useState("");
   const [hasHarvesting, setHasHarvesting] = useState(false);
-  const [qualification, setQualification] = useState("");
-
+  const [supervisorQualification, setSupervisorQualification] = useState("");
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
+  const [otherQualification, setOtherQualification] = useState("");
   const [activityDate, setActivityDate] = useState("");
 
   const errors = useActionData();
   const errorMessage = errors?.data;
 
+  useEffect(() => {
+    if (data) {
+      setActivityDate(data.dateOfHarvest);
+      setModeOfHarvesting(data.modeOfHarvesting);
+      displayQualification(data.supervisorQualification);
+    }
+  }, []);
+
+  const displayQualification = (value) => {
+    if (value !== "MOFA" && value !== "EPA" && value !== "PPRSD/NPPO") {
+      setSupervisorQualification("Others");
+      setHasOtherQualification(true);
+      setOtherQualification(value);
+    } else {
+      setSupervisorQualification(value);
+    }
+  };
+
   const handleSelectHarvesting = (e) => {
+    setModeOfHarvesting(e.target.value);
     if (e.target.value === "MACHINERY") {
       setHasHarvesting(!hasHarvesting);
     } else {
@@ -32,11 +52,13 @@ const HarvestingForm = () => {
     }
   };
   const handleSupervisorQualification = (e) => {
-    setQualification(e.target.value);
-    if (e.target.value === "Others") {
-      setHasOtherQualification(!hasOtherQualification);
-    } else {
-      setHasOtherQualification(false);
+    const value = e.target.value;
+    console.log(value);
+    setSupervisorQualification(value);
+    setHasOtherQualification(false);
+    if (value === "Others") {
+      setSupervisorQualification(value);
+      setHasOtherQualification(true);
     }
   };
   const handleDateChange = (date) => {
@@ -53,7 +75,7 @@ const HarvestingForm = () => {
           <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
         </Alert>
       ) : null}
-      <Form className="container mx-auto w-full md:w-[70%]" method="post">
+      <Form className="container mx-auto w-full md:w-[70%]" method={method}>
         <div className="my-4">
           <Label htmlFor="date" className="font-semibold my-2">
             Date of harvest
@@ -62,8 +84,8 @@ const HarvestingForm = () => {
             id="date"
             placeholder="Select the harvesting date"
             maxDate={new Date()}
-            value={activityDate}
             name="dateOfHarvest"
+            value={activityDate}
             onSelectedDateChanged={(date) => handleDateChange(date)}
           />
         </div>
@@ -77,7 +99,7 @@ const HarvestingForm = () => {
             required
             placeholder="Enter acres harvested"
             name="acresHarvested"
-            defaultValue=""
+            defaultValue={data ? data.acresHarvested : ""}
           />
         </div>
         <div className="my-4">
@@ -90,7 +112,7 @@ const HarvestingForm = () => {
             required
             placeholder="Enter number of bags harvested"
             name="bagsHarvested"
-            defaultValue=""
+            defaultValue={data ? data.bagsHarvested : ""}
           />
         </div>
         <div className="my-4">
@@ -103,7 +125,7 @@ const HarvestingForm = () => {
             required
             placeholder="Enter weight per bag harvested"
             name="weightPerBagHarvested"
-            defaultValue=""
+            defaultValue={data ? data.weightPerBagHarvested : ""}
           />
         </div>
 
@@ -117,11 +139,10 @@ const HarvestingForm = () => {
           <Select
             id="modeofHarvesting"
             required
-            defaultValue=""
+            value={modeOfHarvesting}
             name="modeOfHarvesting"
             onChange={handleSelectHarvesting}
           >
-            <option>Select the mode of harvesting</option>
             <option value="MANUAL">Manual</option>
             <option value="MACHINERY">Machinery</option>
           </Select>
@@ -134,7 +155,6 @@ const HarvestingForm = () => {
               className="my-2 font-semibold"
             />
             <Select id="machine" required name="machine" defaultValue="">
-              <option>Select machine used</option>
               <option value="Sheller">Sheller</option>
               <option value="Threshing">Threshing</option>
             </Select>
@@ -153,7 +173,7 @@ const HarvestingForm = () => {
             placeholder="Enter name of supervisor"
             id="contact"
             name="supervisorName"
-            defaultValue=""
+            defaultValue={data ? data.supervisorName : ""}
           />
         </div>
         <div>
@@ -168,7 +188,7 @@ const HarvestingForm = () => {
             placeholder="Enter contact of supervisor"
             id="contact"
             name="supervisorContact"
-            defaultValue=""
+            defaultValue={data ? data.supervisorContact : ""}
           />
         </div>
         <div className="my-4">
@@ -182,10 +202,9 @@ const HarvestingForm = () => {
             id="cert"
             required
             name="supervisorQualification"
-            value={qualification}
+            value={supervisorQualification}
             onChange={handleSupervisorQualification}
           >
-            <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
             <option value="EPA">EPA</option>
             <option value="PPRSD/NPPO">PPRSD/NPPO</option>
@@ -200,7 +219,8 @@ const HarvestingForm = () => {
               placeholder="Enter other qualification of supervisor"
               id="supervisor"
               name="OtherSupervisorQualification"
-              defaultValue=""
+              value={otherQualification}
+              onChange={(e) => setOtherQualification(e.target.value)}
             />
           </div>
         )}
@@ -239,12 +259,28 @@ export const action = async ({ request, params }) => {
     supervisorQualification: supervisorQualification,
   };
 
+  const method = request.method;
+  const activityId = params.activityId;
+
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/harvesting/${activityId}`,
+        formData
+      );
+      toast.success("Harvesting activity updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/harvesting",
       formData
     );
-    toast.success("Harvesting  data submitted successfully!");
+    toast.success("Havesting activity  submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
     return error.response;
