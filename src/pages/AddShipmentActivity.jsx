@@ -1,11 +1,11 @@
 import React from "react";
 import { ShipmentForm } from "../components";
-const Shipment = () => {
+const AddShipmentActivity = () => {
   return (
     <>
-      <ShipmentForm />
+      <ShipmentForm method="post" />
     </>
   );
 };
 
-export default Shipment;
+export default AddShipmentActivity;

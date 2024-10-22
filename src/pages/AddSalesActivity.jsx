@@ -1,12 +1,12 @@
 import React from "react";
 import { SalesForm } from "../components";
 
-const Sales = () => {
+const AddSalesActivity = () => {
   return (
     <div>
-      <SalesForm />
+      <SalesForm method="post" />
     </div>
   );
 };
 
-export default Sales;
+export default AddSalesActivity;

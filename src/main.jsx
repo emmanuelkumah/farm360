@@ -26,9 +26,7 @@ import {
   EditFarm,
   FertilizerActivities,
   WeedControlActivities,
-  Sales,
   PestControlActivities,
-  Shipment,
   Login,
   Error,
   NewUser,
@@ -38,12 +36,13 @@ import {
   AddPestControlActivity,
   AddStorageActivity,
   ViewActivities,
-  Transportation,
   EditPreplantingActivity,
   EditWeedControlActivity,
   AddPrePlantingActivity,
   AddHarvestingActivity,
   AddLandPreparationActivity,
+  AddSalesActivity,
+  AddShipmentActivity,
   EditLandPreparationActivity,
   EditPestControlActivity,
   EditPlantingActivity,
@@ -51,6 +50,10 @@ import {
   AddPlantingActivity,
   EditFertilizerActivity,
   EditStorageActivity,
+  EditSalesActivity,
+  EditShipmentActivity,
+  EditTransportationActivity,
+  AddTransportationActivity,
 } from "./pages";
 
 import HomeLayout from "./routes/HomeLayout";
@@ -66,6 +69,9 @@ import { loader as loadFertilizerData } from "./pages/EditFertilizerActivity";
 import { loader as loadPestControlData } from "./pages/EditPestControlActivity";
 import { loader as loadHarvestingData } from "./pages/EditHarvestingActivity";
 import { loader as loadStorageData } from "./pages/EditStorageActivity";
+import { loader as loadSalesData } from "./pages/EditSalesActivity";
+import { loader as loadShipmentData } from "./pages/EditShipmentActivity";
+import { loader as loadTransportationData } from "./pages/EditTransportationActivity";
 import { loader as UsersLoader } from "./pages/Users";
 import ViewPlantingActivities, {
   loader as PlantingLoader,
@@ -117,7 +123,10 @@ import { action as editPlantingAction } from "./components/Activity/PlantingForm
 import { action as editFertilizerActivity } from "./components/Activity/FertilizerForm";
 import { action as editPestControlAction } from "./components/Activity/PestControlForm";
 import { action as editStorageAction } from "./components/Activity/StorageForm";
+import { action as editSalesAction } from "./components/Activity/SalesForm";
 import { action as editHarvestingAction } from "./components/Activity/HarvestingForm";
+import { action as editShipmentAction } from "./components/Activity/ShipmentForm";
+import { action as editTransportationAction } from "./components/Activity/TransportationForm";
 import { action as manipulateUserAction } from "./pages/Users";
 import { action as loginAction } from "./pages/Login";
 import { action as manipulateUser } from "./pages/NewUser";
@@ -312,12 +321,12 @@ const router = createBrowserRouter([
           },
           {
             path: "sales",
-            element: <Sales />,
+            element: <AddSalesActivity />,
             action: salesAction,
           },
           {
             path: "shipment",
-            element: <Shipment />,
+            element: <AddShipmentActivity />,
             action: shipmentAction,
           },
           {
@@ -327,7 +336,7 @@ const router = createBrowserRouter([
           },
           {
             path: "transportation",
-            element: <Transportation />,
+            element: <AddTransportationActivity />,
             action: transportationAction,
           },
         ],
@@ -470,19 +479,52 @@ const router = createBrowserRouter([
           },
           {
             path: "sales",
-            element: <ViewSalesActivities />,
-            loader: salesLoader,
+            children: [
+              {
+                index: true,
+                element: <ViewSalesActivities />,
+                loader: salesLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: <EditSalesActivity />,
+                loader: loadSalesData,
+                action: editSalesAction,
+              },
+            ],
           },
           {
             path: "shipment",
-            element: <ViewShipmentActivities />,
-            loader: shipmentLoader,
+            children: [
+              {
+                index: true,
+                element: <ViewShipmentActivities />,
+                loader: shipmentLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: <EditShipmentActivity />,
+                loader: loadShipmentData,
+                action: editShipmentAction,
+              },
+            ],
           },
 
           {
             path: "transportation",
-            element: <ViewTransportationActivities />,
-            loader: transportationLoader,
+            children: [
+              {
+                index: true,
+                element: <ViewTransportationActivities />,
+                loader: transportationLoader,
+              },
+              {
+                path: "edit/:activityId",
+                element: <EditTransportationActivity />,
+                loader: loadTransportationData,
+                action: editTransportationAction,
+              },
+            ],
           },
         ],
       },

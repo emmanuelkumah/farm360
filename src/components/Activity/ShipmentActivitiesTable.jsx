@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
-import { useNavigation } from "react-router-dom";
+import { useNavigation, Link } from "react-router-dom";
 import { axiosbaseURL } from "../../api/axios";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
 
 const ShipmentActivitiesTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,38 +75,52 @@ const ShipmentActivitiesTable = ({ data }) => {
 
             <Table.HeadCell>Kilos Per Package</Table.HeadCell>
             <Table.HeadCell></Table.HeadCell>
+
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {currentData
-              .filter((item) => {
+              .filter((activity) => {
                 return search.toLowerCase() === ""
-                  ? item
-                  : item.farm.toLowerCase().includes(search);
+                  ? activity
+                  : activity.farm.toLowerCase().includes(search);
               })
-              .map((item) => (
+              .map((activity) => (
                 <Table.Row
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  key={item.id}
+                  key={activity.id}
                 >
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {item.farm}
+                    {activity.farm}
                   </Table.Cell>
-                  <Table.Cell>{item.dateOfExit}</Table.Cell>
-                  <Table.Cell>{item.destinationCountry}</Table.Cell>
-                  <Table.Cell>{item.portOfEntry}</Table.Cell>
-                  <Table.Cell>{item.portOfExit}</Table.Cell>
-                  <Table.Cell>{item.customerName}</Table.Cell>
-                  <Table.Cell>{item.customerContact}</Table.Cell>
-                  <Table.Cell>{item.customerAddress}</Table.Cell>
+                  <Table.Cell>{activity.dateOfExit}</Table.Cell>
+                  <Table.Cell>{activity.destinationCountry}</Table.Cell>
+                  <Table.Cell>{activity.portOfEntry}</Table.Cell>
+                  <Table.Cell>{activity.portOfExit}</Table.Cell>
+                  <Table.Cell>{activity.customerName}</Table.Cell>
+                  <Table.Cell>{activity.customerContact}</Table.Cell>
+                  <Table.Cell>{activity.customerAddress}</Table.Cell>
                   <Table.Cell>
-                    <a href={item.certificateUrl}>{item.certificateUrl}</a>
+                    <a href={activity.certificateUrl}>
+                      {activity.certificateUrl}
+                    </a>
                   </Table.Cell>
-                  <Table.Cell>{item.modeOfPackaging}</Table.Cell>
-                  <Table.Cell>{item.kilosPerPackage}</Table.Cell>
+                  <Table.Cell>{activity.modeOfPackaging}</Table.Cell>
+                  <Table.Cell>{activity.kilosPerPackage}</Table.Cell>
+                  <Table.Cell>
+                    <Link to={`edit/${activity.id}`}>
+                      <div className="text-md flex  p-2 cursor-pointer  hover:bg-secondary hover:text-white hover:rounded-lg focus: bg-main">
+                        <span className="text-white">
+                          <MdEdit />
+                        </span>
+                        <p className="text-white">Edit</p>
+                      </div>
+                    </Link>
+                  </Table.Cell>
                   <Table.Cell>
                     <div
                       className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
-                      onClick={() => handleDeleteActivity(item.id)}
+                      onClick={() => handleDeleteActivity(activity.id)}
                     >
                       <span className="text-white">
                         <MdDelete />

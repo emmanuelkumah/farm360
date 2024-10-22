@@ -1,12 +1,12 @@
 import React from "react";
 import { TransportationForm } from "../components";
 
-const Transportation = () => {
+const AddTransportationActivity = () => {
   return (
     <div>
-      <TransportationForm />
+      <TransportationForm method="post" />
     </div>
   );
 };
 
-export default Transportation;
+export default AddTransportationActivity;

@@ -14,24 +14,44 @@ import { axiosbaseURL } from "../../api/axios";
 import { Form, redirect, useActionData } from "react-router-dom";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const TransportationForm = () => {
+const TransportationForm = ({ method, data }) => {
   const [activityDate, setActivityDate] = useState("");
   const [hasMechanicalType, setHasMechanicalType] = useState(false);
-
+  const [transportMeans, setTransportMeans] = useState("");
+  const [hasTransportMeans, setHasTransportMeans] = useState(false);
   const errors = useActionData();
   const errorMessage = errors?.data;
 
+  console.log(data);
+  useEffect(() => {
+    if (data) {
+      setActivityDate(data.activityDate);
+      displayTransportMode(data.transportationMethod);
+    }
+  }, []);
+
+  const displayTransportMode = (means) => {
+    if (means === "MECHANICAL") {
+      setHasMechanicalType(true);
+      setTransportMeans(means);
+    } else {
+      setTransportMeans("MANUAL");
+      setHasMechanicalType(false);
+    }
+  };
   const handleActivityDateChange = (date) => {
     const formattedDate = date.toISOString(); // Formats to "YYYY-MM-DD"
     setActivityDate(formattedDate);
   };
   const handleSelectTransportation = (e) => {
     if (e.target.value === "MECHANICAL") {
+      setTransportMeans(e.target.value);
       setHasMechanicalType(!hasMechanicalType);
     } else {
       setHasMechanicalType(false);
+      setTransportMeans(e.target.value);
     }
   };
   return (
@@ -44,7 +64,7 @@ const TransportationForm = () => {
           <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
         </Alert>
       ) : null}
-      <Form className="container mx-auto w-full md:w-[70%]" method="post">
+      <Form className="container mx-auto w-full md:w-[70%]" method={method}>
         <section>
           <div className="my-2">
             <Label htmlFor="exit" className="font-semibold my-2">
@@ -69,7 +89,7 @@ const TransportationForm = () => {
               type="text"
               placeholder="Enter quantity transported "
               name="quantityTransported"
-              defaultValue=""
+              defaultValue={data ? data.quantityTransported : ""}
               required
             />
           </div>
@@ -82,6 +102,7 @@ const TransportationForm = () => {
               Name
             </Label>
             <Select
+              value={transportMeans}
               onChange={handleSelectTransportation}
               name="transportationMethod"
             >
@@ -101,7 +122,7 @@ const TransportationForm = () => {
                   type="text"
                   placeholder="Enter driver name"
                   name="driversName"
-                  defaultValue=""
+                  defaultValue={data ? data.driversName : ""}
                 />
               </div>
               <div className="my-2">
@@ -113,7 +134,7 @@ const TransportationForm = () => {
                   type="text"
                   placeholder="Enter driver license number"
                   name="driversLicenseNumber"
-                  defaultValue=""
+                  defaultValue={data ? data.driversLicenseNumber : ""}
                 />
               </div>
               <div className="my-2">
@@ -125,7 +146,7 @@ const TransportationForm = () => {
                   type="text"
                   placeholder="Enter vehicle registration  number"
                   name="vehicleRegistrationNumber"
-                  defaultValue=""
+                  defaultValue={data ? data.vehicleRegistrationNumber : ""}
                 />
               </div>
               <div className="my-2">
@@ -137,7 +158,7 @@ const TransportationForm = () => {
                   type="number"
                   placeholder="Enter number of trips"
                   name="numberOfBagsPerTrip"
-                  defaultValue=""
+                  defaultValue={data ? data.numberOfBagsPerTrip : ""}
                 />
               </div>
             </section>
@@ -145,7 +166,7 @@ const TransportationForm = () => {
         </section>
 
         <Button className="w-full my-4" type="submit">
-          Save
+          Save activity
         </Button>
       </Form>
     </div>
@@ -167,11 +188,28 @@ export const action = async ({ request, params }) => {
     vehicleRegistrationNumber: data.get("vehicleRegistrationNumber"),
     numberOfBagsPerTrip: Number(data.get("numberOfBagsPerTrip")),
   };
+  const method = request.method;
+  const activityId = params.activityId;
+
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/transportation/${activityId}`,
+        formData
+      );
+      toast.success("Transportation  data updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/transportation",
       formData
     );
+
     toast.success("Transportation  data submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {

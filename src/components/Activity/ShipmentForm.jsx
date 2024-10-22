@@ -11,14 +11,20 @@ import { axiosbaseURL } from "../../api/axios";
 import { Form, redirect, useActionData } from "react-router-dom";
 import ActivityHeading from "../ActivityHeading";
 import BackButton from "../BackButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiInformationCircle } from "react-icons/hi";
 
-const ShipmentForm = () => {
+const ShipmentForm = ({ method, data }) => {
   const [activityDate, setActivityDate] = useState("");
 
   const errors = useActionData();
   const errorMessage = errors?.data;
+
+  useEffect(() => {
+    if (data) {
+      setActivityDate(data.dateOfExit);
+    }
+  }, []);
 
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString();
@@ -34,7 +40,7 @@ const ShipmentForm = () => {
           <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
         </Alert>
       ) : null}
-      <Form className="container mx-auto w-full md:w-[70%]" method="post">
+      <Form className="container mx-auto w-full md:w-[70%]" method={method}>
         <section>
           <div className="my-2">
             <Label htmlFor="exit" className="font-semibold my-2">
@@ -59,7 +65,7 @@ const ShipmentForm = () => {
               type="text"
               placeholder="Enter destination country"
               name="destinationCountry"
-              defaultValue=""
+              defaultValue={data ? data.destinationCountry : ""}
               required
             />
           </div>
@@ -72,7 +78,7 @@ const ShipmentForm = () => {
               type="text"
               placeholder="Port of entry"
               name="portOfEntry"
-              defaultValue=""
+              defaultValue={data ? data.portOfEntry : ""}
               required
             />
           </div>
@@ -85,7 +91,7 @@ const ShipmentForm = () => {
               type="text"
               placeholder="Port of exit"
               name="portOfExit"
-              defaultValue=""
+              defaultValue={data ? data.portOfExit : ""}
               required
             />
           </div>
@@ -102,7 +108,7 @@ const ShipmentForm = () => {
               type="text"
               placeholder="Enter customer name"
               name="customerName"
-              defaultValue=""
+              defaultValue={data ? data.customerName : ""}
               required
             />
           </div>
@@ -115,7 +121,7 @@ const ShipmentForm = () => {
               type="number"
               placeholder="Enter contact"
               name="customerContact"
-              defaultValue=""
+              defaultValue={data ? data.customerContact : ""}
               required
             />
           </div>
@@ -128,7 +134,7 @@ const ShipmentForm = () => {
               type="text"
               placeholder="Enter address"
               name="customerAddress"
-              defaultValue=""
+              defaultValue={data ? data.customerAddress : ""}
               required
             />
           </div>
@@ -145,7 +151,7 @@ const ShipmentForm = () => {
               type="url"
               name="certificateUrl"
               placeholder="Enter the url to the certificate"
-              defaultValue=""
+              defaultValue={data ? data.certificateUrl : ""}
               required
             />
           </div>
@@ -161,7 +167,7 @@ const ShipmentForm = () => {
               placeholder="Enter mode of packaging"
               type="text"
               name="modeOfPackaging"
-              defaultValue=""
+              defaultValue={data ? data.modeOfPackaging : ""}
               required
             />
           </div>
@@ -174,7 +180,7 @@ const ShipmentForm = () => {
               placeholder="Enter number of kilos per package"
               type="number"
               name="kilosPerPackage"
-              defaultValue=""
+              defaultValue={data ? data.kilosPerPackage : ""}
               required
             />
           </div>
@@ -206,12 +212,29 @@ export const action = async ({ request, params }) => {
     modeOfPackaging: data.get("modeOfPackaging"),
     kilosPerPackage: Number(data.get("kilosPerPackage")),
   };
+  const method = request.method;
+  const activityId = params.activityId;
+
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/shipment/${activityId}`,
+        formData
+      );
+      toast.success("Shipment  data updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/shipment",
       formData
     );
-    toast.success("Sales  data submitted successfully!");
+
+    toast.success("Shipment  data submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
     return error.response;

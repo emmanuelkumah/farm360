@@ -30,7 +30,6 @@ const StorageForm = ({ method, data }) => {
 
   const errors = useActionData();
   const errorMessage = errors?.data;
-  console.log(data);
   const storageQuality = [
     {
       id: 1,
@@ -372,7 +371,7 @@ const StorageForm = ({ method, data }) => {
         <div className="my-4">
           <Label
             htmlFor="scanned"
-            value="Upload scanned receipt"
+            value="Insert the url of the receipt"
             className="my-2 font-semibold"
           />
           <TextInput

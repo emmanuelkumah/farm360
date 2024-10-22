@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Table, Pagination, Spinner } from "flowbite-react";
 import BackButton from "../BackButton";
-import { useNavigation } from "react-router-dom";
+import { useNavigation, Link } from "react-router-dom";
 import { axiosbaseURL } from "../../api/axios";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
 import { toast } from "react-toastify";
 
 const TransportationActivitiesTable = ({ data }) => {
@@ -75,30 +75,40 @@ const TransportationActivitiesTable = ({ data }) => {
           </Table.Head>
           <Table.Body className="divide-y">
             {currentActivitiesData
-              .filter((item) => {
+              .filter((activity) => {
                 return search.toLowerCase() === ""
-                  ? item
-                  : item.farm.toLowerCase().includes(search);
+                  ? activity
+                  : activity.farm.toLowerCase().includes(search);
               })
-              .map((item) => (
+              .map((activity) => (
                 <Table.Row
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  key={item.id}
+                  key={activity.id}
                 >
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {item.farm}
+                    {activity.farm}
                   </Table.Cell>
-                  <Table.Cell>{item.activityDate}</Table.Cell>
-                  <Table.Cell>{item.transportationMethod}</Table.Cell>
-                  <Table.Cell>{item.quantityTransported}</Table.Cell>
-                  <Table.Cell>{item.driversName}</Table.Cell>
-                  <Table.Cell>{item.driversLicenseNumber}</Table.Cell>
-                  <Table.Cell>{item.vehicleRegistrationNumber}</Table.Cell>
-                  <Table.Cell>{item.numberOfBagsPerTrip}</Table.Cell>
+                  <Table.Cell>{activity.activityDate}</Table.Cell>
+                  <Table.Cell>{activity.transportationMethod}</Table.Cell>
+                  <Table.Cell>{activity.quantityTransported}</Table.Cell>
+                  <Table.Cell>{activity.driversName}</Table.Cell>
+                  <Table.Cell>{activity.driversLicenseNumber}</Table.Cell>
+                  <Table.Cell>{activity.vehicleRegistrationNumber}</Table.Cell>
+                  <Table.Cell>{activity.numberOfBagsPerTrip}</Table.Cell>
+                  <Table.Cell>
+                    <Link to={`edit/${activity.id}`}>
+                      <div className="text-md flex  p-2 cursor-pointer  hover:bg-secondary hover:text-white hover:rounded-lg focus: bg-main">
+                        <span className="text-white">
+                          <MdEdit />
+                        </span>
+                        <p className="text-white">Edit</p>
+                      </div>
+                    </Link>
+                  </Table.Cell>
                   <Table.Cell>
                     <div
                       className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
-                      onClick={() => handleDeleteActivity(item.id)}
+                      onClick={() => handleDeleteActivity(activity.id)}
                     >
                       <span className="text-white">
                         <MdDelete />

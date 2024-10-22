@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Select,
@@ -15,12 +15,32 @@ import { axiosbaseURL } from "../../api/axios";
 import { toast } from "react-toastify";
 import { HiInformationCircle } from "react-icons/hi";
 
-const SalesForm = () => {
+const SalesForm = ({ method, data }) => {
   const [activityDate, setActivityDate] = useState("");
   const [buyerType, setBuyerType] = useState("");
+  const [showTransportDetails, setShowTransportDetails] = useState(false);
+  const [transportMeans, setTransportMeans] = useState("");
 
   const errors = useActionData();
   const errorMessage = errors?.data;
+
+  console.log(data);
+
+  useEffect(() => {
+    if (data) {
+      setActivityDate(data.releaseDate);
+      setBuyerType(data.buyerType);
+      displayTransportMeans(data.transportMeans);
+    }
+  }, []);
+
+  const displayTransportMeans = (means) => {
+    if (means === "TRACTOR") {
+      setShowTransportDetails(true);
+      setTransportMeans(means);
+    }
+    setTransportMeans(means);
+  };
 
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString();
@@ -29,6 +49,17 @@ const SalesForm = () => {
 
   const handleBuyTypeChange = (e) => {
     setBuyerType(e.target.value);
+  };
+  const handleTransportMeansChange = (e) => {
+    const value = e.target.value;
+    console.log(value);
+    if (value === "TRACTOR") {
+      setShowTransportDetails(true);
+      setTransportMeans(value);
+    } else {
+      setTransportMeans(value);
+      setShowTransportDetails(false);
+    }
   };
   return (
     <div className="container mx-auto">
@@ -40,9 +71,9 @@ const SalesForm = () => {
           <p>{`${errorMessage.code} - ${errorMessage.message}`}</p>
         </Alert>
       ) : null}
-      <Form className="container mx-auto w-full md:w-[70%]" method="post">
+      <Form className="container mx-auto w-full md:w-[70%]" method={method}>
         <section>
-          <h4>Authorizer of relese of products for sale</h4>
+          <h4 className="text-xl">Authorizer of relese of products for sale</h4>
           <div className="my-2">
             <Label htmlFor="release" className="font-semibold my-2">
               Release date
@@ -65,7 +96,7 @@ const SalesForm = () => {
               type="text"
               required
               name="authorizerName"
-              defaultValue=""
+              defaultValue={data ? data.authorizerName : ""}
             />
           </div>
           <div className="my-2">
@@ -77,7 +108,7 @@ const SalesForm = () => {
               placeholder="Enter phone number"
               type="number"
               name="authorizerContact"
-              defaultValue=""
+              defaultValue={data ? data.authorizerContact : ""}
             />
           </div>
           <div className="my-2">
@@ -89,7 +120,7 @@ const SalesForm = () => {
               placeholder="Enter quantity"
               type="number"
               name="authorizerQuantity"
-              defaultValue=""
+              defaultValue={data ? data.authorizerQuantity : ""}
             />
           </div>
         </section>
@@ -103,7 +134,7 @@ const SalesForm = () => {
             type="url"
             placeholder="Enter the url of the sales document"
             name="saleEvidenceUrl"
-            defaultValue=""
+            defaultValue={data ? data.saleEvidenceUrl : ""}
           />
         </div>
         <section>
@@ -134,7 +165,7 @@ const SalesForm = () => {
               type="text"
               placeholder="Enter name"
               name="buyerName"
-              defaultValue=""
+              defaultValue={data ? data.buyerName : ""}
             />
           </div>
           <div className="my-2">
@@ -148,7 +179,7 @@ const SalesForm = () => {
               type="number"
               placeholder="Enter quantity"
               name="buyerQuantity"
-              defaultValue=""
+              defaultValue={data ? data.buyerQuantity : ""}
             />
           </div>
           <div className="my-2">
@@ -162,7 +193,7 @@ const SalesForm = () => {
               type="number"
               placeholder="Enter phone number"
               name="buyerContact"
-              defaultValue=""
+              defaultValue={data ? data.buyerContact : ""}
             />
           </div>
         </section>
@@ -173,56 +204,65 @@ const SalesForm = () => {
             value="Means of Transport"
             className="my-2 font-semibold"
           />
-          <Select id="transport" required name="transportMeans" defaultValue="">
-            <option>Select transport</option>
+          <Select
+            id="transport"
+            required
+            name="transportMeans"
+            value={transportMeans}
+            onChange={handleTransportMeansChange}
+          >
             <option value="MANUAL">Manual</option>
             <option value="TRACTOR">Tractor</option>
           </Select>
         </div>
-        <div className="my-4">
-          <Label
-            htmlFor="vehicle"
-            value="Vehicle name"
-            className="my-2 font-semibold"
-          />
-          <TextInput
-            type="text"
-            placeholder="Enter vehicle name"
-            id="vehicle"
-            name="vehicleName"
-            defaultValue=""
-          />
-        </div>
-        <div className="my-4">
-          <Label
-            htmlFor="registration"
-            value="Registration number"
-            className="my-2 font-semibold"
-          />
-          <TextInput
-            type="text"
-            placeholder="Enter registration number"
-            id="registration"
-            name="vehicleRegistrationNo"
-            defaultValue=""
-          />
-        </div>
+        {showTransportDetails && (
+          <section>
+            <div className="my-4">
+              <Label
+                htmlFor="vehicle"
+                value="Vehicle name"
+                className="my-2 font-semibold"
+              />
+              <TextInput
+                type="text"
+                placeholder="Enter vehicle name"
+                id="vehicle"
+                name="vehicleName"
+                defaultValue={data ? data.vehicleName : ""}
+              />
+            </div>
+            <div className="my-4">
+              <Label
+                htmlFor="registration"
+                value="Registration number"
+                className="my-2 font-semibold"
+              />
+              <TextInput
+                type="text"
+                placeholder="Enter registration number"
+                id="registration"
+                name="vehicleRegistrationNo"
+                defaultValue={data ? data.vehicleRegistrationNo : ""}
+              />
+            </div>
 
-        <div className="my-4">
-          <Label
-            htmlFor="license"
-            value="Driver's License number"
-            className="my-2 font-semibold"
-          />
-          <TextInput
-            type="text"
-            required
-            placeholder="Enter driver's license number"
-            id="license"
-            name="driversLicenseNo"
-            defaultValue=""
-          />
-        </div>
+            <div className="my-4">
+              <Label
+                htmlFor="license"
+                value="Driver's License number"
+                className="my-2 font-semibold"
+              />
+              <TextInput
+                type="text"
+                required
+                placeholder="Enter driver's license number"
+                id="license"
+                name="driversLicenseNo"
+                defaultValue={data ? data.driversLicenseNo : ""}
+              />
+            </div>
+          </section>
+        )}
 
         <Button type="submit">Save Sales activities </Button>
       </Form>
@@ -234,6 +274,8 @@ export default SalesForm;
 
 export const action = async ({ request, params }) => {
   const data = await request.formData();
+  const method = request.method;
+  const activityId = params.activityId;
 
   const formData = {
     farmId: Number(params.farmId),
@@ -251,12 +293,29 @@ export const action = async ({ request, params }) => {
     vehicleRegistrationNo: data.get("vehicleRegistrationNo"),
     driversLicenseNo: data.get("driversLicenseNo"),
   };
+
+  console.log("form", formData);
+  if (method === "PUT") {
+    try {
+      const response = await axiosbaseURL.put(
+        `/farm/activity/crop-sales/${activityId}`,
+        formData
+      );
+      console.log(response);
+      toast.success("Sales activity updated successfully!");
+      return redirect("/app/farms");
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   try {
     const response = await axiosbaseURL.post(
       "/farm/activity/crop-sales",
       formData
     );
-    toast.success("Sales  data submitted successfully!");
+    console.log(response);
+    toast.success("Sales activity  submitted successfully!");
     return redirect("/app/farms");
   } catch (error) {
     return error.response;
