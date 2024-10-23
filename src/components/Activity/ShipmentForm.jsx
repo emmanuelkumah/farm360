@@ -140,7 +140,22 @@ const ShipmentForm = ({ method, data }) => {
           </div>
         </section>
         <section>
-          <h4>Certification</h4>
+          <div className="my-2">
+            <Label htmlFor="shipped" className="font-semibold my-2">
+              Quantity shipped
+            </Label>
+
+            <TextInput
+              id="shipped"
+              type="text"
+              name="quantityShipped"
+              placeholder="Enter the quantity shipped"
+              defaultValue={data ? data.certificateUrl : ""}
+              required
+            />
+          </div>
+        </section>
+        <section>
           <div className="my-2">
             <Label htmlFor="certificate" className="font-semibold my-2">
               Shipment Certificate
@@ -157,7 +172,6 @@ const ShipmentForm = ({ method, data }) => {
           </div>
         </section>
         <section>
-          <h4>Packaging</h4>
           <div className="my-2">
             <Label htmlFor="mode" className="font-semibold my-2">
               Mode of packaging
@@ -186,7 +200,7 @@ const ShipmentForm = ({ method, data }) => {
           </div>
         </section>
 
-        <Button className="w-full" type="submit">
+        <Button className="w-full md:mt-10" type="submit">
           Save
         </Button>
       </Form>
@@ -209,7 +223,9 @@ export const action = async ({ request, params }) => {
     customerContact: data.get("customerContact"),
     customerAddress: data.get("customerAddress"),
     certificateUrl: data.get("certificateUrl"),
+    quantityShipped: data.get("quantityShipped"),
     modeOfPackaging: data.get("modeOfPackaging"),
+
     kilosPerPackage: Number(data.get("kilosPerPackage")),
   };
   const method = request.method;
