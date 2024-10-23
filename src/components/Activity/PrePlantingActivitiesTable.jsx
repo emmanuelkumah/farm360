@@ -141,7 +141,7 @@ const PrePlantingActivitiesTable = ({ data }) => {
                       </Table.Cell>
                       <Table.Cell>
                         <Link to={`edit/${activity.id}`}>
-                          <div className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary">
+                          <div className="text-md flex  p-2 cursor-pointer  hover:bg-secondary hover:text-white hover:rounded-lg focus: bg-main">
                             <span className="text-white">
                               <MdEdit />
                             </span>

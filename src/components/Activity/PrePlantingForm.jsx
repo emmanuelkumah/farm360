@@ -39,6 +39,8 @@ const PrePlantingForm = ({ data, method }) => {
   const errors = useActionData();
   const errorMessage = errors?.data;
 
+  console.log("preplanting", data);
+
   useEffect(() => {
     if (data) {
       setUpdatePlantingMaterialSource(data.plantingMaterialSource);
@@ -445,6 +447,8 @@ export const action = async ({ request, params }) => {
       data.get("plantingMaterialSource")
     );
     const treated = convertToBoolean(data.get("plantingMaterialIsTreated"));
+
+    console.log("treated", treated);
 
     const supervisorQualification = getSupervisorQualification(
       data.get("supervisorQualification")
