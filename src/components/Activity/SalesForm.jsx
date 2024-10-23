@@ -24,8 +24,6 @@ const SalesForm = ({ method, data }) => {
   const errors = useActionData();
   const errorMessage = errors?.data;
 
-  console.log(data);
-
   useEffect(() => {
     if (data) {
       setActivityDate(data.releaseDate);
@@ -219,20 +217,6 @@ const SalesForm = ({ method, data }) => {
           <section>
             <div className="my-4">
               <Label
-                htmlFor="vehicle"
-                value="Vehicle name"
-                className="my-2 font-semibold"
-              />
-              <TextInput
-                type="text"
-                placeholder="Enter vehicle name"
-                id="vehicle"
-                name="vehicleName"
-                defaultValue={data ? data.vehicleName : ""}
-              />
-            </div>
-            <div className="my-4">
-              <Label
                 htmlFor="registration"
                 value="Registration number"
                 className="my-2 font-semibold"
@@ -289,19 +273,16 @@ export const action = async ({ request, params }) => {
     buyerContact: data.get("buyerContact"),
     buyerType: data.get("buyerType"),
     transportMeans: data.get("transportMeans"),
-    vehicleName: data.get("vehicleName"),
     vehicleRegistrationNo: data.get("vehicleRegistrationNo"),
     driversLicenseNo: data.get("driversLicenseNo"),
   };
 
-  console.log("form", formData);
   if (method === "PUT") {
     try {
       const response = await axiosbaseURL.put(
         `/farm/activity/crop-sales/${activityId}`,
         formData
       );
-      console.log(response);
       toast.success("Sales activity updated successfully!");
       return redirect("/app/farms");
     } catch (error) {

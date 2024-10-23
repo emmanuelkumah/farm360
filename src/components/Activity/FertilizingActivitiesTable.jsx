@@ -111,7 +111,7 @@ const FertilizingActivitiesTable = ({ data }) => {
                   <Table.Cell>
                     <div
                       className="text-md flex  p-2 cursor-pointer  hover:bg-main hover:text-white hover:rounded-lg focus: bg-secondary"
-                      onClick={() => handleDeleteActivity(item.id)}
+                      onClick={() => handleDeleteActivity(activity.id)}
                     >
                       <span className="text-white">
                         <MdDelete />

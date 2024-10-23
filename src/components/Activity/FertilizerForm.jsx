@@ -23,7 +23,6 @@ const FertilizerForm = ({ data, method }) => {
   const [supervisorQualification, setSupervisorQualification] =
     useState("MOFA");
 
-  console.log(data);
   const defaultValue = new Date();
 
   const errors = useActionData();
@@ -34,6 +33,7 @@ const FertilizerForm = ({ data, method }) => {
       setFertilizerType(data.fertilizerType);
       setActivityDate(data.activityDate);
       setFertilizerName(data.fertilizerName);
+      setSupervisorQualification(data.supervisorQualification);
     }
   }, []);
 
@@ -103,7 +103,6 @@ const FertilizerForm = ({ data, method }) => {
             value={fertilizerType}
             onChange={handleFertilzerTypeChange}
           >
-            <option>Select the type of fertilizer</option>
             <option value="LIQUID">Liquid</option>
             <option value="ORGANIC">Organic</option>
             <option value="INORGANIC">Inorganic</option>
@@ -122,7 +121,6 @@ const FertilizerForm = ({ data, method }) => {
             value={fertilizerName}
             onChange={handleFertMethod}
           >
-            <option>Select fertilizer</option>
             <option value="Manure">Manure</option>
             <option value="Compost">Compost</option>
             <option value="NPK">NPK</option>
@@ -234,7 +232,6 @@ const FertilizerForm = ({ data, method }) => {
             value={supervisorQualification}
             onChange={handleSupervisorQualification}
           >
-            <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
             <option value="EPA">EPA</option>
             <option value="PPRSD/NPPO">PPRSD/NPPO</option>
@@ -297,7 +294,6 @@ export const action = async ({ request, params }) => {
     supervisorQualification: supervisorQualification,
     activityDate: data.get("activityDate"),
   };
-  console.log("form", formData);
   const method = request.method;
   const activityId = params.activityId;
 
@@ -307,7 +303,6 @@ export const action = async ({ request, params }) => {
         `/farm/activity/fertilizer-application/${activityId}`,
         formData
       );
-      console.log("update", response);
 
       toast.success("Fertilizer activity data updated successfully!");
       return redirect("/app/farms");
