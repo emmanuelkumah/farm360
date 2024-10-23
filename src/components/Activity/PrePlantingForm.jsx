@@ -25,7 +25,7 @@ const PrePlantingForm = ({ data, method }) => {
     useState("Chemical");
   const [updateTreatmentMethod, setUpdateTreatmentMethod] = useState("");
   const [hasMaterialSource, setHasMaterialSource] = useState(false);
-  const [isTreated, setIsTreated] = useState("yes");
+  const [isTreated, setIsTreated] = useState(true);
   const [hasTreatmentMethod, setHasTreatmentMethod] = useState(false);
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
   const [activityDate, setActivityDate] = useState("");
@@ -35,7 +35,7 @@ const PrePlantingForm = ({ data, method }) => {
     useState("");
 
   const defaultValue = new Date();
-
+  console.log("data", data);
   const errors = useActionData();
   const errorMessage = errors?.data;
 
@@ -48,6 +48,7 @@ const PrePlantingForm = ({ data, method }) => {
       setActivityDate(data.activityDate);
       setUpdateTreatmentMethod(converted);
       setUpdateSupervisorQualification(data.supervisorQualification);
+      setIsTreated(data.plantingMaterialIsTreated);
     }
   }, []);
 
@@ -56,6 +57,15 @@ const PrePlantingForm = ({ data, method }) => {
     setActivityDate(formattedDate);
   };
 
+  const handleTreatmentMethodChange = (e) => {
+    const value = e.target.value;
+    if (value === "yes") {
+      setIsTreated(true);
+    }
+    if (value === "no") {
+      setIsTreated(false);
+    }
+  };
   const treatmentMethodToSentenceCase = (str) => {
     return str?.charAt(0).toUpperCase() + str?.slice(1).toLowerCase();
   };
@@ -243,8 +253,8 @@ const PrePlantingForm = ({ data, method }) => {
                         id="yes-treatment"
                         name="plantingMaterialIsTreated"
                         value="yes"
-                        checked={isTreated === "yes"}
-                        onChange={() => setIsTreated("yes")}
+                        checked={isTreated === true}
+                        onChange={handleTreatmentMethodChange}
                       />
                       <Label htmlFor="yes-treatment">Yes</Label>
                     </div>
@@ -253,8 +263,9 @@ const PrePlantingForm = ({ data, method }) => {
                         id="no-treatment"
                         name="plantingMaterialIsTreated"
                         value="no"
-                        checked={isTreated === "no"}
-                        onChange={() => setIsTreated("no")}
+                        checked={isTreated === false}
+                        // onChange={() => setIsTreated("no")}
+                        onChange={handleTreatmentMethodChange}
                       />
                       <Label htmlFor="no-treatment">No</Label>
                     </div>
@@ -262,7 +273,7 @@ const PrePlantingForm = ({ data, method }) => {
                 </div>
               </div>
             </div>
-            {isTreated === "yes" && (
+            {isTreated && (
               <div className="flex flex-col gap-4">
                 <div>
                   <Label
