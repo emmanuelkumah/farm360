@@ -39,8 +39,6 @@ const PrePlantingForm = ({ data, method }) => {
   const errors = useActionData();
   const errorMessage = errors?.data;
 
-  console.log("preplanting", data);
-
   useEffect(() => {
     if (data) {
       setUpdatePlantingMaterialSource(data.plantingMaterialSource);
@@ -341,78 +339,79 @@ const PrePlantingForm = ({ data, method }) => {
                         />
                       </div>
                     </div>
+                    <section>
+                      <div className="my-2">
+                        <Label
+                          htmlFor="supervisor"
+                          value="Supervisor"
+                          className="my-2 font-semibold"
+                        />
+                        <TextInput
+                          type="text"
+                          required
+                          placeholder="Enter name of supervisor"
+                          id="supervisor"
+                          name="supervisorName"
+                          defaultValue={data ? data.supervisorName : ""}
+                        />
+                      </div>
+                      <div className="my-2">
+                        <Label
+                          htmlFor="supervisor"
+                          value="Supervisor Contact"
+                          className="my-2 font-semibold"
+                        />
+                        <TextInput
+                          type="text"
+                          required
+                          placeholder="Enter contact of supervisor"
+                          id="supervisor"
+                          name="supervisorContact"
+                          defaultValue={data ? data.supervisorContact : ""}
+                        />
+                      </div>
+                      <div className="my-2">
+                        <Label
+                          htmlFor="cert"
+                          value="Certificate"
+                          className="my-2 font-semibold"
+                        />
+
+                        <Select
+                          id="cert"
+                          required
+                          name="supervisorQualification"
+                          value={
+                            updateSupervisorQualification
+                              ? updateSupervisorQualification
+                              : defaultSupervisorQualification
+                          }
+                          onChange={handleSupervisorQualification}
+                        >
+                          <option value="MOFA">MOFA</option>
+                          <option value="EPA">EPA</option>
+                          <option value="PPRSD/NPPO">PPRSD/NPPO</option>
+                          <option value="Others">Others</option>
+                        </Select>
+                        {defaultSupervisorQualification === "Others" && (
+                          <div className="my-4">
+                            <TextInput
+                              type="text"
+                              required
+                              placeholder="Enter other qualification of supervisor"
+                              id="supervisor"
+                              name="OtherSupervisorQualification"
+                              defaultValue=""
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </section>
                   </section>
                 )}
-
-                <div className="my-2">
-                  <Label
-                    htmlFor="supervisor"
-                    value="Supervisor"
-                    className="my-2 font-semibold"
-                  />
-                  <TextInput
-                    type="text"
-                    required
-                    placeholder="Enter name of supervisor"
-                    id="supervisor"
-                    name="supervisorName"
-                    defaultValue={data ? data.supervisorName : ""}
-                  />
-                </div>
-                <div className="my-2">
-                  <Label
-                    htmlFor="supervisor"
-                    value="Supervisor Contact"
-                    className="my-2 font-semibold"
-                  />
-                  <TextInput
-                    type="text"
-                    required
-                    placeholder="Enter contact of supervisor"
-                    id="supervisor"
-                    name="supervisorContact"
-                    defaultValue={data ? data.supervisorContact : ""}
-                  />
-                </div>
-                <div className="my-2">
-                  <Label
-                    htmlFor="cert"
-                    value="Certificate"
-                    className="my-2 font-semibold"
-                  />
-
-                  <Select
-                    id="cert"
-                    required
-                    name="supervisorQualification"
-                    value={
-                      updateSupervisorQualification
-                        ? updateSupervisorQualification
-                        : defaultSupervisorQualification
-                    }
-                    onChange={handleSupervisorQualification}
-                  >
-                    <option value="MOFA">MOFA</option>
-                    <option value="EPA">EPA</option>
-                    <option value="PPRSD/NPPO">PPRSD/NPPO</option>
-                    <option value="Others">Others</option>
-                  </Select>
-                  {defaultSupervisorQualification === "Others" && (
-                    <div className="my-4">
-                      <TextInput
-                        type="text"
-                        required
-                        placeholder="Enter other qualification of supervisor"
-                        id="supervisor"
-                        name="OtherSupervisorQualification"
-                        defaultValue=""
-                      />
-                    </div>
-                  )}
-                </div>
               </div>
             )}
-            <Button className="bg-main" type="submit">
+            <Button className="bg-main mt-10" type="submit">
               Save PrePlanting Activity
             </Button>
           </div>
@@ -447,8 +446,6 @@ export const action = async ({ request, params }) => {
       data.get("plantingMaterialSource")
     );
     const treated = convertToBoolean(data.get("plantingMaterialIsTreated"));
-
-    console.log("treated", treated);
 
     const supervisorQualification = getSupervisorQualification(
       data.get("supervisorQualification")
