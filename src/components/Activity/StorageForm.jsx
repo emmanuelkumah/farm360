@@ -332,7 +332,7 @@ const StorageForm = ({ method, data }) => {
         <div className="my-4">
           <Label
             htmlFor="cert"
-            value="Certificate"
+            value="Select supervisor certificate"
             className="my-2 font-semibold"
           />
 

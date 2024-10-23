@@ -18,14 +18,12 @@ import ActivityHeading from "../ActivityHeading";
 
 const PlantingForm = ({ data, method }) => {
   const defaultValue = new Date();
-  const [hasOtherQualification, setHasOtherQualification] = useState(false);
   const [defaultCrop, setDefaultCrop] = useState("Soya");
   const [updateCrop, setUpdateCrop] = useState("");
   const [activityDate, setActivityDate] = useState("");
-  const [defaultSupervisorQualification, setDefaultSupervisorQualification] =
-    useState("MOFA");
-  const [updateSupervisorQualification, setUpdateSupervisorQualification] =
-    useState("");
+  const [supervisorQualification, setSupervisorQualification] = useState("");
+  const [hasOtherQualification, setHasOtherQualification] = useState(false);
+  const [otherQualification, setOtherQualification] = useState("");
 
   const errors = useActionData();
   const errorMessage = errors?.data;
@@ -34,6 +32,7 @@ const PlantingForm = ({ data, method }) => {
     if (data) {
       setUpdateCrop(data.cropName);
       setActivityDate(data.activityDate);
+      displayQualification(data.supervisorQualification);
     }
   }, []);
 
@@ -43,16 +42,23 @@ const PlantingForm = ({ data, method }) => {
     setActivityDate(formattedDate);
   };
 
-  const handleSupervisorQualification = (e) => {
-    if (data) {
-      setUpdateSupervisorQualification(e.target.value);
-    }
-    if (e.target.value === "Others") {
-      setDefaultSupervisorQualification(e.target.value);
-      setHasOtherQualification(!hasOtherQualification);
+  const displayQualification = (value) => {
+    if (value !== "MOFA" && value !== "EPA" && value !== "PPRSD/NPPO") {
+      setSupervisorQualification("Others");
+      setHasOtherQualification(true);
+      setOtherQualification(value);
     } else {
-      setDefaultSupervisorQualification(e.target.value);
-      setHasOtherQualification(hasOtherQualification);
+      setSupervisorQualification(value);
+    }
+  };
+
+  const handleSupervisorQualification = (e) => {
+    const value = e.target.value;
+    setSupervisorQualification(value);
+    setHasOtherQualification(false);
+    if (value === "Others") {
+      setSupervisorQualification(value);
+      setHasOtherQualification(true);
     }
   };
 
@@ -167,7 +173,7 @@ const PlantingForm = ({ data, method }) => {
         <div className="my-4">
           <Label
             htmlFor="cert"
-            value="Certificate"
+            value="Select Supervisor Certificate"
             className="my-2 font-semibold"
           />
 
@@ -175,14 +181,9 @@ const PlantingForm = ({ data, method }) => {
             id="cert"
             required
             name="supervisorQualification"
-            value={
-              updateSupervisorQualification
-                ? updateSupervisorQualification
-                : defaultSupervisorQualification
-            }
+            value={supervisorQualification}
             onChange={handleSupervisorQualification}
           >
-            <option>Select certificate of supervisor</option>
             <option value="MOFA">MOFA</option>
             <option value="EPA">EPA</option>
             <option value="PPRSD/NPPO">PPRSD/NPPO</option>
@@ -190,14 +191,20 @@ const PlantingForm = ({ data, method }) => {
           </Select>
         </div>
         {hasOtherQualification && (
-          <div className="my-4">
+          <div>
+            <Label
+              htmlFor="certificate"
+              value="Other Certificate"
+              className="my-2 font-semibold"
+            />
             <TextInput
               type="text"
               required
-              placeholder="Enter other qualification of supervisor"
-              id="supervisor"
-              name="OtherSupervisorQualification"
-              defaultValue=""
+              placeholder="Enter the certificate of supervisor if not listed above"
+              id="certificate"
+              name="otherQualification"
+              value={otherQualification}
+              onChange={(e) => setOtherQualification(e.target.value)}
             />
           </div>
         )}
@@ -217,13 +224,14 @@ export const action = async ({ request, params }) => {
 
   function getSupervisorQualification(qualification) {
     if (qualification === "Others") {
-      return data.get("OtherSupervisorQualification");
+      return data.get("otherQualification");
     }
     return data.get("supervisorQualification");
   }
   const supervisorQualification = getSupervisorQualification(
     data.get("supervisorQualification")
   );
+  console.log("qualification", supervisorQualification);
   const formData = {
     farmId: Number(params.farmId),
     cropName: data.get("cropName"),
@@ -236,16 +244,6 @@ export const action = async ({ request, params }) => {
   };
 
   console.log("Form data:", formData);
-  // try {
-  //   const response = await axiosbaseURL.post(
-  //     "/farm/activity/planting",
-  //     formData
-  //   );
-  //   toast.success("Planting  data submitted successfully!");
-  //   return redirect("/app/farms");
-  // } catch (error) {
-  //   return error.response;
-  // }
 
   const method = request.method;
   const activityId = params.activityId;

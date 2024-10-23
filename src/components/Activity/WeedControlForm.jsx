@@ -17,8 +17,7 @@ import BackButton from "../BackButton";
 
 const WeedControlForm = ({ data, method }) => {
   const [activityDate, setActivityDate] = useState("");
-  const [defaultWeedControlMethod, setDefaultWeedControlMethod] =
-    useState("CHEMICAL");
+  const [weedControlMethod, setWeedControlMethod] = useState("CHEMICAL");
   const [updateWeedControlMethod, setUpdateWeedControlMethod] = useState("");
   const [isChemical, setIsChemical] = useState(true);
   const [hasOtherQualification, setHasOtherQualification] = useState(false);
@@ -33,18 +32,12 @@ const WeedControlForm = ({ data, method }) => {
   useEffect(() => {
     if (data) {
       setActivityDate(data.activityDate);
+      setWeedControlMethod(data.weedControlMethod);
     }
   }, []);
 
-  const handleSelectWeedControl = (e) => {
-    if (e.target.value === "MANUAL") {
-      setIsChemical(false);
-      setUpdateWeedControlMethod(e.target.value);
-    }
-    if (e.target.value === "CHEMICAL") {
-      setIsChemical(true);
-      setUpdateWeedControlMethod(e.target.value);
-    }
+  const handleWeedControlMethod = (e) => {
+    setWeedControlMethod(e.target.value);
   };
 
   const handleDateChange = (date) => {
@@ -105,19 +98,15 @@ const WeedControlForm = ({ data, method }) => {
               id="method"
               required
               name="weedControlMethod"
-              onChange={handleSelectWeedControl}
-              value={
-                updateWeedControlMethod
-                  ? updateWeedControlMethod
-                  : defaultWeedControlMethod
-              }
+              onChange={handleWeedControlMethod}
+              value={weedControlMethod}
             >
               <option>Select method of weed control</option>
               <option value="MANUAL">Manual</option>
               <option value="CHEMICAL">Chemical</option>
             </Select>
           </div>
-          {isChemical && (
+          {weedControlMethod === "CHEMICAL" && (
             <div>
               <div className="my-4">
                 <Label
@@ -183,7 +172,7 @@ const WeedControlForm = ({ data, method }) => {
                 <div className="my-4">
                   <Label
                     htmlFor="cert"
-                    value="Certificate"
+                    value="Select supervisor certificate"
                     className="my-2 font-semibold"
                   />
 
